@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horizon 日报</title>
+  <link rel="stylesheet" href="/static/styles.css?v=7" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">🌅</span>
+      <div>
+        <h1>Horizon</h1>
+        <p>AI 新闻雷达 · 本地日报阅读</p>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <div class="lang-toggle" role="group" aria-label="语言切换">
+        <button id="lang-zh" class="lang-btn active" type="button">中文</button>
+        <button id="lang-en" class="lang-btn" type="button">EN</button>
+      </div>
+      <span id="run-status" class="run-status idle">就绪</span>
+      <button id="btn-refresh" class="btn secondary" type="button">刷新列表</button>
+      <button id="btn-generate" class="btn primary" type="button">生成今日日报</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h2>历史日报</h2>
+        <span id="summary-count" class="badge">0</span>
+      </div>
+      <div id="summary-list" class="summary-list">
+        <p class="empty-hint">暂无日报，点击右上角「生成今日日报」开始。</p>
+      </div>
+    </aside>
+
+    <main class="reader">
+      <div id="reader-empty" class="reader-empty">
+        <div class="empty-card">
+          <h2>选择一份日报开始阅读</h2>
+          <p>左侧会列出所有已生成的日报。你也可以直接生成今日最新内容。</p>
+        </div>
+      </div>
+      <article id="reader-content" class="reader-content" hidden>
+        <div class="article-layout">
+          <div class="article-main">
+            <div class="article-toolbar">
+              <span class="article-toolbar-label">简报工具</span>
+              <button id="btn-share" class="btn-share" type="button">生成分享</button>
+            </div>
+            <div id="article-body" class="article-body main-content"></div>
+          </div>
+          <aside id="article-toc" class="article-toc" hidden>
+            <div class="toc-head">
+              <h3>今日目录</h3>
+              <p id="toc-summary" class="toc-summary"></p>
+            </div>
+            <nav id="toc-nav" class="toc-nav"></nav>
+            <button id="toc-top" class="toc-top" type="button">回到顶部</button>
+          </aside>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <div id="share-modal" class="modal" hidden>
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-panel" role="dialog" aria-labelledby="share-modal-title">
+      <div class="modal-header">
+        <h3 id="share-modal-title">社交媒体分享稿</h3>
+        <button id="share-modal-close" class="modal-close" type="button" aria-label="关闭">×</button>
+      </div>
+      <p id="share-modal-hint" class="modal-hint">适合发布到微信公众号、小红书、微博或 X</p>
+      <div id="share-loading" class="share-loading" hidden>正在调用 AI 生成分享稿…</div>
+      <textarea id="share-text" class="share-text" readonly placeholder="分享稿将显示在这里"></textarea>
+      <div class="modal-actions">
+        <button id="btn-regenerate-share" class="btn secondary" type="button">重新生成</button>
+        <button id="btn-copy-share" class="btn primary" type="button">一键复制</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js?v=7"></script>
+</body>
+</html>

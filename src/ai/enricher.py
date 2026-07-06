@@ -205,6 +205,10 @@ class ContentEnricher:
                 val = result[f"title_{lang}"]
                 item.metadata[f"title_{lang}"] = val.get("text") or str(val) if isinstance(val, dict) else str(val)
 
+            if result.get(f"body_{lang}"):
+                val = result[f"body_{lang}"]
+                item.metadata[f"body_{lang}"] = val.get("text") or str(val) if isinstance(val, dict) else str(val)
+
             parts = []
             for field in ("whats_new", "why_it_matters", "key_details"):
                 text = result.get(f"{field}_{lang}", "").strip()
@@ -235,6 +239,12 @@ class ContentEnricher:
         item.metadata["detailed_summary"] = item.metadata.get("detailed_summary_en", "")
         item.metadata["background"] = item.metadata.get("background_en", "")
         item.metadata["community_discussion"] = item.metadata.get("community_discussion_en", "")
+
+        # If the model omitted a full article body, fall back to the combined
+        # structured summary so downstream consumers always have article text.
+        for lang in ("en", "zh"):
+            if not item.metadata.get(f"body_{lang}"):
+                item.metadata[f"body_{lang}"] = item.metadata.get(f"detailed_summary_{lang}", "")
 
     async def _translate_item(self, item: ContentItem) -> None:
         """Lightweight translation fallback: when full enrichment fails, at least

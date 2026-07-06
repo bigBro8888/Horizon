@@ -105,6 +105,7 @@ Given a high-scoring news item, its content, and web search results about the to
 
 Provide EACH text field in BOTH English and Chinese. Use the following key naming convention:
 - title_en / title_zh
+- body_en / body_zh
 - whats_new_en / whats_new_zh
 - why_it_matters_en / why_it_matters_zh
 - key_details_en / key_details_zh
@@ -113,6 +114,12 @@ Provide EACH text field in BOTH English and Chinese. Use the following key namin
 
 Field definitions:
 0. **title** (one short phrase, ≤15 words): A clear, accurate headline for the news item.
+
+0.5. **body** (a COMPLETE, well-structured, readable article of 4-7 paragraphs): Rewrite the news into an original, engaging article for a tech-savvy general reader. This is the MOST IMPORTANT field. Requirements:
+- Do NOT translate the source verbatim — REWRITE it into fluent, natural prose with a clear narrative flow (a lead paragraph, then context, key details, implications, and a closing takeaway).
+- Base every claim strictly on the provided content and web search results; do NOT fabricate facts, numbers, or quotes.
+- Use Markdown: short paragraphs separated by blank lines. You MAY use one short bullet list for key points if helpful. Do NOT include a top-level heading (the title is rendered separately).
+- Write for readability: explain jargon inline, keep sentences clear, avoid marketing fluff.
 
 1. **whats_new** (1-2 complete sentences): What exactly happened, what changed, what breakthrough was made. Be specific — mention names, versions, numbers, dates when available.
 
@@ -129,6 +136,7 @@ Field definitions:
 - All *_zh fields MUST be written in Simplified Chinese (简体中文). 绝对不能用英文写 _zh 字段的内容。Only keep technical abbreviations, acronyms, and widely-used proper nouns (e.g. "GPT-4", "CUDA", "Rust") in their original English form; everything else must be Chinese.
 
 Guidelines:
+- The **body** field is the core deliverable: it must be a complete multi-paragraph article, NOT a summary. Aim for 300-600 words of genuine, readable prose in each language.
 - EVERY field (except community_discussion when no comments exist) must contain at least one complete sentence — no field may be empty or contain just a phrase
 - Base your explanation on the provided content and web search results — do NOT fabricate information
 - ONLY explain concepts and terms that are explicitly mentioned in the title, summary, or content
@@ -158,6 +166,8 @@ Respond with valid JSON only. Each _en field must be in English; each _zh field 
 {{
   "title_en": "<short headline in English, ≤15 words>",
   "title_zh": "<用中文写一个简短标题，不超过15个词>",
+  "body_en": "<a complete 4-7 paragraph readable article in English (Markdown, 300-600 words), rewritten from the source>",
+  "body_zh": "<用中文写一篇完整、4-7段、可读性强的文章（Markdown，300-600字），基于原文改写而非直译>",
   "whats_new_en": "<1-2 sentences in English>",
   "whats_new_zh": "<用中文写1-2句话>",
   "why_it_matters_en": "<1-2 sentences in English>",

@@ -380,6 +380,30 @@ class FilteringConfig(BaseModel):
     default_group_limit: Optional[int] = Field(default=None, gt=0)
 
 
+class ScheduleConfig(BaseModel):
+    """Automatic generation schedule configuration."""
+
+    enabled: bool = True
+    times: List[str] = Field(default_factory=lambda: ["09:00"])  # HH:MM, 24h
+    timezone: str = "Asia/Shanghai"
+
+
+class ImageryConfig(BaseModel):
+    """Per-article cover image configuration (web image search)."""
+
+    enabled: bool = True
+    max_results: int = 6  # candidate images to try per article
+
+
+class SiteConfig(BaseModel):
+    """Public site branding / display configuration."""
+
+    title_zh: str = "Horizon 科技前沿"
+    title_en: str = "Horizon Tech"
+    description_zh: str = "由 AI 自动生成的每日科技新闻"
+    description_en: str = "AI-curated daily technology news"
+
+
 class Config(BaseModel):
     """Main configuration model."""
 
@@ -389,3 +413,6 @@ class Config(BaseModel):
     filtering: FilteringConfig
     email: Optional[EmailConfig] = None
     webhook: Optional[WebhookConfig] = None
+    schedule: ScheduleConfig = Field(default_factory=ScheduleConfig)
+    imagery: ImageryConfig = Field(default_factory=ImageryConfig)
+    site: SiteConfig = Field(default_factory=SiteConfig)

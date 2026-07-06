@@ -143,8 +143,24 @@ class HorizonOrchestrator:
             # 6. Search related stories + enrich with background knowledge (2nd AI pass)
             await self._enrich_important_items(important_items)
 
-            # 7. Generate and save daily summaries for each configured language
+            # 6.5 Attach a cover image (web image search) to each item
+            await self._attach_images(important_items)
+
             today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+            # 6.6 Export structured issue JSON (primary data source for the site)
+            try:
+                from .web.issue import save_issue
+                from pathlib import Path as _Path
+
+                issue_path = save_issue(
+                    important_items, today, len(all_items), data_dir=_Path(self.storage.data_dir)
+                )
+                self.console.print(f"🗂️  Saved issue JSON to: {issue_path}\n")
+            except Exception as e:
+                self.console.print(f"[yellow]⚠️  Failed to export issue JSON: {e}[/yellow]\n")
+
+            # 7. Generate and save daily summaries for each configured language
             for lang in self.config.ai.languages:
                 summarizer = DailySummarizer()
                 summary = await summarizer.generate_summary(important_items, today, len(all_items), language=lang)
@@ -667,6 +683,31 @@ class HorizonOrchestrator:
         enricher = ContentEnricher(ai_client)
         await enricher.enrich_batch(items)
         self.console.print(f"   Enriched {len(items)} items\n")
+
+    async def _attach_images(self, items: List[ContentItem]) -> None:
+        """Attach a web-sourced cover image to each item (best-effort).
+
+        Controlled by ``config.imagery.enabled``. Never raises: a failed image
+        lookup must not break the daily run.
+        """
+        imagery = getattr(self.config, "imagery", None)
+        if not items or imagery is None or not imagery.enabled:
+            return
+
+        try:
+            from pathlib import Path as _Path
+            from .ai.imagery import ArticleImager
+
+            self.console.print("🖼️  Fetching cover images...")
+            imager = ArticleImager(
+                media_dir=_Path(self.storage.data_dir) / "media",
+                max_results=imagery.max_results,
+            )
+            await imager.attach_images(items)
+            covered = sum(1 for it in items if it.metadata.get("image_path"))
+            self.console.print(f"   Attached images to {covered}/{len(items)} items\n")
+        except Exception as e:
+            self.console.print(f"[yellow]⚠️  Image fetching skipped: {e}[/yellow]\n")
 
     async def _analyze_content(self, items: List[ContentItem]) -> List[ContentItem]:
         """Analyze content items with AI.

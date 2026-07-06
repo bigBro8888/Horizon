@@ -87,6 +87,8 @@ class AIClient(ABC):
         user: str,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        *,
+        plain_text: bool = False,
     ) -> str:
         """Generate completion from AI model.
 
@@ -95,6 +97,7 @@ class AIClient(ABC):
             user: User prompt
             temperature: Optional sampling temperature override
             max_tokens: Optional maximum tokens override
+            plain_text: When True, do not force JSON response formatting
 
         Returns:
             str: Generated completion text
@@ -130,6 +133,8 @@ class AnthropicClient(AIClient):
         user: str,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        *,
+        plain_text: bool = False,
     ) -> str:
         """Generate completion using Claude.
 
@@ -211,6 +216,8 @@ class OpenAIClient(AIClient):
         user: str,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        *,
+        plain_text: bool = False,
     ) -> str:
         """Generate completion using OpenAI-compatible API.
 
@@ -237,6 +244,7 @@ class OpenAIClient(AIClient):
                 temperature=temperature,
                 max_tokens=max_tokens,
                 include_temperature=self._supports_temperature,
+                plain_text=plain_text,
             )
         except Exception as exc:
             if self._supports_temperature and self._is_temperature_unsupported(
@@ -249,6 +257,7 @@ class OpenAIClient(AIClient):
                     temperature=temperature,
                     max_tokens=max_tokens,
                     include_temperature=False,
+                    plain_text=plain_text,
                 )
             else:
                 raise
@@ -269,6 +278,7 @@ class OpenAIClient(AIClient):
         temperature: float,
         max_tokens: int,
         include_temperature: bool,
+        plain_text: bool = False,
     ):
         request_kwargs = {
             "model": self.model,
@@ -280,7 +290,7 @@ class OpenAIClient(AIClient):
         }
         if include_temperature:
             request_kwargs["temperature"] = temperature
-        if self.provider not in self._NO_RESPONSE_FORMAT:
+        if not plain_text and self.provider not in self._NO_RESPONSE_FORMAT:
             request_kwargs["response_format"] = {"type": "json_object"}
         return await self.client.chat.completions.create(**request_kwargs)
 
@@ -343,6 +353,8 @@ class AzureOpenAIClient(AIClient):
         user: str,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        *,
+        plain_text: bool = False,
     ) -> str:
         """Generate completion using Azure OpenAI.
 
@@ -448,6 +460,8 @@ class GeminiClient(AIClient):
         user: str,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        *,
+        plain_text: bool = False,
     ) -> str:
         """Generate completion using Gemini.
 
@@ -539,12 +553,16 @@ class ChainedAIClient(AIClient):
         user: str,
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
+        *,
+        plain_text: bool = False,
     ) -> str:
         last_error: Optional[Exception] = None
         for i in range(len(self.configs)):
             try:
                 client = self._get_client(i)
-                result = await client.complete(system, user, temperature, max_tokens)
+                result = await client.complete(
+                    system, user, temperature, max_tokens, plain_text=plain_text
+                )
                 if not result or not result.strip():
                     raise ValueError("Empty response from provider")
                 return result
