@@ -177,18 +177,19 @@ def _find_article(slug: str) -> tuple[dict[str, Any], dict[str, Any]]:
 def _localized(article: dict[str, Any], key: str, lang: str) -> str:
     value = article.get(key) or {}
     if isinstance(value, dict):
-        return str(value.get(lang) or value.get("zh") or value.get("en") or "")
+        fallback = "zh" if lang == "en" else "en"
+        return str(value.get(lang) or value.get(fallback) or "")
     return str(value or "")
 
 
-def _article_html(issue: dict[str, Any], article: dict[str, Any]) -> str:
-    lang = "zh"
+def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "zh") -> str:
+    is_en = lang == "en"
     title = _localized(article, "title", lang)
     summary = _localized(article, "summary", lang)
     body = _localized(article, "body", lang)
     image_path = article.get("image_path") or ""
     image_url = f"/{image_path}" if image_path else ""
-    canonical = article.get("path") or f"/article/{article.get('slug')}"
+    canonical = f"/en/article/{article.get('slug')}" if is_en else article.get("path") or f"/article/{article.get('slug')}"
     body_html = markdown.markdown(body, extensions=["extra", "sane_lists", "nl2br"], output_format="html5")
     tags = " ".join(f"<span>#{html.escape(str(tag))}</span>" for tag in article.get("tags", [])[:6])
     sources = "".join(
@@ -199,15 +200,24 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any]) -> str:
     original = html.escape(str(article.get("url") or ""))
     safe_title = html.escape(title)
     safe_summary = html.escape(summary[:180])
+    html_lang = "en" if is_en else "zh-CN"
+    site_title = "Horizon Tech" if is_en else "Horizon 科技前沿"
+    back_text = "← Back to home" if is_en else "← 返回首页"
+    time_label = "News time" if is_en else "新闻时间"
+    source_label = "Source" if is_en else "来源"
+    original_text = "Read original" if is_en else "阅读原文"
+    references_text = "References" if is_en else "参考链接"
 
     return f"""<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="{html_lang}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{safe_title} - Horizon 科技前沿</title>
+  <title>{safe_title} - {site_title}</title>
   <meta name="description" content="{safe_summary}" />
   <link rel="canonical" href="{html.escape(canonical)}" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/{html.escape(str(article.get('slug') or ''))}" />
+  <link rel="alternate" hreflang="en" href="/en/article/{html.escape(str(article.get('slug') or ''))}" />
   <meta property="og:title" content="{safe_title}" />
   <meta property="og:description" content="{safe_summary}" />
   {f'<meta property="og:image" content="{html.escape(image_url)}" />' if image_url else ''}
@@ -216,15 +226,15 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any]) -> str:
 <body>
   <div class="aurora" aria-hidden="true"></div>
   <main class="article-page">
-    <a class="article-back" href="/">← 返回首页</a>
+    <a class="article-back" href="/">{back_text}</a>
     {f'<img class="article-page-cover" src="{html.escape(image_url)}" alt="{safe_title}" />' if image_url else ''}
     <div class="article-page-tags">{tags}</div>
     <h1>{safe_title}</h1>
-    <p class="article-page-meta">新闻时间：{html.escape(str(article.get("fetched_at") or article.get("published_at") or issue.get("generated_at") or ""))} · 来源：{html.escape(str(article.get("source") or ""))}</p>
+    <p class="article-page-meta">{time_label}: {html.escape(str(article.get("fetched_at") or article.get("published_at") or issue.get("generated_at") or ""))} · {source_label}: {html.escape(str(article.get("source") or ""))}</p>
     <article class="article-page-body">{body_html}</article>
     <section class="article-page-links">
-      <a class="source-primary" href="{original}" target="_blank" rel="noopener">阅读原文</a>
-      {f'<h2>参考链接</h2>{sources}' if sources else ''}
+      <a class="source-primary" href="{original}" target="_blank" rel="noopener">{original_text}</a>
+      {f'<h2>{references_text}</h2>{sources}' if sources else ''}
     </section>
   </main>
 </body>
@@ -362,7 +372,12 @@ def create_app() -> FastAPI:
     @app.get("/article/{slug}", response_class=HTMLResponse)
     def article_page(slug: str) -> HTMLResponse:
         issue, article = _find_article(slug)
-        return HTMLResponse(_article_html(issue, article))
+        return HTMLResponse(_article_html(issue, article, "zh"))
+
+    @app.get("/en/article/{slug}", response_class=HTMLResponse)
+    def english_article_page(slug: str) -> HTMLResponse:
+        issue, article = _find_article(slug)
+        return HTMLResponse(_article_html(issue, article, "en"))
 
     # ------------------------ admin API ------------------------ #
     @app.post("/api/admin/login", response_model=LoginResponse)

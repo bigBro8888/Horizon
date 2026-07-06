@@ -169,6 +169,11 @@ function coverStyle(imagePath) {
   return `background-image:url('/${imagePath}')`;
 }
 
+function articlePath(a) {
+  if (state.lang === "en" && a.slug) return `/en/article/${a.slug}`;
+  return a.path || (a.slug ? `/article/${a.slug}` : "#");
+}
+
 async function fetchJson(paths) {
   for (const path of paths) {
     try {
@@ -335,7 +340,7 @@ function renderFeed() {
     const card = document.createElement("article");
     card.className = "card";
     card.addEventListener("click", () => {
-      window.location.href = a.path || (a.slug ? `/article/${a.slug}` : "#");
+      window.location.href = articlePath(a);
     });
 
     const cover = document.createElement("div");
