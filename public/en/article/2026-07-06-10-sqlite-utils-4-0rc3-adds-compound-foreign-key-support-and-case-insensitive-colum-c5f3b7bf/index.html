@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sqlite-utils 4.0rc3 adds compound foreign key support and case-insensitive column handling - Horizon Tech</title>
+  <meta name="description" content="sqlite-utils 4.0rc3 introduces native support for compound foreign keys and implements SQLite-compliant case-insensitive column name resolution, both requiring breaking changes to " />
+  <link rel="canonical" href="/en/article/2026-07-06-10-sqlite-utils-4-0rc3-adds-compound-foreign-key-support-and-case-insensitive-colum-c5f3b7bf" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-06-10-sqlite-utils-4-0rc3-adds-compound-foreign-key-support-and-case-insensitive-colum-c5f3b7bf" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-06-10-sqlite-utils-4-0rc3-adds-compound-foreign-key-support-and-case-insensitive-colum-c5f3b7bf" />
+  <meta property="og:title" content="sqlite-utils 4.0rc3 adds compound foreign key support and case-insensitive column handling" />
+  <meta property="og:description" content="sqlite-utils 4.0rc3 introduces native support for compound foreign keys and implements SQLite-compliant case-insensitive column name resolution, both requiring breaking changes to " />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--1eb6e47c95e4808e.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=17" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/">← Back to home</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--1eb6e47c95e4808e.svg" alt="sqlite-utils 4.0rc3 adds compound foreign key support and case-insensitive column handling" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#Python</span> <span>#CLI-tools</span> <span>#database</span> <span>#open-source</span></div>
+    <h1>sqlite-utils 4.0rc3 adds compound foreign key support and case-insensitive column handling</h1>
+    <p class="article-page-meta">News time: 2026-07-06T18:31:54.093488+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>Simon Willison has released sqlite-utils 4.0rc3 — the third release candidate for the upcoming major version of his popular Python library for interacting with SQLite databases via CLI and Python API. Originally aiming for a stable 4.0 release over the weekend, Willison instead found the changelog expanding significantly as he triaged issues and pull requests using advanced large language models — specifically Claude Fable 5 and GPT-5.5 — underscoring how AI-assisted development is increasingly shaping open-source maintenance workflows.</p>
+<p>The standout feature in rc3 is full support for compound (or composite) foreign keys: multi-column foreign key constraints that reference multiple columns in a parent table. This capability aligns sqlite-utils more closely with SQLite’s native foreign key syntax and enables robust relational modeling for complex schemas — such as many-to-many junction tables where two or more columns jointly form a foreign key relationship. However, implementing this required a subtle but breaking change to the <code>table.foreign_keys</code> property in the Python API, which now returns richer metadata including column-name mappings and constraint details previously omitted.</p>
+<p>Equally impactful is the library’s new adherence to SQLite’s official case-insensitive column name resolution behavior. Previously, sqlite-utils treated column names with strict case sensitivity in certain contexts — a deviation from SQLite’s documented semantics. The update harmonizes behavior across CLI commands (e.g., <code>sqlite-utils add-foreign-key</code>) and Python methods (e.g., <code>Table.add_foreign_key()</code>), ensuring consistent column matching whether users specify <code>'Author_ID'</code>, <code>'author_id'</code>, or <code>'AUTHOR_ID'</code>. This change ripples through internal logic, affecting schema introspection, column lookup, and transform operations.</p>
+<p>These improvements reflect sqlite-utils’ evolution from a lightweight utility into a production-grade tool for data engineers and developers who treat SQLite not just as an embedded database but as a first-class data platform — especially when paired with tools like Datasette. While rc3 delays the final 4.0 release, it ensures that foundational behaviors are correct before stabilization. Developers upgrading from v3.x should audit their code for assumptions about <code>table.foreign_keys</code> structure and column name casing — both of which now behave differently, intentionally and consistently.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/6/sqlite-utils/#atom-everything" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://sqlite.org/foreignkeys.html" target="_blank" rel="noopener">SQLite Foreign Key Support</a><a href="https://stackoverflow.com/questions/8002756/sqlite-composite-key-2-foreign-keys-link-table" target="_blank" rel="noopener">database design - SQLite composite key (2 foreign keys) Link ... Code sample</a><a href="https://sqlite-utils.datasette.io/en/stable/python-api.html" target="_blank" rel="noopener">sqlite _ utils Python library - sqlite - utils</a>
+    </section>
+  </main>
+</body>
+</html>

@@ -6,12 +6,14 @@
   <title>纯CPU端TTS模型基准测试：Kokoro、Supertonic、Inflect-Nano与Kyutai Pocket TTS - Horizon 科技前沿</title>
   <meta name="description" content="一项纯CPU端TTS基准测试在Intel Xeon硬件上完成180次运行，使用UTMOS MOS分数直接对比Kokoro、Supertonic、Inflect-Nano-v1与Kyutai新发布的Pocket TTS，揭示了Pocket TTS的恒定RTF特性、UTMOS在小型声码器上的局限性，以及ONNX/PyTorch性能因硬件平台而反转的现象。 该基准" />
   <link rel="canonical" href="/article/2026-07-06-05-cpu-only-tts-benchmark-with-utmos-scores-kokoro-supertonic-inflect-nano-and-kyut-cade949d" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-06-05-cpu-only-tts-benchmark-with-utmos-scores-kokoro-supertonic-inflect-nano-and-kyut-cade949d" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-06-05-cpu-only-tts-benchmark-with-utmos-scores-kokoro-supertonic-inflect-nano-and-kyut-cade949d" />
   <meta property="og:title" content="纯CPU端TTS模型基准测试：Kokoro、Supertonic、Inflect-Nano与Kyutai Pocket TTS" />
   <meta property="og:description" content="一项纯CPU端TTS基准测试在Intel Xeon硬件上完成180次运行，使用UTMOS MOS分数直接对比Kokoro、Supertonic、Inflect-Nano-v1与Kyutai新发布的Pocket TTS，揭示了Pocket TTS的恒定RTF特性、UTMOS在小型声码器上的局限性，以及ONNX/PyTorch性能因硬件平台而反转的现象。 该基准" />
   <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1up0azr.svg" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
      crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="/static/styles.css?v=16" />
+  <link rel="stylesheet" href="/static/styles.css?v=17" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
@@ -20,7 +22,7 @@
     <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1up0azr.svg" alt="纯CPU端TTS模型基准测试：Kokoro、Supertonic、Inflect-Nano与Kyutai Pocket TTS" />
     <div class="article-page-tags"><span>#TTS</span> <span>#benchmarking</span> <span>#edge-ai</span> <span>#speech-synthesis</span> <span>#CPU-optimization</span></div>
     <h1>纯CPU端TTS模型基准测试：Kokoro、Supertonic、Inflect-Nano与Kyutai Pocket TTS</h1>
-    <p class="article-page-meta">新闻时间：2026-07-06T18:31:54.905496+00:00 · 来源：reddit</p>
+    <p class="article-page-meta">新闻时间: 2026-07-06T18:31:54.905496+00:00 · 来源: reddit</p>
     <article class="article-page-body"><p>一项全新、严格控制的纯CPU端文本转语音（TTS）基准测试已发布——为轻量级、边缘优化的语音合成模型提供了罕见且客观的性能洞察。该测试在Intel Xeon 8272CL处理器（4核，15.6GB内存）上运行，明确禁用CUDA，并评估了四种差异显著的架构：Kokoro 82M（受StyleTTS2启发）、Supertonic 3（基于流匹配）、Inflect-Nano-v1（仅460万参数的精简FastSpeech变体），以及Kyutai最新发布的Pocket TTS（约1亿参数，构建于Mimi神经音频编解码器之上）。每种模型均在六种配置和六种文本长度（12至1712字符）下运行，每次配置执行五次计时重复（排除预热轮次），共生成180个WAV文件，并使用UTMOS22_strong——一种基于自监督学习（SSL）特征训练的前沿神经MOS预测器——进行客观评分。</p>
 <p>结果揭示了不同架构间鲜明的权衡取舍。Pocket TTS因其<em>恒定的实时因子（RTF）</em>而脱颖而出：无论输入长度如何变化，RTF始终稳定在0.69–0.76之间——这直接源于其流式语言模型架构，该架构以恒定速率自回归地生成音频token。相比之下，Kokoro的RTF随文本增长从0.49升至0.83，而Supertonic则从0.36降至0.20，因其高固定开销在长文本中被摊薄。对于语音助手或交互式代理等对延迟敏感的应用，恒定RTF具有极高的工程价值。</p>
 <p>质量评估也暴露出自动化指标的重要局限性。尽管Inflect-Nano-v1的UTMOS得分为3.48，但听感却明显“嗡嗡作响、机械生硬”——这正是UTMOS的已知盲区：它偏好频谱清洁度，却难以捕捉韵律自然性。Pocket TTS得分4.10，主观听感却极为自然流畅，凸显单一MOS分数无法区分“干净但机械”与“干净且自然”。基准测试还指出Inflect-Nano存在未公开的约15秒输出上限（由<code>max_frames = 1400</code>导致），使其在长文本上的吞吐率被人为抬高；此外，硬件差异亦影响显著：Kokoro的ONNX版本在Intel Xeon上快于PyTorch，而在此前AMD EPYC平台测试中结果相反。</p>

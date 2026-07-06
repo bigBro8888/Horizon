@@ -99,7 +99,7 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
   <meta property="og:description" content="{safe_summary}" />
   {f'<meta property="og:image" content="{html.escape(image_url)}" />' if image_url else ''}
   {ADSENSE_SCRIPT}
-  <link rel="stylesheet" href="/static/styles.css?v=16" />
+  <link rel="stylesheet" href="/static/styles.css?v=17" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
@@ -123,6 +123,9 @@ def _write_issues() -> list[dict[str, Any]]:
     issues_src = DATA_DIR / "issues"
     public_issues = PUBLIC_DIR / "data" / "issues"
     public_issues.mkdir(parents=True, exist_ok=True)
+    for article_root in (PUBLIC_DIR / "article", PUBLIC_DIR / "en" / "article"):
+        if article_root.exists():
+            shutil.rmtree(article_root)
     issue_metas: list[dict[str, Any]] = []
 
     if not issues_src.exists():
