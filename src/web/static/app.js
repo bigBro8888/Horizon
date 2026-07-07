@@ -63,6 +63,8 @@ const state = {
   pageSize: 50,
 };
 
+const FEED_STATE_KEY = "horizon_feed_state";
+
 /* --------------------------- language detection --------------------------- */
 function detectLang() {
   const stored = localStorage.getItem("horizon_lang");
@@ -172,6 +174,36 @@ function coverStyle(imagePath) {
 function articlePath(a) {
   if (state.lang === "en" && a.slug) return `/en/article/${a.slug}`;
   return a.path || (a.slug ? `/article/${a.slug}` : "#");
+}
+
+function saveFeedState() {
+  try {
+    sessionStorage.setItem(
+      FEED_STATE_KEY,
+      JSON.stringify({
+        lang: state.lang,
+        dateFilter: state.dateFilter,
+        query: state.query,
+        page: state.page,
+        scrollY: window.scrollY,
+        savedAt: Date.now(),
+      })
+    );
+  } catch (e) {
+    /* session storage may be unavailable in strict privacy modes */
+  }
+}
+
+function loadFeedState() {
+  try {
+    const raw = sessionStorage.getItem(FEED_STATE_KEY);
+    if (!raw) return null;
+    const saved = JSON.parse(raw);
+    if (!saved || Date.now() - Number(saved.savedAt || 0) > 60 * 60 * 1000) return null;
+    return saved;
+  } catch (e) {
+    return null;
+  }
 }
 
 async function fetchJson(paths) {
@@ -340,6 +372,7 @@ function renderFeed() {
     const card = document.createElement("article");
     card.className = "card";
     card.addEventListener("click", () => {
+      saveFeedState();
       window.location.href = articlePath(a);
     });
 
@@ -450,7 +483,8 @@ async function loadAllIssues() {
 }
 
 async function bootstrap() {
-  state.lang = detectLang();
+  const savedFeedState = loadFeedState();
+  state.lang = savedFeedState?.lang === "en" || savedFeedState?.lang === "zh" ? savedFeedState.lang : detectLang();
   updateLangButtons();
 
   const siteData = await fetchJson(["/api/site", "/data/site.json"]);
@@ -463,8 +497,18 @@ async function bootstrap() {
   applyStaticText();
 
   await loadAllIssues();
+  if (savedFeedState) {
+    state.dateFilter = savedFeedState.dateFilter || "";
+    state.query = savedFeedState.query || "";
+    state.page = Math.max(1, Number(savedFeedState.page) || 1);
+  }
   renderFilterNav();
-  applyFilters(true);
+  applyFilters(!savedFeedState);
+  if (savedFeedState && Number.isFinite(Number(savedFeedState.scrollY))) {
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: Number(savedFeedState.scrollY), behavior: "auto" });
+    });
+  }
 }
 
 function setLang(lang) {

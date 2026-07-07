@@ -99,12 +99,12 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
   <meta property="og:description" content="{safe_summary}" />
   {f'<meta property="og:image" content="{html.escape(image_url)}" />' if image_url else ''}
   {ADSENSE_SCRIPT}
-  <link rel="stylesheet" href="/static/styles.css?v=17" />
+  <link rel="stylesheet" href="/static/styles.css?v=18" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
   <main class="article-page">
-    <a class="article-back" href="/">{back_text}</a>
+    <a class="article-back" href="/" data-smart-back>{back_text}</a>
     {f'<img class="article-page-cover" src="{html.escape(image_url)}" alt="{safe_title}" />' if image_url else ''}
     <div class="article-page-tags">{tags}</div>
     <h1>{safe_title}</h1>
@@ -115,6 +115,14 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
       {f'<h2>{references_text}</h2>{sources}' if sources else ''}
     </section>
   </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {{
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {{
+        event.preventDefault();
+        history.back();
+      }}
+    }});
+  </script>
 </body>
 </html>"""
 
