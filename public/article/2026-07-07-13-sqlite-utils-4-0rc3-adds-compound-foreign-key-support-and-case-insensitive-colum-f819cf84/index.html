@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sqlite-utils 4.0rc3 支持复合外键与大小写不敏感列名匹配 - Horizon 科技前沿</title>
+  <meta name="description" content="sqlite-utils 4.0rc3 新增对复合外键的原生支持，并使列名解析行为与 SQLite 的大小写不敏感约定保持一致，这两项改进均导致 `table.foreign_keys` API 及多个内部子系统发生破坏性变更。 这些变更大幅提升了工具对 SQLite 语义的忠实度，使模式元数据检查更准确、跨表完整性约束更安全，对构建基于 SQLite 的可" />
+  <link rel="canonical" href="/article/2026-07-07-13-sqlite-utils-4-0rc3-adds-compound-foreign-key-support-and-case-insensitive-colum-f819cf84" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-07-13-sqlite-utils-4-0rc3-adds-compound-foreign-key-support-and-case-insensitive-colum-f819cf84" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-07-13-sqlite-utils-4-0rc3-adds-compound-foreign-key-support-and-case-insensitive-colum-f819cf84" />
+  <meta property="og:title" content="sqlite-utils 4.0rc3 支持复合外键与大小写不敏感列名匹配" />
+  <meta property="og:description" content="sqlite-utils 4.0rc3 新增对复合外键的原生支持，并使列名解析行为与 SQLite 的大小写不敏感约定保持一致，这两项改进均导致 `table.foreign_keys` API 及多个内部子系统发生破坏性变更。 这些变更大幅提升了工具对 SQLite 语义的忠实度，使模式元数据检查更准确、跨表完整性约束更安全，对构建基于 SQLite 的可" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--1eb6e47c95e4808e.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=17" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/">← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--1eb6e47c95e4808e.svg" alt="sqlite-utils 4.0rc3 支持复合外键与大小写不敏感列名匹配" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#CLI-tools</span> <span>#Python</span> <span>#database-utilities</span> <span>#open-source</span></div>
+    <h1>sqlite-utils 4.0rc3 支持复合外键与大小写不敏感列名匹配</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-07T02:27:41.106820+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>Simon Willison 发布了 sqlite-utils 4.0rc3 — 这款广受欢迎的 SQLite 数据库 Python 命令行工具与编程库的最新候选版本。尽管原计划本周末发布稳定版 4.0，但 Willison 在使用先进大语言模型（Claude Fable 5 和 GPT-5.5）梳理积压问题与合并请求时，发现自 rc2 以来的变更日志持续扩大，因而决定暂缓稳定版发布，进一步完善细节。</p>
+<p>rc3 最重大的技术升级是原生支持复合外键（compound foreign keys）：即跨表引用 <em>多个列</em> 的外键关系。SQLite 本身早已支持该特性，但此前 sqlite-utils 的元数据检查（introspection）与建表 API 均未覆盖。为实现这一功能，项目对 <code>table.foreign_keys</code> 属性进行了有意的向后不兼容调整——现返回包含多列引用信息的结构化对象。该变更被认定为必须纳入 4.0 主版本，而非推迟至后续迭代，以确保工具行为与 SQLite 底层能力严格一致。</p>
+<p>另一项关键改进是 sqlite-utils 现在完全遵循 SQLite 官方规范处理列名匹配：即大小写不敏感。过去，库在部分上下文（如列查找、转换操作）中将列名视为大小写敏感，这与 SQLite 文档明确规定的 <code>'name'</code>、<code>'NAME'</code>、<code>'Name'</code>（未加引号时）指向同一列的行为相悖。此次调整波及大量内部逻辑，包括表结构变更、外键验证及列映射路径，需全栈协同重构。</p>
+<p>更值得关注的是，本次发布凸显了开源维护的新范式：AI 辅助的问题治理。Willison 明确指出，Claude Fable 5 与 GPT-5.5 不仅用于摘要归类，更帮助识别出隐蔽的依赖关系与边界情况——例如大小写不敏感匹配如何影响整个模式操作链。尽管自动化无法替代人工判断，但该实践表明，大语言模型正切实加速成熟数据库工具在语义正确性与 API 稳定性方面的演进。对于依赖 sqlite-utils 进行数据清洗、ETL 或构建 Datasette 应用的开发者而言，rc3 标志着工具向 SQLite 标准更高程度的对齐，也预示着 4.0 稳定版将带来更严谨的契约保证。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/6/sqlite-utils/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://sqlite.org/foreignkeys.html" target="_blank" rel="noopener">SQLite Foreign Key Support</a><a href="https://sqlite-utils.datasette.io/en/stable/python-api.html" target="_blank" rel="noopener">sqlite _ utils Python library - sqlite - utils</a>
+    </section>
+  </main>
+</body>
+</html>

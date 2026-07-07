@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CPU-Only TTS Benchmark with UTMOS Scoring Compares Kokoro, Supertonic, Inflect-Nano, and Kyutai’s Pocket TTS - Horizon Tech</title>
+  <meta name="description" content="A rigorous CPU-only TTS benchmark using UTMOS MOS scoring compared Kokoro, Supertonic, Inflect-Nano, and Kyutai&#x27;s Pocket TTS on identical hardware, revealing architectural tradeoff" />
+  <link rel="canonical" href="/en/article/2026-07-07-07-cpu-only-tts-benchmark-with-utmos-scoring-compares-kokoro-supertonic-inflect-nan-a41bb9cf" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-07-07-cpu-only-tts-benchmark-with-utmos-scoring-compares-kokoro-supertonic-inflect-nan-a41bb9cf" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-07-07-cpu-only-tts-benchmark-with-utmos-scoring-compares-kokoro-supertonic-inflect-nan-a41bb9cf" />
+  <meta property="og:title" content="CPU-Only TTS Benchmark with UTMOS Scoring Compares Kokoro, Supertonic, Inflect-Nano, and Kyutai’s Pocket TTS" />
+  <meta property="og:description" content="A rigorous CPU-only TTS benchmark using UTMOS MOS scoring compared Kokoro, Supertonic, Inflect-Nano, and Kyutai&#x27;s Pocket TTS on identical hardware, revealing architectural tradeoff" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1up0azr.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=17" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/">← Back to home</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1up0azr.svg" alt="CPU-Only TTS Benchmark with UTMOS Scoring Compares Kokoro, Supertonic, Inflect-Nano, and Kyutai’s Pocket TTS" />
+    <div class="article-page-tags"><span>#TTS</span> <span>#benchmarking</span> <span>#CPU-inference</span> <span>#speech-synthesis</span> <span>#UTMOS</span></div>
+    <h1>CPU-Only TTS Benchmark with UTMOS Scoring Compares Kokoro, Supertonic, Inflect-Nano, and Kyutai’s Pocket TTS</h1>
+    <p class="article-page-meta">News time: 2026-07-07T02:27:41.799562+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A new, rigorously controlled CPU-only text-to-speech (TTS) benchmark has emerged—offering rare objective quality and speed measurements for lightweight open-source models. Conducted on an Intel Xeon 8272CL (4 cores, 15.6GB RAM) with CUDA explicitly disabled, the test evaluates four distinct architectures: Kokoro 82M (StyleTTS2-inspired), Supertonic 3 (flow-matching with 2 or 5 steps), Inflect-Nano-v1 (4.6M FastSpeech-style), and Kyutai’s newly released Pocket TTS (~100M parameters, built atop the Mimi neural audio codec). Each model was run across six text lengths—from 12 to 1712 characters—with five timed repetitions per configuration after discarding a warmup run, totaling 180 synthesized WAV files.</p>
+<p>All outputs were objectively scored using UTMOS (utmos22_strong), a state-of-the-art neural MOS predictor trained on human perceptual judgments. The results reveal striking architectural tradeoffs: Pocket TTS achieves the most stable real-time factor (RTF) of 0.69–0.76 across all input lengths—a flat, linear scaling enabled by its streaming language-model architecture that emits audio tokens autoregressively without fixed overhead. In contrast, Kokoro’s RTF climbs from 0.49 to 0.83 as text grows, while Supertonic’s drops from 0.36 to 0.20—highlighting how fixed inference costs distort latency behavior in interactive applications.</p>
+<p>Quality scores tell another story. While Pocket TTS earned a UTMOS of 4.10—slightly below Kokoro’s 4.44–4.46—it sounds subjectively more natural than Inflect-Nano (3.48), whose buzzy, robotic output is masked by UTMOS’s known bias toward clean HiFi-GAN vocoder artifacts. This underscores a critical limitation: UTMOS excels at predicting overall clarity but struggles to distinguish <em>mechanical cleanliness</em> from <em>prosodic naturalness</em>, especially in small models. Meanwhile, Inflect-Nano’s undocumented 14.93-second synthesis cap artificially inflates its throughput on long texts—a hidden constraint requiring careful interpretation.</p>
+<p>The benchmark also surfaces hardware-specific performance quirks: ONNX Runtime outperformed PyTorch for Kokoro on Intel Xeon, reversing earlier findings on AMD EPYC—evidence that CPU kernel optimizations meaningfully shift rankings. And beyond the metrics, Pocket TTS uniquely supports zero-shot voice cloning from just 5 seconds of reference audio—a capability absent from all other models tested, yet invisible in RTF/MOS comparisons. As edge-deployable TTS gains traction, this work sets a new standard for reproducible, architecture-aware evaluation—while reminding us that no single metric captures the full spectrum of speech quality and functionality.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1up0azr/cpu_tts_benchmark_with_utmos_mos_scoring_kokoro/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/sarulab-speech/UTMOS22" target="_blank" rel="noopener">UTMOS: UTokyo-SaruLab MOS Prediction System - GitHub</a><a href="https://huggingface.co/kyutai/mimi" target="_blank" rel="noopener">kyutai / mimi · Hugging Face</a><a href="https://github.com/yl4579/StyleTTS2" target="_blank" rel="noopener">GitHub - yl4579/StyleTTS2: StyleTTS 2: Towards Human-Level ...</a>
+    </section>
+  </main>
+</body>
+</html>

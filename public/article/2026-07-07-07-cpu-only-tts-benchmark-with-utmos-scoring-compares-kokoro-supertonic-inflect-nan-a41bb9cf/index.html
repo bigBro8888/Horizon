@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>纯CPU端TTS基准测试：Kokoro、Supertonic、Inflect-Nano与Kyutai Pocket TTS的UTMOS质量对比 - Horizon 科技前沿</title>
+  <meta name="description" content="一项严格的纯CPU端TTS基准测试采用UTMOS MOS评分，在统一硬件上对比了Kokoro、Supertonic、Inflect-Nano和Kyutai Pocket TTS，揭示了实时因子（RTF）扩展性、编解码器相关UTMOS偏差及硬件依赖型推理性能等方面的架构差异。 该基准测试填补了开源TTS评估的关键空白，提供了可复现、客观且具备架构感知能力的指标" />
+  <link rel="canonical" href="/article/2026-07-07-07-cpu-only-tts-benchmark-with-utmos-scoring-compares-kokoro-supertonic-inflect-nan-a41bb9cf" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-07-07-cpu-only-tts-benchmark-with-utmos-scoring-compares-kokoro-supertonic-inflect-nan-a41bb9cf" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-07-07-cpu-only-tts-benchmark-with-utmos-scoring-compares-kokoro-supertonic-inflect-nan-a41bb9cf" />
+  <meta property="og:title" content="纯CPU端TTS基准测试：Kokoro、Supertonic、Inflect-Nano与Kyutai Pocket TTS的UTMOS质量对比" />
+  <meta property="og:description" content="一项严格的纯CPU端TTS基准测试采用UTMOS MOS评分，在统一硬件上对比了Kokoro、Supertonic、Inflect-Nano和Kyutai Pocket TTS，揭示了实时因子（RTF）扩展性、编解码器相关UTMOS偏差及硬件依赖型推理性能等方面的架构差异。 该基准测试填补了开源TTS评估的关键空白，提供了可复现、客观且具备架构感知能力的指标" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1up0azr.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=17" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/">← 返回首页</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1up0azr.svg" alt="纯CPU端TTS基准测试：Kokoro、Supertonic、Inflect-Nano与Kyutai Pocket TTS的UTMOS质量对比" />
+    <div class="article-page-tags"><span>#TTS</span> <span>#benchmarking</span> <span>#CPU-inference</span> <span>#speech-synthesis</span> <span>#UTMOS</span></div>
+    <h1>纯CPU端TTS基准测试：Kokoro、Supertonic、Inflect-Nano与Kyutai Pocket TTS的UTMOS质量对比</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-07T02:27:41.799562+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一项全新、严格控制的纯CPU端文本转语音（TTS）基准测试现已发布，为轻量级开源模型提供了罕见的客观音质与速度量化指标。该测试在Intel Xeon 8272CL处理器（4核，15.6GB内存）上运行，显式禁用CUDA，并评估了四种架构迥异的模型：Kokoro 82M（受StyleTTS2启发）、Supertonic 3（基于向量估计器的流匹配模型，支持2步或5步）、Inflect-Nano-v1（4.6M参数，FastSpeech风格）以及Kyutai新发布的Pocket TTS（约1亿参数，构建于Mimi神经音频编解码器之上）。每种配置均覆盖6种文本长度（12至1712字符），每组执行5次计时重复（剔除预热轮次），共生成180个WAV音频文件。</p>
+<p>所有输出均使用UTMOS（utmos22_strong）进行客观评分——这是一种基于自监督学习与集成建模的先进MOS预测系统，经大量人类主观评价数据训练而成。结果揭示了显著的架构差异：Pocket TTS在全部文本长度下保持极稳定的实时因子（RTF）区间（0.69–0.76），这得益于其流式语言模型架构——以恒定速率自回归生成音频token，无固定开销，成本严格线性于输出长度。相比之下，Kokoro的RTF从短文本的0.49升至长文本的0.83；Supertonic则反向下降（0.36→0.20），凸显高固定调用开销对交互式低延迟场景的不利影响。</p>
+<p>音质得分则呈现另一维度。Pocket TTS获得UTMOS 4.10分（略低于Kokoro的4.44–4.46），但听感上明显比Inflect-Nano（3.48分）更自然——后者虽获中等分数，实则音色失真、机械感强。这暴露了UTMOS的已知局限：它擅长评估整体清晰度，却难以区分“干净但呆板”与“干净且自然”，尤其在小型模型上。此外，Inflect-Nano存在未公开的约14.93秒合成时长上限（由max_frames=1400硬限制），导致其在长文本上的吞吐量被虚高——这一隐藏约束要求结果必须按文本长度分段解读。</p>
+<p>测试还发现硬件相关性能反转：Kokoro在Xeon平台下ONNX Runtime快于PyTorch（0.641 vs 0.665），而此前在AMD EPYC上结论相反——证实CPU推理内核优化确实足以改变模型排名。更值得注意的是，Pocket TTS独有零样本语音克隆能力：仅需5秒参考音频即可在CPU端完成克隆，其余模型均不支持。该能力未体现在RTF/MOS指标中，凸显单一维度评测的固有盲区。随着边缘TTS应用加速落地，本工作树立了可复现、架构感知型评测的新标杆，同时也提醒业界：任何单一度量都无法全面反映语音质量与功能全貌。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1up0azr/cpu_tts_benchmark_with_utmos_mos_scoring_kokoro/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://github.com/sarulab-speech/UTMOS22" target="_blank" rel="noopener">UTMOS: UTokyo-SaruLab MOS Prediction System - GitHub</a><a href="https://huggingface.co/kyutai/mimi" target="_blank" rel="noopener">kyutai / mimi · Hugging Face</a><a href="https://github.com/yl4579/StyleTTS2" target="_blank" rel="noopener">GitHub - yl4579/StyleTTS2: StyleTTS 2: Towards Human-Level ...</a>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>uv 0.11.27 发布：支持 SIMD 加速的 TOML 解析与缓存优化 - Horizon 科技前沿</title>
+  <meta name="description" content="uv 0.11.27 于 2026 年 7 月 6 日发布，新增 SIMD 加速的 TOML 解析、多项缓存优化（如依赖标记与 Python 下载 URL 缓存），以及扩展名无关的 shebang 脚本发现、错误处理鲁棒性提升等小幅易用性改进。 这些优化共同降低了锁文件解析、依赖安装及工作区脚本执行等常见操作的延迟，进一步巩固 uv 作为现代 Python " />
+  <link rel="canonical" href="/article/2026-07-07-17-uv-0-11-27-released-with-simd-accelerated-toml-parsing-and-caching-optimizations-f2928966" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-07-17-uv-0-11-27-released-with-simd-accelerated-toml-parsing-and-caching-optimizations-f2928966" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-07-17-uv-0-11-27-released-with-simd-accelerated-toml-parsing-and-caching-optimizations-f2928966" />
+  <meta property="og:title" content="uv 0.11.27 发布：支持 SIMD 加速的 TOML 解析与缓存优化" />
+  <meta property="og:description" content="uv 0.11.27 于 2026 年 7 月 6 日发布，新增 SIMD 加速的 TOML 解析、多项缓存优化（如依赖标记与 Python 下载 URL 缓存），以及扩展名无关的 shebang 脚本发现、错误处理鲁棒性提升等小幅易用性改进。 这些优化共同降低了锁文件解析、依赖安装及工作区脚本执行等常见操作的延迟，进一步巩固 uv 作为现代 Python " />
+  <meta property="og:image" content="/media/github-release-349879200.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=17" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/">← 返回首页</a>
+    <img class="article-page-cover" src="/media/github-release-349879200.png" alt="uv 0.11.27 发布：支持 SIMD 加速的 TOML 解析与缓存优化" />
+    <div class="article-page-tags"><span>#python</span> <span>#package-management</span> <span>#uv</span> <span>#performance-optimization</span> <span>#tooling</span></div>
+    <h1>uv 0.11.27 发布：支持 SIMD 加速的 TOML 解析与缓存优化</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-07T02:27:41.921923+00:00 · 来源: github</p>
+    <article class="article-page-body"><p>Astral 团队于 2026 年 7 月 6 日发布了 uv 0.11.27 版本——这是一次专注性能与稳定性的维护更新，为 Python 开发者带来切实可感的速度提升和体验优化。作为基于 Rust 构建的高性能 Python 包管理器与项目工具，uv 以远超 pip 的解析与安装速度、严格的依赖求解能力以及对现代工作流（如 Cargo 风格工作区）的原生支持而广受关注。</p>
+<p>本次发布的核心亮点是启用 SIMD 加速的 TOML 解析功能。该优化利用现代 CPU 的单指令多数据（SIMD）指令集（如 AVX-512 或 ARM NEON），大幅提升 <code>pyproject.toml</code> 和 <code>uv.lock</code> 等配置文件的读取与解析效率。在大型单体仓库或持续集成环境中，这一改进显著缩短了项目初始化与锁文件解析耗时。与此同时，多项缓存机制得到增强：锁文件中默认依赖标记（dependency markers）现被缓存复用；轮子（wheel）元数据获取过程在遇到可忽略错误时继续执行而非中断；<code>--python-downloads-json-url</code> 的响应也纳入缓存体系——共同减少了重复的网络请求与磁盘 I/O。</p>
+<p>易用性方面亦有细致打磨：<code>uv workspace list --scripts</code> 命令现已能识别无扩展名的 shebang 脚本（例如以 <code>#!/usr/bin/env python</code> 开头的脚本），更符合 Unix 传统并提升工作区脚本的可发现性。错误处理更加健壮：当 <code>uv.lock</code> 中来自远程仓库的包条目缺失版本号时，uv 将输出清晰错误而非崩溃；<code>uv pip tree</code> 在无依赖时也不再输出多余空行。此外，一系列内存优化措施——如复用轮子文件名中的包名、按精确大小分配缓存读取缓冲区等——进一步降低了运行时内存分配开销。</p>
+<p>除性能与稳定性外，本次更新还包含基础设施升级：Rust 工具链升至 1.96.1，并恢复了部分 <code>pub</code> API 以兼容下游工具（如 Pixi）。尽管 0.11.27 未引入颠覆性新特性，但其累积效应显著——用户升级后将直观感受到锁文件解析更快、包安装更迅捷、复杂工作区行为更可预测。对于正在规模化采用 uv 的团队而言，这是一次坚实、可靠的演进。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/astral-sh/uv/releases/tag/0.11.27" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener">uv is an extremely fast Python package and project manager , written...</a><a href="https://github.com/astral-sh/uv" target="_blank" rel="noopener">astral-sh/ uv : An extremely fast Python package and project manager ...</a><a href="https://packaging.python.org/en/latest/specifications/simple-repository-api/" target="_blank" rel="noopener">Simple repository API - Python Packaging User Guide</a><a href="https://peps.python.org/pep-0691/" target="_blank" rel="noopener">PEP 691 – JSON-based Simple API for Python Package Indexes | peps.python.org</a>
+    </section>
+  </main>
+</body>
+</html>
