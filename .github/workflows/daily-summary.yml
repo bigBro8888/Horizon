@@ -2,8 +2,10 @@ name: Generate Daily News
 
 on:
   schedule:
-    # 09:00 Asia/Shanghai = 01:00 UTC
-    - cron: "0 1 * * *"
+    # 09:15 Asia/Shanghai = 01:15 UTC.
+    # Avoid the top-of-hour GitHub Actions cron rush, where scheduled
+    # workflows can be delayed or occasionally dropped.
+    - cron: "15 1 * * *"
   workflow_dispatch:
 
 jobs:
