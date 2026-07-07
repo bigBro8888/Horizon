@@ -64,6 +64,8 @@ const state = {
 };
 
 const FEED_STATE_KEY = "horizon_feed_state";
+const ISSUE_CACHE_KEY = "horizon_issue_cache";
+const ISSUE_CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 
 /* --------------------------- language detection --------------------------- */
 function detectLang() {
@@ -201,6 +203,34 @@ function loadFeedState() {
     const saved = JSON.parse(raw);
     if (!saved || Date.now() - Number(saved.savedAt || 0) > 60 * 60 * 1000) return null;
     return saved;
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveIssueCache(issues, issuePayloads) {
+  try {
+    sessionStorage.setItem(
+      ISSUE_CACHE_KEY,
+      JSON.stringify({
+        issues,
+        issuePayloads,
+        cachedAt: Date.now(),
+      })
+    );
+  } catch (e) {
+    /* session storage may be unavailable or full */
+  }
+}
+
+function loadIssueCache() {
+  try {
+    const raw = sessionStorage.getItem(ISSUE_CACHE_KEY);
+    if (!raw) return null;
+    const cached = JSON.parse(raw);
+    if (!cached || Date.now() - Number(cached.cachedAt || 0) > ISSUE_CACHE_TTL_MS) return null;
+    if (!Array.isArray(cached.issues) || !Array.isArray(cached.issuePayloads)) return null;
+    return cached;
   } catch (e) {
     return null;
   }
@@ -461,15 +491,7 @@ function closeReader() {
 }
 
 /* --------------------------- data loading --------------------------- */
-async function loadAllIssues() {
-  state.issues = (await fetchJson(["/api/issues", "/data/issues/index.json"])) || [];
-
-  const issuePayloads = await Promise.all(
-    state.issues.map(async (issue) => {
-      return fetchJson([`/api/issues/${issue.date}`, `/data/issues/${issue.date}.json`]);
-    })
-  );
-
+function setArticlesFromIssues(issuePayloads) {
   state.allArticles = issuePayloads
     .filter(Boolean)
     .flatMap((issue) =>
@@ -480,6 +502,37 @@ async function loadAllIssues() {
       }))
     )
     .sort((a, b) => timeValue(b) - timeValue(a));
+}
+
+async function fetchIssueData() {
+  const issues = (await fetchJson(["/api/issues", "/data/issues/index.json"])) || [];
+  const issuePayloads = await Promise.all(
+    issues.map(async (issue) => {
+      return fetchJson([`/api/issues/${issue.date}`, `/data/issues/${issue.date}.json`]);
+    })
+  );
+  return { issues, issuePayloads };
+}
+
+async function loadAllIssues() {
+  const issueData = await fetchIssueData();
+  state.issues = issueData.issues;
+  setArticlesFromIssues(issueData.issuePayloads);
+  saveIssueCache(issueData.issues, issueData.issuePayloads);
+}
+
+function applySavedFeedState(savedFeedState) {
+  if (!savedFeedState) return;
+  state.dateFilter = savedFeedState.dateFilter || "";
+  state.query = savedFeedState.query || "";
+  state.page = Math.max(1, Number(savedFeedState.page) || 1);
+}
+
+function restoreSavedScroll(savedFeedState) {
+  if (!savedFeedState || !Number.isFinite(Number(savedFeedState.scrollY))) return;
+  requestAnimationFrame(() => {
+    window.scrollTo({ top: Number(savedFeedState.scrollY), behavior: "auto" });
+  });
 }
 
 async function bootstrap() {
@@ -496,19 +549,23 @@ async function bootstrap() {
   }
   applyStaticText();
 
+  const cachedIssues = loadIssueCache();
+  let renderedFromCache = false;
+  if (cachedIssues) {
+    state.issues = cachedIssues.issues;
+    setArticlesFromIssues(cachedIssues.issuePayloads);
+    applySavedFeedState(savedFeedState);
+    renderFilterNav();
+    applyFilters(!savedFeedState);
+    restoreSavedScroll(savedFeedState);
+    renderedFromCache = true;
+  }
+
   await loadAllIssues();
-  if (savedFeedState) {
-    state.dateFilter = savedFeedState.dateFilter || "";
-    state.query = savedFeedState.query || "";
-    state.page = Math.max(1, Number(savedFeedState.page) || 1);
-  }
+  applySavedFeedState(savedFeedState);
   renderFilterNav();
-  applyFilters(!savedFeedState);
-  if (savedFeedState && Number.isFinite(Number(savedFeedState.scrollY))) {
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: Number(savedFeedState.scrollY), behavior: "auto" });
-    });
-  }
+  applyFilters(!savedFeedState && !renderedFromCache);
+  restoreSavedScroll(savedFeedState);
 }
 
 function setLang(lang) {

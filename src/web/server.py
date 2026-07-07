@@ -221,7 +221,7 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
   <meta property="og:title" content="{safe_title}" />
   <meta property="og:description" content="{safe_summary}" />
   {f'<meta property="og:image" content="{html.escape(image_url)}" />' if image_url else ''}
-  <link rel="stylesheet" href="/static/styles.css?v=18" />
+  <link rel="stylesheet" href="/static/styles.css?v=19" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
