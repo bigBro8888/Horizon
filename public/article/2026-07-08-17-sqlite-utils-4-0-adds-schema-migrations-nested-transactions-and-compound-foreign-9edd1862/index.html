@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sqlite-utils 4.0 发布：支持数据库迁移、嵌套事务与复合外键 - Horizon 科技前沿</title>
+  <meta name="description" content="sqlite-utils 4.0 正式引入内置数据库模式迁移（基于 Python 函数定义并自动追踪）、通过新 `db.atomic()` 方法实现的嵌套事务，以及对复合外键的支持——这是自 2020 年 11 月 v3.0 以来的首个主版本更新。 此次发布大幅提升了 SQLite 在持续演进型应用中的实用性，提供了生产级的模式管理、事务安全性与参照完整性能" />
+  <link rel="canonical" href="/article/2026-07-08-17-sqlite-utils-4-0-adds-schema-migrations-nested-transactions-and-compound-foreign-9edd1862" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-08-17-sqlite-utils-4-0-adds-schema-migrations-nested-transactions-and-compound-foreign-9edd1862" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-08-17-sqlite-utils-4-0-adds-schema-migrations-nested-transactions-and-compound-foreign-9edd1862" />
+  <meta property="og:title" content="sqlite-utils 4.0 发布：支持数据库迁移、嵌套事务与复合外键" />
+  <meta property="og:description" content="sqlite-utils 4.0 正式引入内置数据库模式迁移（基于 Python 函数定义并自动追踪）、通过新 `db.atomic()` 方法实现的嵌套事务，以及对复合外键的支持——这是自 2020 年 11 月 v3.0 以来的首个主版本更新。 此次发布大幅提升了 SQLite 在持续演进型应用中的实用性，提供了生产级的模式管理、事务安全性与参照完整性能" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--baab745c82786832.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=19" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--baab745c82786832.svg" alt="sqlite-utils 4.0 发布：支持数据库迁移、嵌套事务与复合外键" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#Python</span> <span>#database-migrations</span> <span>#CLI-tools</span> <span>#schema-evolution</span></div>
+    <h1>sqlite-utils 4.0 发布：支持数据库迁移、嵌套事务与复合外键</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-08T04:29:37.384585+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>西蒙·威利森（Simon Willison）正式发布了 sqlite-utils 4.0 —— 这款广受欢迎的 SQLite Python 库与命令行工具五年来的首个重大版本更新。作为该项目第 124 次发布，也是继 2020 年 11 月 v3.0 之后的首次主版本升级，4.0 引入了三项核心能力：内置数据库模式迁移（schema migrations）、通过 <code>db.atomic()</code> 实现的嵌套事务，以及对复合外键（compound foreign keys）的原生支持。这些特性共同填补了轻量级 SQLite 工具链中长期存在的关键空白，尤其适用于构建数据驱动原型、个人分析系统或小型生产应用的开发者。</p>
+<p>全新的迁移系统允许用户用纯 Python 函数定义可版本化、渐进式的数据库结构变更。每个迁移函数接收一个 <code>Database</code> 实例，并可执行任意操作：建表、加列、调用 <code>table.transform()</code> 重构表结构，或插入初始数据。尤为关键的是，<code>table.transform()</code> 严格遵循 SQLite 官方推荐的复杂变更模式：先创建新结构的临时表，安全迁移数据，再原子性地删除旧表并重命名新表——从而绕过 SQLite 原生 <code>ALTER TABLE</code> 的功能限制。所有迁移记录自动存入 <code>_migrations</code> 系统表，确保幂等执行，杜绝重复应用。</p>
+<p>执行迁移极为简单：运行 <code>uvx sqlite-utils migrate data.db migrations.py</code> 即可按序应用所有待处理函数。开发者还可使用 <code>--list</code> 列出迁移项、<code>--verbose</code> 查看迁移前后的完整模式差异，或用 <code>--stop-before</code> 在指定步骤前终止执行。该实现源自威利森早期独立项目 <code>sqlite-migrate</code>，经多年实际验证后正式整合进主库，体现了成熟度与可靠性。与此同时，<code>db.atomic()</code> 支持真正的嵌套事务：内层 <code>atomic()</code> 块可独立回滚，不影响外层事务状态——显著优于 SQLite 默认的扁平事务模型。</p>
+<p>复合外键支持使 sqlite-utils 更贴近 SQLite 的完整 SQL 标准：开发者现在能声明引用多个列的外键（例如 <code>(order_id, item_seq)</code> → <code>(orders.id, order_items.seq)</code>），精准建模多对多关系与联合主键。尽管 SQLite 默认禁用外键约束（需显式执行 <code>PRAGMA foreign_keys = ON</code>），sqlite-utils 4.0 已提供简洁的 Python API 与 CLI 接口，确保此类约束被正确定义与管理。这三项增强合力将 sqlite-utils 推向新高度——它不再仅是便捷工具，更成为可演进、可信赖的 SQLite 生产级基础设施。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/7/sqlite-utils-4/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://sqlite-utils.datasette.io/en/latest/migrations.html" target="_blank" rel="noopener">Database migrations - sqlite-utils</a><a href="https://github.com/simonw/sqlite-migrate" target="_blank" rel="noopener">GitHub - simonw/sqlite-migrate: A simple database migration ... GitHub - simonw/sqlite-utils: Python CLI utility and library ... sqlite-utils 4.0rc1 adds migrations and nested transactions Managing Database Versions and Migrations in SQLite sqlite-utils 4.0rc1 adds migrations and nested transactions</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

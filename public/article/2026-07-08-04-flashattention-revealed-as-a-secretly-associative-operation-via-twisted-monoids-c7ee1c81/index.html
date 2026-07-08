@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlashAttention被揭示为基于扭曲幺半群的隐式结合运算 - Horizon 科技前沿</title>
+  <meta name="description" content="该教程首次从代数第一性原理出发，严格证明FlashAttention在扭曲幺半群结构下是一种隐式结合运算，统一了安全softmax与Welford方差，并推导出其qk_scale常量及误差界。 这种代数重构使注意力机制的GPU优化具备可证明的正确性与数值稳定性，并为ML系统中其他数值敏感规约操作的设计与验证提供了通用框架。 最大值-重缩放步骤通过扭曲函数Φ保" />
+  <link rel="canonical" href="/article/2026-07-08-04-flashattention-revealed-as-a-secretly-associative-operation-via-twisted-monoids-c7ee1c81" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-08-04-flashattention-revealed-as-a-secretly-associative-operation-via-twisted-monoids-c7ee1c81" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-08-04-flashattention-revealed-as-a-secretly-associative-operation-via-twisted-monoids-c7ee1c81" />
+  <meta property="og:title" content="FlashAttention被揭示为基于扭曲幺半群的隐式结合运算" />
+  <meta property="og:description" content="该教程首次从代数第一性原理出发，严格证明FlashAttention在扭曲幺半群结构下是一种隐式结合运算，统一了安全softmax与Welford方差，并推导出其qk_scale常量及误差界。 这种代数重构使注意力机制的GPU优化具备可证明的正确性与数值稳定性，并为ML系统中其他数值敏感规约操作的设计与验证提供了通用框架。 最大值-重缩放步骤通过扭曲函数Φ保" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1uqcglz.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=19" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1uqcglz.svg" alt="FlashAttention被揭示为基于扭曲幺半群的隐式结合运算" />
+    <div class="article-page-tags"><span>#FlashAttention</span> <span>#GPU Optimization</span> <span>#Numerical Stability</span> <span>#Associative Reduction</span> <span>#ML Systems</span></div>
+    <h1>FlashAttention被揭示为基于扭曲幺半群的隐式结合运算</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-08T04:29:38.096597+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>在题为《硬核学习FlashAttention》的开创性教程中，研究者/u/NoVibeCoding不再将FlashAttention视为一种精巧的工程技巧，而是将其重新诠释为一种根植于抽象代数的、具有深刻数学内涵的“隐式结合运算”。本系列第一部分指出：FlashAttention、安全softmax以及Welford在线方差估计器，本质上共享同一套代数结构——即“扭曲幺半群”（twisted monoid）。该形式化方法将注意力计算不再看作一系列易受浮点误差影响的脆弱步骤，而是一种稳健的规约操作（reduction），其行为类似于求和或取最大值——它在“扭曲意义下”满足结合律，从而支持GPU上经过验证的调度策略、分块（tiling）与并行化，且不损害数值稳定性。</p>
+<p>核心洞见在于：广泛用于FlashAttention中以稳定softmax的“最大值-重缩放耦合”（max-rescale coupling）实际上并未破坏结合性。相反，它实现了所谓的“结构迁移”（transport of structure）：数值缩放被编码进幺半群的乘法法则中，通过一个扭曲函数Φ实现，从而保持代数一致性。这使得FlashAttention内核可像其他结合性规约（如求和）一样被分解、重排序与融合，释放出以往仅适用于简单规约操作的优化潜力。</p>
+<p>教程从第一性原理推导关键常量：例如，在FlashAttention-2与Triton内核中普遍使用的<code>qk_scale = log2(e)/√D</code>，正是在扭曲幺半群框架下为控制误差边界而自然导出的结果。文中还严格证明：分块计算绝不会放大舍入误差，从根本上回应了关于分块注意力中累加顺序长期存在的数值担忧。尤为关键的是，Bird第三同态定理在此充当实用判据：若某算法既可表示为左折叠（foldl）又可表示为右折叠（foldr），则它必然是结合性的——因而天然适配树形并行规约调度。</p>
+<p>这项工作弥合了理论深度与系统实践之间的鸿沟。通过将数值稳定性、规约调度与内核设计统一于同一套代数框架之下，它赋能ML系统工程师不仅凭经验、更可凭数学证明来推理注意力机制。其影响远超FlashAttention本身：任何对数值敏感的规约操作（如稳定logsumexp、在线统计量或自定义注意力变体）如今均可借助这一形式化工具进行评估、优化与验证。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1uqcglz/learning_flashattention_the_hard_way_part_1_the/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://arxiv.org/abs/2507.04486" target="_blank" rel="noopener">[2507.04486] Twisted products of monoids</a><a href="https://dl.acm.org/doi/10.1145/2034773.2034824" target="_blank" rel="noopener">Generalising and dualising the third list-homomorphism theorem:</a><a href="https://www.cs.ox.ac.uk/publications/publication2365-abstract.html" target="_blank" rel="noopener">The Third Homomorphism Theorem</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

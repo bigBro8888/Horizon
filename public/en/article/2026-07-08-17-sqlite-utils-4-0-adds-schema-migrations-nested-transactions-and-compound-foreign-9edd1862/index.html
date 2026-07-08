@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sqlite-utils 4.0 Adds Schema Migrations, Nested Transactions, and Compound Foreign Keys - Horizon Tech</title>
+  <meta name="description" content="sqlite-utils 4.0 introduces built-in database schema migrations (using Python-defined migration functions and automatic tracking), nested transactions via the new db.atomic() metho" />
+  <link rel="canonical" href="/en/article/2026-07-08-17-sqlite-utils-4-0-adds-schema-migrations-nested-transactions-and-compound-foreign-9edd1862" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-08-17-sqlite-utils-4-0-adds-schema-migrations-nested-transactions-and-compound-foreign-9edd1862" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-08-17-sqlite-utils-4-0-adds-schema-migrations-nested-transactions-and-compound-foreign-9edd1862" />
+  <meta property="og:title" content="sqlite-utils 4.0 Adds Schema Migrations, Nested Transactions, and Compound Foreign Keys" />
+  <meta property="og:description" content="sqlite-utils 4.0 introduces built-in database schema migrations (using Python-defined migration functions and automatic tracking), nested transactions via the new db.atomic() metho" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--baab745c82786832.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=19" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--baab745c82786832.svg" alt="sqlite-utils 4.0 Adds Schema Migrations, Nested Transactions, and Compound Foreign Keys" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#Python</span> <span>#database-migrations</span> <span>#CLI-tools</span> <span>#schema-evolution</span></div>
+    <h1>sqlite-utils 4.0 Adds Schema Migrations, Nested Transactions, and Compound Foreign Keys</h1>
+    <p class="article-page-meta">News time: 2026-07-08T04:29:37.384585+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>Simon Willison has released sqlite-utils 4.0 — the first major version of this widely adopted Python library and CLI tool for SQLite in over five years. As the 124th release overall and the successor to v3.0 (November 2020), this update delivers three foundational enhancements: built-in database schema migrations, nested transaction support via <code>db.atomic()</code>, and native handling of compound foreign keys. These features collectively address long-standing gaps in lightweight SQLite tooling — especially for developers building data-centric applications, prototypes, or personal analytics tools where robust yet simple schema evolution is essential.</p>
+<p>The new migration system lets users define incremental, versioned changes to their database structure using plain Python functions. Each migration receives a <code>Database</code> instance and can perform arbitrary operations — creating tables, adding columns, transforming schemas with <code>table.transform()</code>, or inserting seed data. Crucially, <code>table.transform()</code> implements SQLite’s recommended pattern for non-trivial schema changes: it creates a new table with updated definitions, copies data safely, then swaps names — bypassing SQLite’s limited <code>ALTER TABLE</code> capabilities. Migrations are tracked automatically in a special <code>_migrations</code> table, ensuring idempotent execution and preventing duplicate application.</p>
+<p>Running migrations is straightforward: <code>uvx sqlite-utils migrate data.db migrations.py</code> applies all pending functions in order. Developers can also list migrations (<code>--list</code>), run verbosely (<code>--verbose</code>) to see before/after schema diffs, or stop partway (<code>--stop-before</code>). The implementation draws from Willison’s earlier <code>sqlite-migrate</code> project — now matured and officially integrated — reflecting real-world validation over multiple years. Meanwhile, <code>db.atomic()</code> enables true nested transactions, letting inner <code>atomic()</code> blocks roll back independently without affecting outer ones — a significant improvement over SQLite’s default flat transaction model.</p>
+<p>Compound foreign key support aligns sqlite-utils more closely with SQLite’s full SQL standard: developers can now declare foreign keys referencing multiple columns (e.g., <code>(order_id, item_seq)</code> → <code>(orders.id, order_items.seq)</code>), enabling accurate modeling of many-to-many relationships and composite primary keys. While foreign key enforcement remains disabled by default in SQLite (requiring <code>PRAGMA foreign_keys = ON</code>), sqlite-utils now provides ergonomic Python and CLI interfaces to define and manage such constraints correctly. Together, these features make sqlite-utils 4.0 not just an upgrade — but a step toward treating SQLite as a production-ready, evolvable database layer.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/7/sqlite-utils-4/#atom-everything" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://sqlite-utils.datasette.io/en/latest/migrations.html" target="_blank" rel="noopener">Database migrations - sqlite-utils</a><a href="https://github.com/simonw/sqlite-migrate" target="_blank" rel="noopener">GitHub - simonw/sqlite-migrate: A simple database migration ... GitHub - simonw/sqlite-utils: Python CLI utility and library ... sqlite-utils 4.0rc1 adds migrations and nested transactions Managing Database Versions and Migrations in SQLite sqlite-utils 4.0rc1 adds migrations and nested transactions</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

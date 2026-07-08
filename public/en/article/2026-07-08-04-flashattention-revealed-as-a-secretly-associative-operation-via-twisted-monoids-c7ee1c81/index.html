@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlashAttention Revealed as a Secretly Associative Operation via Twisted Monoids - Horizon Tech</title>
+  <meta name="description" content="The tutorial formally proves FlashAttention is a secretly associative operation under a twisted monoid structure, unifying safe softmax and Welford’s variance, and derives its qk_s" />
+  <link rel="canonical" href="/en/article/2026-07-08-04-flashattention-revealed-as-a-secretly-associative-operation-via-twisted-monoids-c7ee1c81" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-08-04-flashattention-revealed-as-a-secretly-associative-operation-via-twisted-monoids-c7ee1c81" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-08-04-flashattention-revealed-as-a-secretly-associative-operation-via-twisted-monoids-c7ee1c81" />
+  <meta property="og:title" content="FlashAttention Revealed as a Secretly Associative Operation via Twisted Monoids" />
+  <meta property="og:description" content="The tutorial formally proves FlashAttention is a secretly associative operation under a twisted monoid structure, unifying safe softmax and Welford’s variance, and derives its qk_s" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1uqcglz.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=19" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1uqcglz.svg" alt="FlashAttention Revealed as a Secretly Associative Operation via Twisted Monoids" />
+    <div class="article-page-tags"><span>#FlashAttention</span> <span>#GPU Optimization</span> <span>#Numerical Stability</span> <span>#Associative Reduction</span> <span>#ML Systems</span></div>
+    <h1>FlashAttention Revealed as a Secretly Associative Operation via Twisted Monoids</h1>
+    <p class="article-page-meta">News time: 2026-07-08T04:29:38.096597+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>In a groundbreaking tutorial titled <em>Learning FlashAttention the Hard Way</em>, researcher /u/NoVibeCoding reframes FlashAttention—not as a clever engineering hack, but as a mathematically profound, secretly associative operation rooted in abstract algebra. Part 1 of the series establishes that FlashAttention, safe softmax, and Welford’s online variance estimator all share the same underlying algebraic structure: a <em>twisted monoid</em>. This formalism treats attention computation not as a fragile sequence of floating-point steps, but as a robust reduction—akin to sum or max—that obeys associativity <em>up to a twist</em>, enabling principled GPU scheduling, tiling, and parallelization without numerical degradation.</p>
+<p>The core insight lies in recognizing how the max-rescale coupling—used ubiquitously in FlashAttention to stabilize softmax—does <em>not</em> break associativity. Instead, it implements a ‘transport of structure’: the numerical scaling is encoded into the monoid’s multiplication law via a twisting function Φ, preserving algebraic coherence. This allows FlashAttention kernels to be decomposed, reordered, and fused like any other associative reduction—unlocking optimizations previously reserved for simpler operations like reduction sums.</p>
+<p>The tutorial derives key constants from first principles: for example, the ubiquitous <code>qk_scale = log2(e)/√D</code> appearing in FlashAttention-2 and Triton kernels emerges naturally from error-bounded rescaling within the twisted monoid framework. It also proves—with rigorous numerical analysis—that tiling never amplifies rounding error, resolving long-standing concerns about accumulation order in blocked attention. Crucially, Bird’s Third Homomorphism Theorem serves as a practical litmus test: if an algorithm can be expressed both as a left-fold (foldl) and right-fold (foldr), it is guaranteed to be associative—and thus amenable to parallel, tree-reduction scheduling.</p>
+<p>This work bridges deep theory and systems practice. By unifying numerical stability, reduction scheduling, and kernel design under one algebraic umbrella, it empowers ML systems engineers to reason about attention not just empirically—but provably. The implications extend beyond FlashAttention: any numerically sensitive reduction (e.g., stable logsumexp, online statistics, or custom attention variants) may now be assessed, optimized, and verified using this formal lens.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1uqcglz/learning_flashattention_the_hard_way_part_1_the/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://arxiv.org/abs/2507.04486" target="_blank" rel="noopener">[2507.04486] Twisted products of monoids</a><a href="https://dl.acm.org/doi/10.1145/2034773.2034824" target="_blank" rel="noopener">Generalising and dualising the third list-homomorphism theorem:</a><a href="https://www.cs.ox.ac.uk/publications/publication2365-abstract.html" target="_blank" rel="noopener">The Third Homomorphism Theorem</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

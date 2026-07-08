@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Z-Manifold：通过可信LoRA子空间约束微调以实现可证明的安全适配 - Horizon 科技前沿</title>
+  <meta name="description" content="Z-Manifold框架首次提出一种几何约束机制，将微调更新严格限制在由可信LoRA适配器张成的子空间内，从而在数学上证明某些恶意行为根本不可学习。 这标志着安全范式从被动检测转向主动预防，以数学可证方式为端侧AI、用户驱动适配及协作式微调生态提供更强、更可靠的安全保障。 在196个公开LoRA适配器上完成评估；能抵御专为绕过该防御而设计的自适应攻击；在可信" />
+  <link rel="canonical" href="/article/2026-07-08-05-z-manifold-restricting-fine-tuning-to-trusted-lora-subspaces-for-provably-secure-c379aa03" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-08-05-z-manifold-restricting-fine-tuning-to-trusted-lora-subspaces-for-provably-secure-c379aa03" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-08-05-z-manifold-restricting-fine-tuning-to-trusted-lora-subspaces-for-provably-secure-c379aa03" />
+  <meta property="og:title" content="Z-Manifold：通过可信LoRA子空间约束微调以实现可证明的安全适配" />
+  <meta property="og:description" content="Z-Manifold框架首次提出一种几何约束机制，将微调更新严格限制在由可信LoRA适配器张成的子空间内，从而在数学上证明某些恶意行为根本不可学习。 这标志着安全范式从被动检测转向主动预防，以数学可证方式为端侧AI、用户驱动适配及协作式微调生态提供更强、更可靠的安全保障。 在196个公开LoRA适配器上完成评估；能抵御专为绕过该防御而设计的自适应攻击；在可信" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1uq68li.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=19" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1uq68li.svg" alt="Z-Manifold：通过可信LoRA子空间约束微调以实现可证明的安全适配" />
+    <div class="article-page-tags"><span>#machine-learning-security</span> <span>#fine-tuning</span> <span>#LoRA</span> <span>#backdoor-defense</span> <span>#adversarial-ml</span></div>
+    <h1>Z-Manifold：通过可信LoRA子空间约束微调以实现可证明的安全适配</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-08T04:29:38.096661+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一种名为Z-Manifold的新防御范式，从根本上改变了我们应对微调数据投毒攻击的思路。它不再依赖于检测恶意输入（这本身极具挑战性），而是通过设计让有害学习行为根本无法发生。其核心思想是几何性的：在微调过程中，模型参数更新被严格限制在一组经过审核的“可信”LoRA适配器所张成的低维子空间内。由于LoRA适配器以低秩分解形式表征紧凑的参数更新，这些适配器的联合张成空间即构成一个“安全流形”，定义了所有允许的行为变化范围。任何位于该流形之外的更新——例如编码后门或触发式恶意行为的更新——在数学上就完全不可能被模型习得。</p>
+<p>这一方法对现实部署场景具有直接意义。例如，一款持续根据用户输入自我适配的端侧AI助手：若无防护，仅需少量投毒样本，就可能使其在收到特定短语时泄露隐私数据。同样，云服务商基于用户提交数据微调模型时，也面临来自恶意贡献者的风险。Z-Manifold将适配视为在已知、可信能力之间的插值过程，而非无约束的学习——就像限制一位音乐家只能在经验证安全的音阶内演奏。</p>
+<p>作者在196个公开LoRA适配器（涵盖编程、角色扮演、翻译等多个领域）上评估了Z-Manifold。尤为关键的是，他们使用专门针对该防御设计的自适应攻击进行测试，结果攻击成功率大幅下降，而对适配器池覆盖任务的正常性能则基本保持不变。该方法无需重训基础模型，可无缝集成至现有LoRA微调流程中。</p>
+<p>与基于检测的防御（常在误报率与漏报率间艰难权衡）不同，Z-Manifold提供“可证明不可学习性”：某些恶意更新方向被严格证明正交于可信子空间，因而几何上不可达。这将安全保障从经验性启发式提升至数学可证层面。论文、代码与可复现实验均已开源，主动邀请社区检验与攻防测试，体现出作者对其理论根基的信心。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1uq68li/what_if_a_model_could_only_learn_what_trusted/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://medium.com/@shelikohan/low-rank-adapter-lora-explained-0d3677395639" target="_blank" rel="noopener">Low-Rank Adapter (LoRA) Explained | by Sheli Kohan | Medium</a><a href="https://www.geeksforgeeks.org/deep-learning/low-rank-adaptation-lora/" target="_blank" rel="noopener">Low Rank Adaptation (LoRA) - GeeksforGeeks</a><a href="https://arxiv.org/abs/2604.27238" target="_blank" rel="noopener">SafeTune: Mitigating Data Poisoning in LLM Fine-Tuning for ...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

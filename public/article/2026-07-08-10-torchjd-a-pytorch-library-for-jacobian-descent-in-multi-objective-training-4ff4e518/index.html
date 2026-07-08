@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TorchJD：面向多目标训练的PyTorch雅可比下降库 - Horizon 科技前沿</title>
+  <meta name="description" content="TorchJD是一款新发布的PyTorch库，实现了雅可比下降与标量化方法以支持多目标优化；它已正式加入PyTorch生态系统，并支持文献中绝大多数现有算法，仅需极少代码修改即可启用。 这很重要，因为它为多目标竞争场景下的模型训练提供了标准化且可用于生产的框架，使深度学习系统在无需依赖启发式损失加权或人工调参的前提下，实现更强的鲁棒性、公平性与物理一致性。 " />
+  <link rel="canonical" href="/article/2026-07-08-10-torchjd-a-pytorch-library-for-jacobian-descent-in-multi-objective-training-4ff4e518" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-08-10-torchjd-a-pytorch-library-for-jacobian-descent-in-multi-objective-training-4ff4e518" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-08-10-torchjd-a-pytorch-library-for-jacobian-descent-in-multi-objective-training-4ff4e518" />
+  <meta property="og:title" content="TorchJD：面向多目标训练的PyTorch雅可比下降库" />
+  <meta property="og:description" content="TorchJD是一款新发布的PyTorch库，实现了雅可比下降与标量化方法以支持多目标优化；它已正式加入PyTorch生态系统，并支持文献中绝大多数现有算法，仅需极少代码修改即可启用。 这很重要，因为它为多目标竞争场景下的模型训练提供了标准化且可用于生产的框架，使深度学习系统在无需依赖启发式损失加权或人工调参的前提下，实现更强的鲁棒性、公平性与物理一致性。 " />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1upzxk2.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=19" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1upzxk2.svg" alt="TorchJD：面向多目标训练的PyTorch雅可比下降库" />
+    <div class="article-page-tags"><span>#PyTorch</span> <span>#multi-task-learning</span> <span>#multi-objective-optimization</span> <span>#gradient-based-optimization</span> <span>#machine-learning-libraries</span></div>
+    <h1>TorchJD：面向多目标训练的PyTorch雅可比下降库</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-08T04:29:38.096257+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一款名为TorchJD的新开源库正式发布，为深度学习中多目标（如多任务学习、约束优化或辅助损失正则化）训练提供了实用支持。与传统方法将多个损失函数强行合并为单一标量损失（例如加权平均）不同，TorchJD实现了“雅可比下降”（Jacobian Descent）——这是一种专为向量值损失函数设计的梯度下降推广形式。在每次更新中，它计算完整的雅可比矩阵：每一行对应一个目标的梯度；再通过数学上严谨的聚合策略生成参数更新方向，确保所有个体损失同步下降，而非仅优化其加权和。</p>
+<p>该库系统整合了两大主流优化范式：标量化方法（如固定权重平均、可学习权重组合）以及来自最新文献的多种雅可比下降变体——包括2024年arXiv论文《Jacobian Descent for Multi-Objective Optimization》中形式化的算法。尤为关键的是，TorchJD让这些技术变得极易调用：用户往往只需替换几行代码，即可将标准的<code>loss.backward()</code>切换为雅可比感知的优化器，大幅降低了探索帕累托最优权衡的技术门槛，无需依赖人工调参或启发式损失组合。</p>
+<p>TorchJD的设计深刻体现了内存开销与目标对齐之间的权衡。标量化方法内存占用低、兼容性广，但在梯度严重冲突时易压制部分目标性能；而雅可比下降虽计算开销更高，却能保持各目标的独立性，有效应对“不存在单一标量组合即可实现全局均衡”的复杂损失曲面。其模块化架构支持用户灵活试验不同聚合器（如MGDA、PCGrad启发式投影或纳什均衡求解器），并与标量基线进行对比评估。</p>
+<p>TorchJD近期已被正式纳入PyTorch生态系统——这是对其技术严谨性与社区价值的重要认可。项目维护者高度重视协作：已有活跃贡献者扩展了对已发表方法的支持，团队也持续通过GitHub议题、Discord讨论及实验反馈渠道欢迎更多参与。随着损失感知训练、公平性约束建模及物理信息神经网络等方向的兴起——这些场景均天然涉及结构化多损失设定——TorchJD不仅是一个小众工具，更有望成为下一代“优化感知型”深度学习的基础支撑设施。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1upzxk2/torchjd_training_with_multiple_losses_in_pytorch_p/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://arxiv.org/abs/2406.16232" target="_blank" rel="noopener">[2406.16232] Jacobian Descent for Multi-Objective Optimization</a><a href="https://en.wikipedia.org/wiki/Multi-objective_optimization" target="_blank" rel="noopener">Multi-objective optimization - Wikipedia</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

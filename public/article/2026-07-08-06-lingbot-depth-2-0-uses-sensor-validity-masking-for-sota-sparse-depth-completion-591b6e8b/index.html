@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LingBot-Depth 2.0 采用传感器有效性掩码实现稀疏深度补全SOTA性能 - Horizon 科技前沿</title>
+  <meta name="description" content="LingBot-Depth 2.0 首次提出传感器有效性掩码技术，利用真实传感器失效区域（如镜面高光、透明表面、无纹理区域）作为自然训练掩码，并在 8 个稀疏深度基准测试中的 7 个上取得当前最优 RMSE；其受控消融实验证明，以 LingBot-Vision 初始化的 ViT-L 编码器在多数基准上优于 DINOv2，仅在 Hammer 采集数据上例外。 " />
+  <link rel="canonical" href="/article/2026-07-08-06-lingbot-depth-2-0-uses-sensor-validity-masking-for-sota-sparse-depth-completion-591b6e8b" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-08-06-lingbot-depth-2-0-uses-sensor-validity-masking-for-sota-sparse-depth-completion-591b6e8b" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-08-06-lingbot-depth-2-0-uses-sensor-validity-masking-for-sota-sparse-depth-completion-591b6e8b" />
+  <meta property="og:title" content="LingBot-Depth 2.0 采用传感器有效性掩码实现稀疏深度补全SOTA性能" />
+  <meta property="og:description" content="LingBot-Depth 2.0 首次提出传感器有效性掩码技术，利用真实传感器失效区域（如镜面高光、透明表面、无纹理区域）作为自然训练掩码，并在 8 个稀疏深度基准测试中的 7 个上取得当前最优 RMSE；其受控消融实验证明，以 LingBot-Vision 初始化的 ViT-L 编码器在多数基准上优于 DINOv2，仅在 Hammer 采集数据上例外。 " />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1upqghy.jpg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=19" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1upqghy.jpg" alt="LingBot-Depth 2.0 采用传感器有效性掩码实现稀疏深度补全SOTA性能" />
+    <div class="article-page-tags"><span>#depth-estimation</span> <span>#masked-modeling</span> <span>#embodied-AI</span> <span>#pretraining</span> <span>#sensor-fusion</span></div>
+    <h1>LingBot-Depth 2.0 采用传感器有效性掩码实现稀疏深度补全SOTA性能</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-08T04:29:38.096810+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>LingBot-Depth 2.0 是蚂蚁集团旗下具身智能团队 Robbyant 推出的新一代深度补全模型，其核心创新在于彻底重构了“掩码深度建模”（Masked Depth Modeling）的训练范式：不再使用随机块状掩码，而是直接以 RGB-D 相机在真实场景中实际失效的区域作为训练掩码信号。这些区域包括金属表面的镜面高光、玻璃或亚克力等透明物体、以及缺乏纹理的纯色墙面——全部源自物理传感器固有的局限性。模型由此学会在真正需要补全的位置进行精准重建，直接针对部署时最常遇到的失效模式优化，而非适应人为构造的抽象噪声。</p>
+<p>该模型架构沿用了与 1.0 版本相同的掩码深度建模（MDM）流程，仅升级了两大关键组件：编码器初始化方式与训练数据规模。具体而言，它采用自监督视觉基础模型 LingBot-Vision 作为 ViT-L 和 ViT-g 编码器的初始化权重。一项严格控制变量的消融实验验证了这一改动的核心价值：在完全相同的训练流程、数据筛选规则和掩码逻辑下，仅替换编码器预训练权重，即可显著提升几乎所有基准测试的 RMSE 指标。值得注意的是，DINOv2 在 Hammer 设备采集的数据集上仍保持微弱优势，暗示特定硬件条件下的预训练可能仍具不可替代性。</p>
+<p>性能表现极为突出：LingBot-Depth 2.0 在 8 个主流块掩码/稀疏深度基准测试中，于 7 个上取得当前最佳（SOTA）RMSE；在涵盖 Hammer（D435/L515/ToF）、ClearGrasp（D415/D435）及 Robbyant 自建（D415/D435/D455）三大采集套件的 8 种真实相机配置中，亦在 6 种上排名第一。其最大提升出现在透明物体场景（如 ClearGrasp 数据集），直观点云可视化（含镜面与玻璃重建）也证实了其几何一致性远超前代方法。</p>
+<p>尽管成果显著，LingBot-Depth 2.0 的完整模型权重尚未开源；目前仅公开了四个 LingBot-Vision 编码器检查点（遵循 Apache-2.0 协议）。这使得第三方无法复现其深度补全指标。但该工作确立了一项重要设计原则：深度模型应基于<em>传感器定义的稀疏性</em>训练，而非人工噪声。正如社区讨论所指出，若将此思路拓展至激光雷达或热成像等其他模态，或将揭示其普适性边界——是通用范式，还是 RGB-D 系统的专属利器？</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1upqghy/masked_depth_modeling_with_sensorvalidity_masking/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://ar5iv.labs.arxiv.org/html/2107.06709" target="_blank" rel="noopener">[2107.06709] DVMN: Dense Validity Mask Network for Depth ...</a><a href="https://dl.acm.org/doi/10.1109/ITSC48978.2021.9564588" target="_blank" rel="noopener">DVMN: Dense Validity Mask Network for Depth Completion</a><a href="https://arxiv.org/abs/2601.17895" target="_blank" rel="noopener">[2601.17895] Masked Depth Modeling for Spatial Perception README.md · robbyant/lingbot-depth at main - Hugging Face Robbyant/lingbot-vision｜GitHub 仓库详情 | 极客日志</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
