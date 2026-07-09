@@ -2,7 +2,7 @@
 
 const I18N = {
   zh: {
-    heroKicker: "AI 自动生成 · 每日科技前沿",
+    heroKicker: "",
     heroMeta: (n) => `共 ${n} 篇`,
     empty: "暂无内容，系统会在下次定时任务后自动生成。",
     footer: "Horizon · AI 驱动的科技新闻",
@@ -26,7 +26,7 @@ const I18N = {
     pageInfo: (page, pages, total) => `第 ${page}/${pages} 页 · ${total} 条`,
   },
   en: {
-    heroKicker: "AI-generated · Daily tech frontier",
+    heroKicker: "",
     heroMeta: (n) => `${n} stories`,
     empty: "No content yet. The system will generate it on the next scheduled run.",
     footer: "Horizon · AI-powered tech news",
@@ -163,6 +163,11 @@ function pick(obj) {
   return (obj[state.lang] || obj.en || obj.zh || "").trim();
 }
 
+function formatSiteTitle(title) {
+  const safeTitle = escapeHtml(title || "Now AI News 今日科技前沿");
+  return safeTitle.replace(/\bAI\b/, '<span class="title-ai">AI</span>');
+}
+
 function scoreText(score) {
   if (score == null) return "";
   return Number(score).toFixed(1);
@@ -286,7 +291,9 @@ function formatNewsTime(a) {
 function applyStaticText() {
   const tr = t();
   document.documentElement.lang = state.lang;
-  document.getElementById("heroKicker").textContent = tr.heroKicker;
+  const heroKicker = document.getElementById("heroKicker");
+  heroKicker.textContent = tr.heroKicker;
+  heroKicker.hidden = !tr.heroKicker;
   document.getElementById("emptyText").textContent = tr.empty;
   document.getElementById("footerText").textContent = tr.footer;
   document.getElementById("adminLink").textContent = tr.admin;
@@ -300,7 +307,7 @@ function applyStaticText() {
 
   const siteTitle = state.site ? pick({ zh: state.site.title_zh, en: state.site.title_en }) : "Horizon";
   document.getElementById("siteTitle").textContent = siteTitle;
-  document.getElementById("heroTitle").textContent = siteTitle;
+  document.getElementById("heroTitle").innerHTML = formatSiteTitle(siteTitle);
   document.title = siteTitle;
 }
 

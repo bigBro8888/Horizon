@@ -78,7 +78,7 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
     safe_title = html.escape(title)
     safe_summary = html.escape(summary[:180])
     html_lang = "en" if is_en else "zh-CN"
-    site_title = "Horizon Tech" if is_en else "Horizon 科技前沿"
+    site_title = "Now AI News" if is_en else "Now AI News 今日科技前沿"
     back_text = "← Back to home" if is_en else "← 返回首页"
     time_label = "News time" if is_en else "新闻时间"
     source_label = "Source" if is_en else "来源"
@@ -99,7 +99,7 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
   <meta property="og:description" content="{safe_summary}" />
   {f'<meta property="og:image" content="{html.escape(image_url)}" />' if image_url else ''}
   {ADSENSE_SCRIPT}
-  <link rel="stylesheet" href="/static/styles.css?v=20" />
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
@@ -178,9 +178,9 @@ def _write_site_info() -> None:
     data_dir.mkdir(parents=True, exist_ok=True)
     config_path = DATA_DIR / "config.json"
     site = {
-        "title_zh": "Horizon 科技前沿",
-        "title_en": "Horizon Tech",
-        "description_zh": "AI 自动生成的每日科技新闻",
+        "title_zh": "Now AI News 今日科技前沿",
+        "title_en": "Now AI News",
+        "description_zh": "每日科技前沿",
         "description_en": "AI-curated daily technology news",
     }
     if config_path.exists():

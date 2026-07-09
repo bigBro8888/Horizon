@@ -73,8 +73,8 @@ def update_env_var(env_path: Path, key: str, value: str) -> None:
 _DEFAULT_SCHEDULE = {"enabled": True, "times": ["09:00"], "timezone": "Asia/Shanghai"}
 _DEFAULT_IMAGERY = {"enabled": True, "max_results": 6}
 _DEFAULT_SITE = {
-    "title_zh": "Horizon 科技前沿",
-    "title_en": "Horizon Tech",
+    "title_zh": "Now AI News 今日科技前沿",
+    "title_en": "Now AI News",
     "description_zh": "由 AI 自动生成的每日科技新闻",
     "description_en": "AI-curated daily technology news",
 }
