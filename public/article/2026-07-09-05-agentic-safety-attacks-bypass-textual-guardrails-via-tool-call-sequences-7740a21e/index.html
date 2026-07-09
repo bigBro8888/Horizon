@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>基于工具调用的智能体攻击绕过文本安全防护 - Horizon 科技前沿</title>
+  <meta name="description" content="研究人员证实，将恶意意图编码于MCP工具调用序列（而非提示文本）的智能体攻击，可使当前最先进的文本安全防护机制失效超50%；同时提出一种无需训练的运行时防护方案，将基线拒绝率提升至三倍。 这暴露了大语言模型安全领域的根本性缺口：面向文本的对齐方法无法应对具备真实工具访问能力的智能体系统，亟需以运行时动作监控和工具权限管理为核心的新一代安全架构。 攻击基于真实" />
+  <link rel="canonical" href="/article/2026-07-09-05-agentic-safety-attacks-bypass-textual-guardrails-via-tool-call-sequences-7740a21e" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-09-05-agentic-safety-attacks-bypass-textual-guardrails-via-tool-call-sequences-7740a21e" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-09-05-agentic-safety-attacks-bypass-textual-guardrails-via-tool-call-sequences-7740a21e" />
+  <meta property="og:title" content="基于工具调用的智能体攻击绕过文本安全防护" />
+  <meta property="og:description" content="研究人员证实，将恶意意图编码于MCP工具调用序列（而非提示文本）的智能体攻击，可使当前最先进的文本安全防护机制失效超50%；同时提出一种无需训练的运行时防护方案，将基线拒绝率提升至三倍。 这暴露了大语言模型安全领域的根本性缺口：面向文本的对齐方法无法应对具备真实工具访问能力的智能体系统，亟需以运行时动作监控和工具权限管理为核心的新一代安全架构。 攻击基于真实" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1ur1fnz.jpg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=19" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1ur1fnz.jpg" alt="基于工具调用的智能体攻击绕过文本安全防护" />
+    <div class="article-page-tags"><span>#LLM safety</span> <span>#agentic AI</span> <span>#red teaming</span> <span>#MCP</span> <span>#adversarial robustness</span></div>
+    <h1>基于工具调用的智能体攻击绕过文本安全防护</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-09T05:04:10.413274+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一项突破性的红队研究揭示了当前大语言模型（LLM）安全范式中的一个关键盲区：那些专为识别提示词中恶意语言而设计的先进文本安全防护机制——在面对<em>智能体式</em>（agentic）攻击时彻底失效。此类攻击并不将有害意图编码于文本之中，而是隐藏在<em>工具调用序列</em>里。研究人员通过将真实软件漏洞（例如CVE编号漏洞）转化为表面无害的自然语言请求（如“帮我调试这段Python脚本”）来演示这一现象；当这类请求被接入Model Context Protocol（MCP）工具接口的LLM智能体处理时，系统会自动触发高危文件系统操作，例如读取敏感配置文件或执行任意代码。关键在于，原始提示本身不包含任何明显恶意词汇；真正的攻击面完全存在于模型自主生成的工具调用链中。</p>
+<p>研究团队在多个开源权重模型（参数量从10亿至140亿）上测试了该攻击方法，这些模型均通过MCP协议接入文件系统I/O工具。结果令人震惊：所有基础模型对攻击的拒绝率均未超过35%；即便是最先进的安全微调方法——包括DPO及其增强安全版本SafeDPO——也仅将拒绝率提升至48%。这意味着超过一半的智能体攻击成功绕过了当前最强的公开安全防护。这种失败并非源于调优不足，而是源于根本性的架构错配：基于文本分类训练的安全防护机制，无法推理智能体所生成的<em>潜在动作图</em>（latent action graphs）。</p>
+<p>作为回应，作者提出一种新颖的、无需训练的防御方案：在工具调用实际执行前，实时监控并拦截高风险工具调用模式，其拒绝率约为基线模型的三倍，且完全无需微调。该方法将安全问题视为运行时编排任务，而非静态文本检测任务。完整方法论、四种不同防御策略的可复现评估代码、源自真实CVE漏洞的127条智能体攻击提示数据集，以及配套技术报告均已开源——使其成为迄今为止最具实操性与实证支撑的智能体AI安全研究成果之一。</p>
+<p>这项工作重新定义了智能体安全挑战：随着AI系统通过MCP等标准化协议获得真实世界能力，对其防护必须从关注“模型说了什么”，转向关注“模型做了什么”。它强调，对齐研究亟需超越提示级干预，转而拥抱运行时可观测性、工具权限控制，以及对动作序列的因果推理——尤其当智能体工作流日益成为开发者工具、自动化平台和企业AI部署的核心时。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1ur1fnz/agentic_safety_triggers_arent_textual_safety/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://en.wikipedia.org/wiki/Model_Context_Protocol" target="_blank" rel="noopener">Model Context Protocol - Wikipedia</a><a href="https://openreview.net/forum?id=MoJSnVZ59d" target="_blank" rel="noopener">SafeDPO: A Simple Approach to Direct Preference Optimization with Enhanced Safety | OpenReview</a><a href="https://arxiv.org/pdf/2505.20065" target="_blank" rel="noopener">SafeDPO: A Simple Approach to Direct Preference ...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
