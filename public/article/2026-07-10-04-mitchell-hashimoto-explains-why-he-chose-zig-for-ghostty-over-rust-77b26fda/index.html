@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>米切尔·哈希莫托解释为何为Ghostty选择Zig而非Rust - Now AI News 今日科技前沿</title>
+  <meta name="description" content="米切尔·哈希莫托公开阐述了为何选择Zig而非Rust来开发新跨平台终端模拟器Ghostty，理由包括生态实用性、对依赖项的严格控制，以及与Rust社区文化规范的不契合。 这标志着高影响力系统编程项目选型的重要转向，挑战了‘Rust是新型安全系统软件默认语言’的普遍假设，并将Zig提升为一种基于工程实用主义（而非理论纯粹性）的可信、可用于生产环境的替代方案。 " />
+  <link rel="canonical" href="/article/2026-07-10-04-mitchell-hashimoto-explains-why-he-chose-zig-for-ghostty-over-rust-77b26fda" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-10-04-mitchell-hashimoto-explains-why-he-chose-zig-for-ghostty-over-rust-77b26fda" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-10-04-mitchell-hashimoto-explains-why-he-chose-zig-for-ghostty-over-rust-77b26fda" />
+  <meta property="og:title" content="米切尔·哈希莫托解释为何为Ghostty选择Zig而非Rust" />
+  <meta property="og:description" content="米切尔·哈希莫托公开阐述了为何选择Zig而非Rust来开发新跨平台终端模拟器Ghostty，理由包括生态实用性、对依赖项的严格控制，以及与Rust社区文化规范的不契合。 这标志着高影响力系统编程项目选型的重要转向，挑战了‘Rust是新型安全系统软件默认语言’的普遍假设，并将Zig提升为一种基于工程实用主义（而非理论纯粹性）的可信、可用于生产环境的替代方案。 " />
+  <meta property="og:image" content="/media/hackernews-story-48849292.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/hackernews-story-48849292.png" alt="米切尔·哈希莫托解释为何为Ghostty选择Zig而非Rust" />
+    <div class="article-page-tags"><span>#Zig</span> <span>#Rust</span> <span>#terminal-emulators</span> <span>#systems-programming</span> <span>#programming-languages</span></div>
+    <h1>米切尔·哈希莫托解释为何为Ghostty选择Zig而非Rust</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-10T05:05:40.268609+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>在与亚历克斯·阿莱杭德雷（Alex Alejandre）的一次坦率访谈中，米切尔·哈希莫托（Mitchell Hashimoto）——知名开源工具Vagrant、Packer和Terraform的作者，也是HashiCorp联合创始人——介绍了他最新的开源项目：Ghostty，一款完全用Zig语言编写的跨平台终端模拟器。他并未选择当前系统编程领域的主流语言Rust，而是刻意选用Zig，以追求对代码、依赖和构建过程的完全掌控，以及长期可维护性。这一决定并非源于对Rust技术能力的否定，而是源于他对Rust生态文化日益增长的不适感：包括过度工程化倾向、依赖包膨胀，以及一种倾向于将“正确性”等同于“复杂性”的社区氛围。</p>
+<p>Ghostty本身正是这一理念的具象体现：它直接调用各平台原生UI框架（如Windows上的WinUI、macOS上的AppKit、Linux上的GTK），并利用GPU加速渲染以保障性能，同时刻意避开第三方GUI框架或重量级运行时依赖。哈希莫托强调，Ghostty并非旨在取代Alacritty或Kitty等现有终端，而是一个刻意保持简洁、代码清晰、易于分叉的基线实现——开发者能逐层理解并修改所有逻辑，无需与晦涩抽象或庞杂依赖图搏斗。</p>
+<p>访谈还深入探讨了系统编程中语言选型的深层逻辑。哈希莫托坚持实用主义而非教条主义：他高度认可Rust的安全保障机制，但批评其生态常将“正确性”与“复杂性”混为一谈。相比之下，Zig明确的内存模型、单二进制分发方式，以及无包管理器、无中心注册表的设计，更契合他降低“意图”与“实现”之间摩擦的目标。他指出，Zig的编译期反射（comptime）和类型内省能力，让他能以简洁方式为不同平台的渲染路径构建清晰抽象——而在Rust中，类似目标往往需借助宏或繁复的trait体系才能达成。</p>
+<p>尤为可贵的是哈希莫托对技术部落主义的拒绝。他并未贬低Rust用户或贡献者；相反，他呼吁基础工具链应更具多样性——不仅体现在编程语言层面，更体现在维护文化、分叉实践与接口设计哲学上。正如他所言：“若你想要某个上游不愿接纳的功能，健康的回应不是抱怨，而是分叉、适配并持续维护。”这一信条贯穿Ghostty的架构设计与MIT许可证选择，旨在邀请他人在其基础上自由构建，而不受生态壁垒或治理门槛限制。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://alexalejandre.com/programming/interview-with-mitchell-hashimoto/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://ghostty.org/" target="_blank" rel="noopener">Ghostty</a><a href="https://github.com/ghostty-org/ghostty" target="_blank" rel="noopener">GitHub - ghostty-org/ghostty: 👻 Ghostty is a fast, feature-rich, and cross-platform terminal emulator that uses platform-native UI and GPU acceleration.</a><a href="https://en.wikipedia.org/wiki/Zig_(programming_language)" target="_blank" rel="noopener">Zig (programming language)</a><a href="https://ziglang.org/" target="_blank" rel="noopener">Home Zig Programming Language</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

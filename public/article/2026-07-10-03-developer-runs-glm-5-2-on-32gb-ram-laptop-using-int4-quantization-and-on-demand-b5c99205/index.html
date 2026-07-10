@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>开发者在32GB内存笔记本上成功运行GLM-5.2大模型，采用int4量化与按需权重流式加载 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="JustVugg发布了Colibrì——一个轻量、零依赖的C语言实现，通过int4量化、磁盘专家权重流式加载和内存感知缓存，使GLM-5.2（7440亿参数MoE模型）得以在32GB内存笔记本上运行，全程无需GPU或Python运行时。 它证明了前沿开源权重模型可在普通硬件上实际部署，大幅降低了实验门槛、隐私保护型应用成本及教育可及性，将社区关注点从‘能否运" />
+  <link rel="canonical" href="/article/2026-07-10-03-developer-runs-glm-5-2-on-32gb-ram-laptop-using-int4-quantization-and-on-demand-b5c99205" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-10-03-developer-runs-glm-5-2-on-32gb-ram-laptop-using-int4-quantization-and-on-demand-b5c99205" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-10-03-developer-runs-glm-5-2-on-32gb-ram-laptop-using-int4-quantization-and-on-demand-b5c99205" />
+  <meta property="og:title" content="开发者在32GB内存笔记本上成功运行GLM-5.2大模型，采用int4量化与按需权重流式加载" />
+  <meta property="og:description" content="JustVugg发布了Colibrì——一个轻量、零依赖的C语言实现，通过int4量化、磁盘专家权重流式加载和内存感知缓存，使GLM-5.2（7440亿参数MoE模型）得以在32GB内存笔记本上运行，全程无需GPU或Python运行时。 它证明了前沿开源权重模型可在普通硬件上实际部署，大幅降低了实验门槛、隐私保护型应用成本及教育可及性，将社区关注点从‘能否运" />
+  <meta property="og:image" content="/media/hackernews-story-48842459.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/hackernews-story-48842459.png" alt="开发者在32GB内存笔记本上成功运行GLM-5.2大模型，采用int4量化与按需权重流式加载" />
+    <div class="article-page-tags"><span>#LLM</span> <span>#quantization</span> <span>#local-inference</span> <span>#GLM</span> <span>#memory-optimization</span></div>
+    <h1>开发者在32GB内存笔记本上成功运行GLM-5.2大模型，采用int4量化与按需权重流式加载</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-10T05:05:40.268474+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>一位名为JustVugg的独立开发者实现了一个本地大语言模型部署的重要突破：在仅配备32GB内存的消费级笔记本电脑上成功运行了GLM-5.2——一款最先进的、参数量达7440亿的混合专家（MoE）模型。更令人惊叹的是，该模型通常需依赖高端GPU硬件，而此处却完全不使用GPU。取而代之的是名为Colibrì的项目，它纯靠CPU推理，结合激进的int4量化技术与创新的内存感知架构，仅在需要时从磁盘流式加载活跃专家权重。</p>
+<p>Colibrì的核心洞见在于对GLM-5.2 MoE结构的巧妙利用。尽管全模型含7440亿参数，但每生成一个词元（token）仅激活约400亿参数；其中动态变化的路由专家权重仅约11GB。Colibrì充分利用这种稀疏性：将密集部分（注意力层、共享专家、嵌入层——约170亿参数）以int4精度常驻内存（约9.9GB），而将21504个独立路由专家（int4下总计约370GB）存于固态硬盘，并通过LRU缓存按需加载，支持可选的热区固定存储，同时自然利用操作系统页缓存作为免费二级缓存。</p>
+<p>尤为惊人的是，整个推理引擎仅由一个约1300行的C文件（<code>c/glm.c</code>）构成——无Python、无BLAS、无CUDA、无GPU驱动。该项目全程在一台12核、25GB内存的笔记本上编写并实测完成，意味着每一项优化决策均经受了真实硬件限制的检验。尽管冷启动延迟较高、生成速度较慢（约0.1词元/秒），但其首要目标并非速度，而是可行性：证明最前沿的开源大模型确实能在无专用硬件条件下落地运行。</p>
+<p>这一努力在本地推理社区引发强烈共鸣，因为可访问性与硬件民主化正是该社区的核心追求。不同于依赖云端或GPU的方案，Colibrì为中端设备用户重拾技术自主权，将理论上的“原则上可行”转化为可复现、可验证的现实。其极简设计也天然鼓励审查、扩展与协作：多位评论者已分享互补方案，包括面向Apple Silicon的Metal加速macOS版本、llama.cpp集成路径，以及统一内存流式加载策略。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/JustVugg/colibri" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://docs.z.ai/guides/llm/glm-5.2" target="_blank" rel="noopener">GLM-5.2 - Overview - Z.AI DEVELOPER DOCUMENT</a><a href="https://unsloth.ai/docs/models/glm-5.2" target="_blank" rel="noopener">GLM-5.2 - How to Run Locally | Unsloth Documentation</a><a href="https://www.mindstudio.ai/blog/what-is-glm-5-2-open-weight-model" target="_blank" rel="noopener">What Is GLM 5.2? The Open-Weight Model Beating GPT 5.5 on Design Benchmarks | MindStudio</a><a href="https://apxml.com/courses/quantized-llm-deployment/chapter-1-advanced-llm-quantization-fundamentals/low-bit-quantization-techniques" target="_blank" rel="noopener">Low-Bit LLM Quantization (INT4, NF4, FP4)</a><a href="https://mbrenndoerfer.com/writing/int4-quantization-group-wise-nf4-format-llms" target="_blank" rel="noopener">INT4 Quantization: Group-wise Methods &amp; NF4 Format for LLMs - Interactive | Michael Brenndoerfer | Michael Brenndoerfer</a><a href="https://bentoml.com/llm/model-preparation/llm-quantization" target="_blank" rel="noopener">LLM quantization | LLM Inference Handbook</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

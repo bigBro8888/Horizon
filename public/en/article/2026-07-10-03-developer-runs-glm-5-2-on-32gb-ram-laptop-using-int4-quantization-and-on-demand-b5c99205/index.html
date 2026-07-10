@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Developer Runs GLM-5.2 on 32GB RAM Laptop Using Int4 Quantization and On-Demand Weight Streaming - Now AI News</title>
+  <meta name="description" content="JustVugg released Colibrì — a lightweight, dependency-free C implementation that enables GLM-5.2 (744B MoE) to run on a 32GB-RAM laptop via int4 quantization, on-disk expert stream" />
+  <link rel="canonical" href="/en/article/2026-07-10-03-developer-runs-glm-5-2-on-32gb-ram-laptop-using-int4-quantization-and-on-demand-b5c99205" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-10-03-developer-runs-glm-5-2-on-32gb-ram-laptop-using-int4-quantization-and-on-demand-b5c99205" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-10-03-developer-runs-glm-5-2-on-32gb-ram-laptop-using-int4-quantization-and-on-demand-b5c99205" />
+  <meta property="og:title" content="Developer Runs GLM-5.2 on 32GB RAM Laptop Using Int4 Quantization and On-Demand Weight Streaming" />
+  <meta property="og:description" content="JustVugg released Colibrì — a lightweight, dependency-free C implementation that enables GLM-5.2 (744B MoE) to run on a 32GB-RAM laptop via int4 quantization, on-disk expert stream" />
+  <meta property="og:image" content="/media/hackernews-story-48842459.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/hackernews-story-48842459.png" alt="Developer Runs GLM-5.2 on 32GB RAM Laptop Using Int4 Quantization and On-Demand Weight Streaming" />
+    <div class="article-page-tags"><span>#LLM</span> <span>#quantization</span> <span>#local-inference</span> <span>#GLM</span> <span>#memory-optimization</span></div>
+    <h1>Developer Runs GLM-5.2 on 32GB RAM Laptop Using Int4 Quantization and On-Demand Weight Streaming</h1>
+    <p class="article-page-meta">News time: 2026-07-10T05:05:40.268474+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A solo developer named JustVugg has achieved a notable milestone in local LLM deployment: running GLM-5.2 — a state-of-the-art, 744-billion-parameter Mixture-of-Experts (MoE) model — on a consumer-grade laptop with just 32GB of RAM. What makes this especially impressive is that GLM-5.2 normally demands high-end GPU infrastructure; yet here, there’s no GPU at all. Instead, the project — named Colibrì — relies entirely on CPU inference, aggressive int4 quantization, and a novel memory-aware architecture that streams only the active expert weights from disk as needed.</p>
+<p>The core insight behind Colibrì lies in how it handles GLM-5.2’s MoE structure. While the full model contains 744B parameters, only about 40B are activated per token — and among those, just ~11GB of routed expert weights change dynamically across layers. Colibrì exploits this sparsity by keeping the dense components (attention layers, shared experts, embeddings — ~17B params) permanently resident in RAM at int4 precision (~9.9 GB), while storing the 21,504 individual routed experts (~370 GB total at int4) on SSD. These experts are loaded on-demand using an LRU cache, optionally pinned hot storage, and the OS page cache as a free second-level buffer.</p>
+<p>Remarkably, the entire inference engine fits in a single ~1,300-line C file (<code>c/glm.c</code>) — no Python, no BLAS, no CUDA, no GPU drivers. It was written and tested end-to-end on a 12-core laptop with only 25GB RAM — meaning every optimization decision was validated under real hardware constraints. Though cold-start latency remains high and generation speed modest (~0.1 tokens/second), the priority wasn’t speed but feasibility: proving that cutting-edge open models <em>can</em> run locally without specialized hardware.</p>
+<p>This effort resonates deeply within the local-inference community, where accessibility and hardware democratization are central goals. Unlike cloud-dependent or GPU-bound alternatives, Colibrì reclaims agency for developers with mid-tier machines — turning theoretical ‘possible-in-principle’ into tangible, reproducible reality. Its minimalist design also invites scrutiny, extension, and collaboration: several commenters have already shared complementary approaches, from Metal-accelerated macOS variants to llama.cpp integrations and unified-memory streaming strategies.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/JustVugg/colibri" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://docs.z.ai/guides/llm/glm-5.2" target="_blank" rel="noopener">GLM-5.2 - Overview - Z.AI DEVELOPER DOCUMENT</a><a href="https://unsloth.ai/docs/models/glm-5.2" target="_blank" rel="noopener">GLM-5.2 - How to Run Locally | Unsloth Documentation</a><a href="https://www.mindstudio.ai/blog/what-is-glm-5-2-open-weight-model" target="_blank" rel="noopener">What Is GLM 5.2? The Open-Weight Model Beating GPT 5.5 on Design Benchmarks | MindStudio</a><a href="https://apxml.com/courses/quantized-llm-deployment/chapter-1-advanced-llm-quantization-fundamentals/low-bit-quantization-techniques" target="_blank" rel="noopener">Low-Bit LLM Quantization (INT4, NF4, FP4)</a><a href="https://mbrenndoerfer.com/writing/int4-quantization-group-wise-nf4-format-llms" target="_blank" rel="noopener">INT4 Quantization: Group-wise Methods &amp; NF4 Format for LLMs - Interactive | Michael Brenndoerfer | Michael Brenndoerfer</a><a href="https://bentoml.com/llm/model-preparation/llm-quantization" target="_blank" rel="noopener">LLM quantization | LLM Inference Handbook</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

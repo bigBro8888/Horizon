@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Talos-XII：纯手写Rust自动微分+强化学习栈建模明日方舟抽卡系统 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Talos-XII 是一个完全手写实现的 Rust 项目，包含自动微分、双流DQN、PPO及MLA-Transformer模型，无需任何机器学习框架即可完成训练与部署，用于模拟与优化《明日方舟》抽卡策略，并引入实验性ACHF层及硬件感知的SIMD指令调度。 它证明了面向特定领域的生产级、无框架机器学习系统是可行的——打通了底层系统编程、数值计算与应用强化学习" />
+  <link rel="canonical" href="/article/2026-07-10-07-talos-xii-handwritten-rust-autograd-rl-stack-for-arknights-gacha-modeling-0f45e7fa" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-10-07-talos-xii-handwritten-rust-autograd-rl-stack-for-arknights-gacha-modeling-0f45e7fa" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-10-07-talos-xii-handwritten-rust-autograd-rl-stack-for-arknights-gacha-modeling-0f45e7fa" />
+  <meta property="og:title" content="Talos-XII：纯手写Rust自动微分+强化学习栈建模明日方舟抽卡系统" />
+  <meta property="og:description" content="Talos-XII 是一个完全手写实现的 Rust 项目，包含自动微分、双流DQN、PPO及MLA-Transformer模型，无需任何机器学习框架即可完成训练与部署，用于模拟与优化《明日方舟》抽卡策略，并引入实验性ACHF层及硬件感知的SIMD指令调度。 它证明了面向特定领域的生产级、无框架机器学习系统是可行的——打通了底层系统编程、数值计算与应用强化学习" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1urvxgb.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1urvxgb.svg" alt="Talos-XII：纯手写Rust自动微分+强化学习栈建模明日方舟抽卡系统" />
+    <div class="article-page-tags"><span>#Rust</span> <span>#Autograd</span> <span>#ReinforcementLearning</span> <span>#GameAI</span> <span>#ProbabilisticModeling</span></div>
+    <h1>Talos-XII：纯手写Rust自动微分+强化学习栈建模明日方舟抽卡系统</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-10T05:05:39.994125+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>Talos-XII 是一项令人瞩目的独立工程实践：一款完全用 Rust 从零编写的、不依赖任何机器学习框架的命令行抽卡模拟器，专为《明日方舟：终末地》设计。它不满足于静态概率表（仅能回答‘N次抽卡获得X角色的概率是多少？’），而是通过自研神经网络与强化学习智能体，在不确定性环境中建模玩家决策过程。它解决的是真实玩家关心的战略问题：‘仅靠免费资源，我抽到本期UP角色的概率有多大？’ 或 ‘当前保底进度下，我该继续抽卡，还是攒资源等下期卡池？’ 这些并非统计学琐事，而是受随机性、时间跨度与行为约束共同影响的资源分配决策。</p>
+<p>系统由四个紧密协作的模型组成，首次运行时完成训练（耗时约30–45秒），之后缓存复用。‘EnvNet’是一个小型MLP，用于拟合环境噪声分布，模拟游戏中未公开的RNG细微偏差；‘运气优化器’在32维人工构造特征空间（含保底进度、连抽状态、交互项等）上进行神经优化；‘双流DQN’处理‘抽还是等’这类离散决策；而带多头潜在注意力（MLA）Transformer的PPO策略网络则建模连续型策略——例如跨多个卡池动态分配抽卡资源。关键在于，所有这些均不依赖PyTorch、tch-rs或ndarray——每个张量运算、梯度计算与优化步骤均为手写实现。</p>
+<p>其底层是一套精心设计的自动微分引擎，支持矩阵乘法、二维卷积、池化和归一化等操作，并经梯度反向验证。它具备运行时SIMD指令集自动调度能力（标量 → AVX2 → AVX2+FMA → AVX-512 / ARM64 NEON），利用Rayon并行加速模拟（笔记本可达每秒超1万次模拟），支持BF16推理缓存，并提供可选的PyO3桥接接口（<code>import talos_xii as tx</code>），方便用户在无NumPy/PyTorch环境下编写训练脚本。代码库包含142个单元测试，CI覆盖Linux/Windows/macOS及ARM64交叉编译，最终发布为单个MIT许可的静态二进制文件。</p>
+<p>其中最具实验性的模块是ACHF（自适应缓存感知超连接）：一种创新层结构，通过梯度敏感门控融合稠密路径与剪枝稀疏路径，引入Sinkhorn流形约束的权重投影，并依据实测延迟动态切换执行模式（缓存/稀疏/稠密）。不同于面向大规模训练的超网络，ACHF专为CPU上运行的紧凑型RL策略设计，嵌入单一可执行文件中——成为硬件感知模型设计的独特试验场。其速度与精度权衡尚未在作者本地设备以外得到验证，因此项目公开呼吁社区在AVX-512、ARM64 NEON乃至GPU平台上运行基准测试套件——即使是‘ACHF未带来性能提升’这类负向结果，也被视为同等宝贵的数据。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1urvxgb/talosxii_handwritten_autograd_small_rlmlp_stack/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://github.com/Mathemmagician/rustygrad" target="_blank" rel="noopener">GitHub - Mathemmagician/rustygrad: Tiny Autograd engine written in Rust · GitHub</a><a href="https://arknights.fandom.com/wiki/Headhunting" target="_blank" rel="noopener">Headhunting | Arknights Wiki | Fandom</a><a href="https://machinelearningmastery.com/a-gentle-introduction-to-multi-head-latent-attention-mla/" target="_blank" rel="noopener">A Gentle Introduction to Multi-Head Latent Attention (MLA) - MachineLearningMastery.com</a><a href="https://deus-ex-machina-ism.com/en/overview-of-dueling-dqns-and-examples-of-algorithms-and-implementations/?lang=en" target="_blank" rel="noopener">Overview of Dueling DQNs and Examples of Algorithms and...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
