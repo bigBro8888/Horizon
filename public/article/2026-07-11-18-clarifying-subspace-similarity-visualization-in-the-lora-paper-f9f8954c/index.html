@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>厘清LoRA论文中子空间相似性图示的含义 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="一名从业者发现LoRA论文中子空间相似性热力图存在解释歧义：为何在放大子图中，当i &gt; j时仍出现非零值，尽管该度量看似要求i ≤ j？ 正确理解该图对把握LoRA在子空间对齐方面的理论基础至关重要，也有助于诊断低秩更新在微调过程中是否真正保留了预训练模型的几何结构。 该度量采用基于主角度的归一化相似性（而非严格的子空间包含），因此i ≠ j时比较依然有效；" />
+  <link rel="canonical" href="/article/2026-07-11-18-clarifying-subspace-similarity-visualization-in-the-lora-paper-f9f8954c" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-11-18-clarifying-subspace-similarity-visualization-in-the-lora-paper-f9f8954c" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-11-18-clarifying-subspace-similarity-visualization-in-the-lora-paper-f9f8954c" />
+  <meta property="og:title" content="厘清LoRA论文中子空间相似性图示的含义" />
+  <meta property="og:description" content="一名从业者发现LoRA论文中子空间相似性热力图存在解释歧义：为何在放大子图中，当i &gt; j时仍出现非零值，尽管该度量看似要求i ≤ j？ 正确理解该图对把握LoRA在子空间对齐方面的理论基础至关重要，也有助于诊断低秩更新在微调过程中是否真正保留了预训练模型的几何结构。 该度量采用基于主角度的归一化相似性（而非严格的子空间包含），因此i ≠ j时比较依然有效；" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1uso667.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1uso667.svg" alt="厘清LoRA论文中子空间相似性图示的含义" />
+    <div class="article-page-tags"><span>#LoRA</span> <span>#subspace_similarity</span> <span>#low_rank_adaptation</span> <span>#machine_learning_theory</span> <span>#model_fine_tuning</span></div>
+    <h1>厘清LoRA论文中子空间相似性图示的含义</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-11T04:25:37.440477+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一位Reddit用户最近就LoRA奠基性论文中的图4提出了一个细致但关键的问题：如何正确理解子空间相似性的热力图及其放大子图。该图可视化了LoRA低秩更新矩阵的前i个奇异向量张成的子空间，与原始高秩权重矩阵的前j个奇异向量张成的子空间之间的对齐程度。直观上看，这一度量具有天然不对称性：它计算的是LoRA的i维子空间中，有多少比例严格落在基础模型j维子空间之内。按线性代数原理，这自然要求i ≤ j——因为高维子空间无法无损嵌入低维子空间。</p>
+<p>然而用户发现放大子图中存在i &gt; j的非零值（例如i=5、j=1），令人困惑。这一矛盾源于一个微妙却关键的细节：图中使用的子空间相似性度量并非严格的Grassmann投影比，而是基于主角度（principal angles）推导出的一种<em>归一化、对称变体</em>，通常通过投影矩阵乘积的Frobenius范数计算。正如Steven Gubkin在《SVD-LoRA》教学文章中所阐释，这种形式允许i与j不等时仍具可比性，因为它衡量的是子空间间的<em>相互对齐程度</em>，而非单向包含关系。</p>
+<p>右侧两个放大子图聚焦于热力图的左下三角区域——这并非无效索引区，而是特意突出LoRA更新在多大程度上“复现”了基础模型的低秩结构，即LoRA学习到的扰动在多大程度上捕获了冻结权重中早先的奇异方向。此处纵轴（i）表示LoRA截断后的秩，横轴（j）表示基础模型的截断秩；当i &gt; j时的数值反映的是LoRA的<em>更高秩近似</em>与基础模型的<em>更低秩子空间</em>之间的重叠程度——这是结构保真度的度量，而非维度包含关系。</p>
+<p>这一区别对实践者评估LoRA的表征效率至关重要。若误读为严格包含度量，可能错误推断LoRA未能保留基础模型几何结构。实际上，该图恰恰证实LoRA能将适配集中在预训练模型中已具显著性的方向上——这正是其参数高效性的核心理论依据。准确理解此图，有助于弥合线性代数直觉与微调实证效果之间的鸿沟。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1uso667/please_help_me_understand_figure_on_subspace/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://stevengubkin.github.io/mathematics+of+machine+learning/2023/10/06/SVD-LoRa.html" target="_blank" rel="noopener">Singular Value Decomposition and LoRa · Steven Gubkin</a><a href="https://docsaid.org/en/papers/model-tuning/lora/" target="_blank" rel="noopener">[21.06] LoRA | DOCSAID</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

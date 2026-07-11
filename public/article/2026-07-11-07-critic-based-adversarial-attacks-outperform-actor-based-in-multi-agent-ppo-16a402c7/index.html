@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>多智能体PPO中基于评论家的对抗攻击反超基于执行器的攻击 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="作者通过实证表明，在VMAS多智能体场景下训练的IPPO/GPPO策略中，基于评论家的对抗攻击效果优于基于执行器的攻击，与Zhang等人2020年在单智能体设定下的结论相矛盾。 这一发现揭示强化学习中的对抗鲁棒性高度依赖具体上下文，挑战了跨智能体架构与环境迁移安全结论的假设，警示研究者不可将单智能体系统的安全洞见直接套用于多智能体系统。 攻击采用针对连续策略" />
+  <link rel="canonical" href="/article/2026-07-11-07-critic-based-adversarial-attacks-outperform-actor-based-in-multi-agent-ppo-16a402c7" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-11-07-critic-based-adversarial-attacks-outperform-actor-based-in-multi-agent-ppo-16a402c7" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-11-07-critic-based-adversarial-attacks-outperform-actor-based-in-multi-agent-ppo-16a402c7" />
+  <meta property="og:title" content="多智能体PPO中基于评论家的对抗攻击反超基于执行器的攻击" />
+  <meta property="og:description" content="作者通过实证表明，在VMAS多智能体场景下训练的IPPO/GPPO策略中，基于评论家的对抗攻击效果优于基于执行器的攻击，与Zhang等人2020年在单智能体设定下的结论相矛盾。 这一发现揭示强化学习中的对抗鲁棒性高度依赖具体上下文，挑战了跨智能体架构与环境迁移安全结论的假设，警示研究者不可将单智能体系统的安全洞见直接套用于多智能体系统。 攻击采用针对连续策略" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1usx96p.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1usx96p.svg" alt="多智能体PPO中基于评论家的对抗攻击反超基于执行器的攻击" />
+    <div class="article-page-tags"><span>#adversarial-rl</span> <span>#multi-agent-rl</span> <span>#robustness</span> <span>#ppo</span> <span>#reinforcement-learning</span></div>
+    <h1>多智能体PPO中基于评论家的对抗攻击反超基于执行器的攻击</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-11T04:25:37.440618+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>Reddit上一篇近期技术讨论质疑了Zhang等人2020年关于状态对抗性马尔可夫决策过程（SA-MDP）研究中的一个基础性结论。该论文从理论和实验两方面指出：在单智能体环境中，利用评论家网络（即价值函数V(s)）生成的对抗扰动，其攻击效果弱于利用执行器网络（策略π(s)）生成的扰动。这一结论基于多个经典控制环境的实验，并依赖于关于梯度对齐与策略敏感性的假设。</p>
+<p>然而，作者在多智能体强化学习（MARL）场景中观察到完全相反的现象。他们使用VMAS——一个基于PyTorch、支持向量化与可微分计算的多机器人仿真平台——对独立近端策略优化（IPPO）和图结构独立PPO（GPPO）及其异构变体进行了评估。关键在于，对抗攻击采用基于KL散度闭式解的投影梯度下降（PGD）方法实现，专为连续动作策略定制，技术上严谨且避免了启发式近似。</p>
+<p>在所有测试的VMAS场景中，基于评论家的攻击始终比基于执行器的攻击更显著地降低智能体性能，直接与Zhang等人原始结论相悖。作者提出一个关键方法论问题：这是实现错误所致，还是真实反映了情境依赖性？他特别指出：去中心化训练架构（如IPPO/GPPO中“集中式评论家+分布式执行器”）、环境特性（如VMAS中的部分可观测性与智能体间耦合），以及多智能体策略梯度的本质，可能共同导致单智能体MDP中观察到的鲁棒性层级发生反转。</p>
+<p>这一发现凸显了对抗强化学习中的一个普遍规律：鲁棒性结论极少具有普适性。在线性或表格型MDP中成立的结论，甚至在表现良好的单智能体连续控制任务中验证有效的结论，未必能推广至去中心化、部分可观测或图结构化的多智能体系统。该讨论呼吁深入探究信用分配机制、梯度掩蔽效应及策略-评论家协同适应如何塑造MARL中的脆弱性表面——随着协作型AI系统在现实场景中部署日益迫切，这一问题正变得愈发关键。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1usx96p/on_adversarial_rl_r/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://github.com/proroklab/VectorizedMultiAgentSimulator" target="_blank" rel="noopener">GitHub - proroklab/VectorizedMultiAgentSimulator: VMAS is...</a><a href="https://arxiv.org/pdf/2312.10256" target="_blank" rel="noopener">Multi - agent Reinforcement Learning: A</a><a href="https://ai.stackexchange.com/questions/50666/critic-based-adversarial-attacks-unexpectedly-outperform-actor-based-attacks-in" target="_blank" rel="noopener">Critic-based adversarial attacks unexpectedly outperform actor-based...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

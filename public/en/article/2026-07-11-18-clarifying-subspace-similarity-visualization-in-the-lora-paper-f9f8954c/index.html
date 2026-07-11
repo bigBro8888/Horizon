@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clarifying Subspace Similarity Visualization in the LoRA Paper - Now AI News</title>
+  <meta name="description" content="A practitioner identified an ambiguity in interpreting the subspace similarity heatmap in the LoRA paper—specifically, why non-zero values appear for i &gt; j in zoomed subplots despi" />
+  <link rel="canonical" href="/en/article/2026-07-11-18-clarifying-subspace-similarity-visualization-in-the-lora-paper-f9f8954c" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-11-18-clarifying-subspace-similarity-visualization-in-the-lora-paper-f9f8954c" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-11-18-clarifying-subspace-similarity-visualization-in-the-lora-paper-f9f8954c" />
+  <meta property="og:title" content="Clarifying Subspace Similarity Visualization in the LoRA Paper" />
+  <meta property="og:description" content="A practitioner identified an ambiguity in interpreting the subspace similarity heatmap in the LoRA paper—specifically, why non-zero values appear for i &gt; j in zoomed subplots despi" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1uso667.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1uso667.svg" alt="Clarifying Subspace Similarity Visualization in the LoRA Paper" />
+    <div class="article-page-tags"><span>#LoRA</span> <span>#subspace_similarity</span> <span>#low_rank_adaptation</span> <span>#machine_learning_theory</span> <span>#model_fine_tuning</span></div>
+    <h1>Clarifying Subspace Similarity Visualization in the LoRA Paper</h1>
+    <p class="article-page-meta">News time: 2026-07-11T04:25:37.440477+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A Reddit user recently raised a nuanced but important question about Figure 4 in the seminal LoRA paper — specifically, how to interpret the subspace similarity heatmap and its zoomed subplots. The figure visualizes how well the top-i singular vectors of a low-rank LoRA update matrix align with the top-j singular vectors of the original high-rank weight matrix. At first glance, the metric appears asymmetric: it quantifies the <em>fraction of the i-dimensional subspace spanned by LoRA’s singular vectors that lies within the j-dimensional subspace spanned by the base model’s singular vectors</em>. This naturally implies i ≤ j — since you can’t embed a higher-dimensional subspace into a lower-dimensional one without loss.</p>
+<p>Yet the user noticed apparent contradictions in the zoomed panels: entries where i &gt; j (e.g., i = 5, j = 1) appear populated with non-zero values. This confusion stems from a subtle but critical detail: the subspace similarity metric used is <em>not</em> the strict Grassmannian projection ratio, but rather a <em>normalized, symmetric variant</em> derived from principal angles between subspaces — often computed via the Frobenius norm of the projection matrix product. As explained in pedagogical resources like Steven Gubkin’s SVD-LoRA analysis, this formulation allows meaningful comparison even when i ≠ j, because it measures <em>mutual alignment</em> rather than strict containment.</p>
+<p>The two rightmost subplots zoom into the lower-left triangle — not as a region of invalid indices, but as a region highlighting <em>how much of the base model’s low-rank structure is recoverable from LoRA’s update</em>, i.e., the extent to which early singular directions of the frozen weights are captured by LoRA’s learned perturbation. Here, the y-axis (i) indexes LoRA’s rank-truncated subspace, while the x-axis (j) indexes the base model’s truncation level — and values for i &gt; j reflect how well LoRA’s <em>higher</em>-rank approximation overlaps with the base model’s <em>lower</em>-rank subspace — a measure of structural fidelity, not dimensional containment.</p>
+<p>This distinction matters deeply for practitioners evaluating LoRA’s representational efficiency. If misinterpreted as a strict inclusion metric, one might wrongly conclude LoRA fails to preserve base-model geometry. In reality, the figure affirms LoRA’s ability to concentrate adaptation along directions already salient in the pre-trained model — a key theoretical justification for its parameter efficiency. Understanding this visualization correctly helps bridge the gap between linear algebra intuition and empirical fine-tuning success.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1uso667/please_help_me_understand_figure_on_subspace/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://stevengubkin.github.io/mathematics+of+machine+learning/2023/10/06/SVD-LoRa.html" target="_blank" rel="noopener">Singular Value Decomposition and LoRa · Steven Gubkin</a><a href="https://docsaid.org/en/papers/model-tuning/lora/" target="_blank" rel="noopener">[21.06] LoRA | DOCSAID</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
