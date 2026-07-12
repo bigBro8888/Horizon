@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sqlite-utils 4.1 新增 --code 选项，支持内联 Python 生成数据行 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="sqlite-utils 4.1 为 `insert` 和 `upsert` 命令新增 `--code` 选项，允许用户通过内联 Python 代码块或 `.py` 文件定义数据行，要求提供 `rows()` 函数或 `rows` 可迭代对象。 这大幅降低了程序化、即席数据插入的门槛——尤其利好习惯用 Python 编写逻辑而非准备静态文件的开发者，并进一步" />
+  <link rel="canonical" href="/article/2026-07-12-07-sqlite-utils-4-1-adds-code-option-for-python-driven-row-generation-2e359fa8" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-12-07-sqlite-utils-4-1-adds-code-option-for-python-driven-row-generation-2e359fa8" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-12-07-sqlite-utils-4-1-adds-code-option-for-python-driven-row-generation-2e359fa8" />
+  <meta property="og:title" content="sqlite-utils 4.1 新增 --code 选项，支持内联 Python 生成数据行" />
+  <meta property="og:description" content="sqlite-utils 4.1 为 `insert` 和 `upsert` 命令新增 `--code` 选项，允许用户通过内联 Python 代码块或 `.py` 文件定义数据行，要求提供 `rows()` 函数或 `rows` 可迭代对象。 这大幅降低了程序化、即席数据插入的门槛——尤其利好习惯用 Python 编写逻辑而非准备静态文件的开发者，并进一步" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--97e8fb8081fe304b.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--97e8fb8081fe304b.svg" alt="sqlite-utils 4.1 新增 --code 选项，支持内联 Python 生成数据行" />
+    <div class="article-page-tags"><span>#CLI</span> <span>#SQLite</span> <span>#Python</span> <span>#data-tools</span> <span>#command-line</span></div>
+    <h1>sqlite-utils 4.1 新增 --code 选项，支持内联 Python 生成数据行</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-12T04:35:50.468606+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>sqlite-utils 4.1 是 Simon Willison 开发的 SQLite 命令行与 Python 工具库的最新小版本更新，距离 4.0 版发布仅数日。本次更新引入多项实用改进，其中最引人注目的是新增 <code>--code</code> 选项，它允许开发者<strong>直接在命令行中嵌入 Python 代码</strong>来动态生成待插入或更新的数据行，彻底摆脱对 JSON、CSV 等外部文件的依赖。用户不再需要预先准备静态数据文件，而是可将逻辑内联书写——无论是简短的代码块，还是独立的 <code>.py</code> 脚本——只要定义一个 <code>rows()</code> 生成器函数或 <code>rows</code> 可迭代对象即可。</p>
+<p>该选项同时支持 <code>sqlite-utils insert</code> 和 <code>sqlite-utils upsert</code> 命令。例如，一条命令即可通过 <code>yield</code> 返回两个含 ID 与名称的字典，全程无需文件 I/O，也无需序列化/反序列化开销。这种设计延续了 sqlite-utils 的核心理念：将数据首先视为 Python 对象，再映射为数据库记录。它并非孤立创新，而是对已有能力的自然延伸——此前工具已支持 <code>--convert</code> 进行列级 Python 转换、<code>--functions</code> 注入自定义 SQL 函数；<code>--code</code> 则将“可执行逻辑”从数据处理层提升至数据生成层。</p>
+<p>除 <code>--code</code> 外，4.1 版还包含多项开发者友好的增强：新增 <code>--type column-name type</code> 参数，可强制覆盖 SQLite 自动推断的列类型（例如将形如 '02134' 的 ZIP 码明确设为 <code>TEXT</code>，避免丢失前导零）；新增 <code>sqlite-utils drop-index</code> 命令及 <code>ignore=True</code> 容错机制；<code>sqlite-utils query</code> 现支持从标准输入读取 SQL（用 <code>-</code> 占位），完美契合 Unix 管道哲学。这些改进共同强化了 sqlite-utils 作为轻量级、可组合、终端原生数据工具的定位。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/11/sqlite-utils/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://sqlite-utils.datasette.io/" target="_blank" rel="noopener">sqlite - utils</a><a href="https://github.com/simonw/sqlite-utils" target="_blank" rel="noopener">GitHub - simonw/ sqlite - utils : Python CLI utility and library for...</a><a href="https://simonwillison.net/2026/jul/11/sqlite-utils/" target="_blank" rel="noopener">Release: sqlite - utils 4.1 | Simon Willison’s Weblog</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

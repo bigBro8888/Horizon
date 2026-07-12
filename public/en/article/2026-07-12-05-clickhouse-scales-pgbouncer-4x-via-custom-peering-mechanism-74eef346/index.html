@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClickHouse Scales PgBouncer 4x via Custom Peering Mechanism - Now AI News</title>
+  <meta name="description" content="ClickHouse engineers implemented &#x27;peering&#x27;—a custom inter-process coordination layer in PgBouncer—to enable cross-process query cancellation and shared session awareness, increasin" />
+  <link rel="canonical" href="/en/article/2026-07-12-05-clickhouse-scales-pgbouncer-4x-via-custom-peering-mechanism-74eef346" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-12-05-clickhouse-scales-pgbouncer-4x-via-custom-peering-mechanism-74eef346" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-12-05-clickhouse-scales-pgbouncer-4x-via-custom-peering-mechanism-74eef346" />
+  <meta property="og:title" content="ClickHouse Scales PgBouncer 4x via Custom Peering Mechanism" />
+  <meta property="og:description" content="ClickHouse engineers implemented &#x27;peering&#x27;—a custom inter-process coordination layer in PgBouncer—to enable cross-process query cancellation and shared session awareness, increasin" />
+  <meta property="og:image" content="/media/hackernews-story-48872874.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/hackernews-story-48872874.svg" alt="ClickHouse Scales PgBouncer 4x via Custom Peering Mechanism" />
+    <div class="article-page-tags"><span>#PostgreSQL</span> <span>#connection-pooling</span> <span>#PgBouncer</span> <span>#distributed-systems</span> <span>#Kubernetes</span></div>
+    <h1>ClickHouse Scales PgBouncer 4x via Custom Peering Mechanism</h1>
+    <p class="article-page-meta">News time: 2026-07-12T04:35:50.674792+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>ClickHouse engineers have dramatically improved PgBouncer’s scalability in their Managed PostgreSQL service—achieving up to four times higher throughput—by introducing a novel inter-process coordination system called 'peering'. Traditionally, running multiple PgBouncer instances (e.g., one per CPU core) on the same port using <code>so_reuseport</code> helps distribute load, but introduces a critical flaw: query cancellation requests may land on the wrong process, since each instance maintains its own isolated session state. Without cross-process awareness, a client-initiated <code>pg_cancel_backend()</code> call can fail silently if sent to a PgBouncer process that never handled the original query—a long-standing reliability gap in high-availability deployments.</p>
+<p>The peering mechanism solves this by enabling PgBouncer processes to exchange lightweight metadata about active client sessions and backend connections. When a cancellation request arrives at a non-owning process, it is transparently forwarded—via Unix domain sockets or TCP—to the peer actually managing that session. This preserves PostgreSQL’s strict cancellation semantics while allowing horizontal scaling of the pooler itself. Crucially, peering does not require changes to PostgreSQL; it operates entirely within PgBouncer’s user-space logic and integrates cleanly with existing infrastructure like Kubernetes and cloud load balancers.</p>
+<p>This isn’t theoretical: ClickHouse ships peering-enabled PgBouncer by default across all Managed Postgres instances. The architecture leverages kernel-level <code>so_reuseport</code> for connection distribution and adds just enough coordination to make multi-process pooling safe and efficient. As a result, the connection pooler no longer bottlenecks throughput—even under heavy concurrent load—and instead behaves like resilient plumbing rather than a fragile chokepoint. Engineers report measurable latency reductions and near-linear scaling up to dozens of cores.</p>
+<p>Beyond raw performance, the work highlights an important systems design principle: scaling stateful intermediaries often demands <em>controlled coordination</em>, not just replication or sharding. Peering avoids the complexity of distributed consensus while delivering correctness where it matters most—cancellation, session stickiness, and transaction integrity. For teams operating PostgreSQL at scale—especially in managed or Kubernetes environments—this approach offers a pragmatic, production-hardened alternative to replacing PgBouncer wholesale with newer proxies like Odyssey or custom-built solutions.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://clickhouse.com/blog/pgbouncer-clickhouse-managed-postgres" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://clickhouse.com/blog/pgbouncer-clickhouse-managed-postgres" target="_blank" rel="noopener">How we scale PgBouncer in ClickHouse Managed Postgres</a><a href="https://dataegret.com/2024/08/handling_cancellation_request/" target="_blank" rel="noopener">Handling Cancellation Request - Data Egret</a><a href="https://www.pgbouncer.org/changelog.html" target="_blank" rel="noopener">PgBouncer changelog</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
