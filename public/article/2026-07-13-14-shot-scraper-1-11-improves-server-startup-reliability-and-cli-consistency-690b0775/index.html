@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>shot-scraper 1.11 提升服务器启动可靠性与命令行参数一致性 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="shot-scraper 1.11 将 `multi` 和 `video` 命令的服务器启动超时时间从 1 秒延长至最多 30 秒，并在五个命令中新增 `--js-file` 参数，同时为 `multi` 命令的 YAML 配置添加 `js_file:` 支持。 这提升了自动化截图与视频录制工作流（尤其在 CI/CD 流水线或性能较弱环境中）的可靠性，避免了" />
+  <link rel="canonical" href="/article/2026-07-13-14-shot-scraper-1-11-improves-server-startup-reliability-and-cli-consistency-690b0775" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-13-14-shot-scraper-1-11-improves-server-startup-reliability-and-cli-consistency-690b0775" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-13-14-shot-scraper-1-11-improves-server-startup-reliability-and-cli-consistency-690b0775" />
+  <meta property="og:title" content="shot-scraper 1.11 提升服务器启动可靠性与命令行参数一致性" />
+  <meta property="og:description" content="shot-scraper 1.11 将 `multi` 和 `video` 命令的服务器启动超时时间从 1 秒延长至最多 30 秒，并在五个命令中新增 `--js-file` 参数，同时为 `multi` 命令的 YAML 配置添加 `js_file:` 支持。 这提升了自动化截图与视频录制工作流（尤其在 CI/CD 流水线或性能较弱环境中）的可靠性，避免了" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--b626f9f50c91bc84.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--b626f9f50c91bc84.svg" alt="shot-scraper 1.11 提升服务器启动可靠性与命令行参数一致性" />
+    <div class="article-page-tags"><span>#web-scraping</span> <span>#browser-automation</span> <span>#CLI-tools</span> <span>#testing-tools</span> <span>#Python</span></div>
+    <h1>shot-scraper 1.11 提升服务器启动可靠性与命令行参数一致性</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-13T04:43:02.962448+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>西蒙·威利森（Simon Willison）发布了 shot-scraper 1.11 版本，这是一次以实用性为导向的维护性更新，旨在增强该工具在真实自动化工作流中的稳健性。本次发布聚焦于两项关键改进：大幅延长多页截图与视频录制过程中本地服务器启动的等待超时时间，并统一各子命令的 JavaScript 注入方式。这些改动体现了这款命令行工具正从功能探索阶段转向注重可靠性与开发者体验的成熟期。</p>
+<p>最具实际价值的改进是解决了用户在 server 模式下长期面临的一个痛点——尤其是在执行 <code>multi</code> 和 <code>video</code> 命令时。此前，工具仅等待 1 秒钟便判定本地启动的 Web 服务器未能响应并直接失败。而在实际场景中（例如在较慢的机器上运行，或服务内容复杂的静态站点），这一硬编码延迟常导致自动化流程无故中断。1.11 版本将其替换为自适应轮询机制，最多等待 30 秒，并持续检测端口是否就绪，直至服务器成功响应或超时终止。此举显著提升了 CI 环境或资源受限设备中截图与视频生成任务的稳定性。</p>
+<p>同样重要的是，<code>--js-file</code> 参数现已扩展至五个核心命令（<code>shot-scraper</code>、<code>pdf</code>、<code>html</code>、<code>accessibility</code> 和 <code>har</code>）。用户不再需要将 JavaScript 逻辑直接写入 <code>--javascript</code> 参数中，而是可通过外部文件路径、标准输入（用 <code>-</code> 表示）或 GitHub 托管脚本（如 <code>gh:username/script</code>）来加载脚本。这更利于版本控制、代码复用和复杂浏览器端逻辑的可读性。<code>multi</code> 命令也同步支持 YAML 配置中的 <code>js_file:</code> 键，使多步骤捕获流程可完全声明式定义。</p>
+<p>其他细节优化还包括为 <code>shot-scraper javascript</code> 和 <code>html</code> 命令新增 <code>--timeout</code> 参数，使其与其他子命令保持接口一致。尽管这些更新均未引入颠覆性功能，但它们协同作用，体现了对降低使用门槛、规避常见失败、统一命令接口的持续投入。对于文档维护者、质量保障工程师以及构建自动化视觉回归测试或演示视频流水线的开发者而言，shot-scraper 1.11 带来了静默却切实的可靠性提升。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/12/shot-scraper/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://simonwillison.net/2026/Jul/12/shot-scraper/" target="_blank" rel="noopener">Release: shot - scraper 1.11 | Simon Willison’s Weblog</a><a href="https://shot-scraper.datasette.io/en/stable/video.html" target="_blank" rel="noopener">Recording videos - shot - scraper</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

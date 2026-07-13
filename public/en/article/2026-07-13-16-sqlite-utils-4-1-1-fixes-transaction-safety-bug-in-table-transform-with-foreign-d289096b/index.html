@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sqlite-utils 4.1.1 Fixes Transaction-Safety Bug in table.transform() with Foreign Keys - Now AI News</title>
+  <meta name="description" content="sqlite-utils 4.1.1 introduces a `TransactionError` check in `table.transform()` to prevent silent data loss when foreign keys are enabled and destructive `ON DELETE` actions exist " />
+  <link rel="canonical" href="/en/article/2026-07-13-16-sqlite-utils-4-1-1-fixes-transaction-safety-bug-in-table-transform-with-foreign-d289096b" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-13-16-sqlite-utils-4-1-1-fixes-transaction-safety-bug-in-table-transform-with-foreign-d289096b" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-13-16-sqlite-utils-4-1-1-fixes-transaction-safety-bug-in-table-transform-with-foreign-d289096b" />
+  <meta property="og:title" content="sqlite-utils 4.1.1 Fixes Transaction-Safety Bug in table.transform() with Foreign Keys" />
+  <meta property="og:description" content="sqlite-utils 4.1.1 introduces a `TransactionError` check in `table.transform()` to prevent silent data loss when foreign keys are enabled and destructive `ON DELETE` actions exist " />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--61cb7400ca6e7254.jpg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--61cb7400ca6e7254.jpg" alt="sqlite-utils 4.1.1 Fixes Transaction-Safety Bug in table.transform() with Foreign Keys" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#Python</span> <span>#database-tools</span> <span>#foreign-keys</span> <span>#transaction-safety</span></div>
+    <h1>sqlite-utils 4.1.1 Fixes Transaction-Safety Bug in table.transform() with Foreign Keys</h1>
+    <p class="article-page-meta">News time: 2026-07-13T04:43:02.962507+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>SQLite is widely praised for its simplicity and reliability—but its foreign key behavior, especially under transactional constraints, can catch developers off guard. The latest release of sqlite-utils, version 4.1.1, addresses a subtle yet serious edge case that could lead to unintended data loss during schema transformations. This fix emerged not from a user report or automated test, but from an unexpected discovery during experimentation with Claude AI—highlighting how even well-tested tools can harbor hidden risks when interacting with SQLite’s nuanced pragma system.</p>
+<p>The core issue lies in <code>table.transform()</code>, a powerful utility method that lets developers safely rename, drop, or restructure tables by creating a new table, copying data, and swapping it in place. However, when <code>PRAGMA foreign_keys = ON</code> is active—and when referencing tables define destructive <code>ON DELETE</code> actions like <code>CASCADE</code>, <code>SET NULL</code>, or <code>SET DEFAULT</code>—executing <code>transform()</code> inside an open transaction could silently trigger those actions. Because SQLite forbids changing <code>foreign_keys</code> mid-transaction, the tool previously had no way to temporarily disable constraints before dropping the old table. As a result, rows in other tables could be deleted or altered without warning—breaking referential integrity and violating expectations of atomicity.</p>
+<p>Version 4.1.1 introduces a proactive safeguard: it now raises a clear <code>TransactionError</code> when all three conditions coincide—(1) an active transaction, (2) enabled foreign keys, and (3) destructive <code>ON DELETE</code> rules on referencing tables. This prevents silent corruption and forces developers to choose an explicit, safe path—such as committing first, disabling foreign keys before the transaction (if appropriate), or restructuring outside transactions. The documentation has also been significantly improved, with bidirectional cross-linking between CLI commands and Python API methods, making it easier for users to navigate functionality regardless of their preferred interface.</p>
+<p>While this isn’t a feature-packed release, it exemplifies responsible tooling: prioritizing data safety over convenience, documenting trade-offs transparently, and treating edge cases not as quirks but as potential failure modes. For teams using sqlite-utils in production—especially those managing relational datasets with cascading constraints—this update acts as a critical integrity guardrail. It underscores a broader truth in database tooling: the most valuable improvements are often invisible until they prevent catastrophe.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/12/sqlite-utils/#atom-everything" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://www.sqlite.org/foreignkeys.html" target="_blank" rel="noopener">SQLite Foreign Key Support</a><a href="https://stackoverflow.com/questions/77874084/how-does-sqlites-pragma-foreign-keys-on-reference-the-foreign-keys-tables" target="_blank" rel="noopener">How does SQLite &#x27;s &quot; PRAGMA foreign _ keys = ON ...&quot; - Stack Overflow</a><a href="https://pikaainews.com/news/2026-07-12-our-honest-take-on-sqlite-utils-411-a-necessary-safety-brake-for-data-integrity-f94q9" target="_blank" rel="noopener">sqlite - utils 4.1.1 Review: Why Safety Comes First | Data Tools</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
