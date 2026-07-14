@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research Radar：开源LLM驱动的arXiv论文筛选工具 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="全新开源工具Research Radar发布：采用双阶段大语言模型推理（轻量模型用于评分，强模型用于深度分析），基于用户自定义的Markdown研究兴趣，实现arXiv论文的自动筛选、打分、摘要生成与个性化关联分析。 它直击学术界普遍存在的瓶颈——arXiv信息过载问题，通过高度个性化的低摩擦文献发现机制，无需领域专用训练或中心化人工筛选，从而在各学科中普及" />
+  <link rel="canonical" href="/article/2026-07-14-06-research-radar-open-source-llm-powered-arxiv-paper-filter-38b77c28" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-14-06-research-radar-open-source-llm-powered-arxiv-paper-filter-38b77c28" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-14-06-research-radar-open-source-llm-powered-arxiv-paper-filter-38b77c28" />
+  <meta property="og:title" content="Research Radar：开源LLM驱动的arXiv论文筛选工具" />
+  <meta property="og:description" content="全新开源工具Research Radar发布：采用双阶段大语言模型推理（轻量模型用于评分，强模型用于深度分析），基于用户自定义的Markdown研究兴趣，实现arXiv论文的自动筛选、打分、摘要生成与个性化关联分析。 它直击学术界普遍存在的瓶颈——arXiv信息过载问题，通过高度个性化的低摩擦文献发现机制，无需领域专用训练或中心化人工筛选，从而在各学科中普及" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1uvcdf7.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1uvcdf7.svg" alt="Research Radar：开源LLM驱动的arXiv论文筛选工具" />
+    <div class="article-page-tags"><span>#arXiv</span> <span>#research productivity</span> <span>#LLM applications</span> <span>#academic tools</span> <span>#information retrieval</span></div>
+    <h1>Research Radar：开源LLM驱动的arXiv论文筛选工具</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-14T04:15:21.412062+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>每天，arXiv上新增超过200篇论文——但对大多数研究者而言，其中真正与其具体工作相关的往往不足五篇。手动浏览标题和摘要每天耗费30–60分钟，而通用新闻简报则只推送热门内容，而非个人研究所需。为解决这一痛点，一位研究者开发了Research Radar：一款轻量、跨学科的开源工具，将arXiv文献发现从重复劳动转变为每日可执行的精准信息仪式。</p>
+<p>Research Radar以每日定时任务（cron job）形式运行。它通过arXiv官方RSS订阅源与API获取最新论文——覆盖任意学科分类，并自动去重以消除冗余。相关性判断不依赖硬编码或模型微调；用户仅需用纯文本Markdown文件定义自己的研究兴趣——这份文件即为唯一上下文来源：无需训练、无需适配，仅靠清晰的人类语言提示即可引导两个独立的LLM推理阶段。</p>
+<p>第一阶段由轻量级低成本模型（如Phi-3、Gemma-2或Claude Haiku）完成：批量对每篇论文摘要进行1–10分的相关性打分，严格依据用户Markdown描述。仅得分最高的5–10篇论文进入第二阶段深度分析：工具自动下载PDF全文，用PyMuPDF提取高质量文本，并交由更强模型（如GPT-4、Claude Sonnet，或本地部署的Llama-3 via Ollama/vLLM）处理。该阶段不仅生成摘要，更提炼方法论亮点、局限性，并明确指出该工作如何与用户自身研究形成关联。</p>
+<p>最终成果以简洁HTML摘要页呈现（支持可选Telegram推送），兼顾快速浏览与深度阅读。尤为关键的是，系统完全模型无关：用户可接入任意OpenAI兼容接口——包括完全离线的本地部署——甚至可为不同阶段分别指定不同后端。项目仓库中已提供详尽基准测试，涵盖各模型的token消耗、延迟与成本权衡，助用户按需平衡速度、精度与预算。作者已在机器学习领域连续使用一个月，证实其稳定实用，并诚邀社区在物理学、生物学、经济学等其他领域共同验证与反馈。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1uvcdf7/hundreds_of_papers_hit_arxiv_every_day_and_maybe/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://info.arxiv.org/help/rss.html" target="_blank" rel="noopener">RSS Feeds - arXiv info</a><a href="https://github.com/ronpay/arxiv-rss-feed-generator" target="_blank" rel="noopener">GitHub - ronpay/ arxiv - rss -feed-generator: A simple , elegant web tool...</a><a href="https://visionvix.com/best-llm-for-research/" target="_blank" rel="noopener">9 Best LLMs for Research and Academic Use in 2026</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>通过 UV_EXCLUDE_NEWER 实现 GitHub Actions 中 uvx 的缓存友好用法 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Simon Willison 提出了一种面向 GitHub Actions 的 uvx 缓存友好模式：通过将 UV_EXCLUDE_NEWER 环境变量固定为某一天，并将其纳入缓存键，确保工具安装的一致性与可复用性。 该技术通过避免重复下载 PyPI 包，显著缩短 CI 运行时间、降低带宽消耗，提升构建间可重现性，并为现代 Python CI 流水线中的确定" />
+  <link rel="canonical" href="/article/2026-07-14-11-cache-friendly-uvx-usage-in-github-actions-via-uv_exclude_newer-b1ac4a55" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-14-11-cache-friendly-uvx-usage-in-github-actions-via-uv_exclude_newer-b1ac4a55" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-14-11-cache-friendly-uvx-usage-in-github-actions-via-uv_exclude_newer-b1ac4a55" />
+  <meta property="og:title" content="通过 UV_EXCLUDE_NEWER 实现 GitHub Actions 中 uvx 的缓存友好用法" />
+  <meta property="og:description" content="Simon Willison 提出了一种面向 GitHub Actions 的 uvx 缓存友好模式：通过将 UV_EXCLUDE_NEWER 环境变量固定为某一天，并将其纳入缓存键，确保工具安装的一致性与可复用性。 该技术通过避免重复下载 PyPI 包，显著缩短 CI 运行时间、降低带宽消耗，提升构建间可重现性，并为现代 Python CI 流水线中的确定" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--86da57583a025800.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--86da57583a025800.svg" alt="通过 UV_EXCLUDE_NEWER 实现 GitHub Actions 中 uvx 的缓存友好用法" />
+    <div class="article-page-tags"><span>#GitHub Actions</span> <span>#uv</span> <span>#CI/CD</span> <span>#Python tooling</span> <span>#caching</span></div>
+    <h1>通过 UV_EXCLUDE_NEWER 实现 GitHub Actions 中 uvx 的缓存友好用法</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-14T04:15:20.855210+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>一种面向 Python CI/CD 流水线的实用优化方案已浮现：以缓存友好的方式在 GitHub Actions 中使用 <code>uvx</code>——即超快 Rust 编写的 Python 包安装器 <code>uv</code> 的工具执行子命令。知名开发者兼技术作者 Simon Willison 近日分享了一种精炼模式，通过利用 <code>UV_EXCLUDE_NEWER</code> 环境变量，使 <code>uvx</code> 同时具备可重现性与缓存效率。</p>
+<p>其核心思想简洁而有力：通过设置 <code>UV_EXCLUDE_NEWER</code> 为一个固定日期（例如 <code>"2026-07-12"</code>），将包解析的有效“时间窗口”锁定。这会指示 <code>uv</code> 忽略该日期之后发布的任何包版本——即使 PyPI 上存在更新版本。因此，<code>uvx black</code>、<code>uvx ruff</code> 等任意工具调用都将始终解析为截至该截止日期的最新可用版本，在不牺牲时效性的前提下实现确定性行为。</p>
+<p>关键在于，该日期被直接嵌入 GitHub Actions 的缓存键中——例如 <code>cache-key: uvx-${{ env.UV_EXCLUDE_NEWER }}</code>。由于缓存键仅在人工更新日期时才会变化，重复运行的工作流即可复用同一份缓存的工具安装（含 wheel 文件及依赖），完全跳过网络下载环节。Willison 报告称，此举可显著节省构建时间——单次作业常可减少 40 秒以上。</p>
+<p>该方法还规避了简单缓存策略的常见缺陷：不同于仅基于工具名或版本号的缓存，它避免了因上游频繁发布新版本而导致的缓存大规模失效。相比硬编码精确版本号（需持续维护）更灵活，也比依赖 <code>uv</code> 默认行为（默认总会检查最新版本，除非受限）更可靠。<code>astral-sh/setup-uv</code> 仓库中一项公开议题也印证了社区对将此类缓存设为官方 setup action 默认行为的迫切需求。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/14/uvx-github-actions-cache/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://docs.astral.sh/uv/reference/environment/" target="_blank" rel="noopener">Environment variables | uv</a><a href="https://docs.astral.sh/uv/guides/tools/" target="_blank" rel="noopener">Using tools | uv - Astral Docs</a><a href="https://gentic.news/article/uv-exclude-newer-the-environment" target="_blank" rel="noopener">UV _ EXCLUDE _ NEWER : The Environment Variable … | gentic.news</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

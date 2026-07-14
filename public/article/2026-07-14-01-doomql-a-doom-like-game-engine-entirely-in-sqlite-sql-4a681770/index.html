@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOOMQL：完全基于SQLite纯SQL实现的类Doom游戏引擎 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Peter Gostev 发布了 DOOMQL，这是一款完全可玩的终端类 Doom 游戏，其全部逻辑——包括基于光线投射的 3D 渲染、物理系统、战斗机制和用户界面——均由纯 SQLite SQL 查询实现，Python 主机脚本仅承担最基础的输入轮询与查询触发功能。 DOOMQL 证明 SQL 可作为通用计算基底，而不仅限于查询语言，为游戏开发、实时可视化" />
+  <link rel="canonical" href="/article/2026-07-14-01-doomql-a-doom-like-game-engine-entirely-in-sqlite-sql-4a681770" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-14-01-doomql-a-doom-like-game-engine-entirely-in-sqlite-sql-4a681770" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-14-01-doomql-a-doom-like-game-engine-entirely-in-sqlite-sql-4a681770" />
+  <meta property="og:title" content="DOOMQL：完全基于SQLite纯SQL实现的类Doom游戏引擎" />
+  <meta property="og:description" content="Peter Gostev 发布了 DOOMQL，这是一款完全可玩的终端类 Doom 游戏，其全部逻辑——包括基于光线投射的 3D 渲染、物理系统、战斗机制和用户界面——均由纯 SQLite SQL 查询实现，Python 主机脚本仅承担最基础的输入轮询与查询触发功能。 DOOMQL 证明 SQL 可作为通用计算基底，而不仅限于查询语言，为游戏开发、实时可视化" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--083d0cae653d4b7c.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--083d0cae653d4b7c.png" alt="DOOMQL：完全基于SQLite纯SQL实现的类Doom游戏引擎" />
+    <div class="article-page-tags"><span>#SQL</span> <span>#game-engine</span> <span>#terminal</span> <span>#retro-gaming</span> <span>#systems-programming</span></div>
+    <h1>DOOMQL：完全基于SQLite纯SQL实现的类Doom游戏引擎</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-14T04:15:20.855259+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>DOOMQL 不仅仅是一款终端游戏——它彻底重构了数据库的潜在能力。该项目由 Peter Gostev 开发（使用了实验性工具链，包括 GPT-5.6 Sol），将 SQLite 从被动的数据存储器转变为活跃的<em>运行时游戏引擎</em>，驱动一款完整可玩的第一人称复古射击游戏。每一帧画面——角色移动、碰撞检测、敌人AI、武器开火、生命值管理，甚至逐像素的屏幕渲染——都不是由 C 或 Python 代码执行，而是通过精心编排的 SQL 查询在 SQLite 内部实时计算完成。最终呈现的是一款令人惊叹的 ASCII 风格像素化 Doom 克隆，在单个 SQLite 数据库文件中全栈运行。</p>
+<p>其技术核心是一个递归公用表表达式（CTE），实现了完整的光线投射（raycasting）渲染器——这一技术传统上仅见于 C 等编译型语言。该纯 SQL 渲染器能计算墙面距离、应用透视投影、通过查找表实现纹理映射，并合成精灵图（sprites），全程无需外部库或过程式逻辑。游戏主循环以约每秒 30 帧的速度运行，由一个轻量级 Python 主机脚本驱动：它轮询键盘输入并触发 SQL 执行；而所有可变状态——玩家坐标、弹药数量、敌人位置，甚至当前帧缓冲区——均以 <code>(x, y, r, g, b)</code> 列形式存于 <code>frame_pixels</code> 视图中，全部驻留在数据库内。</p>
+<p>DOOMQL 的真正魅力在于其高度可观察性与可组合性。由于全部状态都存于 SQLite，开发者可借助 Datasette 等工具实时查询与可视化。配合新推出的 Datasette Apps 插件，用户能构建动态网页仪表盘——例如自动刷新的 3D 视角视图或战术俯视小地图——这些应用以声明式 HTML/JS 编写，直接向同一数据库发起 SQL 查询。有用户甚至仅用自然语言提示（向 Claude Fable 5 发送指令）就生成了视角视图和小地图，充分展现了 SQL、UI 与游戏逻辑前所未有的深度统一。</p>
+<p>DOOMQL 并非面向生产环境的高性能引擎——它是一个概念验证项目，旨在突破 SQL 的传统边界。但其影响深远：它挑战了“计算应发生在何处”的固有认知，为调试复杂状态机提供了全新范式，并有力证明——即使是在终端中，富有表现力的声明式逻辑也能驱动丰富交互体验。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/13/doomql/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://deepwiki.com/cedardb/DOOMQL/2.2-sql-rendering-pipeline" target="_blank" rel="noopener">SQL Rendering Pipeline | cedardb/DOOMQL | DeepWiki</a><a href="https://cedardb.com/blog/doomql/" target="_blank" rel="noopener">Building a DOOM-like multiplayer shooter in pure SQL</a><a href="https://digg.com/tech/iuhrpvcu" target="_blank" rel="noopener">Peter Gostev builds a Doom-like raycasting engine entirely in ...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

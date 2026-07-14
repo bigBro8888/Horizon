@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cache-Friendly uvx Usage in GitHub Actions via UV_EXCLUDE_NEWER - Now AI News</title>
+  <meta name="description" content="Simon Willison introduced a cache-friendly GitHub Actions pattern for uvx that uses the UV_EXCLUDE_NEWER environment variable pinned to a fixed date and incorporated into the cache" />
+  <link rel="canonical" href="/en/article/2026-07-14-11-cache-friendly-uvx-usage-in-github-actions-via-uv_exclude_newer-b1ac4a55" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-14-11-cache-friendly-uvx-usage-in-github-actions-via-uv_exclude_newer-b1ac4a55" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-14-11-cache-friendly-uvx-usage-in-github-actions-via-uv_exclude_newer-b1ac4a55" />
+  <meta property="og:title" content="Cache-Friendly uvx Usage in GitHub Actions via UV_EXCLUDE_NEWER" />
+  <meta property="og:description" content="Simon Willison introduced a cache-friendly GitHub Actions pattern for uvx that uses the UV_EXCLUDE_NEWER environment variable pinned to a fixed date and incorporated into the cache" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--86da57583a025800.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--86da57583a025800.svg" alt="Cache-Friendly uvx Usage in GitHub Actions via UV_EXCLUDE_NEWER" />
+    <div class="article-page-tags"><span>#GitHub Actions</span> <span>#uv</span> <span>#CI/CD</span> <span>#Python tooling</span> <span>#caching</span></div>
+    <h1>Cache-Friendly uvx Usage in GitHub Actions via UV_EXCLUDE_NEWER</h1>
+    <p class="article-page-meta">News time: 2026-07-14T04:15:20.855210+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>A practical optimization for Python-based CI/CD pipelines has emerged: using <code>uvx</code>—the tool execution subcommand of the ultra-fast Rust-based Python package installer <code>uv</code>—in a way that avoids redundant PyPI downloads across GitHub Actions workflow runs. Simon Willison, a well-known developer and technical writer, recently shared a refined pattern that makes <code>uvx</code> both reproducible and cache-efficient by leveraging the <code>UV_EXCLUDE_NEWER</code> environment variable.</p>
+<p>The core idea is simple but powerful: pin the effective 'time horizon' for package resolution by setting <code>UV_EXCLUDE_NEWER</code> to a fixed date (e.g., <code>"2026-07-12"</code>). This tells <code>uv</code> to ignore any package versions published <em>after</em> that date—even if newer versions exist on PyPI. As a result, <code>uvx black</code>, <code>uvx ruff</code>, or any other tool invocation will consistently resolve to the latest version available <em>as of that cutoff</em>, enabling deterministic behavior without sacrificing freshness.</p>
+<p>Crucially, this date is then embedded directly into the GitHub Actions cache key—such as <code>cache-key: uvx-${{ env.UV_EXCLUDE_NEWER }}</code>. Because the cache key changes only when the date is manually updated, repeated workflow runs reuse the same cached tool installation (including wheels and dependencies), skipping network fetches entirely. Willison reports measurable time savings—often over 40 seconds per job—by eliminating repeated downloads and wheel builds from PyPI.</p>
+<p>This approach also sidesteps common pitfalls of naïve caching: unlike caching based solely on tool names or versions, it avoids cache invalidation storms caused by frequent upstream releases. It’s more flexible than hardcoding exact versions (which require constant maintenance) and more reliable than relying on <code>uv</code>’s default behavior—which, by design, always checks for the newest available version unless constrained. An open issue in the <code>astral-sh/setup-uv</code> repository even confirms community demand for making such caching the default behavior in official setup actions.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/14/uvx-github-actions-cache/#atom-everything" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://docs.astral.sh/uv/reference/environment/" target="_blank" rel="noopener">Environment variables | uv</a><a href="https://docs.astral.sh/uv/guides/tools/" target="_blank" rel="noopener">Using tools | uv - Astral Docs</a><a href="https://gentic.news/article/uv-exclude-newer-the-environment" target="_blank" rel="noopener">UV _ EXCLUDE _ NEWER : The Environment Variable … | gentic.news</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
