@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lobsters 从 MariaDB 迁移至 SQLite，降低成本并提升性能 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Lobsters（lobste.rs）于 2026 年 7 月完成从 MariaDB 到 SQLite 的生产环境迁移，整个 Rails 应用（含 3.8GB 主数据库）现运行于单台 VPS 上，性能与成本效益均有显著提升。 此次迁移是一个高可信度的真实案例，有力驳斥了‘SQLite 不适用于生产环境 Web 应用’的常见误解——证明只要架构设计得当，SQL" />
+  <link rel="canonical" href="/article/2026-07-15-11-lobsters-migrates-from-mariadb-to-sqlite-cutting-costs-and-improving-performance-45977b5a" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-15-11-lobsters-migrates-from-mariadb-to-sqlite-cutting-costs-and-improving-performance-45977b5a" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-15-11-lobsters-migrates-from-mariadb-to-sqlite-cutting-costs-and-improving-performance-45977b5a" />
+  <meta property="og:title" content="Lobsters 从 MariaDB 迁移至 SQLite，降低成本并提升性能" />
+  <meta property="og:description" content="Lobsters（lobste.rs）于 2026 年 7 月完成从 MariaDB 到 SQLite 的生产环境迁移，整个 Rails 应用（含 3.8GB 主数据库）现运行于单台 VPS 上，性能与成本效益均有显著提升。 此次迁移是一个高可信度的真实案例，有力驳斥了‘SQLite 不适用于生产环境 Web 应用’的常见误解——证明只要架构设计得当，SQL" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--62fc607a04bf61ec.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--62fc607a04bf61ec.svg" alt="Lobsters 从 MariaDB 迁移至 SQLite，降低成本并提升性能" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#web-infrastructure</span> <span>#Rails</span> <span>#database-migration</span> <span>#scalability</span></div>
+    <h1>Lobsters 从 MariaDB 迁移至 SQLite，降低成本并提升性能</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-15T04:15:47.545177+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>在一项标志性的基础设施决策中，编程社区网站 Lobsters（lobste.rs）已将其后端数据库从 MariaDB 全面迁移至 SQLite，并宣布此次变更取得显著成功。该迁移于最近一个周末完成，目前已进入稳定运行阶段，标志着始于 2018 年 8 月、历时近八年的技术探索画上句点——最初计划迁移到 PostgreSQL，但去年团队重新评估后决定转向 SQLite。</p>
+<p>此次迁移绝非轻而易举：仅主 Pull Request 就包含 30 多次提交、涉及 188 个文件，新增代码 735 行、删除 593 行，由 Thomas Dziedzic 主导开发，并建立在先前三项关键 PR（#1705、#1871 和 #1924）的基础之上。尤为关键的是，整个 Rails 应用现在完全运行于单台 VPS 上，不再需要独立的数据库服务器。主 SQLite 数据库文件已达 3.8GB，此外还配有三个辅助 SQLite 数据库：1.1GB 缓存库、218MB 任务队列库，以及快速增长至 555MB 的 Rack::Attack 数据库（用于请求限流与恶意行为拦截）。</p>
+<p>性能指标令人信服：CPU 和内存占用均明显下降；用户普遍反馈响应更快——被形容为“更灵敏”；待旧 MariaDB 专用服务器下线后，基础设施成本预计可降低一半。这一结果直接挑战了长期以来关于 SQLite 不适用于生产级 Web 应用的固有认知，尤其对于像 Lobsters 这样日均访问量达数千的社区站点而言。</p>
+<p>本案例尤为值得借鉴之处在于其现实性：未采用任何特殊工具、未做分片、未依赖云原生抽象——仅通过精细的 Rails 适配、合理的表结构设计，以及对 SQLite WAL 模式和连接池的审慎使用。团队充分发挥了 SQLite 的核心优势：简洁、可靠、零配置部署，同时通过架构设计规避其传统短板（例如高并发写入争用），如将不同职责分离至多个数据库文件，并将繁重写操作交由后台任务处理。</p>
+<p>正如 Simon Willison 所指出，这不仅是一次小众优化，更是适时提醒：许多 Web 应用——尤其是流量适中、以社区或内容为核心的站点——或许根本无需承担客户端-服务器型关系数据库的运维负担。借助现代硬件与成熟生态，SQLite 完全可以成为稳健、经济高效的生产级基础架构——即便在 2026 年。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/14/lobsters-sqlite/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://www.selecthub.com/relational-database-solutions/sqlite-vs-mariadb/" target="_blank" rel="noopener">SQLite vs MariaDB | Which Relational Databases Wins In 2026?</a><a href="https://www.ionos.com/digitalguide/hosting/technical-matters/mariadb-vs-sqlite/" target="_blank" rel="noopener">How to compare MariaDB vs. SQLite: Features and use cases - IONOS</a><a href="https://www.geeksforgeeks.org/dbms/difference-between-sqlite-and-mariadb/" target="_blank" rel="noopener">Difference between SQLite and MariaDB - GeeksforGeeks</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

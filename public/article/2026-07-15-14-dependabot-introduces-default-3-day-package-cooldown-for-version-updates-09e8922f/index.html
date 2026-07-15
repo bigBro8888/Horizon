@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dependabot 默认启用 3 天包版本更新冷却期 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="自 2026 年 7 月 14 日起，GitHub Dependabot 对所有版本更新拉取请求默认启用 3 天冷却期——即在软件包发布后至少等待 72 小时才发起更新建议——该策略覆盖除 NuGet 外所有受支持的包管理生态系统（NuGet 支持将在近期上线）。 这一变更重塑了团队在自动化速度、更新疲劳与供应链风险之间的平衡方式，为负责任的依赖治理确立了新" />
+  <link rel="canonical" href="/article/2026-07-15-14-dependabot-introduces-default-3-day-package-cooldown-for-version-updates-09e8922f" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-15-14-dependabot-introduces-default-3-day-package-cooldown-for-version-updates-09e8922f" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-15-14-dependabot-introduces-default-3-day-package-cooldown-for-version-updates-09e8922f" />
+  <meta property="og:title" content="Dependabot 默认启用 3 天包版本更新冷却期" />
+  <meta property="og:description" content="自 2026 年 7 月 14 日起，GitHub Dependabot 对所有版本更新拉取请求默认启用 3 天冷却期——即在软件包发布后至少等待 72 小时才发起更新建议——该策略覆盖除 NuGet 外所有受支持的包管理生态系统（NuGet 支持将在近期上线）。 这一变更重塑了团队在自动化速度、更新疲劳与供应链风险之间的平衡方式，为负责任的依赖治理确立了新" />
+  <meta property="og:image" content="/media/hackernews-story-48913050.jpg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/hackernews-story-48913050.jpg" alt="Dependabot 默认启用 3 天包版本更新冷却期" />
+    <div class="article-page-tags"><span>#DevOps</span> <span>#Security</span> <span>#PackageManagement</span> <span>#SoftwareEngineering</span> <span>#DependencyManagement</span></div>
+    <h1>Dependabot 默认启用 3 天包版本更新冷却期</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-15T04:15:47.835695+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>GitHub 已悄然但显著地调整了 Dependabot 处理依赖项版本更新的方式：自 2026 年 7 月 14 日起，Dependabot 默认对所有新发布的软件包版本施加为期三天的“冷却期”。这意味着，无论 npm、PyPI、Docker Hub 还是其他受支持的生态系统的包，Dependabot 都需等待其在注册表中发布满至少 72 小时后，才会发起版本更新的拉取请求（PR）。该策略全自动启用，无需任何配置；若团队希望恢复即时更新，必须在 <code>dependabot.yml</code> 中显式禁用该功能。</p>
+<p>此举的核心目标是降低噪声与开发者认知负荷。频繁、密集的 PR——尤其是针对次要或补丁版本的更新——常令开发人员不堪重负，导致合并疲劳、审查跳过，甚至忽视真正关键的安全补丁。通过引入延迟机制，GitHub 希望为早期采用者和自动化扫描工具留出时间，以发现回归缺陷或供应链风险（例如恶意提交、构建失败），从而避免问题版本大规模扩散。这是一项刻意权衡：以轻微延迟换取更高稳定性与更清晰的信号-噪声比。</p>
+<p>然而，这一调整已在工程与安全社区引发深入讨论。部分观点指出，即使仅延迟三天，也可能延长易受攻击版本的驻留时间，尤其当零日漏洞正被积极利用时。另一些人则强调，许多组织已将 Dependabot PR 视为机械化的“合规检查项”，而非基于上下文的技术决策——因此冷却期恰是推动更审慎依赖治理的必要校准。值得注意的是，该冷却机制 <em>不适用于</em> 安全告警：Dependabot 基于已知漏洞触发的 PR 仍保持即时且无延迟。</p>
+<p>技术层面，冷却期按包独立计算且不可重置：若某包在第 0 天发布存在缺陷的版本，而修复版于第 2 天上线，Dependabot 不会再等满三天，而是立即发起指向修复版的 PR；但若冷却期内无新版本发布，则原定于第 3 天生成的 PR 仍将照常提交。这一设计细节至关重要：它既保障了对修复响应的敏捷性，又有效抑制了不稳定版本带来的噪音。对于 JavaScript 或 Python 等高迭代速率生态中的团队，结合规范化的评审流程与策略执行，该变更预计可减少 20%–40% 的 PR 数量（据 GitHub 内部初步数据）。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.blog/changelog/2026-07-14-dependabot-version-updates-introduce-default-package-cooldown/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://github.blog/changelog/2026-07-14-dependabot-version-updates-introduce-default-package-cooldown/" target="_blank" rel="noopener">Dependabot version updates introduce default package cooldown</a><a href="https://docs.github.com/en/code-security/concepts/supply-chain-security/dependabot-version-updates" target="_blank" rel="noopener">Dependabot version updates - GitHub Docs</a><a href="https://github.blog/changelog/2025-07-01-dependabot-supports-configuration-of-a-minimum-package-age/" target="_blank" rel="noopener">Dependabot supports configuration of a minimum package age</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

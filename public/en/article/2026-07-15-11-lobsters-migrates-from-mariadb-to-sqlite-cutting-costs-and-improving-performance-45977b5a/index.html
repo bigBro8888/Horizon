@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lobsters migrates from MariaDB to SQLite, cutting costs and improving performance - Now AI News</title>
+  <meta name="description" content="Lobsters (lobste.rs) completed its production migration from MariaDB to SQLite in July 2026, running its entire Rails stack—including a 3.8GB primary database—on a single VPS with " />
+  <link rel="canonical" href="/en/article/2026-07-15-11-lobsters-migrates-from-mariadb-to-sqlite-cutting-costs-and-improving-performance-45977b5a" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-15-11-lobsters-migrates-from-mariadb-to-sqlite-cutting-costs-and-improving-performance-45977b5a" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-15-11-lobsters-migrates-from-mariadb-to-sqlite-cutting-costs-and-improving-performance-45977b5a" />
+  <meta property="og:title" content="Lobsters migrates from MariaDB to SQLite, cutting costs and improving performance" />
+  <meta property="og:description" content="Lobsters (lobste.rs) completed its production migration from MariaDB to SQLite in July 2026, running its entire Rails stack—including a 3.8GB primary database—on a single VPS with " />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--62fc607a04bf61ec.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--62fc607a04bf61ec.svg" alt="Lobsters migrates from MariaDB to SQLite, cutting costs and improving performance" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#web-infrastructure</span> <span>#Rails</span> <span>#database-migration</span> <span>#scalability</span></div>
+    <h1>Lobsters migrates from MariaDB to SQLite, cutting costs and improving performance</h1>
+    <p class="article-page-meta">News time: 2026-07-15T04:15:47.545177+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>In a landmark infrastructure decision, the programming community site Lobsters (lobste.rs) has fully migrated its backend database from MariaDB to SQLite — and declared the change a resounding success. Completed over a recent weekend and now deemed stable for long-term operation, the shift marks the culmination of an eight-year exploration that began in August 2018 with plans to adopt PostgreSQL, only to pivot toward SQLite after deeper evaluation last year.</p>
+<p>The migration wasn’t trivial: it involved over 30 commits across 188 files, adding 735 lines and removing 593 lines of code in the main pull request alone — authored by Thomas Dziedzic and built upon three prior foundational PRs. Crucially, the Rails application now runs entirely on a single VPS, eliminating the need for a separate database server. The primary SQLite database file stands at 3.8GB, supplemented by three auxiliary SQLite databases: a 1.1GB cache, a 218MB job queue, and a rapidly growing 555MB Rack::Attack database used for rate limiting and abuse mitigation.</p>
+<p>Performance metrics tell a compelling story: CPU and memory usage have both dropped significantly; users report improved responsiveness — described as ‘snappier’ — and infrastructure costs are projected to fall by half once the old MariaDB VPS is decommissioned. This outcome directly challenges longstanding assumptions about SQLite’s unsuitability for production web applications, especially those serving thousands of daily visitors like Lobsters.</p>
+<p>What makes this case especially instructive is its realism: no exotic tooling, no custom sharding, no cloud-native abstractions — just careful Rails adaptation, thoughtful schema design, and disciplined use of SQLite’s WAL mode and connection pooling. The team leaned into SQLite’s strengths — simplicity, reliability, zero-configuration deployment — while mitigating its traditional weaknesses (e.g., concurrent write contention) through architectural choices like separating concerns across multiple database files and offloading heavy writes to background jobs.</p>
+<p>As Simon Willison notes, this isn’t just a niche optimization — it’s a timely reminder that many web applications, particularly community-driven or content-focused sites with moderate traffic, may not need the operational overhead of client-server RDBMSes. With modern hardware and mature tooling, SQLite can serve as a robust, cost-effective foundation — even in 2026.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/14/lobsters-sqlite/#atom-everything" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://www.selecthub.com/relational-database-solutions/sqlite-vs-mariadb/" target="_blank" rel="noopener">SQLite vs MariaDB | Which Relational Databases Wins In 2026?</a><a href="https://www.ionos.com/digitalguide/hosting/technical-matters/mariadb-vs-sqlite/" target="_blank" rel="noopener">How to compare MariaDB vs. SQLite: Features and use cases - IONOS</a><a href="https://www.geeksforgeeks.org/dbms/difference-between-sqlite-and-mariadb/" target="_blank" rel="noopener">Difference between SQLite and MariaDB - GeeksforGeeks</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

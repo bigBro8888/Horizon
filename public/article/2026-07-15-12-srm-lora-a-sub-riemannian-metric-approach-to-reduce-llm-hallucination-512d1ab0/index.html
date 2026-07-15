@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SRM-LoRA：基于次黎曼度量的LLM幻觉抑制方法 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="SRM-LoRA是一种受次黎曼度量启发的LoRA变体，已被ICML 2026 FoGen研讨会接收；它利用基于参数敏感度的黎曼度量重塑LoRA梯度更新，在不增加推理开销的前提下有效抑制幻觉。 这项工作弥合了几何深度学习理论与LLM实际可靠性之间的鸿沟，为幻觉抑制这一影响大模型落地的关键瓶颈，提供了兼具数学严谨性、计算高效性与实证有效性的新路径。 该黎曼度量直" />
+  <link rel="canonical" href="/article/2026-07-15-12-srm-lora-a-sub-riemannian-metric-approach-to-reduce-llm-hallucination-512d1ab0" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-15-12-srm-lora-a-sub-riemannian-metric-approach-to-reduce-llm-hallucination-512d1ab0" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-15-12-srm-lora-a-sub-riemannian-metric-approach-to-reduce-llm-hallucination-512d1ab0" />
+  <meta property="og:title" content="SRM-LoRA：基于次黎曼度量的LLM幻觉抑制方法" />
+  <meta property="og:description" content="SRM-LoRA是一种受次黎曼度量启发的LoRA变体，已被ICML 2026 FoGen研讨会接收；它利用基于参数敏感度的黎曼度量重塑LoRA梯度更新，在不增加推理开销的前提下有效抑制幻觉。 这项工作弥合了几何深度学习理论与LLM实际可靠性之间的鸿沟，为幻觉抑制这一影响大模型落地的关键瓶颈，提供了兼具数学严谨性、计算高效性与实证有效性的新路径。 该黎曼度量直" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1uw4j6a.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1uw4j6a.png" alt="SRM-LoRA：基于次黎曼度量的LLM幻觉抑制方法" />
+    <div class="article-page-tags"><span>#LLM</span> <span>#hallucination</span> <span>#LoRA</span> <span>#geometric deep learning</span> <span>#ICML</span></div>
+    <h1>SRM-LoRA：基于次黎曼度量的LLM幻觉抑制方法</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-15T04:15:47.959616+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一种名为SRM-LoRA的新型低秩适配技术已被ICML 2026“生成式建模基础”（FoGen）研讨会接收，标志着在用数学方法解决大语言模型（LLM）幻觉问题上迈出重要一步。与传统LoRA方法采用均匀参数更新不同，SRM-LoRA借鉴次黎曼几何思想，引入一种几何感知的正则化策略，智能重塑适配器参数空间中的梯度方向。其核心理念并非改变模型推理时的前向计算方式，而是依据损失函数对参数的局部敏感性，有选择地调控低秩矩阵的梯度更新路径。</p>
+<p>该方法构建了一个数据驱动的黎曼度量，其中“更新代价”由损失对参数的敏感度决定——形式化定义为∂loss/∂parameters的范数。高敏感方向（常与训练数据中的虚假相关性和过拟合有关）被主动抑制；低敏感、鲁棒的方向则得以保留。关键在于，这一度量并非通过额外可学习参数联合优化获得，而是直接从一阶梯度解析推导而来，避免了模型容量膨胀和过拟合风险。因此，SRM-LoRA在推理阶段不增加任何计算开销，完全继承LoRA的高效特性。</p>
+<p>实验表明，SRM-LoRA仅在专用于评估事实一致性的HaluEval-QA数据集上训练，却在多种分布内与分布外幻觉评测基准上均取得稳定提升。这说明该方法捕捉的是泛化性强的事实可靠性模式，而非对特定数据集的记忆。作者强调，其贡献不仅在于性能增益，更在于在微调实践中架起微分几何与工程实践之间的原则性桥梁：将LoRA参数空间视为一个结构化流形，而非欧几里得空间，其中“移动代价”直接编码语义保真度。</p>
+<p>除技术新颖性外，SRM-LoRA还挑战了当前AI中数学应用的惯性思维。它并未将复杂理论作为黑箱模块嵌入，而是展示了几何直觉——此处即将梯度下降理解为结构化空间上的路径优化——如何催生可解释、轻量且实证有效的干预手段。该项目已在GitHub开源，并于ICML（人工智能顶级会议）正式报告，反映出学界正加速推动“理论驱动、可靠性优先”的基础模型适配范式。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1uw4j6a/llm_hallucination_paperusing_math_accepted_to/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://en.wikipedia.org/wiki/Sub-Riemannian_manifold" target="_blank" rel="noopener">Sub-Riemannian manifold - Wikipedia</a><a href="https://openreview.net/forum?id=x7b5lLUmnn" target="_blank" rel="noopener">SRM-LoRA: Sub-Riemannian-Style Updates for Mitigating LLM...</a><a href="https://github.com/genji970/SRM-LoRA" target="_blank" rel="noopener">GitHub - genji970/SRM-LoRA: official implementation of &quot;SRM ...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mindgard披露Cursor未修复零日漏洞，可导致任意代码执行 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Mindgard在多次负责任披露失败（历时六个月、跨越197多个版本）后，公开披露了Cursor中一个尚未修复的零日漏洞：攻击者只需在项目目录中放置一个恶意命名的git.exe文件，即可触发任意代码执行。 该漏洞使数百万Cursor用户面临静默远程代码执行风险，挑战了AI-IDE领域对安全假设的普遍认知，并迫使业界正视“负责任披露”在厂商无视关键漏洞时的实际" />
+  <link rel="canonical" href="/article/2026-07-15-07-mindgard-discloses-unpatched-cursor-0day-allowing-arbitrary-code-execution-b2262c4b" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-15-07-mindgard-discloses-unpatched-cursor-0day-allowing-arbitrary-code-execution-b2262c4b" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-15-07-mindgard-discloses-unpatched-cursor-0day-allowing-arbitrary-code-execution-b2262c4b" />
+  <meta property="og:title" content="Mindgard披露Cursor未修复零日漏洞，可导致任意代码执行" />
+  <meta property="og:description" content="Mindgard在多次负责任披露失败（历时六个月、跨越197多个版本）后，公开披露了Cursor中一个尚未修复的零日漏洞：攻击者只需在项目目录中放置一个恶意命名的git.exe文件，即可触发任意代码执行。 该漏洞使数百万Cursor用户面临静默远程代码执行风险，挑战了AI-IDE领域对安全假设的普遍认知，并迫使业界正视“负责任披露”在厂商无视关键漏洞时的实际" />
+  <meta property="og:image" content="/media/hackernews-story-48910676.webp" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/hackernews-story-48910676.webp" alt="Mindgard披露Cursor未修复零日漏洞，可导致任意代码执行" />
+    <div class="article-page-tags"><span>#security</span> <span>#vulnerability</span> <span>#AI-IDE</span> <span>#responsible-disclosure</span> <span>#Cursor</span></div>
+    <h1>Mindgard披露Cursor未修复零日漏洞，可导致任意代码执行</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-15T04:15:47.835753+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>在安全研究人员与AI增强型开发工具厂商之间日益加剧的紧张关系中，Mindgard公开披露了一个已存在六个月的Cursor零日漏洞——Cursor是一款广受欢迎的AI增强型集成开发环境（IDE）。该漏洞最早于2025年12月15日被发现，当Cursor扫描项目目录并遇到一个被恶意命名为<code>git.exe</code>的可执行文件时，会无条件执行它，从而导致任意代码执行。尽管Mindgard多次通过HackerOne平台提交报告——包括最初被判定为“信息性”且“超出范围”，后经申诉才被重新开启并确认复现——该问题却在197个以上版本迭代中始终未被修复，甚至在Mindgard最新测试的Cursor版本中依然存在。</p>
+<p>该漏洞的核心在于Cursor对Git二进制文件的内部依赖机制。当Cursor扫描本地项目文件夹并检测到名为<code>git.exe</code>的可执行文件时，它会在未经验证或沙箱隔离的情况下直接运行该文件——这一设计默认信任本地文件系统。此举绕过了操作系统层面的标准防护机制，一旦该二进制文件被恶意构造，即可实现权限提升。值得注意的是，用户仅需打开受影响的仓库，无需任何额外操作，Cursor便会在常规Git集成检查过程中自动触发该恶意二进制文件。</p>
+<p>Mindgard此次披露正值业界对Cursor安全实践与厂商响应能力批评声高涨之际。近期分析指出，Cursor并非传统意义上的被动编辑器，而是一组高自主性智能体的协同系统——每个功能模块都构成潜在攻击面。其安全模型强调“隐私模式”（Privacy Mode）以防止代码数据泄露至大语言模型提供商，但并未提供同等强度的本地二进制执行防护机制。缺乏对Git相关二进制文件的输入校验、路径净化或执行沙箱，暴露出其威胁建模中的关键缺失。</p>
+<p>该漏洞的影响远超Cursor本身。目前Cursor拥有超百万月活跃用户，并深度嵌入开发者工作流——涵盖CI/CD流水线及AI代理辅助编程等场景。这一事件凸显了AI IDE如何继承并放大传统软件供应链风险。同时，它也再度激化了“负责任披露”与“完全披露”的长期争论：当厂商在确凿证据和持续沟通下仍拒绝修复时，公开披露是否已成为一种伦理必需？对于如今越来越多依赖AI代理编写、测试与部署代码的开发者而言，这个问题的答案或许已不再只是理论探讨。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://mindgard.ai/blog/cursor-0day-when-full-disclosure-becomes-the-only-protection-left" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://www.backslash.security/blog/cursor-ide-security-best-practices" target="_blank" rel="noopener">Cursor IDE Security Best Practices &amp; Tips - Backslash</a><a href="https://www.truefoundry.com/blog/cursor-security" target="_blank" rel="noopener">Cursor Security: Risks, Privacy &amp; Best Practices</a><a href="https://cursor.com/security" target="_blank" rel="noopener">Cursor · Security</a><a href="https://www.linkedin.com/pulse/disclosure-dilemma-responsibility-vs-full-dean-charlton-vgkff" target="_blank" rel="noopener">The Disclosure Dilemma: Responsibility vs. Full Disclosure in ...</a><a href="https://blog.bugv.io/responsible-disclosure-vs-full-disclosure-security-researchers/" target="_blank" rel="noopener">Responsible Disclosure vs. Full Disclosure: What Every ...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
