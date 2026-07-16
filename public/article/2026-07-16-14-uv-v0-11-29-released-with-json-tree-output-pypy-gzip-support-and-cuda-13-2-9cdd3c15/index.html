@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>uv v0.11.29 发布：支持 JSON 树输出、PyPy gzip 下载及 CUDA 13.2 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="uv v0.11.29 新增 `uv tree` 的 JSON 输出格式、PyPy 下载的 gzip 压缩支持、PyTorch 对 CUDA 13.2 的官方支持、更清晰的错误诊断，以及多项安全与性能修复。 这些更新提升了开发者效率、降低了 CI 环境带宽成本、增强了机器学习工作流对现代 GPU 工具链的兼容性，并强化了抵御路径遍历和凭据泄露的安全能力。 该" />
+  <link rel="canonical" href="/article/2026-07-16-14-uv-v0-11-29-released-with-json-tree-output-pypy-gzip-support-and-cuda-13-2-9cdd3c15" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-16-14-uv-v0-11-29-released-with-json-tree-output-pypy-gzip-support-and-cuda-13-2-9cdd3c15" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-16-14-uv-v0-11-29-released-with-json-tree-output-pypy-gzip-support-and-cuda-13-2-9cdd3c15" />
+  <meta property="og:title" content="uv v0.11.29 发布：支持 JSON 树输出、PyPy gzip 下载及 CUDA 13.2" />
+  <meta property="og:description" content="uv v0.11.29 新增 `uv tree` 的 JSON 输出格式、PyPy 下载的 gzip 压缩支持、PyTorch 对 CUDA 13.2 的官方支持、更清晰的错误诊断，以及多项安全与性能修复。 这些更新提升了开发者效率、降低了 CI 环境带宽成本、增强了机器学习工作流对现代 GPU 工具链的兼容性，并强化了抵御路径遍历和凭据泄露的安全能力。 该" />
+  <meta property="og:image" content="/media/github-release-354640213.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/github-release-354640213.png" alt="uv v0.11.29 发布：支持 JSON 树输出、PyPy gzip 下载及 CUDA 13.2" />
+    <div class="article-page-tags"><span>#python</span> <span>#packaging</span> <span>#uv</span> <span>#devtools</span> <span>#dependency-management</span></div>
+    <h1>uv v0.11.29 发布：支持 JSON 树输出、PyPy gzip 下载及 CUDA 13.2</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-16T04:23:14.166821+00:00 · 来源: github</p>
+    <article class="article-page-body"><p>Astral 公司于 2026 年 7 月 15 日发布了 uv v0.11.29 — 这是一次聚焦于稳定性与可用性的维护性更新，未改变核心架构，但切实提升了开发者体验、安全性和生态兼容性。作为 pip、pip-tools 和 virtualenv 的超高速替代方案，uv 已被广泛用于现代 Python 项目中。本次更新引入了多项实用改进：<code>uv tree</code> 命令新增 JSON 输出格式，便于 IDE、CI 系统和依赖关系可视化工具集成；PyPy 下载默认启用 gzip 压缩，显著降低网络带宽消耗并加快安装速度，尤其适用于持续集成或弱网环境。</p>
+<p>底层能力方面，uv 正式支持 CUDA 13.2 作为 PyTorch 的后端构建选项——此举紧贴 NVIDIA 最新工具链演进，满足机器学习工程师对新版 GPU 加速库的迫切需求。依赖解析器也获得多项优化：版本冲突提示更清晰（如直接依赖范围不可满足时）、缺失 extras 错误明确标出所属项目名、根依赖冲突不再显示空版本区间——大幅缩短调试耗时。性能层面，<code>uv tree</code>、<code>uv export</code>、<code>uv audit</code> 等命令复用工作区发现逻辑，<code>uv sync</code> 在无操作时延迟初始化客户端与构建环境，整体响应更轻量高效。</p>
+<p>安全性亦得到加强：uv 现在拒绝所有试图通过符号链接逃逸源码树的 PEP 517 构建后端路径，并自动脱敏失败 Git 拉取命令中的认证凭据。OSV 漏洞审计功能进一步完善——当扫描包数量超 1000 时自动分批查询，并确保修复版本信息仅应用于匹配的包与生态系统，避免误报。修复项涵盖诸多边缘场景，例如正确处理无版本号的 <code>.egg-info</code> 文件、严格遵循 PEP 440 规范排序预发布版本、以及保障跨平台锁定操作的幂等性。</p>
+<p>尽管并非重大功能版本，v0.11.29 充分体现了 uv 成熟稳健的迭代风格：小步快跑、测试充分、以开发者为中心。凭借覆盖 macOS（Apple Silicon/x86_64）、Linux 和 Windows 的 Tier 1 官方支持，以及针对前 10,000 个 PyPI 包的全量验证，uv 正稳步成为现代 Python 工具链的 Rust 驱动基石——在速度、安全与易用性之间实现精妙平衡。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/astral-sh/uv/releases/tag/0.11.29" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://github.com/astral-sh/uv" target="_blank" rel="noopener">GitHub - astral-sh/uv: An extremely fast Python package and ... uv · PyPI Installation | uv - Astral Python UV: The Ultimate Guide to the Fastest Python Package ... uv: A Complete Guide to Python&#x27;s Fastest Package Manager Managing Python Projects With uv: An All-in-One Solution</a><a href="https://packaging.python.org/en/latest/specifications/pylock-toml/" target="_blank" rel="noopener">pylock.toml Specification - Python Packaging User Guide</a><a href="https://peps.python.org/pep-0751/" target="_blank" rel="noopener">PEP 751 – A file format to record Python dependencies for ...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

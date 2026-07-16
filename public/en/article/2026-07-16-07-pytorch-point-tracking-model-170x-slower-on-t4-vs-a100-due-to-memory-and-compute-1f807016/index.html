@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PyTorch point-tracking model 170x slower on T4 vs A100 due to memory and compute bottlenecks - Now AI News</title>
+  <meta name="description" content="A PyTorch point-tracking model exhibits a 170× inference slowdown on NVIDIA T4 versus A100 under identical FP32 execution and full GPU utilization, revealing severe memory bandwidt" />
+  <link rel="canonical" href="/en/article/2026-07-16-07-pytorch-point-tracking-model-170x-slower-on-t4-vs-a100-due-to-memory-and-compute-1f807016" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-16-07-pytorch-point-tracking-model-170x-slower-on-t4-vs-a100-due-to-memory-and-compute-1f807016" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-16-07-pytorch-point-tracking-model-170x-slower-on-t4-vs-a100-due-to-memory-and-compute-1f807016" />
+  <meta property="og:title" content="PyTorch point-tracking model 170x slower on T4 vs A100 due to memory and compute bottlenecks" />
+  <meta property="og:description" content="A PyTorch point-tracking model exhibits a 170× inference slowdown on NVIDIA T4 versus A100 under identical FP32 execution and full GPU utilization, revealing severe memory bandwidt" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1ux6a9x.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1ux6a9x.svg" alt="PyTorch point-tracking model 170x slower on T4 vs A100 due to memory and compute bottlenecks" />
+    <div class="article-page-tags"><span>#PyTorch</span> <span>#GPU-Optimization</span> <span>#CUDA</span> <span>#Computer-Vision</span> <span>#Transformer-Performance</span></div>
+    <h1>PyTorch point-tracking model 170x slower on T4 vs A100 due to memory and compute bottlenecks</h1>
+    <p class="article-page-meta">News time: 2026-07-16T04:23:14.065988+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A machine learning practitioner recently reported an extreme performance discrepancy: their PyTorch-based point-tracking model runs approximately 170 times slower on an NVIDIA T4 GPU than on an A100 — 85 seconds per half-video versus just 0.5 seconds. The workload involves processing 47-frame, 256×256 videos at batch size 1, using pure FP32 arithmetic and building dense 4D correlation volumes before feeding them into transformer layers for temporal modeling. Crucially, the slowdown isn’t due to idle hardware: GPU utilization hits 99% on the T4 (confirmed via <code>nvidia-smi</code>), the model resides fully on GPU memory, and identical behavior appears across two independent T4 systems — ruling out driver or configuration anomalies.</p>
+<p>The root cause lies not in software misconfiguration but in fundamental architectural differences between the two GPUs. The A100 features 80 GB of HBM2e memory delivering up to 2.0 TB/s bandwidth, while the T4 relies on 16 GB of GDDR6 with only 320 GB/s — a 6.25× gap. For workloads generating massive intermediate tensors — like 4D correlation volumes that scale quadratically with resolution and frame count — memory bandwidth becomes the dominant limiter. Even though both GPUs execute FP32 operations, the A100’s Ampere architecture includes enhanced Tensor Cores capable of accelerated FP32 fused multiply-add (FMA) throughput, whereas the T4’s Turing Tensor Cores are optimized primarily for INT8/FP16 and offer far lower FP32 efficiency.</p>
+<p>Further compounding the issue is the model’s reliance on dense, non-sparse tensor operations. Unlike modern vision transformers that benefit from attention sparsity or quantization, this tracker performs exhaustive pairwise frame correlations — a memory-bound, high-volume data movement task. The T4’s narrower 256-bit memory bus and lack of NVLink also hinder scalability and inter-GPU communication, though less relevant here given the single-GPU setup. Profiling with <code>nsight-compute</code> would likely reveal near-peak memory bandwidth saturation on the T4, while the A100 operates comfortably within its much higher ceiling.</p>
+<p>This case underscores a critical reality in GPU-accelerated computer vision: raw specs like CUDA core count or even theoretical TFLOPS can mislead when real-world workloads expose bottlenecks invisible to synthetic benchmarks. Developers optimizing for inference latency must profile <em>where</em> time is spent — memory bandwidth, cache efficiency, or kernel launch overhead — rather than assuming uniform scaling across generations. For teams deploying on edge or cost-constrained infrastructure (where T4s remain common), such discrepancies signal the need for architecture-aware model design: e.g., reducing correlation volume dimensions, adopting separable convolutions, or fusing operations to minimize intermediate memory writes.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1ux6a9x/pytorch_model_running_170x_slower_on_t4_vs_a100/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://cloudgputracker.com/compare/nvidia-a100-vs-nvidia-t4/" target="_blank" rel="noopener">NVIDIA A100 80GB vs NVIDIA T4 Comparison - cloudgputracker.com</a><a href="https://images.nvidia.com/aem-dam/en-zz/Solutions/data-center/nvidia-ampere-architecture-whitepaper.pdf" target="_blank" rel="noopener">V1.0 NVIDIA A100 Tensor Core GPU Architecture</a><a href="https://www.linkedin.com/posts/smallest_nvidia-gpu-showdown-a100-vs-t4-with-two-activity-7117750246096433152-FF2J" target="_blank" rel="noopener">Nvidia GPU Showdown - A100 vs T4 With two of Nvidia&#x27;s most popular GPUs for AI acceleration - the A100 and T4 - which should you choose? Here&#x27;s a quick rundown of the key differences: Performance -… | smallest.ai</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

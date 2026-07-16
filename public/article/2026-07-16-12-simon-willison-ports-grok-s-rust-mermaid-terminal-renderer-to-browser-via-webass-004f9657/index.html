@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>西蒙·威利森将Grok的Rust版Mermaid终端渲染器通过WebAssembly移植至浏览器 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="西蒙·威利森创建了 grok-mermaid —— 一款基于浏览器的 WebAssembly 工具，通过将 xAI 开源的 Rust 版 mermaid.rs 渲染器编译并在客户端执行，将 Mermaid 图表渲染为 Unicode 方框艺术。 它展示了将高性能 Rust 命令行工具无缝引入浏览器的一种实用、无依赖方案，可在无 JavaScript 冗余代码" />
+  <link rel="canonical" href="/article/2026-07-16-12-simon-willison-ports-grok-s-rust-mermaid-terminal-renderer-to-browser-via-webass-004f9657" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-16-12-simon-willison-ports-grok-s-rust-mermaid-terminal-renderer-to-browser-via-webass-004f9657" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-16-12-simon-willison-ports-grok-s-rust-mermaid-terminal-renderer-to-browser-via-webass-004f9657" />
+  <meta property="og:title" content="西蒙·威利森将Grok的Rust版Mermaid终端渲染器通过WebAssembly移植至浏览器" />
+  <meta property="og:description" content="西蒙·威利森创建了 grok-mermaid —— 一款基于浏览器的 WebAssembly 工具，通过将 xAI 开源的 Rust 版 mermaid.rs 渲染器编译并在客户端执行，将 Mermaid 图表渲染为 Unicode 方框艺术。 它展示了将高性能 Rust 命令行工具无缝引入浏览器的一种实用、无依赖方案，可在无 JavaScript 冗余代码" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--9a7004640b9b2be0.jpg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--9a7004640b9b2be0.jpg" alt="西蒙·威利森将Grok的Rust版Mermaid终端渲染器通过WebAssembly移植至浏览器" />
+    <div class="article-page-tags"><span>#WebAssembly</span> <span>#Mermaid</span> <span>#Rust</span> <span>#CLI-tools</span> <span>#developer-tools</span></div>
+    <h1>西蒙·威利森将Grok的Rust版Mermaid终端渲染器通过WebAssembly移植至浏览器</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-16T04:23:13.221851+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>开发者西蒙·威利森（Simon Willison）构建了一款名为 <em>grok-mermaid</em> 的新型浏览器工具，可将 Mermaid 图表语法实时渲染为 Unicode 方框艺术（box art），全程在客户端运行，无需任何服务器依赖。该工具基于 WebAssembly 构建，直接复用 xAI 公司开源的 Grok CLI 中的 <code>mermaid.rs</code> 渲染器——这原本是一个专为终端设计、完全自包含的 Rust 模块。威利森是在探索 Grok Build 最近开源的代码库时发现这一精巧实现的，具体路径为 <code>xai-grok-markdown/src/mermaid.rs</code>，并敏锐意识到其轻量、无依赖的特性非常适合跨平台复用。</p>
+<p>他并未重写逻辑，而是借助 AI 辅助开发（Claude Code / Fable 5）指导 WebAssembly 移植过程。最终成果支持用户在文本编辑区输入 Mermaid 流程图、序列图或 graph TD 代码，并即时以纯 Unicode 字符（如方块、线条、箭头等）渲染为文本图表——而非 SVG 或 Canvas。这种方案带来极小的包体积、零外部依赖和完全离线可用性。在线演示界面简洁：提供“最大宽度”调节、“复制为纯文本”及“生成可分享链接”等功能。</p>
+<p>选择 Unicode 方框艺术而非矢量图形，是一种有意识的权衡：以牺牲部分视觉精度与交互能力为代价，换取极致的可移植性与无障碍访问性。不同于依赖重型 JavaScript 库（如 D3.js 或 Mermaid.js）的传统 Mermaid 渲染器，<code>grok-mermaid</code> 将 Rust 编译为 WebAssembly，在浏览器沙箱中原生执行，避免了 DOM 操作与复杂依赖，特别适用于资源受限场景——例如文档预览、集成于 Web 界面的 CLI 工具，或嵌入式终端应用。</p>
+<p>该项目体现了现代工具链如何打通技术生态：一家 AI 公司（xAI）开源的终端优先 Rust 库，经由 WebAssembly 被无缝引入 Web 开发者工作流，且无需修改原始代码。它也凸显了 AI 结对编程在系统级集成中的价值：威利森公开表示，Claude Code 帮助快速生成 WASM 胶水代码，证明当领域知识（Rust、WASM、Mermaid 抽象语法树）与精准提示结合时，大模型能显著加速跨平台移植。归根结底，<code>grok-mermaid</code> 不仅是趣味实验，更是一份可复现的蓝图——展示如何将高性能、类原生的命令行工具带入浏览器。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/16/grok-mermaid/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://docs.rs/crate/mermaid-rs/latest" target="_blank" rel="noopener">mermaid - rs 0.1.1 - Docs. rs</a><a href="https://github.com/1jehuang/mermaid-rs-renderer" target="_blank" rel="noopener">GitHub - 1jehuang/ mermaid - rs -renderer: A fast native Rust Mermaid ...</a><a href="https://x.ai/news/grok-build-cli" target="_blank" rel="noopener">Introducing Grok Build | SpaceXAI</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

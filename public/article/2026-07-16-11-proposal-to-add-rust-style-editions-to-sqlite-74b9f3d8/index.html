@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>提议为 SQLite 引入类似 Rust 的版本（Editions）机制 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="有人提议在 SQLite 中引入类似 Rust 的“版本（Editions）”机制，通过新增 PRAGMA 指令（例如 `PRAGMA edition = 2026`）支持选择性启用破坏性改进，同时完全保持向后兼容性。 此举将使 SQLite 能有意义地演进其默认行为和功能，解决长期存在的可用性问题，同时不损害其赖以成名的跨数十年部署的向后兼容性保障。 版本" />
+  <link rel="canonical" href="/article/2026-07-16-11-proposal-to-add-rust-style-editions-to-sqlite-74b9f3d8" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-16-11-proposal-to-add-rust-style-editions-to-sqlite-74b9f3d8" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-16-11-proposal-to-add-rust-style-editions-to-sqlite-74b9f3d8" />
+  <meta property="og:title" content="提议为 SQLite 引入类似 Rust 的版本（Editions）机制" />
+  <meta property="og:description" content="有人提议在 SQLite 中引入类似 Rust 的“版本（Editions）”机制，通过新增 PRAGMA 指令（例如 `PRAGMA edition = 2026`）支持选择性启用破坏性改进，同时完全保持向后兼容性。 此举将使 SQLite 能有意义地演进其默认行为和功能，解决长期存在的可用性问题，同时不损害其赖以成名的跨数十年部署的向后兼容性保障。 版本" />
+  <meta property="og:image" content="/media/hackernews-story-48928135.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/hackernews-story-48928135.svg" alt="提议为 SQLite 引入类似 Rust 的版本（Editions）机制" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#Rust</span> <span>#database-design</span> <span>#backward-compatibility</span> <span>#systems-programming</span></div>
+    <h1>提议为 SQLite 引入类似 Rust 的版本（Editions）机制</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-16T04:23:13.525972+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>开发者莫滕·默勒·拉斯穆森（Morten Møller Rasmussen）在其广受欢迎的博客 <em>mort.coffee</em> 上提出一项新建议：为 SQLite 引入类似 Rust 的“版本（Editions）”机制。该设想允许开发者选择性启用更现代、更安全或更一致的默认行为，同时完全不破坏现有应用的兼容性。正如 Rust 版本机制通过语言级演进实现向后兼容一样，SQLite 版本也将通过一条新的 PRAGMA 指令（例如 <code>PRAGMA edition = 2026</code>）激活。启用后，数据库引擎将应用更新后的默认行为——例如更严格的类型检查、对 <code>SQLITE_BUSY</code> 错误的改进处理，或更可靠的外键约束——而所有未启用版本的连接仍保持原有行为。</p>
+<p>这一方案直击 SQLite 演进中的长期痛点：其对向后兼容性的极致承诺，使得改进默认行为变得异常困难。例如，当前 <code>SQLITE_BUSY</code> 错误需依赖手动重试逻辑或 <code>busy_timeout</code> 设置，而新版本可将指数退避式自动重试设为默认；又如严格 <code>NOT NULL</code> 约束或确定性 <code>ORDER BY</code> 行为——目前或是需显式开启，或是行为不一致——均可在特定版本中成为标准行为。关键在于，这些变更不涉及磁盘格式或 SQL 语法本身，仅影响运行时行为与默认配置。</p>
+<p>该提案刻意维护 SQLite 的核心可移植性承诺：数据库文件仍可在不同 SQLite 版本间自由读取。版本设置仅作用于单个连接，且是临时性的（如同其他 PRAGMA），不会写入数据库文件本身。这延续了 SQLite 的简洁哲学：<code>.db</code> 文件中不嵌入任何版本元数据，旧版 <code>sqlite3</code> 命令行工具也不会因新版数据库而失效。</p>
+<p>当然，社区也指出了实际挑战。有评论者指出，嵌入式应用与系统命令行工具若使用不同 SQLite 版本，可能引发困惑：新版应用可能按版本规则执行查询，但旧版 <code>sqlite3</code> 工具却无法识别这些规则，导致结果不一致或警告缺失。另有观点认为，APSW 等封装库已提供合理默认值——但它们缺乏跨运行时的标准化。作者坦承这些权衡，并强调版本机制并非取代优质工具链，而是为 SQL 层提供一种基础性、标准化的行为意图声明方式。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://mort.coffee/home/sqlite-editions/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://www.sqlite.org/pragma.html" target="_blank" rel="noopener">Pragma statements supported by SQLite</a><a href="https://doc.rust-lang.org/edition-guide/editions/index.html" target="_blank" rel="noopener">What are editions? - The Rust Edition Guide</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

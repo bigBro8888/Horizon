@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gemma-4 26B在13年老款双路至强CPU上实现5词/秒推理 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="研究人员利用先进量化技术和CPU内核优化，在一台13年历史的双路至强CPU服务器上实现了Gemma-4 26B模型5词/秒的推理速度，全程未使用GPU。 此举打破了“前沿大语言模型必须依赖高端GPU”的固有认知，使私有化、离线化及低成本可控的推理成为可能，尤其适用于边缘计算、数据主权敏感及资源受限的实际部署场景。 该系统完全不依赖GPU；推理基于深度量化权重" />
+  <link rel="canonical" href="/article/2026-07-16-04-gemma-4-26b-runs-at-5-tokens-sec-on-13-year-old-dual-xeon-cpu-f7ea1458" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-16-04-gemma-4-26b-runs-at-5-tokens-sec-on-13-year-old-dual-xeon-cpu-f7ea1458" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-16-04-gemma-4-26b-runs-at-5-tokens-sec-on-13-year-old-dual-xeon-cpu-f7ea1458" />
+  <meta property="og:title" content="Gemma-4 26B在13年老款双路至强CPU上实现5词/秒推理" />
+  <meta property="og:description" content="研究人员利用先进量化技术和CPU内核优化，在一台13年历史的双路至强CPU服务器上实现了Gemma-4 26B模型5词/秒的推理速度，全程未使用GPU。 此举打破了“前沿大语言模型必须依赖高端GPU”的固有认知，使私有化、离线化及低成本可控的推理成为可能，尤其适用于边缘计算、数据主权敏感及资源受限的实际部署场景。 该系统完全不依赖GPU；推理基于深度量化权重" />
+  <meta property="og:image" content="/media/hackernews-story-48922434.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/hackernews-story-48922434.png" alt="Gemma-4 26B在13年老款双路至强CPU上实现5词/秒推理" />
+    <div class="article-page-tags"><span>#LLM inference</span> <span>#CPU optimization</span> <span>#quantization</span> <span>#edge AI</span> <span>#Gemma</span></div>
+    <h1>Gemma-4 26B在13年老款双路至强CPU上实现5词/秒推理</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-16T04:23:13.526062+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>NeoMind Labs的一项引人注目的实验表明：仅靠CPU即可高效运行前沿大语言模型。研究人员成功在一台已有13年历史的双路Intel至强服务器上，以5词/秒的速度运行参数量达260亿的Gemma-4模型，全程未使用任何GPU加速。该硬件平台可追溯至2011年前后，很可能基于Sandy Bridge或Ivy Bridge微架构，配备DDR3内存且无独立加速器。这一成果并非源于硬件性能突破，而是软件层面多重优化协同作用的结果：包括激进的量化（可能为INT4或FP8）、针对注意力机制与矩阵乘法深度调优的CPU内核，以及基于llama.cpp等现代推理运行时构建的定制化工具链，充分利用了BLAS库和AVX-512指令集。</p>
+<p>Gemma-4模型家族由Google DeepMind于2026年4月发布，采用宽松的Apache 2.0许可证，是开源大模型发展的重要里程碑。该系列支持稠密与混合专家（MoE）两种架构，原生支持多模态，并为部分尺寸（如12B Unified）引入“无编码器”设计——直接将图像块与音频波形投影至语言模型嵌入空间。本次运行的26B版本虽为稠密结构（非MoE），但其成功部署印证了模型架构简化（如统一嵌入、轻量注意力）如何与软件优化形成正向协同。尤为关键的是，该测试并非理想化基准：系统在真实上下文长度与采样温度下完成端到端文本生成，而非仅测合成吞吐量。</p>
+<p>除推理速度外，实验更揭示了实际部署中的权衡取舍。该老式服务器满载功耗约500W，按德国电价（每千瓦时0.3美元）计算，每小时推理成本约0.15美元，而同等输出量的云API服务仅需约0.005美元。但本地推理具备数据隐私、零出口费用、离线可用性及完全模型控制权等不可替代优势，对医疗、金融或边缘场景至关重要。多位用户在评论中分享类似成果：有人在16GB内存的M2版MacBook Air上以7–9词/秒运行Qwen3.6-35B-A3B模型，印证CPU端LLM工具链正快速成熟。</p>
+<p>这一里程碑并非宣告GPU时代的终结，而是重新划定了“可行硬件”的边界。随着量化技术持续精进、CPU专用内核库支持自动调优、MoE稀疏性被用于选择性激活，即便是老旧设备也可能胜任原型开发、轻量微调或边缘服务。对开发者而言，它再次确认：模型效率正日益成为一场以软件为核心的竞赛，而非单纯依赖硬件采购。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.neomindlabs.com/2026/06/08/running-gemma-4-26b-at-5-tokens-sec-on-a-13-year-old-xeon-with-no-gpu/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://arxiv.org/pdf/2607.02770" target="_blank" rel="noopener">Gemma 4 Technical Report - arXiv.org</a><a href="https://ai.google.dev/gemma/docs/core/model_card_4" target="_blank" rel="noopener">Gemma 4 model card | Google AI for Developers</a><a href="https://dev.to/linnn_charm_2e397112f3b51/gemma-4-complete-guide-architecture-models-and-deployment-in-2026-3m5b" target="_blank" rel="noopener">Gemma 4 Complete Guide: Architecture, Models, and Deployment ...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

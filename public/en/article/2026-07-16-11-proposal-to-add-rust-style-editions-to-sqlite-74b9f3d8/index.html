@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proposal to Add Rust-Style Editions to SQLite - Now AI News</title>
+  <meta name="description" content="A proposal has been made to introduce Rust-style &#x27;editions&#x27; in SQLite, enabling opt-in breaking improvements via a new PRAGMA directive (e.g., PRAGMA edition = 2026) while preservi" />
+  <link rel="canonical" href="/en/article/2026-07-16-11-proposal-to-add-rust-style-editions-to-sqlite-74b9f3d8" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-16-11-proposal-to-add-rust-style-editions-to-sqlite-74b9f3d8" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-16-11-proposal-to-add-rust-style-editions-to-sqlite-74b9f3d8" />
+  <meta property="og:title" content="Proposal to Add Rust-Style Editions to SQLite" />
+  <meta property="og:description" content="A proposal has been made to introduce Rust-style &#x27;editions&#x27; in SQLite, enabling opt-in breaking improvements via a new PRAGMA directive (e.g., PRAGMA edition = 2026) while preservi" />
+  <meta property="og:image" content="/media/hackernews-story-48928135.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/hackernews-story-48928135.svg" alt="Proposal to Add Rust-Style Editions to SQLite" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#Rust</span> <span>#database-design</span> <span>#backward-compatibility</span> <span>#systems-programming</span></div>
+    <h1>Proposal to Add Rust-Style Editions to SQLite</h1>
+    <p class="article-page-meta">News time: 2026-07-16T04:23:13.525972+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A new proposal by developer Morten Møller Rasmussen—author of the widely read blog <em>mort.coffee</em>—suggests introducing Rust-style 'editions' to SQLite. The idea is to let developers opt into modernized, safer, or more consistent default behaviors without breaking existing applications. Much like Rust editions, which allow language-level evolution while preserving full backward compatibility across versions, SQLite editions would be activated via a new PRAGMA directive (e.g., <code>PRAGMA edition = 2026</code>). Once enabled, the database engine would apply updated defaults—such as stricter type checking, improved error handling for <code>SQLITE_BUSY</code>, or enhanced foreign key enforcement—while leaving legacy behavior untouched for all other connections.</p>
+<p>This approach directly addresses long-standing friction points in SQLite’s evolution: its extreme commitment to backward compatibility has made it difficult to improve defaults without risking breakage. For example, <code>SQLITE_BUSY</code> currently requires manual retry logic or <code>busy_timeout</code>, whereas an edition could make automatic exponential backoff the default. Similarly, features like strict <code>NOT NULL</code> enforcement or deterministic <code>ORDER BY</code> behavior—currently opt-in or inconsistent—could become standard within an edition. Crucially, no changes would affect on-disk format or SQL syntax; editions only alter runtime behavior and defaults.</p>
+<p>The proposal deliberately avoids altering SQLite’s core portability promise: database files remain fully readable across versions. Instead, edition settings are connection-scoped and ephemeral—like other PRAGMAs—and do not persist in the file itself. This preserves SQLite’s hallmark simplicity: no version metadata embedded in <code>.db</code> files, no risk of older <code>sqlite3</code> CLI tools failing to open newer databases. It also sidesteps the complexity of versioned schema migrations or runtime feature detection.</p>
+<p>Critics rightly point out practical challenges. As one commenter notes, mismatched SQLite versions between embedded apps and system CLI tools could lead to confusion: a newer app might write using edition-aware defaults, but an older <code>sqlite3</code> binary wouldn’t recognize or respect those settings—potentially yielding inconsistent query results or unexpected warnings. Others suggest wrapper libraries (e.g., APSW) already provide sane defaults—but these lack cross-runtime standardization. The author acknowledges these trade-offs and positions editions not as a replacement for good tooling, but as a foundational, standardized way to declare behavioral intent at the SQL level.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://mort.coffee/home/sqlite-editions/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://www.sqlite.org/pragma.html" target="_blank" rel="noopener">Pragma statements supported by SQLite</a><a href="https://doc.rust-lang.org/edition-guide/editions/index.html" target="_blank" rel="noopener">What are editions? - The Rust Edition Guide</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
