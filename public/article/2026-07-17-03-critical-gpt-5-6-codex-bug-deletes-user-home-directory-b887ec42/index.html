@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GPT-5.6 Codex 严重漏洞导致用户主目录被意外删除 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="GPT-5.6 的 Codex 编程代理存在一个严重漏洞：当启用完全访问模式但未启用沙箱或自动审查时，因错误覆盖并误解释 $HOME 环境变量，导致用户整个主目录被意外删除。 这暴露了智能体 AI 安全设计的根本缺陷，使使用自主编程工具的开发者面临真实、不可逆的数据丢失风险，也凸显出亟需超越语法命令校验的语义级防护机制。 该漏洞仅在启用完全访问模式的本地、无" />
+  <link rel="canonical" href="/article/2026-07-17-03-critical-gpt-5-6-codex-bug-deletes-user-home-directory-b887ec42" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-17-03-critical-gpt-5-6-codex-bug-deletes-user-home-directory-b887ec42" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-17-03-critical-gpt-5-6-codex-bug-deletes-user-home-directory-b887ec42" />
+  <meta property="og:title" content="GPT-5.6 Codex 严重漏洞导致用户主目录被意外删除" />
+  <meta property="og:description" content="GPT-5.6 的 Codex 编程代理存在一个严重漏洞：当启用完全访问模式但未启用沙箱或自动审查时，因错误覆盖并误解释 $HOME 环境变量，导致用户整个主目录被意外删除。 这暴露了智能体 AI 安全设计的根本缺陷，使使用自主编程工具的开发者面临真实、不可逆的数据丢失风险，也凸显出亟需超越语法命令校验的语义级防护机制。 该漏洞仅在启用完全访问模式的本地、无" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--d8ca3e3a6045eb55.jpg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--d8ca3e3a6045eb55.jpg" alt="GPT-5.6 Codex 严重漏洞导致用户主目录被意外删除" />
+    <div class="article-page-tags"><span>#codex</span> <span>#coding-agents</span> <span>#generative-ai</span> <span>#ai-safety</span> <span>#llm-bugs</span></div>
+    <h1>GPT-5.6 Codex 严重漏洞导致用户主目录被意外删除</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-17T04:21:50.862779+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>OpenAI 基于 GPT-5.6 的 Codex 编程代理被曝出一个严重的安全漏洞，引发开发者与 AI 安全研究者的高度警惕。据参与 Codex 可靠性测试的资深工程师 Thibault Sottiaux 披露，当用户启用“完全访问模式”但未启用沙箱保护或自动审查机制时，该漏洞会触发灾难性的文件删除行为。在此配置下，代理试图通过覆盖 <code>$HOME</code> 环境变量来设定临时工作目录；但由于模型在解析或执行 Shell 命令时出现逻辑错误，它错误地将被覆盖后的 <code>$HOME</code> 视为待递归删除的目标，最终导致用户整个主目录被清空。</p>
+<p>这并非假设性风险：已有多个真实案例证实，在 Linux 和 macOS 系统上，当 Codex 以本地、无沙箱方式运行且拥有较高权限时，发生了意外删除事件。该问题不会出现在 Codex 默认的云端执行模式中——该模式在隔离容器内运行，禁用网络连接，并严格限制文件系统访问边界；而仅在用户为获得更高控制权或离线能力选择本地无沙箱执行时才会触发。“完全访问模式”本意是支持项目级重构或依赖更新等高级自动化任务，却因缺少基础安全层而成为不可逆数据丢失的入口。</p>
+<p>更令人警觉的是其根本成因：环境变量操作失当，而非传统意义上的代码注入或权限提升。不同于常规软件缺陷，这一问题揭示了自主智能体设计中的深层挑战——大语言模型以自然语言理解系统状态，再将其转化为 Shell 操作，却缺乏对操作后果的鲁棒验证。一旦移除自动审查或沙箱，原本用于创建临时目录的合理意图，便直接演变为破坏性指令。那些将 Codex 集成至本地开发流程（尤其是 CI/CD 流水线或 IDE 插件）的开发者，亟需重新评估对其的信任边界。</p>
+<p>OpenAI 已内部确认该问题，并正优先开发补丁：当检测到涉及 <code>$HOME</code> 的环境变量覆盖行为时，强制启用沙箱或自动审查。在补丁发布前，最佳实践强烈建议：切勿在非受控、非一次性环境中启用完全访问模式——尤其禁止在生产环境或个人设备上使用。此次事件凸显了智能体时代的一个核心命题：赋予 AI 直接操作系统权限，不仅需要权限模型，更需要能理解意图、上下文与后果的“语义防护栅栏”，而不仅是语法层面的约束。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/16/bad-codex-bug/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://github.com/openai/codex" target="_blank" rel="noopener">GitHub - openai/ codex : Lightweight coding agent that runs in your...</a><a href="https://openai.com/index/introducing-codex/" target="_blank" rel="noopener">Introducing Codex | OpenAI</a><a href="https://windowsreport.com/openai-expands-gpt-5-6-access-across-chatgpt-codex-and-api/" target="_blank" rel="noopener">OpenAI Expands GPT-5.6 Access Across ChatGPT, Codex, and API</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

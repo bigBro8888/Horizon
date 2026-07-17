@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Critical GPT-5.6 Codex Bug Deletes User Home Directory - Now AI News</title>
+  <meta name="description" content="A critical bug in GPT-5.6&#x27;s Codex agent causes unintended deletion of the user&#x27;s entire home directory when full access mode is enabled without sandboxing or auto-review, due to er" />
+  <link rel="canonical" href="/en/article/2026-07-17-03-critical-gpt-5-6-codex-bug-deletes-user-home-directory-b887ec42" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-17-03-critical-gpt-5-6-codex-bug-deletes-user-home-directory-b887ec42" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-17-03-critical-gpt-5-6-codex-bug-deletes-user-home-directory-b887ec42" />
+  <meta property="og:title" content="Critical GPT-5.6 Codex Bug Deletes User Home Directory" />
+  <meta property="og:description" content="A critical bug in GPT-5.6&#x27;s Codex agent causes unintended deletion of the user&#x27;s entire home directory when full access mode is enabled without sandboxing or auto-review, due to er" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--d8ca3e3a6045eb55.jpg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--d8ca3e3a6045eb55.jpg" alt="Critical GPT-5.6 Codex Bug Deletes User Home Directory" />
+    <div class="article-page-tags"><span>#codex</span> <span>#coding-agents</span> <span>#generative-ai</span> <span>#ai-safety</span> <span>#llm-bugs</span></div>
+    <h1>Critical GPT-5.6 Codex Bug Deletes User Home Directory</h1>
+    <p class="article-page-meta">News time: 2026-07-17T04:21:50.862779+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>A newly disclosed safety-critical bug in OpenAI’s GPT-5.6-powered Codex coding agent has raised urgent concerns among developers and AI safety researchers. According to Thibault Sottiaux — a senior engineer involved in Codex’s reliability testing — the flaw triggers catastrophic file deletion when users enable ‘full access mode’ without sandboxing or auto-review safeguards. In such configurations, the agent attempts to override the <code>$HOME</code> environment variable to set up a temporary working directory. However, due to a logic error in how the model interprets or executes shell commands, it mistakenly treats the overridden <code>$HOME</code> as a target for recursive deletion — resulting in the complete erasure of the user’s home directory.</p>
+<p>This is not theoretical: multiple real-world reports have confirmed unintended deletions across Linux and macOS systems where Codex was run locally with elevated permissions. The issue does not occur in Codex’s default cloud-based execution mode — which runs inside isolated containers with internet disabled and strict filesystem boundaries — but emerges specifically when users opt into local, unsandboxed execution for greater control or offline capability. Full access mode, intended for advanced automation tasks like project-wide refactoring or dependency updates, thus becomes a vector for irreversible data loss if basic safety layers are disabled.</p>
+<p>What makes this especially alarming is its root cause: an environment-variable manipulation gone wrong, rather than a classic code injection or privilege escalation. Unlike traditional software bugs, this reflects a deeper challenge in autonomous agent design — where LLMs reason about system state using natural language, then translate that reasoning into unsafe shell operations without robust validation. The absence of automatic review or sandboxing transforms a well-intentioned temporary-directory setup into a destructive command. Developers relying on Codex for local development workflows — particularly those integrating it into CI/CD pipelines or IDE extensions — must now re-evaluate their trust assumptions.</p>
+<p>OpenAI has acknowledged the issue internally and is reportedly prioritizing a patch that enforces mandatory sandboxing or auto-review when <code>$HOME</code>-related environment overrides are detected. Until then, best practice strongly advises against enabling full access mode outside strictly controlled, disposable environments — and never on production or personal machines. This incident underscores a broader truth in the era of agentic AI: granting agents direct system access demands not just permission models, but <em>semantic guardrails</em> that understand intent, context, and consequence — not just syntax.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/16/bad-codex-bug/#atom-everything" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/openai/codex" target="_blank" rel="noopener">GitHub - openai/ codex : Lightweight coding agent that runs in your...</a><a href="https://openai.com/index/introducing-codex/" target="_blank" rel="noopener">Introducing Codex | OpenAI</a><a href="https://windowsreport.com/openai-expands-gpt-5-6-access-across-chatgpt-codex-and-api/" target="_blank" rel="noopener">OpenAI Expands GPT-5.6 Access Across ChatGPT, Codex, and API</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

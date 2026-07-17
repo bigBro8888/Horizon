@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QLoRA’s default 2e-4 learning rate harms small-dataset fine-tuning - Now AI News</title>
+  <meta name="description" content="The widely adopted QLoRA default learning rate of 2e-4—derived from the 52k-sample Alpaca dataset—is empirically shown to cause early overfitting and poor evaluation performance on" />
+  <link rel="canonical" href="/en/article/2026-07-17-11-qlora-s-default-2e-4-learning-rate-harms-small-dataset-fine-tuning-d2e77bd4" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-17-11-qlora-s-default-2e-4-learning-rate-harms-small-dataset-fine-tuning-d2e77bd4" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-17-11-qlora-s-default-2e-4-learning-rate-harms-small-dataset-fine-tuning-d2e77bd4" />
+  <meta property="og:title" content="QLoRA’s default 2e-4 learning rate harms small-dataset fine-tuning" />
+  <meta property="og:description" content="The widely adopted QLoRA default learning rate of 2e-4—derived from the 52k-sample Alpaca dataset—is empirically shown to cause early overfitting and poor evaluation performance on" />
+  <meta property="og:image" content="/media/reddit-subreddit-rss-t3-1uy1z8b.jpg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="/media/reddit-subreddit-rss-t3-1uy1z8b.jpg" alt="QLoRA’s default 2e-4 learning rate harms small-dataset fine-tuning" />
+    <div class="article-page-tags"><span>#QLoRA</span> <span>#fine-tuning</span> <span>#learning-rate</span> <span>#LLM-optimization</span> <span>#small-datasets</span></div>
+    <h1>QLoRA’s default 2e-4 learning rate harms small-dataset fine-tuning</h1>
+    <p class="article-page-meta">News time: 2026-07-17T04:21:51.797764+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A widely shared but rarely questioned assumption in LLM fine-tuning—using a learning rate of 2×10⁻⁴ for QLoRA—has been exposed as potentially detrimental when working with datasets under 10,000 samples. This value originates from the Alpaca dataset, which contains 52,000 instruction-response pairs and was used in foundational QLoRA experiments. Yet most practitioners today aren’t fine-tuning on curated, large-scale synthetic data—they’re working with bespoke, scraped, or manually labeled datasets of just 5,000–10,000 examples. Under such conditions, the model often overfits within the first epoch: training loss drops smoothly while evaluation metrics stagnate—or even degrade—creating a deceptive illusion of progress.</p>
+<p>The author recounts a frustrating three-week debugging cycle: re-cleaning data, rewriting prompt templates, and even hand-relabelling hundreds of rows—all while evaluation performance remained flat. Only after lowering the learning rate from 2e-4 to 1e-4 and increasing epochs from 3 to 5 did validation metrics jump significantly. This wasn’t a one-off fluke; three independent runs confirmed the pattern. Crucially, documentation (e.g., Unsloth’s) labels 2e-4 as merely a 'starting point', yet nearly every public notebook hardcodes it without caveats—leading newcomers to blame their data quality or LoRA rank instead of the hyperparameter itself.</p>
+<p>This insight highlights a broader issue in applied LLM optimization: the uncritical transfer of hyperparameters across dataset scales. Learning rate isn’t a universal constant—it interacts strongly with dataset size, noise level, and task complexity. Empirical evidence suggests a rough heuristic: use 2e-4 only above ~30k samples; below 10k, start at 1e-4 or lower and compensate with more epochs; and for intermediate sizes (10k–30k), treat learning rate as a quick-to-tune knob—not a fixed default. The community now faces a quiet but consequential gap: no formal ablation study has yet validated or refined this scaling rule, despite its widespread practical impact.</p>
+<p>Ultimately, this isn’t just about one number—it’s about cultivating methodological humility in fine-tuning practice. As LLM adoption spreads beyond research labs into domain-specific applications with limited data, defaults must be contextualized, not copied. The takeaway is simple but vital: always validate core hyperparameters against <em>your</em> data—not someone else’s benchmark.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1uy1z8b/the_qlora_2e4_default_is_wrong_under_10k_samples/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://huggingface.co/datasets/tatsu-lab/alpaca" target="_blank" rel="noopener">tatsu-lab/alpaca · Datasets at Hugging Face</a><a href="https://levanter.readthedocs.io/en/latest/Fine-Tuning/" target="_blank" rel="noopener">Custom Fine-Tuning: Alpaca - Levanter</a><a href="https://medium.com/@niraj.h/deep-dive-into-quantization-in-qlora-1f82e04a4673" target="_blank" rel="noopener">Deep Dive Into Quantization in QLoRA | by Niraj H | Jan, 2026 | Medium</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Puter 将完整 Firefox 浏览器编译为 WebAssembly - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Puter 已将完整的 Firefox 浏览器（含 Gecko 引擎）成功编译为 WebAssembly，并在 Chrome 内部以沙箱化应用形式运行；项目采用 Wisp 协议实现网络代理，并全程使用 AI 辅助编程完成开发。 这一突破证明 WebAssembly 已能承载功能完备、高度复杂的系统级软件（而不仅是网页应用），从而为桌面级应用带来前所未有的可移" />
+  <link rel="canonical" href="/article/2026-07-17-02-puter-compiles-full-firefox-browser-to-webassembly-fc202278" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-17-02-puter-compiles-full-firefox-browser-to-webassembly-fc202278" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-17-02-puter-compiles-full-firefox-browser-to-webassembly-fc202278" />
+  <meta property="og:title" content="Puter 将完整 Firefox 浏览器编译为 WebAssembly" />
+  <meta property="og:description" content="Puter 已将完整的 Firefox 浏览器（含 Gecko 引擎）成功编译为 WebAssembly，并在 Chrome 内部以沙箱化应用形式运行；项目采用 Wisp 协议实现网络代理，并全程使用 AI 辅助编程完成开发。 这一突破证明 WebAssembly 已能承载功能完备、高度复杂的系统级软件（而不仅是网页应用），从而为桌面级应用带来前所未有的可移" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--be555f9c5139bca8.webp" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--be555f9c5139bca8.webp" alt="Puter 将完整 Firefox 浏览器编译为 WebAssembly" />
+    <div class="article-page-tags"><span>#WebAssembly</span> <span>#Firefox</span> <span>#Gecko</span> <span>#Browser Engineering</span> <span>#WASM Runtime</span></div>
+    <h1>Puter 将完整 Firefox 浏览器编译为 WebAssembly</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-17T04:21:50.862718+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>在 WebAssembly（WASM）能力演进的一个里程碑式演示中，初创公司 Puter 成功将整个 Firefox 浏览器——包括其 Gecko 渲染引擎——完整编译为 WebAssembly，使其能作为沙箱化应用，在 Chrome 等其他浏览器内部运行。这并非部分移植或精简版渲染器，而是一个功能完备、可交互的 Firefox 用户界面：地址栏、标签页、导航控件全部正常工作，并嵌入在 Chrome 的一个标签页中。现场演示清晰展示了 Simon Willison 的个人博客正运行于这个嵌套的 Firefox 实例内，直观证实了“浏览器内运行浏览器”这一高保真场景已具备工程可行性。</p>
+<p>这一成果依赖多项关键工程决策。Puter 之所以选择 Firefox，正是因其成熟的单进程模式——这对 WASM 编译至关重要，因为多进程架构（如 Chromium）涉及复杂的进程间通信，而当前浏览器内的 WASM 运行时尚无法原生支持。团队大量采用 AI 辅助编程：开发过程中消耗了约价值 2.5 万美元的 Claude Opus 和 Fable Token，但借助 Claude Max 订阅计划大幅降低了实际支出。这凸显了大语言模型正日益成为系统级软件移植的核心工具——不仅用于应用逻辑，更深入到运行时与平台适配等底层环节。</p>
+<p>网络连接构成了另一项根本性约束。由于浏览器内运行的 WASM 代码无法直接建立任意 TCP 套接字，Puter 采用 Wisp 协议——一种轻量级、基于 WebSocket 的多路复用协议——将所有网络流量（HTTP、DNS、TLS 握手等）代理至其后端服务器。正如 Hacker News 讨论所指出，该代理架构在项目热度激增时需紧急扩容服务器资源。尤为关键的是，Puter 声称实现了 HTTPS 流量的端到端加密：对 WebSocket 数据帧的检查证实，访问 <code>https://</code> 网站的载荷被加密，而 <code>http://</code> 请求则明文传输——体现了代理层对不同协议的差异化、选择性加密能力。</p>
+<p>该项目完全开源（代码库位于 <code>github.com/HeyPuter/firefox-wasm</code>），并与 <code>theogbob/WebkitWasm</code> 等类似项目形成对比——后者目前尚无可用的公开演示。尽管性能仍受制约（例如 233MB 的 <code>gecko.wasm</code> 二进制文件和 18MB 的资源包），这一里程碑重新定义了复杂原生应用的“可移植性”内涵。它预示着一个未来：传统桌面软件（而不仅是网页应用）也能被安全地容器化、分发，并在无需安装的前提下跨平台执行——推动 Web 进入零信任、沙箱优先计算的新时代。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/16/firefox-in-webassembly/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://github.com/MercuryWorkshop/wisp-protocol" target="_blank" rel="noopener">GitHub - MercuryWorkshop/ wisp - protocol : Wisp is a low-overhead...</a><a href="https://www.neowin.net/forum/topic/939256-chrome-single-process-mode/" target="_blank" rel="noopener">Chrome Single Process mode ? - Web Browser Discussion... - Neowin</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

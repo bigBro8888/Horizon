@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roc 编译器正从 Rust 重写为 Zig - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Rich Feldman 正在将 Roc 编译器从 Rust 重写为 Zig，以提升内存控制能力、加速增量构建，并简化跨平台编译流程。 此次真实世界的编译器重写为 Zig 的实际权衡（性能与控制力 vs. Rust 更强的编译期安全性）提供了实证，影响着团队对关键基础设施所用系统编程语言的评估决策。 Zig 的 ReleaseSafe 模式会在运行时检查部分" />
+  <link rel="canonical" href="/article/2026-07-17-19-roc-compiler-rewrite-from-rust-to-zig-underway-73fdb4fb" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-17-19-roc-compiler-rewrite-from-rust-to-zig-underway-73fdb4fb" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-17-19-roc-compiler-rewrite-from-rust-to-zig-underway-73fdb4fb" />
+  <meta property="og:title" content="Roc 编译器正从 Rust 重写为 Zig" />
+  <meta property="og:description" content="Rich Feldman 正在将 Roc 编译器从 Rust 重写为 Zig，以提升内存控制能力、加速增量构建，并简化跨平台编译流程。 此次真实世界的编译器重写为 Zig 的实际权衡（性能与控制力 vs. Rust 更强的编译期安全性）提供了实证，影响着团队对关键基础设施所用系统编程语言的评估决策。 Zig 的 ReleaseSafe 模式会在运行时检查部分" />
+  <meta property="og:image" content="/media/hackernews-story-48933149.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/hackernews-story-48933149.svg" alt="Roc 编译器正从 Rust 重写为 Zig" />
+    <div class="article-page-tags"><span>#Zig</span> <span>#Rust</span> <span>#compilers</span> <span>#systems-programming</span> <span>#memory-safety</span></div>
+    <h1>Roc 编译器正从 Rust 重写为 Zig</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-17T04:21:51.305061+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>Roc 编程语言创始人 Rich Feldman 在一篇坦诚的技术博客中，详细介绍了将 Roc 编译器从 Rust 重写为 Zig 的进展。这一决策并非出于语言信仰，而是基于实际工程考量：更精细的内存控制、显著更快的增量构建速度，以及更简化的跨平台编译流程。Feldman 指出，尽管 Rust 在内存安全与开发体验上表现卓越，但 Zig 提供的显式内存管理、零开销抽象和内置构建系统，为面向多目标平台（包括嵌入式设备与 WebAssembly）的编译器带来了切实优势。</p>
+<p>目前重写尚未完成，但初步成果已具说服力。Feldman 报告称，在开发迭代阶段——即频繁修改后需快速重新编译时——编译耗时明显下降。Zig 的单文件分发模式、默认无标准库（no-std）设计，消除了依赖解析开销；其原生跨编译支持无需额外工具链，大幅简化了配置。更重要的是，团队能完全掌控内存布局与分配策略，从而在寄存器分配、指令选择等代码生成关键环节实现精细化调优。</p>
+<p>然而，这一转变也引发了关于安全权衡的深入讨论。与 Rust 在编译期强制执行所有权机制不同，Zig 主要依赖运行时检查（如 ReleaseSafe 模式）及开发者自律的内存管理。有评论者明确指出：Zig 并不能自动检测所有悬空指针或重复释放（double-free）问题——其安全保证是可选的、局部的，且在根本设计哲学上异于 Rust。</p>
+<p>这场讨论还折射出系统编程语言设计中的深层张力。有人将 Zig 的定位类比 OCaml 在早期编译器原型开发中的角色：灵活、表达力强，却因性能与控制力限制而未被选作最终实现语言。另一些人则质疑：Rust 生态是否即将补齐增量构建短板，使此类迁移失去紧迫性？无论如何，Feldman 的实践提供了一个罕见的真实案例——不是纸上谈兵的语言对比，而是一场正在进行、结果可测的工程迁移。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://rtfeldman.com/rust-to-zig" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://medium.com/@shyamsundarb/memory-safety-in-c-vs-rust-vs-zig-f78fa903f41e" target="_blank" rel="noopener">Memory Safety in C++ vs Rust vs Zig | by B Shyam Sundar | Medium</a><a href="https://gencmurat.com/en/posts/memory-safety-features-in-zig/" target="_blank" rel="noopener">Memory Safety Features in Zig – Murat Genc</a><a href="https://blog.logrocket.com/comparing-rust-vs-zig-performance-safety-more/" target="_blank" rel="noopener">Comparing Rust vs. Zig : Performance, safety , and... - LogRocket Blog</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
