@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>鹈鹕骑自行车基准测试：一个看似荒诞的测试如何揭示大语言模型内在机制 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="西蒙·威利森的分析揭示，Kimi K3模型使用了一个85个token的隐藏系统提示来影响推理行为；而“鹈鹕骑自行车”SVG生成任务则成为检验分词器设计、RLHF影响及预训练数据泄露的有力诊断工具。 该基准测试凸显了当前大语言模型评估体系的关键缺陷——不仅关乎准确率，更关乎内部一致性、推理透明性及真实场景下智能体的可靠性，推动业界转向更具诊断性、以行为为根基的" />
+  <link rel="canonical" href="/article/2026-07-18-08-the-pelican-benchmark-what-pelican-on-a-bike-reveals-about-llm-internals-1fef0063" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-18-08-the-pelican-benchmark-what-pelican-on-a-bike-reveals-about-llm-internals-1fef0063" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-18-08-the-pelican-benchmark-what-pelican-on-a-bike-reveals-about-llm-internals-1fef0063" />
+  <meta property="og:title" content="鹈鹕骑自行车基准测试：一个看似荒诞的测试如何揭示大语言模型内在机制" />
+  <meta property="og:description" content="西蒙·威利森的分析揭示，Kimi K3模型使用了一个85个token的隐藏系统提示来影响推理行为；而“鹈鹕骑自行车”SVG生成任务则成为检验分词器设计、RLHF影响及预训练数据泄露的有力诊断工具。 该基准测试凸显了当前大语言模型评估体系的关键缺陷——不仅关乎准确率，更关乎内部一致性、推理透明性及真实场景下智能体的可靠性，推动业界转向更具诊断性、以行为为根基的" />
+  <meta property="og:image" content="/media/hackernews-story-48947717.jpg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/hackernews-story-48947717.jpg" alt="鹈鹕骑自行车基准测试：一个看似荒诞的测试如何揭示大语言模型内在机制" />
+    <div class="article-page-tags"><span>#LLM evaluation</span> <span>#benchmarking</span> <span>#prompt engineering</span> <span>#tokenizer analysis</span> <span>#RLHF</span></div>
+    <h1>鹈鹕骑自行车基准测试：一个看似荒诞的测试如何揭示大语言模型内在机制</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-18T04:12:28.232440+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>在一篇既诙谐又极具洞察力的文章中，西蒙·威利森（Simon Willison）重新审视了所谓“鹈鹕基准测试”——一个看似荒诞的提示词：“生成一只骑自行车的鹈鹕的SVG图像”。这远非玩笑，而是一面诊断透镜，能清晰映射出大语言模型的内部机制：分词器异常、基于人类反馈的强化学习（RLHF）对输出的影响、系统提示注入，甚至预训练数据污染。威利森的分析聚焦于月之暗面（Moonshot）推出的Kimi K3模型：当输入简单提示“hi”时，该模型竟消耗86个token，暗示其背后可能隐藏着一个85-token的系统提示——很可能是用于调控推理强度的指令，会在用户启用自定义推理设置后、<code>&lt;think&gt;</code>标签前自动注入。</p>
+<p>该基准测试的力量在于其具体性与可复现性。不同于MMLU或GSM8K等抽象指标，它能直观呈现具体缺陷：SVG语法错误、鹈鹕解剖结构失真、车轮位置错乱，甚至直接拒绝生成代码。这些失败并非随机噪声，而是与已知架构选择高度相关。例如，GLM-5.2在鹈鹕生成任务上超越GPT-5.6，尽管其综合基准分数更低，表明RLHF微调可能无意中强化了某些未被标准评测覆盖的视觉空间推理能力。</p>
+<p>社区讨论深入探讨了因果关系：鹈鹕图像质量究竟由预训练数据密度、分词器粒度，还是后训练对齐决定？有用户指出，博客、论坛和GitHub上早已存在数百张“鹈鹕骑车”图像——这引发关键质疑：该任务测的是“涌现式推理”，还是单纯的“数据记忆”？另一些人则关注分词器差异：同一提示在OpenAI分词器中仅占10个token，而在Kimi K3中却达86个——意味着二者在上下文窗口分配与内部表征策略上存在根本差异。</p>
+<p>更重要的是，鹈鹕测试也暴露了当前评估体系的盲区。有评论者指出，现代智能体工作流——工具调用、多轮状态保持、错误恢复——完全无法通过SVG生成来检验。这催生了混合型基准构想，例如“SWE-bench对抗式鹈鹕生成”：在软件工程任务执行中途，每5次工具调用就中断并要求生成任意动物SVG，以测试模型在认知负荷下的鲁棒性。威利森最终强调，鹈鹕测试的目的并非给模型排名，而是对其进行“探针式检验”——一种低成本、高信噪比的压力测试，用以窥见光鲜输出背后的隐性层。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/16/kimi-k3/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://simonwillison.net/2026/Jul/16/kimi-k3/" target="_blank" rel="noopener">Kimi K3, and what we can still learn from the pelican benchmark</a><a href="https://www.linkedin.com/posts/abhishek-bera_llm-benchmark-llm-activity-7387393020549128192-00Rp" target="_blank" rel="noopener">&quot;Introducing &#x27; Pelicans on a bicycle&#x27;: a unique LLM benchmark | Li...</a><a href="https://gigazine.net/gsc_news/en/20250609-llms-pelicans-on-bicycles/" target="_blank" rel="noopener">Here&#x27;s what happens when you run the AI benchmark &#x27;Draw a Pelican ...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
