@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Code v2.1.181+ 已集成 Rust 版 Bun v1.4.0 预览版 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Claude Code v2.1.181+（发布于2026年6月17日）已内置 Rust 重写的 Bun v1.4.0 预览版，该事实通过二进制字符串检查得到证实——结果中明确出现了 Rust 源码路径及尚未公开发布的版本号。 这是 Bun Rust 重写版首次在大规模生产环境中落地，彰显 Anthropic 致力于为 AI 辅助开发构建更安全、更快速、更易" />
+  <link rel="canonical" href="/article/2026-07-19-12-claude-code-v2-1-181-ships-with-preview-of-rust-based-bun-v1-4-0-49bcd9c6" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-19-12-claude-code-v2-1-181-ships-with-preview-of-rust-based-bun-v1-4-0-49bcd9c6" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-19-12-claude-code-v2-1-181-ships-with-preview-of-rust-based-bun-v1-4-0-49bcd9c6" />
+  <meta property="og:title" content="Claude Code v2.1.181+ 已集成 Rust 版 Bun v1.4.0 预览版" />
+  <meta property="og:description" content="Claude Code v2.1.181+（发布于2026年6月17日）已内置 Rust 重写的 Bun v1.4.0 预览版，该事实通过二进制字符串检查得到证实——结果中明确出现了 Rust 源码路径及尚未公开发布的版本号。 这是 Bun Rust 重写版首次在大规模生产环境中落地，彰显 Anthropic 致力于为 AI 辅助开发构建更安全、更快速、更易" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--eb24893336d648f2.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--eb24893336d648f2.svg" alt="Claude Code v2.1.181+ 已集成 Rust 版 Bun v1.4.0 预览版" />
+    <div class="article-page-tags"><span>#Bun</span> <span>#Rust</span> <span>#Claude</span> <span>#JavaScript runtime</span> <span>#developer tools</span></div>
+    <h1>Claude Code v2.1.181+ 已集成 Rust 版 Bun v1.4.0 预览版</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-19T04:32:10.134687+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>在一次低调却技术意义重大的更新中，Anthropic 推出的 AI 编程编辑器 Claude Code 已悄然集成了完全用 Rust 重写的 Bun 预览版。自 2026 年 6 月 17 日发布的 v2.1.181 版本起，该桌面应用内嵌了尚未公开发布的 Bun v1.4.0（截至 5 月 12 日，Bun 官方 GitHub 仓库最新稳定版仍为 v1.3.14）。这一集成并非通过新闻稿或文档宣布，而是经由底层二进制文件检查实证：开发者 Simon Willison 对本地 Claude 可执行文件运行 <code>strings</code> 命令，不仅捕获到 <code>Bun v1.4.0 (macOS arm64)</code> 的版本字符串，还发现了超过 500 个以 <code>.rs</code> 结尾的源码路径，例如 <code>src/runtime/bake/dev_server/mod.rs</code> 和 <code>src/bundler/bundle_v2.rs</code>——这是 Rust 原生代码存在的明确证据。</p>
+<p>这一转变折射出 Bun 与 Anthropic 更深层的战略协同。据 Bun 官方博客《Rewriting Bun in Rust》披露，Bun 已于 2025 年 12 月被 Anthropic 收购，其核心工程团队现隶属 Anthropic。此次 Rust 重写最初始于对 Zig 版本的逐行移植，目标是提升内存安全性、编译确定性，并强化与 AI 工具链的协同能力。Bun 创始人兼 Anthropic 工程师 Jarred Sumner 指出，Linux 系统下启动速度提升了 10%，而多数用户几乎无感——这恰恰印证了项目对稳定性与向后兼容性的极致追求。</p>
+<p>尤为关键的是，Claude Code 并非简单地将 Bun 作为外部依赖调用，而是将其 Rust 运行时直接静态链接进自身二进制文件。这意味着每当用户在 Claude Code 中运行 TypeScript 脚本、触发打包任务或调用 Bun 内置包管理器时，实际执行的都是 Rust 编译的逻辑，而非 Go 或 Zig 代码。这种深度集成带来了更快的冷启动、更可预测的性能表现，以及更强的可观测性——而这对于需要在交互式开发中实时响应的 AI 编程助手而言至关重要。</p>
+<p>尽管终端用户几乎察觉不到变化，但这标志着新一代开发者工具底层基础设施的日趋成熟。Anthropic 提前数月将 Bun v1.4.0 预览版部署至数百万设备，实质上是在真实场景中对 Rust 运行时进行大规模压力测试，并将海量使用反馈反哺至 Bun 的开发闭环。正如 Sumner 所言：“平庸，才是好事。” 在系统工程领域，“平庸”往往意味着稳健、安全且真正可用于生产环境。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/19/claude-code-in-bun-in-rust/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://bun.com/blog/bun-in-rust" target="_blank" rel="noopener">Rewriting Bun in Rust | Bun Blog</a><a href="https://bun.sh/" target="_blank" rel="noopener">Bun — A fast all-in-one JavaScript runtime</a><a href="https://github.com/oven-sh/bun" target="_blank" rel="noopener">GitHub - oven-sh/ bun : Incredibly fast JavaScript runtime , bundler...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

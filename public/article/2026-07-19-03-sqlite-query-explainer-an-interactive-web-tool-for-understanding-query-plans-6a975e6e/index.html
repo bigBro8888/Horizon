@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQLite查询解释器：一款用于理解查询执行计划的交互式网页工具 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="西蒙·威利森发布了SQLite查询解释器——一个开源的、基于浏览器的交互式工具，通过Pyodide/WebAssembly在浏览器中运行SQLite，并以通俗中文解释EXPLAIN和EXPLAIN QUERY PLAN的输出。 它大幅降低了学习SQLite查询优化这一公认难点的门槛，让执行计划变得可访问、可交互、带教学注解，且无需本地工具或数据库环境。 该工" />
+  <link rel="canonical" href="/article/2026-07-19-03-sqlite-query-explainer-an-interactive-web-tool-for-understanding-query-plans-6a975e6e" />
+  <link rel="alternate" hreflang="zh-CN" href="/article/2026-07-19-03-sqlite-query-explainer-an-interactive-web-tool-for-understanding-query-plans-6a975e6e" />
+  <link rel="alternate" hreflang="en" href="/en/article/2026-07-19-03-sqlite-query-explainer-an-interactive-web-tool-for-understanding-query-plans-6a975e6e" />
+  <meta property="og:title" content="SQLite查询解释器：一款用于理解查询执行计划的交互式网页工具" />
+  <meta property="og:description" content="西蒙·威利森发布了SQLite查询解释器——一个开源的、基于浏览器的交互式工具，通过Pyodide/WebAssembly在浏览器中运行SQLite，并以通俗中文解释EXPLAIN和EXPLAIN QUERY PLAN的输出。 它大幅降低了学习SQLite查询优化这一公认难点的门槛，让执行计划变得可访问、可交互、带教学注解，且无需本地工具或数据库环境。 该工" />
+  <meta property="og:image" content="/media/rss-simonwillison-net-atom-everything--b38b4ea43037f58e.svg" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=22" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="/media/rss-simonwillison-net-atom-everything--b38b4ea43037f58e.svg" alt="SQLite查询解释器：一款用于理解查询执行计划的交互式网页工具" />
+    <div class="article-page-tags"><span>#sqlite</span> <span>#sql</span> <span>#webassembly</span> <span>#query-optimization</span> <span>#developer-tools</span></div>
+    <h1>SQLite查询解释器：一款用于理解查询执行计划的交互式网页工具</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-19T04:32:10.134737+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>西蒙·威利森（Simon Willison）推出了“SQLite查询解释器”——一款创新的、完全在浏览器中运行的交互式工具，旨在帮助开发者轻松理解SQLite的<code>EXPLAIN</code>和<code>EXPLAIN QUERY PLAN</code>输出。该工具基于Pyodide（将Python编译为WebAssembly的运行时）、Fable（F#到JavaScript编译器）以及SQLite官方WebAssembly绑定构建，用户只需粘贴SQL语句，即可实时查看原始执行计划，并获得逐行的通俗解释：从索引使用、全表扫描，到嵌套循环连接与排序策略，一目了然。</p>
+<p>这一项目的灵感源自朱莉娅·埃文斯（Julia Evans）2026年7月博客中一句坦率的感慨：“也许有一天，我真能看懂查询执行计划。”这种困惑在SQL初学者乃至资深开发者中极为普遍。威利森由此决定弥合“晦涩输出”与“实际理解”之间的鸿沟：无需本地安装、数据库连接或命令行经验，整个工具纯前端运行——零服务器、零网络请求、零依赖。用户可真实创建表结构、定义索引、执行参数化查询，所有操作均由WebAssembly驱动的真实SQLite引擎支撑。</p>
+<p>技术上，Pyodide使Python代码（包括SQLite的Python接口）得以在浏览器中执行；Fable则以函数式、类型安全的方式管理UI逻辑。工具解析<code>EXPLAIN QUERY PLAN</code>的结构化输出（例如“使用索引idx_name搜索users表”），并叠加上下文注释：说明为何选用或忽略某个索引、何时触发全表扫描、连接如何执行等。对于更底层的<code>EXPLAIN</code>输出（如虚拟机指令<code>OpenRead</code>、<code>SeekGe</code>），它也翻译为可理解的操作意图。</p>
+<p>威利森坦言自己并非SQLite内核专家，并提醒用户：这些解释是“基于现有文档的合理推断”，而非绝对权威。但初步测试表明，其分析结果与SQLite官方文档及实际行为高度一致。相比静态教程或命令行工具，该解释器提供了即时、可实验的反馈，填补了关键的教学空白。随着Web应用越来越多地采用WASM版SQLite实现客户端数据处理，降低阅读执行计划的门槛已不仅关乎便利性，更是性能优化的基础能力。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/18/sqlite-query-explainer/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://pyodide.org/en/stable/console.html" target="_blank" rel="noopener">pyodide .org/en/stable/console.html</a><a href="https://sqlite.org/eqp.html" target="_blank" rel="noopener">EXPLAIN QUERY PLAN - SQLite</a><a href="https://sqlite.org/wasm" target="_blank" rel="noopener">sqlite3 WebAssembly &amp; JavaScript Documentation Index</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
