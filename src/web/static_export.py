@@ -144,7 +144,7 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
   <meta name="twitter:image" content="{html.escape(image_url)}" />
   <script type="application/ld+json">{structured_json}</script>
   {ADSENSE_SCRIPT}
-  <link rel="stylesheet" href="/static/styles.css?v=23" />
+  <link rel="stylesheet" href="/static/styles.css?v=24" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>

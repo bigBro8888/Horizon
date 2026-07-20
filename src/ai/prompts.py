@@ -113,7 +113,15 @@ Provide EACH text field in BOTH English and Chinese. Use the following key namin
 - community_discussion_en / community_discussion_zh
 
 Field definitions:
-0. **title** (one short phrase, ≤15 words): A clear, accurate headline for the news item.
+0. **title**: Write a concise, human-edited news headline, not an AI summary.
+- English: 6-12 words, sentence case, natural active voice.
+- Chinese: ideally 12-24 Chinese characters and no more than 28 Chinese characters.
+- Focus on ONE useful fact, change, or question. Prefer familiar words over stacked technical nouns.
+- Rewrite naturally for each language; never translate word-for-word.
+- Keep essential product names and one decisive number when useful, but move secondary specifications into the summary.
+- Avoid generic AI-sounding phrases such as "引发业界关注/共识", "标志着新时代", "揭示深层趋势", "赋能", "revolutionary", "game-changing", or "sparks industry consensus".
+- Do not use a colon, parentheses, em dash, or subtitle unless absolutely necessary.
+- The headline must be easy to understand on first reading by a general technology reader.
 
 0.5. **body** (a COMPLETE, well-structured, readable article of 4-7 paragraphs): Rewrite the news into an original, engaging article for a tech-savvy general reader. This is the MOST IMPORTANT field. Requirements:
 - Do NOT translate the source verbatim — REWRITE it into fluent, natural prose with a clear narrative flow (a lead paragraph, then context, key details, implications, and a closing takeaway).
@@ -164,8 +172,8 @@ CONTENT_ENRICHMENT_USER = """Provide a structured bilingual analysis for the fol
 
 Respond with valid JSON only. Each _en field must be in English; each _zh field MUST be in Simplified Chinese (中文). Every field MUST be at least one complete sentence (except community_discussion fields when no comments exist):
 {{
-  "title_en": "<short headline in English, ≤15 words>",
-  "title_zh": "<用中文写一个简短标题，不超过15个词>",
+  "title_en": "<natural editor-written headline in English, 6-12 words, sentence case>",
+  "title_zh": "<自然、口语顺畅的中文新闻标题，建议12-24个汉字，最多28个汉字，只突出一个重点>",
   "body_en": "<a complete 4-7 paragraph readable article in English (Markdown, 300-600 words), rewritten from the source>",
   "body_zh": "<用中文写一篇完整、4-7段、可读性强的文章（Markdown，300-600字），基于原文改写而非直译>",
   "whats_new_en": "<1-2 sentences in English>",
