@@ -122,6 +122,8 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
   <title>{safe_title} - {site_title}</title>
   <meta name="description" content="{safe_summary}" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
