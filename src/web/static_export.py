@@ -22,6 +22,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 STATIC_DIR = PROJECT_ROOT / "src" / "web" / "static"
 DATA_DIR = PROJECT_ROOT / "data"
 PUBLIC_DIR = PROJECT_ROOT / "public"
+SITE_URL = "https://nowainews.com"
+SITE_NAME = "Now AI News"
+LOGO_URL = "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"
 ADSENSE_SCRIPT = (
     '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"\n'
     '     crossorigin="anonymous"></script>'
@@ -61,12 +64,16 @@ def _localized(article: dict[str, Any], key: str, lang: str = "zh") -> str:
 
 def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "zh") -> str:
     is_en = lang == "en"
+    slug = str(article.get("slug") or "")
     title = _localized(article, "title", lang)
     summary = _localized(article, "summary", lang)
     body = _localized(article, "body", lang)
     image_path = article.get("image_path") or ""
-    image_url = f"/{image_path}" if image_path else ""
-    canonical = f"/en/article/{article.get('slug')}" if is_en else article.get("path") or f"/article/{article.get('slug')}"
+    image_url = f"{SITE_URL}/{str(image_path).lstrip('/')}" if image_path else LOGO_URL
+    canonical_path = f"/en/article/{slug}" if is_en else f"/article/{slug}"
+    canonical = f"{SITE_URL}{canonical_path}"
+    zh_url = f"{SITE_URL}/article/{slug}"
+    en_url = f"{SITE_URL}/en/article/{slug}"
     body_html = markdown.markdown(body, extensions=["extra", "sane_lists", "nl2br"], output_format="html5")
     tags = " ".join(f"<span>#{html.escape(str(tag))}</span>" for tag in article.get("tags", [])[:6])
     sources = "".join(
@@ -84,6 +91,31 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
     source_label = "Source" if is_en else "来源"
     original_text = "Read original" if is_en else "阅读原文"
     references_text = "References" if is_en else "参考链接"
+    published_at = str(
+        article.get("published_at")
+        or article.get("fetched_at")
+        or issue.get("generated_at")
+        or ""
+    )
+    modified_at = str(issue.get("generated_at") or published_at)
+    structured_data: dict[str, Any] = {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "mainEntityOfPage": {"@type": "WebPage", "@id": canonical},
+        "headline": title,
+        "description": summary[:180],
+        "image": [image_url],
+        "datePublished": published_at,
+        "dateModified": modified_at,
+        "inLanguage": html_lang,
+        "author": {"@type": "Organization", "name": SITE_NAME, "url": SITE_URL},
+        "publisher": {
+            "@type": "Organization",
+            "name": SITE_NAME,
+            "logo": {"@type": "ImageObject", "url": LOGO_URL},
+        },
+    }
+    structured_json = json.dumps(structured_data, ensure_ascii=False).replace("</", "<\\/")
 
     return f"""<!DOCTYPE html>
 <html lang="{html_lang}">
@@ -92,14 +124,27 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{safe_title} - {site_title}</title>
   <meta name="description" content="{safe_summary}" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="{html.escape(canonical)}" />
-  <link rel="alternate" hreflang="zh-CN" href="/article/{html.escape(str(article.get('slug') or ''))}" />
-  <link rel="alternate" hreflang="en" href="/en/article/{html.escape(str(article.get('slug') or ''))}" />
+  <link rel="alternate" hreflang="zh-CN" href="{html.escape(zh_url)}" />
+  <link rel="alternate" hreflang="en" href="{html.escape(en_url)}" />
+  <link rel="alternate" hreflang="x-default" href="{html.escape(zh_url)}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="{SITE_NAME}" />
+  <meta property="og:locale" content="{'en_US' if is_en else 'zh_CN'}" />
   <meta property="og:title" content="{safe_title}" />
   <meta property="og:description" content="{safe_summary}" />
-  {f'<meta property="og:image" content="{html.escape(image_url)}" />' if image_url else ''}
+  <meta property="og:url" content="{html.escape(canonical)}" />
+  <meta property="og:image" content="{html.escape(image_url)}" />
+  <meta property="article:published_time" content="{html.escape(published_at)}" />
+  <meta property="article:modified_time" content="{html.escape(modified_at)}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{safe_title}" />
+  <meta name="twitter:description" content="{safe_summary}" />
+  <meta name="twitter:image" content="{html.escape(image_url)}" />
+  <script type="application/ld+json">{structured_json}</script>
   {ADSENSE_SCRIPT}
-  <link rel="stylesheet" href="/static/styles.css?v=22" />
+  <link rel="stylesheet" href="/static/styles.css?v=23" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
@@ -135,9 +180,11 @@ def _write_issues() -> list[dict[str, Any]]:
         if article_root.exists():
             shutil.rmtree(article_root)
     issue_metas: list[dict[str, Any]] = []
+    sitemap_entries: list[tuple[str, str]] = []
 
     if not issues_src.exists():
         (public_issues / "index.json").write_text("[]\n", encoding="utf-8")
+        _write_sitemap(sitemap_entries)
         return []
 
     for issue_path in sorted(issues_src.glob("*.json"), reverse=True):
@@ -165,12 +212,36 @@ def _write_issues() -> list[dict[str, Any]]:
             en_article_dir = PUBLIC_DIR / "en" / "article" / slug
             en_article_dir.mkdir(parents=True, exist_ok=True)
             (en_article_dir / "index.html").write_text(_article_html(issue, article, "en"), encoding="utf-8")
+            sitemap_entries.extend(
+                [
+                    (f"{SITE_URL}/article/{slug}", str(date)),
+                    (f"{SITE_URL}/en/article/{slug}", str(date)),
+                ]
+            )
 
     (public_issues / "index.json").write_text(
         json.dumps(issue_metas, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
+    _write_sitemap(sitemap_entries)
     return issue_metas
+
+
+def _write_sitemap(entries: list[tuple[str, str]]) -> None:
+    urls = [(f"{SITE_URL}/", "")] + entries
+    rows = []
+    for url, lastmod in urls:
+        lastmod_xml = f"<lastmod>{html.escape(lastmod)}</lastmod>" if lastmod else ""
+        rows.append(
+            f"  <url><loc>{html.escape(url)}</loc>{lastmod_xml}</url>"
+        )
+    sitemap = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(rows)
+        + "\n</urlset>\n"
+    )
+    (PUBLIC_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
 
 
 def _write_site_info() -> None:
@@ -208,6 +279,10 @@ def build() -> None:
     )
     (PUBLIC_DIR / "_headers").write_text(
         "/ads.txt\n  Content-Type: text/plain; charset=utf-8\n",
+        encoding="utf-8",
+    )
+    (PUBLIC_DIR / "robots.txt").write_text(
+        f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n",
         encoding="utf-8",
     )
     _write_site_info()
