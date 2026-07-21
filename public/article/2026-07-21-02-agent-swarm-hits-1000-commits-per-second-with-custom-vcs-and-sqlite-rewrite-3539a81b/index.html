@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>智能体集群实现每秒千次提交，自研版本控制系统加Rust重写SQLite - Now AI News 今日科技前沿</title>
+  <meta name="description" content="一套新型智能体集群系统通过自研版本控制系统，实现了每秒1000次代码提交，并仅依据SQLite官方文档成功用Rust从零重写了该数据库。 这表明扩展AI智能体必须同步设计基础设施而不仅是模型；同时引发紧迫问题：训练数据是否污染结果、成果是否可复现，以及‘仅依据文档’的成功究竟体现真实推理能力，还是单纯的记忆复现。 自研VCS既是协调层也是冲突检测引擎；SQL" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-07-21-02-agent-swarm-hits-1000-commits-per-second-with-custom-vcs-and-sqlite-rewrite-3539a81b" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-07-21-02-agent-swarm-hits-1000-commits-per-second-with-custom-vcs-and-sqlite-rewrite-3539a81b" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-07-21-02-agent-swarm-hits-1000-commits-per-second-with-custom-vcs-and-sqlite-rewrite-3539a81b" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-07-21-02-agent-swarm-hits-1000-commits-per-second-with-custom-vcs-and-sqlite-rewrite-3539a81b" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="智能体集群实现每秒千次提交，自研版本控制系统加Rust重写SQLite" />
+  <meta property="og:description" content="一套新型智能体集群系统通过自研版本控制系统，实现了每秒1000次代码提交，并仅依据SQLite官方文档成功用Rust从零重写了该数据库。 这表明扩展AI智能体必须同步设计基础设施而不仅是模型；同时引发紧迫问题：训练数据是否污染结果、成果是否可复现，以及‘仅依据文档’的成功究竟体现真实推理能力，还是单纯的记忆复现。 自研VCS既是协调层也是冲突检测引擎；SQL" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-07-21-02-agent-swarm-hits-1000-commits-per-second-with-custom-vcs-and-sqlite-rewrite-3539a81b" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-48982535.png" />
+  <meta property="article:published_time" content="2026-07-20T18:06:13+00:00" />
+  <meta property="article:modified_time" content="2026-07-21T04:40:06.265522+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="智能体集群实现每秒千次提交，自研版本控制系统加Rust重写SQLite" />
+  <meta name="twitter:description" content="一套新型智能体集群系统通过自研版本控制系统，实现了每秒1000次代码提交，并仅依据SQLite官方文档成功用Rust从零重写了该数据库。 这表明扩展AI智能体必须同步设计基础设施而不仅是模型；同时引发紧迫问题：训练数据是否污染结果、成果是否可复现，以及‘仅依据文档’的成功究竟体现真实推理能力，还是单纯的记忆复现。 自研VCS既是协调层也是冲突检测引擎；SQL" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-48982535.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-07-21-02-agent-swarm-hits-1000-commits-per-second-with-custom-vcs-and-sqlite-rewrite-3539a81b"}, "headline": "智能体集群实现每秒千次提交，自研版本控制系统加Rust重写SQLite", "description": "一套新型智能体集群系统通过自研版本控制系统，实现了每秒1000次代码提交，并仅依据SQLite官方文档成功用Rust从零重写了该数据库。 这表明扩展AI智能体必须同步设计基础设施而不仅是模型；同时引发紧迫问题：训练数据是否污染结果、成果是否可复现，以及‘仅依据文档’的成功究竟体现真实推理能力，还是单纯的记忆复现。 自研VCS既是协调层也是冲突检测引擎；SQL", "image": ["https://nowainews.com/media/hackernews-story-48982535.png"], "datePublished": "2026-07-20T18:06:13+00:00", "dateModified": "2026-07-21T04:40:06.265522+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=24" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-48982535.png" alt="智能体集群实现每秒千次提交，自研版本控制系统加Rust重写SQLite" />
+    <div class="article-page-tags"><span>#agent-swarm</span> <span>#LLM-systems</span> <span>#version-control</span> <span>#AI-infrastructure</span> <span>#model-economics</span></div>
+    <h1>智能体集群实现每秒千次提交，自研版本控制系统加Rust重写SQLite</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-21T04:28:45.283856+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>一套新型智能体集群系统打破了此前所有性能纪录——实现每秒1000次代码提交，比人类开发者快约360万倍，也比今年早些时候仅达每小时约1000次提交的同类智能体系统快约3600倍。这一飞跃并非单纯依赖更大模型或更多算力，而是源于底层基础设施的深度创新：团队从零构建了一套专用版本控制系统（VCS），并将其作为数千个并发AI智能体的协同中枢。与Git将提交视为离散快照不同，该VCS提供实时变更可见性，在最早阶段即暴露冲突，并将优先级合并、原子操作分组等协调逻辑直接嵌入存储层。</p>
+<p>该系统最具挑战性的验证任务，是仅凭SQLite官方文档，用Rust语言从头重写整个数据库引擎。令人惊讶的是，它成功了——产出了一套功能完备、完全基于文档推导出的Rust实现。这不仅是一次编程练习，更是对智能体自主性、推理准确性及跨文档综合能力在超高并发下的严苛压力测试。团队特意选择SQLite，因其规范严谨、自包含且广为人知，使成功既具实质意义，又易于验证。</p>
+<p>然而，这项成果随即引发关于大语言模型开发范式根基的激烈讨论。多位评论者指出一个令人不安的可能性：驱动该集群的模型，可能已在预训练阶段接触过Turso此前开源的SQLite Rust改写版本（即libSQL），从而引发“记忆复现”而非“真正理解”的质疑。若属实，“仅依据文档”的声明就可能掩盖了潜在的训练数据泄露——这一细微却关键的区别，关乎我们是在见证涌现式推理，还是统计学意义上的复述。</p>
+<p>除技术新意外，该项目还重新定义了“模型经济学”：吞吐量不仅取决于token处理速度或GPU利用率，更取决于整个系统栈（VCS、调度器、内存模型、回滚语义）能否支撑安全、可观测、可组合的并行协作。正如一位评论者所言，即便规模较小的智能体集群，也能从分层角色设计中获益——目的不是为了扩容，而是为了隔离故障、保留原始设计意图，并支持精准干预。这一架构洞见，或许比每秒千次提交的 headline 数字更具长期价值。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://cursor.com/blog/agent-swarm-model-economics" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://docs.turso.tech/libsql" target="_blank" rel="noopener">libSQL is a production-ready fork of SQLite , maintained by Turso.</a><a href="https://relevanceai.com/learn/agent-swarms-orchestrating-the-future-of-ai-collaboration" target="_blank" rel="noopener">What is an AI Agent Swarm</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
