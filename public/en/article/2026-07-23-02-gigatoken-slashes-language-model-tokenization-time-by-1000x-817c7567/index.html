@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>GigaToken slashes language model tokenization time by ~1000x - Now AI News</title>
+  <meta name="description" content="GigaToken, released on GitHub, replaces regex-based pretokenization with SIMD-accelerated, branchless code and a hierarchical cache, achieving ~1000× faster tokenization across x86" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-07-23-02-gigatoken-slashes-language-model-tokenization-time-by-1000x-817c7567" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-07-23-02-gigatoken-slashes-language-model-tokenization-time-by-1000x-817c7567" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-07-23-02-gigatoken-slashes-language-model-tokenization-time-by-1000x-817c7567" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-07-23-02-gigatoken-slashes-language-model-tokenization-time-by-1000x-817c7567" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="GigaToken slashes language model tokenization time by ~1000x" />
+  <meta property="og:description" content="GigaToken, released on GitHub, replaces regex-based pretokenization with SIMD-accelerated, branchless code and a hierarchical cache, achieving ~1000× faster tokenization across x86" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-07-23-02-gigatoken-slashes-language-model-tokenization-time-by-1000x-817c7567" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49010167.png" />
+  <meta property="article:published_time" content="2026-07-22T17:20:38+00:00" />
+  <meta property="article:modified_time" content="2026-07-23T04:43:57.104366+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GigaToken slashes language model tokenization time by ~1000x" />
+  <meta name="twitter:description" content="GigaToken, released on GitHub, replaces regex-based pretokenization with SIMD-accelerated, branchless code and a hierarchical cache, achieving ~1000× faster tokenization across x86" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49010167.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-07-23-02-gigatoken-slashes-language-model-tokenization-time-by-1000x-817c7567"}, "headline": "GigaToken slashes language model tokenization time by ~1000x", "description": "GigaToken, released on GitHub, replaces regex-based pretokenization with SIMD-accelerated, branchless code and a hierarchical cache, achieving ~1000× faster tokenization across x86", "image": ["https://nowainews.com/media/hackernews-story-49010167.png"], "datePublished": "2026-07-22T17:20:38+00:00", "dateModified": "2026-07-23T04:43:57.104366+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=24" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49010167.png" alt="GigaToken slashes language model tokenization time by ~1000x" />
+    <div class="article-page-tags"><span>#tokenization</span> <span>#LLM-optimization</span> <span>#SIMD</span> <span>#pretraining</span> <span>#systems-performance</span></div>
+    <h1>GigaToken slashes language model tokenization time by ~1000x</h1>
+    <p class="article-page-meta">News time: 2026-07-23T04:30:17.189257+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>GigaToken is a new open-source library that redefines the speed ceiling for language model tokenization — achieving up to 1000× faster performance than conventional regex-based approaches. Developed by Marcel Roed, it replaces slow, branching-heavy regular expression engines used in pretokenization with hand-optimized SIMD instructions and a hierarchical caching system. The result isn’t just a marginal gain: GigaToken processes text at gigabytes per second on modern CPUs, whether x86-64 with AVX2 or AVX-512, or ARM64 with NEON — all while producing bit-identical outputs to standard tokenizers like those used in GPT-3, LLaMA-3, and Qwen-2.5.</p>
+<p>Tokenization — the first step in preparing raw text for LLMs — has long been treated as a solved, low-priority problem. Most frameworks delegate pretokenization (splitting text into chunks before byte-pair encoding) to general-purpose regex libraries, which are flexible but notoriously inefficient. GigaToken flips this assumption: instead of accepting regex as inevitable overhead, it implements the exact same logic — including Unicode-aware whitespace handling, punctuation splitting, and cl100k-style rules — using vectorized, branchless code paths. This eliminates thousands of conditional jumps per input character and reduces memory indirections through aggressive caching of pretoken mappings.</p>
+<p>The impact shines brightest in offline data preparation. When curating terabytes of training corpora — a common bottleneck in pretraining — even sub-1% speedups compound dramatically. A 1000× acceleration here means hours become seconds, enabling rapid iteration over dataset filters, deduplication strategies, and preprocessing pipelines. While inference-time tokenization remains a small fraction of total latency (often &lt;0.1%), GigaToken’s value extends to tooling: tokenizer benchmarking, synthetic data generation, real-time log parsing, and edge-device preprocessing where CPU and memory constraints are tight.</p>
+<p>What makes GigaToken especially compelling is its portability and correctness. Unlike many high-performance optimizations, it doesn’t sacrifice compatibility: it’s a drop-in replacement for existing pretokenizers, validated across diverse datasets including XNLI. Its engineering reflects deep systems awareness — from fine-grained profiling of cache misses to cross-architecture SIMD porting — and has already drawn enthusiastic attention from tokenization specialists in community forums. As LLM infrastructure matures, projects like GigaToken signal a shift: optimizing the ‘boring’ layers can yield transformative gains.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/marcelroed/gigatoken/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/marcelroed/gigatoken/" target="_blank" rel="noopener">GitHub - marcelroed/gigatoken: Language model tokenization at GB/s</a><a href="https://arxiv.org/abs/2601.05833" target="_blank" rel="noopener">[2601.05833] Peek2: A Regex-free implementation of pretokenizers for Byte-level BPE</a><a href="https://deepwiki.com/saghen/blink.pairs/7.1-tokenization" target="_blank" rel="noopener">Tokenization | saghen/blink.pairs | DeepWiki</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
