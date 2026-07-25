@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>PostgreSQL LISTEN/NOTIFY handles 60,000 notifications per second - Now AI News</title>
+  <meta name="description" content="A DBOS blog post empirically demonstrates PostgreSQL&#x27;s LISTEN/NOTIFY mechanism sustaining over 60,000 notifications per second under realistic load conditions, refuting longstandin" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="PostgreSQL LISTEN/NOTIFY handles 60,000 notifications per second" />
+  <meta property="og:description" content="A DBOS blog post empirically demonstrates PostgreSQL&#x27;s LISTEN/NOTIFY mechanism sustaining over 60,000 notifications per second under realistic load conditions, refuting longstandin" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49040296.jpg" />
+  <meta property="article:published_time" content="2026-07-24T19:05:53+00:00" />
+  <meta property="article:modified_time" content="2026-07-25T04:31:06.142951+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PostgreSQL LISTEN/NOTIFY handles 60,000 notifications per second" />
+  <meta name="twitter:description" content="A DBOS blog post empirically demonstrates PostgreSQL&#x27;s LISTEN/NOTIFY mechanism sustaining over 60,000 notifications per second under realistic load conditions, refuting longstandin" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49040296.jpg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f"}, "headline": "PostgreSQL LISTEN/NOTIFY handles 60,000 notifications per second", "description": "A DBOS blog post empirically demonstrates PostgreSQL's LISTEN/NOTIFY mechanism sustaining over 60,000 notifications per second under realistic load conditions, refuting longstandin", "image": ["https://nowainews.com/media/hackernews-story-49040296.jpg"], "datePublished": "2026-07-24T19:05:53+00:00", "dateModified": "2026-07-25T04:31:06.142951+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=24" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49040296.jpg" alt="PostgreSQL LISTEN/NOTIFY handles 60,000 notifications per second" />
+    <div class="article-page-tags"><span>#PostgreSQL</span> <span>#scalability</span> <span>#real-time</span> <span>#distributed-systems</span> <span>#database-design</span></div>
+    <h1>PostgreSQL LISTEN/NOTIFY handles 60,000 notifications per second</h1>
+    <p class="article-page-meta">News time: 2026-07-25T04:25:14.756396+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A new technical blog post from DBOS challenges a long-standing myth in the PostgreSQL community: that the built-in LISTEN/NOTIFY mechanism doesn’t scale well for high-throughput real-time workloads. By running rigorous, production-inspired benchmarks — including concurrent listeners, variable payload sizes, and sustained load over time — the authors demonstrate that PostgreSQL can reliably deliver over 60,000 notifications per second on modest hardware. This isn’t a synthetic microbenchmark; it reflects realistic usage patterns like fan-out to multiple services or event-driven coordination within a durable workflow engine.</p>
+<p>The test setup used a single PostgreSQL 16 instance with standard configuration (no exotic tuning), connected via persistent <code>libpq</code> sessions. Notifications were sent using <code>NOTIFY channel, 'payload'</code>, and received via <code>LISTEN</code> in separate client processes. Crucially, the benchmark measured end-to-end latency and throughput <em>under load</em>, not just peak burst capacity — and found consistent sub-10ms p95 latency even at 50K+ notifications/sec.</p>
+<p>This result directly contradicts widely cited assumptions — including a recent, highly upvoted Hacker News thread titled “Postgres LISTEN/NOTIFY does not scale” — that treat LISTEN/NOTIFY as inherently unsuitable beyond toy-scale applications. The DBOS team argues that many perceived limitations stem not from PostgreSQL itself, but from misconfigured clients (e.g., unbounded connection pools), poor application-level batching, or conflating durability guarantees with throughput.</p>
+<p>The implications extend beyond academic interest. Teams building durable workflows — like those powering email automation, multi-step approvals, or cross-service state synchronization — can now confidently lean on LISTEN/NOTIFY as a zero-dependency, ACID-aligned messaging layer. It eliminates the operational overhead of managing separate message brokers like RabbitMQ or Kafka, while preserving transactional consistency: notifications fire only after committed transactions, ensuring exactly-once semantics when paired with proper application logic.</p>
+<p>That said, the post cautions against treating scalability as binary. As one commenter noted, “scale isn’t a yes/no question — it’s a continuum.” What works for 60K/sec may fall short for 600K/sec or global fan-out across regions. But for many mid-scale SaaS applications, embedded systems, or internal platforms, this performance ceiling is more than sufficient — and far simpler to operate.</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.dbos.dev/blog/postgres-listen-notify-scalability" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://www.postgresql.org/docs/current/sql-notify.html" target="_blank" rel="noopener">PostgreSQL: Documentation: 18: NOTIFY</a><a href="https://www.postgresql.org/docs/current/sql-listen.html" target="_blank" rel="noopener">PostgreSQL: Documentation: 18: LISTEN</a><a href="https://www.baeldung.com/spring-postgresql-message-broker" target="_blank" rel="noopener">Using PostgreSQL as a Message Broker - Baeldung PostgreSQL: Documentation: 18: LISTEN Real‑Time Communication with PostgreSQL LISTEN/NOTIFY and ... How to Use Listen/Notify for Real-Time Updates in PostgreSQL PostgreSQL LISTEN/NOTIFY - Real-time Notifications | Compile ... Receiving PostreSQL Push Notifications with Spring ...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

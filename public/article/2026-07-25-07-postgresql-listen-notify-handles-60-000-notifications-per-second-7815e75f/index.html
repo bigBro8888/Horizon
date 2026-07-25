@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>PostgreSQL的LISTEN/NOTIFY每秒可处理6万通知 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="DBOS技术博客通过实测证明，PostgreSQL的LISTEN/NOTIFY机制在真实负载下可持续达到每秒超6万次通知，推翻了业界对其扩展性不足的长期误判。 这证实LISTEN/NOTIFY可作为外部消息中间件的可行替代方案，特别适合需要事务一致性与运维简洁性的实时及持久化工作流场景。 测试基于默认配置的PostgreSQL 16，5万+通知/秒时p95延" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="PostgreSQL的LISTEN/NOTIFY每秒可处理6万通知" />
+  <meta property="og:description" content="DBOS技术博客通过实测证明，PostgreSQL的LISTEN/NOTIFY机制在真实负载下可持续达到每秒超6万次通知，推翻了业界对其扩展性不足的长期误判。 这证实LISTEN/NOTIFY可作为外部消息中间件的可行替代方案，特别适合需要事务一致性与运维简洁性的实时及持久化工作流场景。 测试基于默认配置的PostgreSQL 16，5万+通知/秒时p95延" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49040296.jpg" />
+  <meta property="article:published_time" content="2026-07-24T19:05:53+00:00" />
+  <meta property="article:modified_time" content="2026-07-25T04:31:06.142951+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PostgreSQL的LISTEN/NOTIFY每秒可处理6万通知" />
+  <meta name="twitter:description" content="DBOS技术博客通过实测证明，PostgreSQL的LISTEN/NOTIFY机制在真实负载下可持续达到每秒超6万次通知，推翻了业界对其扩展性不足的长期误判。 这证实LISTEN/NOTIFY可作为外部消息中间件的可行替代方案，特别适合需要事务一致性与运维简洁性的实时及持久化工作流场景。 测试基于默认配置的PostgreSQL 16，5万+通知/秒时p95延" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49040296.jpg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-07-25-07-postgresql-listen-notify-handles-60-000-notifications-per-second-7815e75f"}, "headline": "PostgreSQL的LISTEN/NOTIFY每秒可处理6万通知", "description": "DBOS技术博客通过实测证明，PostgreSQL的LISTEN/NOTIFY机制在真实负载下可持续达到每秒超6万次通知，推翻了业界对其扩展性不足的长期误判。 这证实LISTEN/NOTIFY可作为外部消息中间件的可行替代方案，特别适合需要事务一致性与运维简洁性的实时及持久化工作流场景。 测试基于默认配置的PostgreSQL 16，5万+通知/秒时p95延", "image": ["https://nowainews.com/media/hackernews-story-49040296.jpg"], "datePublished": "2026-07-24T19:05:53+00:00", "dateModified": "2026-07-25T04:31:06.142951+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=24" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49040296.jpg" alt="PostgreSQL的LISTEN/NOTIFY每秒可处理6万通知" />
+    <div class="article-page-tags"><span>#PostgreSQL</span> <span>#scalability</span> <span>#real-time</span> <span>#distributed-systems</span> <span>#database-design</span></div>
+    <h1>PostgreSQL的LISTEN/NOTIFY每秒可处理6万通知</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-25T04:25:14.756396+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>DBOS发布的一篇技术博客挑战了PostgreSQL社区中一个长期存在的误解：内置的LISTEN/NOTIFY机制无法支撑高吞吐实时场景。作者通过贴近生产环境的压力测试——包括并发监听器、不同大小的有效载荷，以及长时间持续负载——证实PostgreSQL在普通硬件上稳定实现每秒超6万次通知。这不是人为优化的微基准测试，而是模拟了真实场景，例如向多个服务广播事件，或在持久化工作流引擎中协调状态。</p>
+<p>测试基于单节点PostgreSQL 16，默认配置（未做特殊调优），客户端使用标准libpq建立持久连接。通知通过<code>NOTIFY channel, 'payload'</code>发出，接收端用<code>LISTEN</code>监听。关键在于，测试测量的是<strong>持续负载下的端到端吞吐与延迟</strong>，而非瞬时峰值；结果表明，在每秒5万以上通知量下，p95延迟仍稳定低于10毫秒。</p>
+<p>这一结果直接反驳了广为流传的观点——比如近期Hacker News上一篇题为“Postgres LISTEN/NOTIFY并不具备可扩展性”的热门讨论（321条评论）——该观点认为LISTEN/NOTIFY仅适用于玩具级应用。DBOS团队指出，多数所谓“瓶颈”其实源于客户端配置不当（如无限制连接池）、应用层缺乏批处理，或混淆了“持久性保障”与“吞吐能力”。</p>
+<p>其影响远不止理论层面。构建持久化工作流的团队——例如驱动邮件自动化、多步骤审批或跨服务状态同步的系统——现在可以放心将LISTEN/NOTIFY作为零依赖、强一致的消息层。它免去了运维RabbitMQ或Kafka等独立消息中间件的复杂性，同时保持事务一致性：通知仅在事务提交后触发，配合合理应用逻辑即可实现精确一次（exactly-once）语义。</p>
+<p>不过，文章也提醒：可扩展性不是非黑即白的问题。正如一位评论者所言：“规模不是‘能或不能’，而是一条连续谱。”每秒6万对某些系统绰绰有余，对另一些则远远不够。但对于大量中等规模SaaS应用、嵌入式系统或内部平台而言，这一性能已足够，且运维更简单。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.dbos.dev/blog/postgres-listen-notify-scalability" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://www.postgresql.org/docs/current/sql-notify.html" target="_blank" rel="noopener">PostgreSQL: Documentation: 18: NOTIFY</a><a href="https://www.postgresql.org/docs/current/sql-listen.html" target="_blank" rel="noopener">PostgreSQL: Documentation: 18: LISTEN</a><a href="https://www.baeldung.com/spring-postgresql-message-broker" target="_blank" rel="noopener">Using PostgreSQL as a Message Broker - Baeldung PostgreSQL: Documentation: 18: LISTEN Real‑Time Communication with PostgreSQL LISTEN/NOTIFY and ... How to Use Listen/Notify for Real-Time Updates in PostgreSQL PostgreSQL LISTEN/NOTIFY - Real-time Notifications | Compile ... Receiving PostreSQL Push Notifications with Spring ...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
