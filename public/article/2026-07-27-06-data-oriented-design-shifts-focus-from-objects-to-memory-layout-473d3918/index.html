@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>数据导向设计：从对象转向内存布局 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Mike Acton撰写的《数据导向设计导论》PDF文档重新引发广泛关注，围绕其核心原则、权衡取舍及在游戏引擎之外的应用展开了深入技术讨论。 数据导向设计能在内存受限系统中带来显著性能提升，并挑战软件架构的固有假设，正深刻影响现代游戏引擎、高性能计算乃至AI工具链的设计。 DoD强调连续内存布局（如结构体数组）、顺序访问模式和以数据为先的算法设计，常以牺牲封" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-07-27-06-data-oriented-design-shifts-focus-from-objects-to-memory-layout-473d3918" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-07-27-06-data-oriented-design-shifts-focus-from-objects-to-memory-layout-473d3918" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-07-27-06-data-oriented-design-shifts-focus-from-objects-to-memory-layout-473d3918" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-07-27-06-data-oriented-design-shifts-focus-from-objects-to-memory-layout-473d3918" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="数据导向设计：从对象转向内存布局" />
+  <meta property="og:description" content="Mike Acton撰写的《数据导向设计导论》PDF文档重新引发广泛关注，围绕其核心原则、权衡取舍及在游戏引擎之外的应用展开了深入技术讨论。 数据导向设计能在内存受限系统中带来显著性能提升，并挑战软件架构的固有假设，正深刻影响现代游戏引擎、高性能计算乃至AI工具链的设计。 DoD强调连续内存布局（如结构体数组）、顺序访问模式和以数据为先的算法设计，常以牺牲封" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-07-27-06-data-oriented-design-shifts-focus-from-objects-to-memory-layout-473d3918" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49060724.svg" />
+  <meta property="article:published_time" content="2026-07-26T18:11:16+00:00" />
+  <meta property="article:modified_time" content="2026-07-27T04:59:45.988849+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="数据导向设计：从对象转向内存布局" />
+  <meta name="twitter:description" content="Mike Acton撰写的《数据导向设计导论》PDF文档重新引发广泛关注，围绕其核心原则、权衡取舍及在游戏引擎之外的应用展开了深入技术讨论。 数据导向设计能在内存受限系统中带来显著性能提升，并挑战软件架构的固有假设，正深刻影响现代游戏引擎、高性能计算乃至AI工具链的设计。 DoD强调连续内存布局（如结构体数组）、顺序访问模式和以数据为先的算法设计，常以牺牲封" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49060724.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-07-27-06-data-oriented-design-shifts-focus-from-objects-to-memory-layout-473d3918"}, "headline": "数据导向设计：从对象转向内存布局", "description": "Mike Acton撰写的《数据导向设计导论》PDF文档重新引发广泛关注，围绕其核心原则、权衡取舍及在游戏引擎之外的应用展开了深入技术讨论。 数据导向设计能在内存受限系统中带来显著性能提升，并挑战软件架构的固有假设，正深刻影响现代游戏引擎、高性能计算乃至AI工具链的设计。 DoD强调连续内存布局（如结构体数组）、顺序访问模式和以数据为先的算法设计，常以牺牲封", "image": ["https://nowainews.com/media/hackernews-story-49060724.svg"], "datePublished": "2026-07-26T18:11:16+00:00", "dateModified": "2026-07-27T04:59:45.988849+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
+     crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/static/styles.css?v=24" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49060724.svg" alt="数据导向设计：从对象转向内存布局" />
+    <div class="article-page-tags"><span>#data-oriented-design</span> <span>#performance-optimization</span> <span>#cache-aware-programming</span> <span>#game-engine-development</span> <span>#systems-programming</span></div>
+    <h1>数据导向设计：从对象转向内存布局</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-27T04:49:50.416716+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>一份题为《数据导向设计导论》的PDF文档近期再度引发系统程序员与游戏引擎开发者的热议，焦点在于软件应如何为极致性能而构建。与传统面向对象设计（将数据和行为封装在类中）不同，该方法首先追问：数据长什么样子？如何被访问？在内存中如何布局？其核心思想简洁却深刻：以硬件为优化目标，尤其是CPU缓存——通过将数据组织成连续、可预测的结构（例如“结构体数组”或“数组的数组”），并围绕批量数据转换而非单个对象的方法调用设计算法。</p>
+<p>这份文档由Mike Acton撰写，他是数据导向设计的长期倡导者，曾任索尼PlayStation工程工具团队技术负责人。它既是一份概念入门指南，也是一份实践宣言：不否定抽象本身，而是重新定义抽象——不再将数据隐藏于接口之后，而是将数据形态本身作为核心契约。例如，物理引擎并非围绕‘刚体’对象及其虚函数构建，而是围绕位置、速度、碰撞标志等并行数组构建，并使用SIMD友好的循环进行同步处理。</p>
+<p>这并非纸上谈兵。基准测试反复证实：当从指针跳转式的OOP内存布局转向平坦、对齐、缓存友好的结构时，缓存受限型任务的性能可提升2倍至10倍。Unity的DOTS架构、EA的Frostbite引擎等真实引擎已采用DoD变体，以无卡顿地处理数千实体。但该范式也有代价：代码对新手不够直观，需求频繁变动时重构困难，且调试与序列化等配套工具远不如成熟OOP生态完善。</p>
+<p>社区讨论正反映出这种张力。有人盛赞DoD在性能压力下的清晰性；也有人质疑它是否真正区别于数组编程，抑或只是缓存感知编程的一种新标签。一位评论者指出：DoD在渲染、仿真等稳定高吞吐场景中大放异彩，但在业务逻辑等需求多变的领域则举步维艰。尽管如此，其影响力毋庸置疑——不仅限于游戏开发，更延伸至高性能计算、实时音频，甚至新兴的大语言模型工具链中，那里数据流早已凌驾于控制流之上。</p></article>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.gamedevs.org/uploads/introduction-to-data-oriented-design.pdf" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://www.linkedin.com/pulse/rethinking-software-design-data-oriented-programming-vs-goalmoradi-o5zte" target="_blank" rel="noopener">Rethinking Software Design : Data - Oriented Programming vs ...</a><a href="https://www.flowrenderengine.com/cpp-data-oriented-design-vs-oop-benchmark.html" target="_blank" rel="noopener">Flow Render Engine - C++ Data - Oriented Design (DOD) vs OOP...</a><a href="https://suddo.io/exploiting-modern-cpu-cache-hierarchies-programming-for-l1-l2-and-l3-awareness/" target="_blank" rel="noopener">Exploiting Modern CPU Cache Hierarchies: Programming for...</a>
+    </section>
+  </main>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
