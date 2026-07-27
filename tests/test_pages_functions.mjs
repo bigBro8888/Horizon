@@ -7,8 +7,8 @@ import {
   createAdminSessionToken,
   normalizeAds,
 } from "../functions/_lib/common.js";
-import { onRequest as adminMiddleware } from "../functions/api/admin/_middleware.js";
-import { onRequestPost as login } from "../functions/api/admin/login.js";
+import { onRequest as opsMiddleware } from "../functions/api/ops/_middleware.js";
+import { onRequestPost as login } from "../functions/api/ops/login.js";
 import { onRequestPost as track } from "../functions/api/track.js";
 
 assert.equal(cleanPath("/article/test?utm_source=x"), "/article/test");
@@ -47,15 +47,15 @@ assert.throws(
   /publisher_id/
 );
 
-const unauthorized = await adminMiddleware({
-  request: new Request("https://nowainews.com/api/admin/stats"),
+const unauthorized = await opsMiddleware({
+  request: new Request("https://nowainews.com/api/ops/stats"),
   data: {},
   next: () => new Response("unexpected"),
 });
 assert.equal(unauthorized.status, 401);
 
-const loginAllowed = await adminMiddleware({
-  request: new Request("https://nowainews.com/api/admin/login", {
+const loginAllowed = await opsMiddleware({
+  request: new Request("https://nowainews.com/api/ops/login", {
     method: "POST",
   }),
   data: {},
@@ -65,7 +65,7 @@ assert.equal(loginAllowed.status, 200);
 assert.equal(await loginAllowed.text(), "login-ok");
 
 const badLogin = await login({
-  request: new Request("https://nowainews.com/api/admin/login", {
+  request: new Request("https://nowainews.com/api/ops/login", {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ password: "wrong" }),
@@ -75,7 +75,7 @@ const badLogin = await login({
 assert.equal(badLogin.status, 401);
 
 const goodLogin = await login({
-  request: new Request("https://nowainews.com/api/admin/login", {
+  request: new Request("https://nowainews.com/api/ops/login", {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ password: "dk++8429" }),
@@ -86,8 +86,8 @@ assert.equal(goodLogin.status, 200);
 assert.match(goodLogin.headers.get("set-cookie") || "", new RegExp(ADMIN_SESSION_COOKIE));
 
 let continued = false;
-const authorized = await adminMiddleware({
-  request: new Request("https://nowainews.com/api/admin/stats", {
+const authorized = await opsMiddleware({
+  request: new Request("https://nowainews.com/api/ops/stats", {
     headers: { "cf-access-authenticated-user-email": "Admin@example.com" },
   }),
   data: {},
@@ -104,7 +104,7 @@ const sessionToken = await createAdminSessionToken(
   "password-admin"
 );
 const passwordContext = {
-  request: new Request("https://nowainews.com/api/admin/stats", {
+  request: new Request("https://nowainews.com/api/ops/stats", {
     headers: {
       cookie: `${ADMIN_SESSION_COOKIE}=${encodeURIComponent(sessionToken)}`,
     },
@@ -113,7 +113,7 @@ const passwordContext = {
   data: {},
   next: () => new Response("ok"),
 };
-const passwordAuthorized = await adminMiddleware(passwordContext);
+const passwordAuthorized = await opsMiddleware(passwordContext);
 assert.equal(passwordAuthorized.status, 200);
 assert.equal(passwordContext.data.adminEmail, "password-admin");
 assert.equal(passwordContext.data.adminVia, "password");

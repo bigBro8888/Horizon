@@ -29,18 +29,36 @@ async function api(path, options = {}) {
   const response = await fetch(path, {
     cache: "no-store",
     credentials: "same-origin",
+    redirect: "manual",
     ...options,
     headers: {
       "content-type": "application/json",
       ...(options.headers || {}),
     },
   });
-  let payload = {};
-  try {
-    payload = await response.json();
-  } catch (_) {
-    payload = {};
+
+  if (response.type === "opaqueredirect" || (response.status >= 300 && response.status < 400)) {
+    const error = new Error("后台接口被 Cloudflare Access 拦截，请停用 Access 或改用 /ops 路径");
+    error.status = 401;
+    error.loginRequired = true;
+    throw error;
   }
+
+  const contentType = response.headers.get("content-type") || "";
+  let payload = {};
+  if (contentType.includes("application/json")) {
+    try {
+      payload = await response.json();
+    } catch (_) {
+      payload = {};
+    }
+  } else {
+    const error = new Error("后台接口返回异常，请确认 Pages Functions 已部署");
+    error.status = response.status || 502;
+    error.loginRequired = true;
+    throw error;
+  }
+
   if (!response.ok) {
     const error = new Error(payload.error || `请求失败（${response.status}）`);
     error.status = response.status;
@@ -159,7 +177,7 @@ function renderStats(stats) {
 async function loadStats(range = dashboardState.range) {
   dashboardState.range = range;
   try {
-    const stats = await api(`/api/admin/stats?range=${range}`);
+    const stats = await api(`/api/ops/stats?range=${range}`);
     setAuthUi(true, stats);
     renderStats(stats);
   } catch (error) {
@@ -186,7 +204,7 @@ function fillAdsForm(payload) {
 
 async function loadAds() {
   try {
-    fillAdsForm(await api("/api/admin/ads"));
+    fillAdsForm(await api("/api/ops/ads"));
   } catch (error) {
     if (error.status === 401 || error.loginRequired) {
       setAuthUi(false);
@@ -202,7 +220,7 @@ async function saveAds(event) {
   button.disabled = true;
   button.textContent = "正在保存…";
   try {
-    const payload = await api("/api/admin/ads", {
+    const payload = await api("/api/ops/ads", {
       method: "PUT",
       body: JSON.stringify({
         enabled: $("adsEnabled").checked,
@@ -234,7 +252,7 @@ async function handleLogin(event) {
   button.textContent = "正在登录…";
   errorBox.hidden = true;
   try {
-    await api("/api/admin/login", {
+    await api("/api/ops/login", {
       method: "POST",
       body: JSON.stringify({ password: $("loginPassword").value }),
     });
@@ -251,7 +269,7 @@ async function handleLogin(event) {
 
 async function handleLogout() {
   try {
-    await api("/api/admin/logout", { method: "POST", body: "{}" });
+    await api("/api/ops/logout", { method: "POST", body: "{}" });
   } catch (_) {
     /* Ignore logout network errors and still clear local UI. */
   }
@@ -259,8 +277,15 @@ async function handleLogout() {
 }
 
 async function bootstrap() {
+  setAuthUi(false);
   try {
-    const session = await api("/api/admin/session");
+    const session = await api("/api/ops/session");
+    if (!session?.authenticated && !session?.email) {
+      throw Object.assign(new Error("未登录"), {
+        status: 401,
+        loginRequired: true,
+      });
+    }
     setAuthUi(true, session);
     await loadStats();
   } catch (error) {
@@ -273,6 +298,7 @@ async function bootstrap() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  setAuthUi(false);
   document.querySelectorAll(".nav-item").forEach((button) => {
     button.addEventListener("click", () => switchPanel(button.dataset.panel));
   });
@@ -284,8 +310,8 @@ document.addEventListener("DOMContentLoaded", () => {
       loadStats(Number(button.dataset.range));
     });
   });
-  $("adsForm").addEventListener("submit", saveAds);
-  $("loginForm").addEventListener("submit", handleLogin);
-  $("logoutButton").addEventListener("click", handleLogout);
+  $("adsForm")?.addEventListener("submit", saveAds);
+  $("loginForm")?.addEventListener("submit", handleLogin);
+  $("logoutButton")?.addEventListener("click", handleLogout);
   bootstrap();
 });

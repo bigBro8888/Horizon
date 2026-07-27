@@ -8,7 +8,7 @@ import {
   visitorHash,
 } from "../_lib/common.js";
 
-const IGNORED_PREFIXES = ["/api/", "/static/", "/media/", "/admin"];
+const IGNORED_PREFIXES = ["/api/", "/static/", "/media/", "/admin", "/ops"];
 
 export async function onRequestPost(context) {
   const request = context.request;

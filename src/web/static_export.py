@@ -283,8 +283,19 @@ def build() -> None:
     (PUBLIC_DIR / "index.html").write_text(index_html, encoding="utf-8")
     admin_dir = PUBLIC_DIR / "admin"
     admin_dir.mkdir(parents=True, exist_ok=True)
+    ops_dir = PUBLIC_DIR / "ops"
+    ops_dir.mkdir(parents=True, exist_ok=True)
     admin_html = (STATIC_DIR / "admin-dashboard.html").read_text(encoding="utf-8")
-    (admin_dir / "index.html").write_text(admin_html, encoding="utf-8")
+    (ops_dir / "index.html").write_text(admin_html, encoding="utf-8")
+    (admin_dir / "index.html").write_text(
+        "<!DOCTYPE html><html lang=\"zh-CN\"><head>"
+        "<meta charset=\"UTF-8\"/>"
+        "<meta http-equiv=\"refresh\" content=\"0;url=/ops/\"/>"
+        "<title>Redirecting…</title></head>"
+        "<body><p>后台已迁移到 <a href=\"/ops/\">/ops/</a>。"
+        "若打不开，请到 Cloudflare Zero Trust 停用旧的 Access 应用。</p></body></html>\n",
+        encoding="utf-8",
+    )
     (PUBLIC_DIR / "ads.txt").write_text(
         "google.com, pub-4598371924010228, DIRECT, f08c47fec0942fa0\n",
         encoding="utf-8",
@@ -292,8 +303,12 @@ def build() -> None:
     (PUBLIC_DIR / "_headers").write_text(
         "/ads.txt\n"
         "  Content-Type: text/plain; charset=utf-8\n"
+        "/ops/*\n"
+        "  X-Robots-Tag: noindex, nofollow\n"
+        "  Cache-Control: no-store\n"
         "/admin/*\n"
-        "  X-Robots-Tag: noindex, nofollow\n",
+        "  X-Robots-Tag: noindex, nofollow\n"
+        "  Cache-Control: no-store\n",
         encoding="utf-8",
     )
     (PUBLIC_DIR / "robots.txt").write_text(
