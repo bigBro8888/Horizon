@@ -90,6 +90,116 @@ export function adminEmail(request) {
     .toLowerCase();
 }
 
+export const ADMIN_SESSION_COOKIE = "nowai_admin_session";
+export const DEFAULT_ADMIN_PASSWORD = "dk++8429";
+const SESSION_TTL_MS = 12 * 60 * 60 * 1000;
+
+function bytesToHex(bytes) {
+  return Array.from(bytes)
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+function base64UrlEncode(value) {
+  return btoa(value).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+function base64UrlDecode(value) {
+  const padded = value.replace(/-/g, "+").replace(/_/g, "/");
+  const pad = padded.length % 4 === 0 ? "" : "=".repeat(4 - (padded.length % 4));
+  return atob(padded + pad);
+}
+
+export function getAdminPassword(env) {
+  return String(env?.ADMIN_PASSWORD || DEFAULT_ADMIN_PASSWORD);
+}
+
+function sessionSecret(env) {
+  return `${getAdminPassword(env)}|${env?.ANALYTICS_SALT || "now-ai-news"}`;
+}
+
+async function hmacSign(message, secret) {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(message)
+  );
+  return bytesToHex(new Uint8Array(signature));
+}
+
+export async function createAdminSessionToken(env, label = "password-admin") {
+  const expiresAt = Date.now() + SESSION_TTL_MS;
+  const payload = `${expiresAt}.${label}`;
+  const signature = await hmacSign(payload, sessionSecret(env));
+  return base64UrlEncode(`${payload}.${signature}`);
+}
+
+export async function verifyAdminSessionToken(token, env) {
+  if (!token) return null;
+  let decoded = "";
+  try {
+    decoded = base64UrlDecode(token);
+  } catch (_) {
+    return null;
+  }
+  const parts = decoded.split(".");
+  if (parts.length !== 3) return null;
+  const [expiresAtRaw, label, signature] = parts;
+  const expiresAt = Number(expiresAtRaw);
+  if (!Number.isFinite(expiresAt) || expiresAt < Date.now()) return null;
+  const expected = await hmacSign(`${expiresAtRaw}.${label}`, sessionSecret(env));
+  if (expected !== signature) return null;
+  return label || "password-admin";
+}
+
+export function readCookie(request, name) {
+  const cookie = request.headers.get("cookie") || "";
+  const match = cookie.match(new RegExp(`(?:^|;\\s*)${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : "";
+}
+
+export function adminSessionCookie(token, maxAgeSeconds = Math.floor(SESSION_TTL_MS / 1000)) {
+  return [
+    `${ADMIN_SESSION_COOKIE}=${encodeURIComponent(token)}`,
+    "Path=/",
+    "HttpOnly",
+    "Secure",
+    "SameSite=Strict",
+    `Max-Age=${maxAgeSeconds}`,
+  ].join("; ");
+}
+
+export function clearAdminSessionCookie() {
+  return [
+    `${ADMIN_SESSION_COOKIE}=`,
+    "Path=/",
+    "HttpOnly",
+    "Secure",
+    "SameSite=Strict",
+    "Max-Age=0",
+  ].join("; ");
+}
+
+export async function resolveAdminIdentity(request, env) {
+  const email = adminEmail(request);
+  if (email) {
+    return { label: email, via: "access" };
+  }
+  const token = readCookie(request, ADMIN_SESSION_COOKIE);
+  const label = await verifyAdminSessionToken(token, env);
+  if (label) {
+    return { label, via: "password" };
+  }
+  return null;
+}
+
 export function normalizeAds(input) {
   const source = input && typeof input === "object" ? input : {};
   const publisherId = String(source.publisher_id || DEFAULT_ADS.publisher_id).trim();

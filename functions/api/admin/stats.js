@@ -88,6 +88,7 @@ export async function onRequestGet(context) {
         pageviews: Number(item.pageviews || 0),
       })),
       email: context.data.adminEmail,
+      via: context.data.adminVia || "password",
     });
   } catch (error) {
     console.error("loading traffic stats failed", error);

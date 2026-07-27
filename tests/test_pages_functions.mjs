@@ -1,11 +1,14 @@
 import assert from "node:assert/strict";
 
 import {
+  ADMIN_SESSION_COOKIE,
   cleanPath,
   cleanReferrer,
+  createAdminSessionToken,
   normalizeAds,
 } from "../functions/_lib/common.js";
 import { onRequest as adminMiddleware } from "../functions/api/admin/_middleware.js";
+import { onRequestPost as login } from "../functions/api/admin/login.js";
 import { onRequestPost as track } from "../functions/api/track.js";
 
 assert.equal(cleanPath("/article/test?utm_source=x"), "/article/test");
@@ -51,6 +54,37 @@ const unauthorized = await adminMiddleware({
 });
 assert.equal(unauthorized.status, 401);
 
+const loginAllowed = await adminMiddleware({
+  request: new Request("https://nowainews.com/api/admin/login", {
+    method: "POST",
+  }),
+  data: {},
+  next: () => new Response("login-ok"),
+});
+assert.equal(loginAllowed.status, 200);
+assert.equal(await loginAllowed.text(), "login-ok");
+
+const badLogin = await login({
+  request: new Request("https://nowainews.com/api/admin/login", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ password: "wrong" }),
+  }),
+  env: { ADMIN_PASSWORD: "dk++8429", ANALYTICS_SALT: "test-salt" },
+});
+assert.equal(badLogin.status, 401);
+
+const goodLogin = await login({
+  request: new Request("https://nowainews.com/api/admin/login", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ password: "dk++8429" }),
+  }),
+  env: { ADMIN_PASSWORD: "dk++8429", ANALYTICS_SALT: "test-salt" },
+});
+assert.equal(goodLogin.status, 200);
+assert.match(goodLogin.headers.get("set-cookie") || "", new RegExp(ADMIN_SESSION_COOKIE));
+
 let continued = false;
 const authorized = await adminMiddleware({
   request: new Request("https://nowainews.com/api/admin/stats", {
@@ -64,6 +98,25 @@ const authorized = await adminMiddleware({
 });
 assert.equal(authorized.status, 200);
 assert.equal(continued, true);
+
+const sessionToken = await createAdminSessionToken(
+  { ADMIN_PASSWORD: "dk++8429", ANALYTICS_SALT: "test-salt" },
+  "password-admin"
+);
+const passwordContext = {
+  request: new Request("https://nowainews.com/api/admin/stats", {
+    headers: {
+      cookie: `${ADMIN_SESSION_COOKIE}=${encodeURIComponent(sessionToken)}`,
+    },
+  }),
+  env: { ADMIN_PASSWORD: "dk++8429", ANALYTICS_SALT: "test-salt" },
+  data: {},
+  next: () => new Response("ok"),
+};
+const passwordAuthorized = await adminMiddleware(passwordContext);
+assert.equal(passwordAuthorized.status, 200);
+assert.equal(passwordContext.data.adminEmail, "password-admin");
+assert.equal(passwordContext.data.adminVia, "password");
 
 const botResponse = await track({
   request: new Request("https://nowainews.com/api/track", {

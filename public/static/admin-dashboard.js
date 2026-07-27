@@ -3,6 +3,7 @@
 const dashboardState = {
   range: 7,
   stats: null,
+  authenticated: false,
 };
 
 function $(id) {
@@ -41,9 +42,23 @@ async function api(path, options = {}) {
     payload = {};
   }
   if (!response.ok) {
-    throw new Error(payload.error || `请求失败（${response.status}）`);
+    const error = new Error(payload.error || `请求失败（${response.status}）`);
+    error.status = response.status;
+    error.loginRequired = Boolean(payload.login_required);
+    throw error;
   }
   return payload;
+}
+
+function setAuthUi(authenticated, identity = {}) {
+  dashboardState.authenticated = authenticated;
+  $("loginGate").hidden = authenticated;
+  $("adminShell").hidden = !authenticated;
+  if (!authenticated) return;
+  $("accountEmail").textContent =
+    identity.email || identity.label || "password-admin";
+  $("accountVia").textContent =
+    identity.via === "access" ? "Cloudflare Access" : "密码登录";
 }
 
 function switchPanel(panel) {
@@ -126,7 +141,9 @@ function renderRankList(containerId, rows, labelKey) {
 
 function renderStats(stats) {
   dashboardState.stats = stats;
-  $("accountEmail").textContent = stats.email || "已通过 Access 登录";
+  $("accountEmail").textContent = stats.email || "password-admin";
+  $("accountVia").textContent =
+    stats.via === "access" ? "Cloudflare Access" : "密码登录";
   $("pageviews").textContent = formatNumber(stats.pageviews);
   $("visitors").textContent = formatNumber(stats.visitors);
   $("pagesPerVisitor").textContent = stats.visitors
@@ -143,8 +160,13 @@ async function loadStats(range = dashboardState.range) {
   dashboardState.range = range;
   try {
     const stats = await api(`/api/admin/stats?range=${range}`);
+    setAuthUi(true, stats);
     renderStats(stats);
   } catch (error) {
+    if (error.status === 401 || error.loginRequired) {
+      setAuthUi(false);
+      return;
+    }
     showNotice(error.message, true);
   }
 }
@@ -166,6 +188,10 @@ async function loadAds() {
   try {
     fillAdsForm(await api("/api/admin/ads"));
   } catch (error) {
+    if (error.status === 401 || error.loginRequired) {
+      setAuthUi(false);
+      return;
+    }
     showNotice(error.message, true);
   }
 }
@@ -189,10 +215,60 @@ async function saveAds(event) {
     fillAdsForm(payload);
     showNotice("广告设置已保存，前台将在下次访问时使用新配置。");
   } catch (error) {
+    if (error.status === 401 || error.loginRequired) {
+      setAuthUi(false);
+      return;
+    }
     showNotice(error.message, true);
   } finally {
     button.disabled = false;
     button.textContent = "保存广告设置";
+  }
+}
+
+async function handleLogin(event) {
+  event.preventDefault();
+  const button = $("loginButton");
+  const errorBox = $("loginError");
+  button.disabled = true;
+  button.textContent = "正在登录…";
+  errorBox.hidden = true;
+  try {
+    await api("/api/admin/login", {
+      method: "POST",
+      body: JSON.stringify({ password: $("loginPassword").value }),
+    });
+    $("loginPassword").value = "";
+    await loadStats();
+  } catch (error) {
+    errorBox.textContent = error.message || "登录失败";
+    errorBox.hidden = false;
+  } finally {
+    button.disabled = false;
+    button.textContent = "登录";
+  }
+}
+
+async function handleLogout() {
+  try {
+    await api("/api/admin/logout", { method: "POST", body: "{}" });
+  } catch (_) {
+    /* Ignore logout network errors and still clear local UI. */
+  }
+  setAuthUi(false);
+}
+
+async function bootstrap() {
+  try {
+    const session = await api("/api/admin/session");
+    setAuthUi(true, session);
+    await loadStats();
+  } catch (error) {
+    setAuthUi(false);
+    if (error.status && error.status !== 401) {
+      $("loginError").textContent = error.message;
+      $("loginError").hidden = false;
+    }
   }
 }
 
@@ -209,5 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
   $("adsForm").addEventListener("submit", saveAds);
-  loadStats();
+  $("loginForm").addEventListener("submit", handleLogin);
+  $("logoutButton").addEventListener("click", handleLogout);
+  bootstrap();
 });

@@ -20,6 +20,7 @@ export async function onRequestGet(context) {
       updated_at: row?.updated_at || "",
       updated_by: row?.updated_by || "",
       email: context.data.adminEmail,
+      via: context.data.adminVia || "password",
     });
   } catch (error) {
     console.error("loading admin ad settings failed", error);
