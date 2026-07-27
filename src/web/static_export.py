@@ -150,7 +150,7 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
   <meta name="twitter:description" content="{safe_summary}" />
   <meta name="twitter:image" content="{html.escape(image_url)}" />
   <script type="application/ld+json">{structured_json}</script>
-  <link rel="stylesheet" href="/static/styles.css?v=25" />
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
