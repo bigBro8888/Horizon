@@ -26,9 +26,7 @@
   <meta name="twitter:description" content="一名本科生在树莓派4上完全用ARM64汇编和C语言从零实现YOLO26n推理，集成NEON SIMD、Winograd卷积、优化GEMM、缓存感知分块、算子融合与自定义内存布局，全程不依赖任何机器学习框架。 这展现了对神经网络底层加速的深度实践理解——这种稀缺能力对在资源受限设备上优化边缘AI、构建可验证、可审计且可移植的推理引擎至关重要。 该实现完整支持Y" />
   <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1v6w394.svg" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-07-27-01-student-implements-yolo26n-inference-entirely-in-arm64-assembly-for-raspberry-pi-4d324485"}, "headline": "本科生用纯ARM64汇编实现YOLO26n推理", "description": "一名本科生在树莓派4上完全用ARM64汇编和C语言从零实现YOLO26n推理，集成NEON SIMD、Winograd卷积、优化GEMM、缓存感知分块、算子融合与自定义内存布局，全程不依赖任何机器学习框架。 这展现了对神经网络底层加速的深度实践理解——这种稀缺能力对在资源受限设备上优化边缘AI、构建可验证、可审计且可移植的推理引擎至关重要。 该实现完整支持Y", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1v6w394.svg"], "datePublished": "2026-07-26T06:43:11+00:00", "dateModified": "2026-07-27T04:59:45.988849+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
-     crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="/static/styles.css?v=24" />
+  <link rel="stylesheet" href="/static/styles.css?v=25" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
@@ -39,14 +37,16 @@
     <h1>本科生用纯ARM64汇编实现YOLO26n推理</h1>
     <p class="article-page-meta">新闻时间: 2026-07-27T04:49:50.899694+00:00 · 来源: reddit</p>
     <article class="article-page-body"><p>一名计算机科学本科生完成了一项引人注目的毕业设计：在树莓派4上，完全用ARM64汇编语言和C语言从零实现YOLO26n目标检测模型的推理——不依赖任何现成框架。与通常使用ONNX Runtime或TVM等高级库的边缘AI部署不同，该项目剥离了所有抽象层，直面神经网络在受限硬件上运行的底层机制。</p>
-<p>该实现以芯片级性能与能效为目标。它利用ARM NEON向量指令并行处理数据，采用Winograd卷积算法减少关键层中的乘加运算，并部署了针对缓存行为手工调优的GEMM（通用矩阵乘）内核。内存布局经过专门设计：模型权重与激活值被序列化为紧凑的二进制格式，对齐CPU缓存行并适配寄存器使用模式。其他优化还包括算子融合（如将ReLU与卷积合并）、缓存感知分块（tiling）以及为树莓派4所用Cortex-A72核心定制的微内核。</p>
+<p>该实现以芯片级性能与能效为目标。它利用ARM NEON向量指令并行处理数据，采用Winograd卷积算法减少关键层中的乘加运算，并部署了针对缓存行为手工调优的GEMM（通用矩阵乘）内核。内存布局经过专门设计：模型权重与激活值被序列化为紧凑的二进制格式，对齐CPU缓存行并适配寄存器使用模式。其他优化还包括算子融合（如将ReLU与卷积合并）、缓存感知分块（tiling）以及为树莓派4所用Cortex-A72核心定制的微内核。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
 <p>架构层面，代码完整支持YOLO26n全部核心模块：普通卷积、C3K2结构、带捷径连接的增强型SPPF模块、C2PSA与PSA自注意力块、BottleNeck单元，以及Detect检测头。尤为难得的是，它实现了YOLO26引入的自注意力机制——在手写汇编中支持此类计算不规则、访存密集的操作实属罕见。尽管检测精度与PyTorch参考实现一致，作者坦言实际加速比低于预期，原因可能包括Winograd带来的数值精度损失、树莓派4的内存带宽瓶颈，以及手动寄存器分配引入的开销。</p>
 <p>这项工作的价值不在跑分，而在于其教学性与工程透明度。它是一份稀缺的开源参考资料，清晰展示了现代CNN推理“究竟如何运作”：从张量内存布局决策，到NEON寄存器压力管理。GitHub仓库包含详尽文档、带注释的汇编代码及构建说明，对学生和嵌入式系统工程师均友好。随着边缘AI持续向更小、更廉价、更节能的设备演进，这种底层掌控能力正变得愈发关键——不仅用于性能调优，也关乎调试、移植与推理流水线的安全审计。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
     <section class="article-page-links">
       <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1v6w394/i_implemented_the_yolo26n_model_inference_from/" target="_blank" rel="noopener">阅读原文</a>
       <h2>参考链接</h2><a href="https://arxiv.org/abs/2201.10369" target="_blank" rel="noopener">[2201.10369] Winograd Convolution for Deep Neural Networks: Efficient Point Selection</a><a href="https://arxiv.org/pdf/2602.14582" target="_blank" rel="noopener">YOLO26: A Comprehensive Architecture Overview and Key Improvements A PREPRINT</a><a href="https://docs.ultralytics.com/guides/yolo-architecture" target="_blank" rel="noopener">YOLO Architecture Explained | Ultralytics Docs</a>
     </section>
   </main>
+  <script src="/static/site-runtime.js?v=1"></script>
   <script>
     document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
       if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {

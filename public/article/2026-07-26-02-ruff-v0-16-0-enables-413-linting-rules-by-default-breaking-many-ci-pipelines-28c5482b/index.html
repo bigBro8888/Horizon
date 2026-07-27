@@ -26,9 +26,7 @@
   <meta name="twitter:description" content="Ruff v0.16.0于2026年7月23日发布，将默认启用的检查规则数量从59条大幅提升至413条，新增规则涵盖语法错误、即时运行时失败及不安全模式（如未指定时区的datetime调用）等。 这一变更使Ruff开箱即用时更具强制性和安全性，虽导致大量CI构建失败，但也显著提升了Python代码正确性的行业基准，尤其冲击依赖未锁定开发依赖或自动化工具的团队" />
   <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--76441278750caacb.svg" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-07-26-02-ruff-v0-16-0-enables-413-linting-rules-by-default-breaking-many-ci-pipelines-28c5482b"}, "headline": "Ruff v0.16.0 默认启用413条检查规则，导致大量CI构建失败", "description": "Ruff v0.16.0于2026年7月23日发布，将默认启用的检查规则数量从59条大幅提升至413条，新增规则涵盖语法错误、即时运行时失败及不安全模式（如未指定时区的datetime调用）等。 这一变更使Ruff开箱即用时更具强制性和安全性，虽导致大量CI构建失败，但也显著提升了Python代码正确性的行业基准，尤其冲击依赖未锁定开发依赖或自动化工具的团队", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--76441278750caacb.svg"], "datePublished": "2026-07-25T22:44:05+00:00", "dateModified": "2026-07-26T04:44:02.259516+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
-     crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="/static/styles.css?v=24" />
+  <link rel="stylesheet" href="/static/styles.css?v=25" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
@@ -39,15 +37,17 @@
     <h1>Ruff v0.16.0 默认启用413条检查规则，导致大量CI构建失败</h1>
     <p class="article-page-meta">新闻时间: 2026-07-26T04:37:41.926704+00:00 · 来源: rss</p>
     <article class="article-page-body"><p>Ruff v0.16.0 于2026年7月23日发布，标志着Python静态分析领域的一次关键转向——这次变革不靠速度或语法支持，而在于检查范围的大幅扩展。这款广受采用的、用Rust编写的Python代码检查工具，如今默认启用413条规则，远超此前版本的59条。这不是小修小补：而是Ruff主动将更多“高风险问题”纳入默认检查范畴，无需用户额外配置。</p>
-<p>开发者Simon Willison在实际使用中立刻感受到影响：他维护的三个主流开源项目（Datasette、sqlite-utils 和 LLM）的CI流水线全部因新规则触发而失败——原因正是其开发依赖中未锁定的<code>ruff</code>版本自动升级到了v0.16.0。</p>
+<p>开发者Simon Willison在实际使用中立刻感受到影响：他维护的三个主流开源项目（Datasette、sqlite-utils 和 LLM）的CI流水线全部因新规则触发而失败——原因正是其开发依赖中未锁定的<code>ruff</code>版本自动升级到了v0.16.0。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
 <p>这一变化体现了Ruff的成熟路径：自v0.1.0以来，其内置规则总数已从708条增至968条，其中大量新增规则直指真正危险的模式，例如未传时区参数调用<code>datetime.datetime.now()</code>（DTZ005）、盲目捕获<code>Exception</code>（BLE001）、或执行无意义的属性访问（B018）。这些并非风格争议，而是可能导致运行时崩溃、逻辑错误甚至安全漏洞的实际隐患。更重要的是，Ruff现在能开箱即用地发现它们，不再要求团队手动筛选和启用规则。</p>
 <p>Willison的实际测试印证了其影响力：对sqlite-utils项目执行<code>ruff check . --fix --unsafe-fixes</code>命令后，1618个错误中有1538个被一键修复。Ruff的报错信息清晰明确，不仅便于人工理解，也天然适配AI编程助手——GPT-5.6 Sol与Claude Opus 5均成功基于Ruff输出自动生成PR，批量修复数百处问题。</p>
 <p>这版更新折射出一个更大趋势：静态分析工具正从可选的代码风格检查器，演变为保障软件正确性的基础防线。当Ruff以比Flake8快10–100倍的速度、默认拦截真实运行时风险时，它已不只是“写得更漂亮”的工具，而是Python开发流程中不可或缺的质量守门人。对项目维护者而言，最紧迫的行动是：在CI中锁定Ruff版本、审阅新默认规则，并将代码检查视为与测试同等重要的正确性契约。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
     <section class="article-page-links">
       <a class="source-primary" href="https://simonwillison.net/2026/Jul/25/ruff/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
       <h2>参考链接</h2><a href="https://docs.astral.sh/ruff/" target="_blank" rel="noopener">An extremely fast Python linter and code formatter, written in Rust.</a><a href="https://astral.sh/ruff" target="_blank" rel="noopener">Ruff , an extremely fast Python linter | Astral</a><a href="https://pypi.org/project/ruff/" target="_blank" rel="noopener">An extremely fast Python linter and code formatter, written in Rust.</a>
     </section>
   </main>
+  <script src="/static/site-runtime.js?v=1"></script>
   <script>
     document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
       if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {

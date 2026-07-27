@@ -26,9 +26,7 @@
   <meta name="twitter:description" content="一份调查报告曝光了中国境内一个地下中继市场：中间商利用one-api和new-api等开源代理工具，汇集被盗、滥用或欺诈获取的大模型API密钥，向用户提供打折的令牌访问服务。 该市场侵蚀大模型厂商的定价模型，加剧API用户的欺诈风险，并暴露出API安全实践中的关键短板——尤其是缺乏单密钥消费限额与实时滥用监控能力。 所用代理工具（主要为one-api和new" />
   <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--2ca540797f84b65a.svg" />
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-07-27-07-underground-relay-market-in-china-resells-stolen-llm-api-tokens-d8597ac1"}, "headline": "中国地下中继市场转售盗用大模型API密钥", "description": "一份调查报告曝光了中国境内一个地下中继市场：中间商利用one-api和new-api等开源代理工具，汇集被盗、滥用或欺诈获取的大模型API密钥，向用户提供打折的令牌访问服务。 该市场侵蚀大模型厂商的定价模型，加剧API用户的欺诈风险，并暴露出API安全实践中的关键短板——尤其是缺乏单密钥消费限额与实时滥用监控能力。 所用代理工具（主要为one-api和new", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--2ca540797f84b65a.svg"], "datePublished": "2026-07-26T19:30:54+00:00", "dateModified": "2026-07-27T04:59:45.988849+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"
-     crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="/static/styles.css?v=24" />
+  <link rel="stylesheet" href="/static/styles.css?v=25" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
@@ -39,14 +37,16 @@
     <h1>中国地下中继市场转售盗用大模型API密钥</h1>
     <p class="article-page-meta">新闻时间: 2026-07-27T04:49:50.158167+00:00 · 来源: rss</p>
     <article class="article-page-body"><p>马特·伦哈德（Matt Lenhard）的调查报告揭示了中国境内一个蓬勃发展的灰色市场：中间商大量汇集被盗、试用期或通过欺诈手段获取的大语言模型（LLM）API密钥，并借助开源代理工具，向买家提供大幅折扣的令牌访问服务。买家使用这些服务，或是为了降低成本、绕过地理限制，甚至采集对话数据用于模型蒸馏。该市场高度去中心化且以盈利为导向，没有统一平台，而是依托微信私群、V2EX等中文论坛及Telegram频道运作。</p>
-<p>这一市场的技术基础，是两款广为人知的开源LLM API代理工具：one-api及其更活跃的分支new-api。二者本为开发者设计，用于在多个API密钥间负载均衡请求——例如提升服务稳定性或分摊配额。但在地下场景中，它们被用于聚合来自被入侵账户、滥用免费额度或信用卡拒付攻击的密钥。中间商配置代理隐藏每次请求的真实来源，使平台难以追踪和归因滥用行为。</p>
+<p>这一市场的技术基础，是两款广为人知的开源LLM API代理工具：one-api及其更活跃的分支new-api。二者本为开发者设计，用于在多个API密钥间负载均衡请求——例如提升服务稳定性或分摊配额。但在地下场景中，它们被用于聚合来自被入侵账户、滥用免费额度或信用卡拒付攻击的密钥。中间商配置代理隐藏每次请求的真实来源，使平台难以追踪和归因滥用行为。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
 <p>这并非理论风险，而是已规模化运行的现实。部分中间商宣称可提供比OpenAI或Anthropic官方价格低30%至60%的服务，靠的是持续轮换数千个密钥。报告指出，许多受害者毫不知情：暴露在外的客服机器人、配置错误的云服务，或开发者不慎上传到GitHub的密钥，都成为易得目标。V2EX论坛（t/1196011）的一则帖子详细描述了中间商如何扫描此类接口、自动化密钥采集，甚至推出分级订阅方案。</p>
 <p>对平台方而言，这动摇了按用量计费模式的根本逻辑——当令牌可在不同司法管辖区与滥用渠道间套利，定价体系便难以为继。对开发者而言，API安全门槛陡然升高：哪怕仅暴露一个未加防护的端点，也可能招致有组织、逐利型对手的系统性利用。正如西蒙·威尔逊（Simon Willison）所言，真正有效的解决方案不只是加强检测，而是提供可强制执行、细粒度的单密钥消费限额：“我希望我的LLM应用一旦达到我设定的美元阈值，就立刻停止工作。”若缺乏此类控制机制，中继市场将不会消失，而会作为当今碎片化AI基础设施之上的必然套利层持续扩张。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
     <section class="article-page-links">
       <a class="source-primary" href="https://simonwillison.net/2026/Jul/26/relay-market/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
       
     </section>
   </main>
+  <script src="/static/site-runtime.js?v=1"></script>
   <script>
     document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
       if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {

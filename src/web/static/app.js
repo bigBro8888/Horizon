@@ -440,7 +440,16 @@ function renderFeed() {
 
     const rankEl = cover.querySelector(".card-rank");
     if (rankEl) rankEl.textContent = `#${rank}`;
+
+    if (idx === 7) {
+      const ad = document.createElement("aside");
+      ad.className = "managed-ad managed-ad-feed";
+      ad.dataset.adPlacement = "home_feed";
+      ad.hidden = true;
+      feed.appendChild(ad);
+    }
   });
+  window.NowAINewsRuntime?.refreshAds();
 }
 
 /* --------------------------- reader --------------------------- */
@@ -550,9 +559,6 @@ async function bootstrap() {
   const siteData = await fetchJson(["/api/site", "/data/site.json"]);
   if (siteData) {
     state.site = siteData.site;
-    if (siteData.static_site) {
-      document.getElementById("adminLink").hidden = true;
-    }
   }
   applyStaticText();
 

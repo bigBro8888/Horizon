@@ -25,10 +25,7 @@ PUBLIC_DIR = PROJECT_ROOT / "public"
 SITE_URL = "https://nowainews.com"
 SITE_NAME = "Now AI News"
 LOGO_URL = "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"
-ADSENSE_SCRIPT = (
-    '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4598371924010228"\n'
-    '     crossorigin="anonymous"></script>'
-)
+INLINE_AD = '<aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>'
 
 
 def _copytree(src: Path, dest: Path) -> None:
@@ -62,6 +59,13 @@ def _localized(article: dict[str, Any], key: str, lang: str = "zh") -> str:
     return str(value or "")
 
 
+def _insert_inline_ad(body_html: str) -> str:
+    parts = body_html.split("</p>", 2)
+    if len(parts) == 3:
+        return f"{parts[0]}</p>{parts[1]}</p>{INLINE_AD}{parts[2]}"
+    return f"{body_html}{INLINE_AD}"
+
+
 def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "zh") -> str:
     is_en = lang == "en"
     slug = str(article.get("slug") or "")
@@ -75,6 +79,7 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
     zh_url = f"{SITE_URL}/article/{slug}"
     en_url = f"{SITE_URL}/en/article/{slug}"
     body_html = markdown.markdown(body, extensions=["extra", "sane_lists", "nl2br"], output_format="html5")
+    body_html = _insert_inline_ad(body_html)
     tags = " ".join(f"<span>#{html.escape(str(tag))}</span>" for tag in article.get("tags", [])[:6])
     sources = "".join(
         f'<a href="{html.escape(str(src.get("url", "")))}" target="_blank" rel="noopener">{html.escape(str(src.get("title") or src.get("url") or ""))}</a>'
@@ -145,8 +150,7 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
   <meta name="twitter:description" content="{safe_summary}" />
   <meta name="twitter:image" content="{html.escape(image_url)}" />
   <script type="application/ld+json">{structured_json}</script>
-  {ADSENSE_SCRIPT}
-  <link rel="stylesheet" href="/static/styles.css?v=24" />
+  <link rel="stylesheet" href="/static/styles.css?v=25" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
@@ -157,11 +161,13 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
     <h1>{safe_title}</h1>
     <p class="article-page-meta">{time_label}: {html.escape(str(article.get("fetched_at") or article.get("published_at") or issue.get("generated_at") or ""))} · {source_label}: {html.escape(str(article.get("source") or ""))}</p>
     <article class="article-page-body">{body_html}</article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
     <section class="article-page-links">
       <a class="source-primary" href="{original}" target="_blank" rel="noopener">{original_text}</a>
       {f'<h2>{references_text}</h2>{sources}' if sources else ''}
     </section>
   </main>
+  <script src="/static/site-runtime.js?v=1"></script>
   <script>
     document.querySelector("[data-smart-back]").addEventListener("click", function (event) {{
       if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {{
@@ -275,12 +281,19 @@ def build() -> None:
 
     index_html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
     (PUBLIC_DIR / "index.html").write_text(index_html, encoding="utf-8")
+    admin_dir = PUBLIC_DIR / "admin"
+    admin_dir.mkdir(parents=True, exist_ok=True)
+    admin_html = (STATIC_DIR / "admin-dashboard.html").read_text(encoding="utf-8")
+    (admin_dir / "index.html").write_text(admin_html, encoding="utf-8")
     (PUBLIC_DIR / "ads.txt").write_text(
         "google.com, pub-4598371924010228, DIRECT, f08c47fec0942fa0\n",
         encoding="utf-8",
     )
     (PUBLIC_DIR / "_headers").write_text(
-        "/ads.txt\n  Content-Type: text/plain; charset=utf-8\n",
+        "/ads.txt\n"
+        "  Content-Type: text/plain; charset=utf-8\n"
+        "/admin/*\n"
+        "  X-Robots-Tag: noindex, nofollow\n",
         encoding="utf-8",
     )
     (PUBLIC_DIR / "robots.txt").write_text(

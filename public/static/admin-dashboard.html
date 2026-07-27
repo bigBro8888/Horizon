@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>运营后台｜今日科技前沿</title>
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="stylesheet" href="/static/admin-dashboard.css?v=1" />
+</head>
+<body>
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <a class="admin-brand" href="/" aria-label="返回今日科技前沿">
+        <img src="/static/icon.png?v=1" alt="" />
+        <span>今日科技前沿</span>
+      </a>
+      <nav class="admin-nav" aria-label="后台导航">
+        <button class="nav-item active" type="button" data-panel="analytics">流量概览</button>
+        <button class="nav-item" type="button" data-panel="advertising">广告管理</button>
+      </nav>
+      <a class="back-link" href="/">返回网站</a>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">NOW AI NEWS</p>
+          <h1 id="pageTitle">流量概览</h1>
+        </div>
+        <div class="account">
+          <span>Cloudflare Access</span>
+          <strong id="accountEmail">正在验证身份…</strong>
+        </div>
+      </header>
+
+      <div id="notice" class="notice" hidden></div>
+
+      <section class="panel active" id="analyticsPanel">
+        <div class="range-switch" role="group" aria-label="统计周期">
+          <button type="button" data-range="1">今日</button>
+          <button type="button" data-range="7" class="active">近 7 天</button>
+          <button type="button" data-range="30">近 30 天</button>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card">
+            <span>浏览量 PV</span>
+            <strong id="pageviews">—</strong>
+            <small id="rangeLabel">近 7 天</small>
+          </article>
+          <article class="metric-card">
+            <span>独立访客 UV</span>
+            <strong id="visitors">—</strong>
+            <small>匿名估算，不保存原始 IP</small>
+          </article>
+          <article class="metric-card">
+            <span>人均浏览页数</span>
+            <strong id="pagesPerVisitor">—</strong>
+            <small>PV ÷ UV</small>
+          </article>
+        </div>
+
+        <section class="dashboard-card chart-card">
+          <div class="card-heading">
+            <div>
+              <h2>访问趋势</h2>
+              <p>按北京时间统计</p>
+            </div>
+          </div>
+          <div class="traffic-chart" id="trafficChart" aria-label="访问趋势图"></div>
+        </section>
+
+        <div class="dashboard-columns">
+          <section class="dashboard-card">
+            <div class="card-heading">
+              <div>
+                <h2>热门页面</h2>
+                <p>按浏览量排序</p>
+              </div>
+            </div>
+            <div class="rank-list" id="topPages"></div>
+          </section>
+          <section class="dashboard-card">
+            <div class="card-heading">
+              <div>
+                <h2>访问来源</h2>
+                <p>仅记录来源域名</p>
+              </div>
+            </div>
+            <div class="rank-list" id="topReferrers"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="panel" id="advertisingPanel">
+        <form id="adsForm" class="dashboard-card settings-card">
+          <div class="card-heading">
+            <div>
+              <h2>Google AdSense</h2>
+              <p>只保存结构化广告参数，不允许注入自定义脚本。</p>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="adsEnabled" />
+              <span></span>
+              启用广告
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label class="field full">
+              <span>发布商 ID</span>
+              <input id="publisherId" name="publisher_id" autocomplete="off" placeholder="ca-pub-0000000000000000" />
+              <small>修改发布商后，请同步确认根目录 ads.txt 内容。</small>
+            </label>
+            <label class="field">
+              <span>首页信息流广告单元 ID</span>
+              <input id="homeFeedSlot" name="home_feed_slot" inputmode="numeric" autocomplete="off" placeholder="仅填写数字 ID" />
+            </label>
+            <label class="field">
+              <span>文章正文广告单元 ID</span>
+              <input id="articleInlineSlot" name="article_inline_slot" inputmode="numeric" autocomplete="off" placeholder="仅填写数字 ID" />
+            </label>
+            <label class="field">
+              <span>文章末尾广告单元 ID</span>
+              <input id="articleEndSlot" name="article_end_slot" inputmode="numeric" autocomplete="off" placeholder="仅填写数字 ID" />
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <div id="adsUpdated" class="updated-text"></div>
+            <button class="primary-btn" id="saveAds" type="submit">保存广告设置</button>
+          </div>
+        </form>
+
+        <section class="dashboard-card help-card">
+          <h2>广告位说明</h2>
+          <ul>
+            <li>首页信息流：每页第 8 张新闻卡片后显示。</li>
+            <li>文章正文：正文前两段之后显示。</li>
+            <li>文章末尾：参考链接之前显示。</li>
+            <li>广告单元 ID 为空时，对应手动广告位不会展示；Auto Ads 仍由总开关控制。</li>
+          </ul>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/admin-dashboard.js?v=1"></script>
+</body>
+</html>

@@ -191,6 +191,12 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
     image_url = f"/{image_path}" if image_path else ""
     canonical = f"/en/article/{article.get('slug')}" if is_en else article.get("path") or f"/article/{article.get('slug')}"
     body_html = markdown.markdown(body, extensions=["extra", "sane_lists", "nl2br"], output_format="html5")
+    body_parts = body_html.split("</p>", 2)
+    inline_ad = '<aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>'
+    if len(body_parts) == 3:
+        body_html = f"{body_parts[0]}</p>{body_parts[1]}</p>{inline_ad}{body_parts[2]}"
+    else:
+        body_html = f"{body_html}{inline_ad}"
     tags = " ".join(f"<span>#{html.escape(str(tag))}</span>" for tag in article.get("tags", [])[:6])
     sources = "".join(
         f'<a href="{html.escape(str(src.get("url", "")))}" target="_blank" rel="noopener">{html.escape(str(src.get("title") or src.get("url") or ""))}</a>'
@@ -223,7 +229,7 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
   <meta property="og:title" content="{safe_title}" />
   <meta property="og:description" content="{safe_summary}" />
   {f'<meta property="og:image" content="{html.escape(image_url)}" />' if image_url else ''}
-  <link rel="stylesheet" href="/static/styles.css?v=22" />
+  <link rel="stylesheet" href="/static/styles.css?v=25" />
 </head>
 <body>
   <div class="aurora" aria-hidden="true"></div>
@@ -234,11 +240,13 @@ def _article_html(issue: dict[str, Any], article: dict[str, Any], lang: str = "z
     <h1>{safe_title}</h1>
     <p class="article-page-meta">{time_label}: {html.escape(str(article.get("fetched_at") or article.get("published_at") or issue.get("generated_at") or ""))} · {source_label}: {html.escape(str(article.get("source") or ""))}</p>
     <article class="article-page-body">{body_html}</article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
     <section class="article-page-links">
       <a class="source-primary" href="{original}" target="_blank" rel="noopener">{original_text}</a>
       {f'<h2>{references_text}</h2>{sources}' if sources else ''}
     </section>
   </main>
+  <script src="/static/site-runtime.js?v=1"></script>
   <script>
     document.querySelector("[data-smart-back]").addEventListener("click", function (event) {{
       if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {{
