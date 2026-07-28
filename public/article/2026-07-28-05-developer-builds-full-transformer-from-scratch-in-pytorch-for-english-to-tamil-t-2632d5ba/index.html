@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>开发者用纯PyTorch从零实现完整Transformer模型用于英译泰 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="开发者使用纯 PyTorch 从零实现完整 Transformer 架构，在英语–泰米尔语平行语料上端到端训练，并发布含数学推导、张量维度追踪及双 GPU 训练细节的严谨教程。 该资源弥合理论理解与工程实践之间的鸿沟，尤其有利于低资源语言学习者与从业者，也为深度学习教育树立了教学清晰度的新标杆。 实现完全基于 `torch.nn` 原生模块（不依赖第三方库）" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-07-28-05-developer-builds-full-transformer-from-scratch-in-pytorch-for-english-to-tamil-t-2632d5ba" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-07-28-05-developer-builds-full-transformer-from-scratch-in-pytorch-for-english-to-tamil-t-2632d5ba" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-07-28-05-developer-builds-full-transformer-from-scratch-in-pytorch-for-english-to-tamil-t-2632d5ba" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-07-28-05-developer-builds-full-transformer-from-scratch-in-pytorch-for-english-to-tamil-t-2632d5ba" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="开发者用纯PyTorch从零实现完整Transformer模型用于英译泰" />
+  <meta property="og:description" content="开发者使用纯 PyTorch 从零实现完整 Transformer 架构，在英语–泰米尔语平行语料上端到端训练，并发布含数学推导、张量维度追踪及双 GPU 训练细节的严谨教程。 该资源弥合理论理解与工程实践之间的鸿沟，尤其有利于低资源语言学习者与从业者，也为深度学习教育树立了教学清晰度的新标杆。 实现完全基于 `torch.nn` 原生模块（不依赖第三方库）" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-07-28-05-developer-builds-full-transformer-from-scratch-in-pytorch-for-english-to-tamil-t-2632d5ba" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1v86qo9.jpg" />
+  <meta property="article:published_time" content="2026-07-27T17:17:50+00:00" />
+  <meta property="article:modified_time" content="2026-07-28T04:30:46.835724+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="开发者用纯PyTorch从零实现完整Transformer模型用于英译泰" />
+  <meta name="twitter:description" content="开发者使用纯 PyTorch 从零实现完整 Transformer 架构，在英语–泰米尔语平行语料上端到端训练，并发布含数学推导、张量维度追踪及双 GPU 训练细节的严谨教程。 该资源弥合理论理解与工程实践之间的鸿沟，尤其有利于低资源语言学习者与从业者，也为深度学习教育树立了教学清晰度的新标杆。 实现完全基于 `torch.nn` 原生模块（不依赖第三方库）" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1v86qo9.jpg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-07-28-05-developer-builds-full-transformer-from-scratch-in-pytorch-for-english-to-tamil-t-2632d5ba"}, "headline": "开发者用纯PyTorch从零实现完整Transformer模型用于英译泰", "description": "开发者使用纯 PyTorch 从零实现完整 Transformer 架构，在英语–泰米尔语平行语料上端到端训练，并发布含数学推导、张量维度追踪及双 GPU 训练细节的严谨教程。 该资源弥合理论理解与工程实践之间的鸿沟，尤其有利于低资源语言学习者与从业者，也为深度学习教育树立了教学清晰度的新标杆。 实现完全基于 `torch.nn` 原生模块（不依赖第三方库）", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1v86qo9.jpg"], "datePublished": "2026-07-27T17:17:50+00:00", "dateModified": "2026-07-28T04:30:46.835724+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1v86qo9.jpg" alt="开发者用纯PyTorch从零实现完整Transformer模型用于英译泰" />
+    <div class="article-page-tags"><span>#Transformer</span> <span>#PyTorch</span> <span>#MachineTranslation</span> <span>#DeepLearning</span> <span>#Educational</span></div>
+    <h1>开发者用纯PyTorch从零实现完整Transformer模型用于英译泰</h1>
+    <p class="article-page-meta">新闻时间: 2026-07-28T04:24:58.304589+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一名机器学习实践者使用纯 PyTorch（仅 <code>torch.nn</code> 原生模块）从零构建、训练并详尽记录了完整的 Transformer 架构——涵盖词嵌入层、多头注意力、位置编码、前馈网络及最终解码器。与许多跳过数学推导或依赖 Hugging Face 等高级封装的教程不同，该实现逐层标注张量形状，逐步推导注意力公式，并将理论严格映射到代码，且全程在真实英文–泰米尔语翻译任务上端到端训练。</p>
+<p>模型基于 Hugging Face 上的 <code>gopi30/english-tamil</code> 平行语料库训练，该数据集包含新闻、电影和宗教文本等领域的句对齐英–泰双语句子，所有拼写与语法错误均已人工修正。作者在每一层都手动核验张量维度，标注关键梯度流向，并深入解释归一化层位置、Dropout 调度等设计选择对训练稳定性的影响。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>训练在 Kaggle 平台的两块 NVIDIA T4 GPU 上完成，采用梯度累积与内存优化策略以适配批处理限制。博客详细说明了分词如何影响词汇表大小、位置编码如何在无循环结构下保留序列顺序，以及掩码自注意力如何在解码阶段强制因果约束。代码模块清晰、注释详尽，并先用合成小数据验证逻辑再扩展至真实语料。</p>
+<p>其教学价值在于严谨性：不预设读者熟悉注意力机制，但绝不简化核心内容。例如，点积缩放注意力的 Softmax 推导中明确写出矩阵维度（如 Q ∈ ℝ^(序列长度×dₖ)，Kᵀ ∈ ℝ^(dₖ×序列长度) → 得分矩阵 ∈ ℝ^(序列长度×序列长度)），帮助学习者打通公式与代码的隔阂。GitHub 仓库还完整记录了双卡数据并行配置细节——这在面向初学者的资源中极为少见。</p>
+<p>这并非又一个“50 行实现 Transformer”的演示。它是一个兼顾工程实践与数学深度的参考实现，专为希望真正理解而非仅调用大模型的工程师而设计。在 Transformer 仍主导现代自然语言处理（从翻译到代码生成）的当下，此类资源显著降低了深入技术细节的门槛，尤其对英语–泰米尔语等资源较少的语言对而言尤为珍贵。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1v86qo9/built_trained_a_transformer_from_scratch_in_pure/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://en.wikipedia.org/wiki/Transformer_(deep_learning)" target="_blank" rel="noopener">Transformer (deep learning) - Wikipedia</a><a href="https://huggingface.co/datasets/NLPC-UOM/English-Tamil-Parallel-Corpus" target="_blank" rel="noopener">NLPC-UOM/English-Tamil-Parallel-Corpus · Datasets at Hugging Face</a><a href="https://github.com/nlpcuom/English-Tamil-Parallel-Corpus" target="_blank" rel="noopener">GitHub - nlpcuom/English-Tamil-Parallel-Corpus</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
