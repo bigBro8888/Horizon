@@ -60,7 +60,7 @@ const state = {
   dateFilter: "",
   query: "",
   page: 1,
-  pageSize: 50,
+  pageSize: 18,
 };
 
 const FEED_STATE_KEY = "horizon_feed_state";
@@ -178,6 +178,34 @@ function coverStyle(imagePath) {
   return `background-image:url('/${imagePath}')`;
 }
 
+function observeLazyCovers(root) {
+  const covers = root.querySelectorAll(".card-cover[data-bg]");
+  if (!covers.length) return;
+  if (!("IntersectionObserver" in window)) {
+    covers.forEach((cover) => {
+      cover.style.backgroundImage = `url('${cover.dataset.bg}')`;
+      cover.removeAttribute("data-bg");
+    });
+    return;
+  }
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const cover = entry.target;
+        const bg = cover.dataset.bg;
+        if (bg) {
+          cover.style.backgroundImage = `url('${bg}')`;
+          cover.removeAttribute("data-bg");
+        }
+        obs.unobserve(cover);
+      });
+    },
+    { rootMargin: "240px 0px", threshold: 0.01 }
+  );
+  covers.forEach((cover) => observer.observe(cover));
+}
+
 function articlePath(a) {
   if (state.lang === "en" && a.slug) return `/en/article/${a.slug}`;
   return a.path || (a.slug ? `/article/${a.slug}` : "#");
@@ -213,13 +241,13 @@ function loadFeedState() {
   }
 }
 
-function saveIssueCache(issues, issuePayloads) {
+function saveIssueCache(issues, articles) {
   try {
     sessionStorage.setItem(
       ISSUE_CACHE_KEY,
       JSON.stringify({
         issues,
-        issuePayloads,
+        articles,
         cachedAt: Date.now(),
       })
     );
@@ -234,21 +262,19 @@ function loadIssueCache() {
     if (!raw) return null;
     const cached = JSON.parse(raw);
     if (!cached || Date.now() - Number(cached.cachedAt || 0) > ISSUE_CACHE_TTL_MS) return null;
-    if (!Array.isArray(cached.issues) || !Array.isArray(cached.issuePayloads)) return null;
+    if (!Array.isArray(cached.issues) || !Array.isArray(cached.articles)) return null;
     return cached;
   } catch (e) {
     return null;
   }
 }
 
-async function fetchJson(paths) {
-  for (const path of paths) {
-    try {
-      const res = await fetch(path, { cache: "no-store" });
-      if (res.ok) return await res.json();
-    } catch (e) {
-      /* try next path */
-    }
+async function fetchJson(path, { cache = "default" } = {}) {
+  try {
+    const res = await fetch(path, { cache });
+    if (res.ok) return await res.json();
+  } catch (e) {
+    /* network or parse errors fall through */
   }
   return null;
 }
@@ -415,7 +441,14 @@ function renderFeed() {
 
     const cover = document.createElement("div");
     cover.className = "card-cover" + (a.image_path ? "" : " placeholder");
-    if (a.image_path) cover.style.cssText = coverStyle(a.image_path);
+    if (a.image_path) {
+      // Eager-load first row covers; lazy-load the rest to cut homepage bandwidth.
+      if (idx < 4) {
+        cover.style.cssText = coverStyle(a.image_path);
+      } else {
+        cover.dataset.bg = `/${a.image_path}`;
+      }
+    }
     cover.innerHTML =
       `<span class="card-rank">#${a.rank || idx + 1}</span>` +
       (a.score != null ? `<span class="score-badge">${scoreText(a.score)}</span>` : "");
@@ -423,7 +456,7 @@ function renderFeed() {
     const body = document.createElement("div");
     body.className = "card-body";
     const title = pick(a.title);
-    const summary = pick(a.summary) || pick(a.body).slice(0, 160);
+    const summary = pick(a.summary) || "";
     const tags = (a.tags || []).slice(0, 3).map((x) => `<span class="tag">#${escapeHtml(x)}</span>`).join("");
     const rank = start + idx + 1;
     const newsTime = formatNewsTime(a);
@@ -449,7 +482,12 @@ function renderFeed() {
       feed.appendChild(ad);
     }
   });
-  window.NowAINewsRuntime?.refreshAds();
+  observeLazyCovers(feed);
+  if (window.requestIdleCallback) {
+    window.requestIdleCallback(() => window.NowAINewsRuntime?.refreshAds(), { timeout: 2000 });
+  } else {
+    window.setTimeout(() => window.NowAINewsRuntime?.refreshAds(), 400);
+  }
 }
 
 /* --------------------------- reader --------------------------- */
@@ -507,34 +545,21 @@ function closeReader() {
 }
 
 /* --------------------------- data loading --------------------------- */
-function setArticlesFromIssues(issuePayloads) {
-  state.allArticles = issuePayloads
-    .filter(Boolean)
-    .flatMap((issue) =>
-      (issue.articles || []).map((article) => ({
-        ...article,
-        issue_date: issue.date,
-        generated_at: issue.generated_at,
-      }))
-    )
+function setArticlesFromFeed(articles) {
+  state.allArticles = (articles || [])
+    .slice()
     .sort((a, b) => timeValue(b) - timeValue(a));
 }
 
-async function fetchIssueData() {
-  const issues = (await fetchJson(["/api/issues", "/data/issues/index.json"])) || [];
-  const issuePayloads = await Promise.all(
-    issues.map(async (issue) => {
-      return fetchJson([`/api/issues/${issue.date}`, `/data/issues/${issue.date}.json`]);
-    })
-  );
-  return { issues, issuePayloads };
-}
-
-async function loadAllIssues() {
-  const issueData = await fetchIssueData();
-  state.issues = issueData.issues;
-  setArticlesFromIssues(issueData.issuePayloads);
-  saveIssueCache(issueData.issues, issueData.issuePayloads);
+async function loadFeed() {
+  const feed = await fetchJson("/data/feed.json");
+  if (!feed || !Array.isArray(feed.articles)) {
+    return false;
+  }
+  state.issues = Array.isArray(feed.issues) ? feed.issues : [];
+  setArticlesFromFeed(feed.articles);
+  saveIssueCache(state.issues, state.allArticles);
+  return true;
 }
 
 function applySavedFeedState(savedFeedState) {
@@ -556,7 +581,7 @@ async function bootstrap() {
   state.lang = savedFeedState?.lang === "en" || savedFeedState?.lang === "zh" ? savedFeedState.lang : detectLang();
   updateLangButtons();
 
-  const siteData = await fetchJson(["/api/site", "/data/site.json"]);
+  const siteData = await fetchJson("/data/site.json");
   if (siteData) {
     state.site = siteData.site;
   }
@@ -566,7 +591,7 @@ async function bootstrap() {
   let renderedFromCache = false;
   if (cachedIssues) {
     state.issues = cachedIssues.issues;
-    setArticlesFromIssues(cachedIssues.issuePayloads);
+    setArticlesFromFeed(cachedIssues.articles);
     applySavedFeedState(savedFeedState);
     renderFilterNav();
     applyFilters(!savedFeedState);
@@ -574,7 +599,11 @@ async function bootstrap() {
     renderedFromCache = true;
   }
 
-  await loadAllIssues();
+  const loaded = await loadFeed();
+  if (!loaded && !renderedFromCache) {
+    state.issues = [];
+    state.allArticles = [];
+  }
   applySavedFeedState(savedFeedState);
   renderFilterNav();
   applyFilters(!savedFeedState && !renderedFromCache);

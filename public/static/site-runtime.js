@@ -116,6 +116,11 @@
   window.NowAINewsRuntime = { refreshAds };
   document.addEventListener("DOMContentLoaded", () => {
     trackPageview();
-    refreshAds();
+    const runAds = () => refreshAds();
+    if (window.requestIdleCallback) {
+      window.requestIdleCallback(runAds, { timeout: 2500 });
+    } else {
+      window.setTimeout(runAds, 600);
+    }
   });
 })();

@@ -192,6 +192,7 @@ def _write_issues() -> list[dict[str, Any]]:
 
     if not issues_src.exists():
         (public_issues / "index.json").write_text("[]\n", encoding="utf-8")
+        _write_feed([])
         _write_sitemap(sitemap_entries)
         return []
 
@@ -231,9 +232,62 @@ def _write_issues() -> list[dict[str, Any]]:
         json.dumps(issue_metas, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
+    _write_feed(issue_metas)
     _write_sitemap(sitemap_entries)
     return issue_metas
 
+
+def _write_feed(issue_metas: list[dict[str, Any]]) -> None:
+    """Homepage feed without full article bodies (~5x smaller than daily issues)."""
+    public_issues = PUBLIC_DIR / "data" / "issues"
+    feed_articles: list[dict[str, Any]] = []
+    for meta in issue_metas:
+        date = meta.get("date")
+        if not date:
+            continue
+        path = public_issues / f"{date}.json"
+        if not path.exists():
+            continue
+        try:
+            issue = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        for article in issue.get("articles", []):
+            feed_articles.append(
+                {
+                    "id": article.get("id"),
+                    "slug": article.get("slug"),
+                    "path": article.get("path"),
+                    "rank": article.get("rank"),
+                    "score": article.get("score"),
+                    "source": article.get("source"),
+                    "author": article.get("author"),
+                    "url": article.get("url"),
+                    "published_at": article.get("published_at"),
+                    "fetched_at": article.get("fetched_at"),
+                    "tags": article.get("tags") or [],
+                    "image_path": article.get("image_path"),
+                    "title": article.get("title") or {},
+                    "summary": article.get("summary") or {},
+                    "issue_date": date,
+                    "generated_at": issue.get("generated_at"),
+                }
+            )
+
+    def sort_key(item: dict[str, Any]) -> str:
+        return str(item.get("fetched_at") or item.get("published_at") or item.get("issue_date") or "")
+
+    feed_articles.sort(key=sort_key, reverse=True)
+    data_dir = PUBLIC_DIR / "data"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    (data_dir / "feed.json").write_text(
+        json.dumps(
+            {"issues": issue_metas, "articles": feed_articles},
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ),
+        encoding="utf-8",
+    )
 
 def _write_sitemap(entries: list[tuple[str, str]]) -> None:
     urls = [(f"{SITE_URL}/", "")] + entries
@@ -303,6 +357,12 @@ def build() -> None:
     (PUBLIC_DIR / "_headers").write_text(
         "/ads.txt\n"
         "  Content-Type: text/plain; charset=utf-8\n"
+        "/static/*\n"
+        "  Cache-Control: public, max-age=86400, stale-while-revalidate=604800\n"
+        "/media/*\n"
+        "  Cache-Control: public, max-age=604800, stale-while-revalidate=2592000\n"
+        "/data/*\n"
+        "  Cache-Control: public, max-age=300, stale-while-revalidate=3600\n"
         "/ops/*\n"
         "  X-Robots-Tag: noindex, nofollow\n"
         "  Cache-Control: no-store\n"
