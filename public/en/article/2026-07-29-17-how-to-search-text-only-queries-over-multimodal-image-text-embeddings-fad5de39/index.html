@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>How to search text-only queries over multimodal image-text embeddings - Now AI News</title>
+  <meta name="description" content="A practitioner raised a practical question on Reddit about optimal vector indexing strategies for text-only search over multimodal image-text datasets, sparking discussion on separ" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-07-29-17-how-to-search-text-only-queries-over-multimodal-image-text-embeddings-fad5de39" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-07-29-17-how-to-search-text-only-queries-over-multimodal-image-text-embeddings-fad5de39" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-07-29-17-how-to-search-text-only-queries-over-multimodal-image-text-embeddings-fad5de39" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-07-29-17-how-to-search-text-only-queries-over-multimodal-image-text-embeddings-fad5de39" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="How to search text-only queries over multimodal image-text embeddings" />
+  <meta property="og:description" content="A practitioner raised a practical question on Reddit about optimal vector indexing strategies for text-only search over multimodal image-text datasets, sparking discussion on separ" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-07-29-17-how-to-search-text-only-queries-over-multimodal-image-text-embeddings-fad5de39" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1v9ad2j.svg" />
+  <meta property="article:published_time" content="2026-07-28T20:34:01+00:00" />
+  <meta property="article:modified_time" content="2026-07-29T04:38:37.758476+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How to search text-only queries over multimodal image-text embeddings" />
+  <meta name="twitter:description" content="A practitioner raised a practical question on Reddit about optimal vector indexing strategies for text-only search over multimodal image-text datasets, sparking discussion on separ" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1v9ad2j.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-07-29-17-how-to-search-text-only-queries-over-multimodal-image-text-embeddings-fad5de39"}, "headline": "How to search text-only queries over multimodal image-text embeddings", "description": "A practitioner raised a practical question on Reddit about optimal vector indexing strategies for text-only search over multimodal image-text datasets, sparking discussion on separ", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1v9ad2j.svg"], "datePublished": "2026-07-28T20:34:01+00:00", "dateModified": "2026-07-29T04:38:37.758476+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1v9ad2j.svg" alt="How to search text-only queries over multimodal image-text embeddings" />
+    <div class="article-page-tags"><span>#multimodal-learning</span> <span>#vector-search</span> <span>#information-retrieval</span> <span>#embedding-design</span> <span>#CLIP</span></div>
+    <h1>How to search text-only queries over multimodal image-text embeddings</h1>
+    <p class="article-page-meta">News time: 2026-07-29T04:27:46.818774+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A practitioner on Reddit recently posed a deceptively simple but increasingly common challenge: how to perform effective text-only vector search over a dataset where each item consists of both an image and descriptive text—like product photos with captions or social media posts with images and alt-text. Their goal is to move beyond traditional keyword-based retrieval (e.g., BM25) and leverage modern multimodal embedding models, but they’re caught in a design dilemma: should each image and its caption be embedded separately—or fused into a single joint representation?</p>
+<p>The core issue lies in alignment. Models like CLIP produce <em>separate</em> text and image encoders that map inputs into a <em>shared</em> embedding space—meaning a sentence about a 'red sports car' and a photo of that same car end up close together in vector space. But when users only type text queries, retrieving the best-matching <em>items</em> requires deciding how to represent those items for indexing. Storing two vectors per item (one for text, one for image) risks diluting relevance: a strong text match might be buried if the image vector is weak or irrelevant. Conversely, fusing text and image into one vector risks losing nuance—especially if captions are sparse or noisy.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Practical solutions discussed in related literature include using CLIP’s text encoder alone to embed captions (and ignoring image vectors entirely), or applying late fusion—e.g., averaging or weighted concatenation of text and image embeddings before indexing. Some newer approaches, like Jina’s CLIP v1, emphasize unified inference pipelines that output a single multimodal embedding per item by design. Others suggest adapter-based alignment: fine-tuning lightweight modules to project heterogeneous embeddings into a more balanced shared space.</p>
+<p>Crucially, this isn’t just a modeling choice—it affects database architecture. Vector databases don’t inherently understand modality; they only compare distances. So whether you index one vector or two per item determines query routing, filtering logic, and even latency. For pure text queries, indexing only caption embeddings (via CLIP’s text tower) often yields higher precision—and avoids bias toward visually dominant but semantically mismatched results. Yet for richer use cases—like searching for 'a rainy street at night' where neither caption nor image alone suffices—joint representations become essential. The right answer depends on data quality, user intent, and downstream flexibility.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1v9ad2j/how_to_deal_with_text_only_vector_search_across/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://medium.com/data-science/clip-model-and-the-importance-of-multimodal-embeddings-1c8f6b13bf72" target="_blank" rel="noopener">CLIP Model and The Importance of Multimodal Embeddings | by Fahim Rustamy, PhD | TDS Archive | Medium</a><a href="https://jina.ai/news/jina-clip-v1-a-truly-multimodal-embeddings-model-for-text-and-image/" target="_blank" rel="noopener">Jina CLIP v1: A Truly Multimodal Embeddings Model for Text and Image</a><a href="https://cloud.google.com/blog/topics/developers-practitioners/meet-ais-multitool-vector-embeddings" target="_blank" rel="noopener">Meet AI’s multitool: Vector embeddings | Google Cloud Blog</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
