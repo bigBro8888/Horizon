@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>PostSlate cuts face inference latency by 10x using ncnn Vulkan backend - Now AI News</title>
+  <meta name="description" content="PostSlate replaced vendor-locked ML frameworks with ncnn’s Vulkan backend, achieving 10× faster face detection and embedding inference and halving model size across NVIDIA, AMD, In" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-07-30-11-postslate-cuts-face-inference-latency-by-10x-using-ncnn-vulkan-backend-c0a332cf" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-07-30-11-postslate-cuts-face-inference-latency-by-10x-using-ncnn-vulkan-backend-c0a332cf" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-07-30-11-postslate-cuts-face-inference-latency-by-10x-using-ncnn-vulkan-backend-c0a332cf" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-07-30-11-postslate-cuts-face-inference-latency-by-10x-using-ncnn-vulkan-backend-c0a332cf" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="PostSlate cuts face inference latency by 10x using ncnn Vulkan backend" />
+  <meta property="og:description" content="PostSlate replaced vendor-locked ML frameworks with ncnn’s Vulkan backend, achieving 10× faster face detection and embedding inference and halving model size across NVIDIA, AMD, In" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-07-30-11-postslate-cuts-face-inference-latency-by-10x-using-ncnn-vulkan-backend-c0a332cf" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1v9s4mz.svg" />
+  <meta property="article:published_time" content="2026-07-29T10:22:27+00:00" />
+  <meta property="article:modified_time" content="2026-07-30T04:30:39.478543+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PostSlate cuts face inference latency by 10x using ncnn Vulkan backend" />
+  <meta name="twitter:description" content="PostSlate replaced vendor-locked ML frameworks with ncnn’s Vulkan backend, achieving 10× faster face detection and embedding inference and halving model size across NVIDIA, AMD, In" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1v9s4mz.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-07-30-11-postslate-cuts-face-inference-latency-by-10x-using-ncnn-vulkan-backend-c0a332cf"}, "headline": "PostSlate cuts face inference latency by 10x using ncnn Vulkan backend", "description": "PostSlate replaced vendor-locked ML frameworks with ncnn’s Vulkan backend, achieving 10× faster face detection and embedding inference and halving model size across NVIDIA, AMD, In", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1v9s4mz.svg"], "datePublished": "2026-07-29T10:22:27+00:00", "dateModified": "2026-07-30T04:30:39.478543+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1v9s4mz.svg" alt="PostSlate cuts face inference latency by 10x using ncnn Vulkan backend" />
+    <div class="article-page-tags"><span>#edge-ai</span> <span>#vulkan</span> <span>#ml-inference</span> <span>#cross-platform</span> <span>#ncnn</span></div>
+    <h1>PostSlate cuts face inference latency by 10x using ncnn Vulkan backend</h1>
+    <p class="article-page-meta">News time: 2026-07-30T04:17:07.285178+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A production ML engineering team behind PostSlate—a desktop video editing application—has solved a persistent edge AI challenge: delivering fast, consistent on-device machine learning across wildly different GPUs. Unlike cloud-based inference, their models must run locally for privacy and responsiveness, supporting users with NVIDIA GeForce, AMD Radeon, Intel Iris Xe, and Apple M-series chips—all without installing vendor-specific drivers or runtimes.</p>
+<p>The team rejected CUDA outright because it only works on NVIDIA hardware, and OpenVINO or ROCm were similarly limited to Intel and AMD respectively. Instead, they adopted ncnn’s Vulkan backend, a lightweight, open-source inference framework originally developed by Tencent. Vulkan is a cross-platform graphics and compute API supported natively on Windows, macOS, and Linux—and crucially, its drivers ship pre-installed with every major GPU vendor’s operating system distribution.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Benchmarking two core models—ArcFace R50 for face embeddings and SCRFD for face detection—they measured dramatic improvements. On an RTX 4070 running fp16 precision, ArcFace inference dropped from 30 ms (ONNX CPU) to just 3 ms; SCRFD fell from 25 ms to 2.5 ms. Model size also halved: the ArcFace R50 ONNX file shrank from 174 MB (fp32) to 87 MB (fp16 quantized weights in ncnn format). These gains weren’t just about raw speed—the real win was deployment simplicity: zero user-facing install steps, no driver prompts, and guaranteed runtime availability.</p>
+<p>This approach reflects a broader shift in edge AI: moving away from vendor-locked stacks toward portable, standards-based backends. While Vulkan doesn’t execute <em>every</em> layer on GPU (some ops may fall back to CPU), ncnn’s Vulkan support is mature enough for production vision workloads. As Hui Ni of Tencent noted at W3C China’s WebEvolve 2024 conference, Vulkan-based inference is increasingly viable for low-latency, cross-platform scenarios where consistency matters more than peak theoretical throughput.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1v9s4mz/vendoragnostic_ml_inference_on_production_edge/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/futz12/bergamot-ncnn-vulkan" target="_blank" rel="noopener">GitHub - futz12/bergamot- ncnn - vulkan : mobile-friendly mechine...</a><a href="https://www.youtube.com/watch?v=vSVECHe1WN4" target="_blank" rel="noopener">ncnn Vulkan Machine Learning Update - YouTube</a><a href="https://huggingface.co/py-feat/arcface_r50/tree/main" target="_blank" rel="noopener">py-feat/ arcface _ r 50 at main</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

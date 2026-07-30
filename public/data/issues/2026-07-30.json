@@ -1,0 +1,1248 @@
+{
+  "date": "2026-07-30",
+  "generated_at": "2026-07-30T04:30:39.478543+00:00",
+  "total_fetched": 26,
+  "count": 24,
+  "articles": [
+    {
+      "id": "hackernews:story:49098510",
+      "slug": "2026-07-30-01-turbofieldfare-runs-gemma-4-26b-on-m-series-macs-using-just-2-gb-ram-fc3a4d12",
+      "path": "/article/2026-07-30-01-turbofieldfare-runs-gemma-4-26b-on-m-series-macs-using-just-2-gb-ram-fc3a4d12",
+      "rank": 1,
+      "score": 9.0,
+      "source": "hackernews",
+      "author": "gitpusher42",
+      "url": "https://github.com/drumih/turbo-fieldfare",
+      "published_at": "2026-07-29T15:05:43+00:00",
+      "fetched_at": "2026-07-30T04:17:07.063854+00:00",
+      "tags": [
+        "LLM-inference",
+        "on-device-AI",
+        "metal",
+        "model-quantization",
+        "memory-efficient-ML"
+      ],
+      "image_path": "media/hackernews-story-49098510.svg",
+      "title": {
+        "zh": "TurboFieldfare让Gemma 4 26B在M系列Mac上仅需2GB内存运行",
+        "en": "TurboFieldfare runs Gemma 4 26B on M-series Macs using just 2 GB RAM"
+      },
+      "summary": {
+        "zh": "TurboFieldfare是一款基于Swift和Metal的开源推理引擎，通过在推理过程中动态从SSD流式加载被路由选中的专家权重，使4比特量化版Gemma 4 26B-A4B-IT模型可在M系列Mac上仅用约2GB内存运行。 它为消费级笔记本运行前沿MoE大模型提供了切实可行的路径，无需依赖云端或昂贵硬件，大幅降低了私有化、低延迟、可定制端侧AI的应用门槛。 引擎采用Metal加速的并行`pread`调用，每次仅加载每token激活的4个专家（共252亿参数中的一部分），配备小规模专家缓存，并将SSD读取与GPU计算重叠以掩盖I/O延迟；实测速度从M2 Air的5–6 token/秒提升至M5 Pro的31–35 token/秒。",
+        "en": "TurboFieldfare is a Swift/Metal-based open-source inference engine that runs the 4-bit quantized Gemma 4 26B-A4B-IT model on M-series Macs using only ~2 GB RAM by dynamically streaming routed expert weights from SSD during inference. It demonstrates a practical path to running state-of-the-art MoE LLMs on consumer laptops without cloud dependency or expensive hardware, lowering the barrier for private, responsive, and customizable on-device AI. The engine uses Metal-accelerated parallel `pread` to stream only the 4 activated experts per token (out of 25.2B total params), caches frequently accessed weights, and overlaps SSD I/O with GPU computation to hide latency; performance ranges from 5–6 tok/s on M2 Air to 31–35 tok/s on M5 Pro."
+      },
+      "body": {
+        "zh": "一款名为TurboFieldfare的新开源推理引擎，让260亿参数的Gemma 4 26B-A4B-IT模型能在普通M系列Mac（包括仅8GB内存的M2 MacBook Air）上流畅运行，且仅占用约2GB内存。该项目由开发者drumih发布于GitHub，全部使用Swift编写，并深度调用Apple的Metal框架实现GPU加速。与传统大模型推理工具不同，TurboFieldfare不将整个量化模型一次性载入内存，而是只把共享层参数和KV缓存保留在RAM中，其余部分——即每次推理实际需要的“路由专家权重”——则实时从SSD流式加载。\n\n这一突破的关键在于模型本身的混合专家（MoE）结构。尽管Gemma 4 26B总参数量达252亿，但每处理一个token时仅激活约38亿参数，其余权重全程闲置。TurboFieldfare正是利用了这种稀疏性：当token输入后，路由器决定调用哪4个专家，引擎便只从SSD并行读取这4组权重块，使用受控的`pread`系统调用。与此同时，GPU正同步执行共享层计算——巧妙地将磁盘I/O延迟“隐藏”在计算过程中。\n\n实测性能令人信服：在8GB内存的M2 MacBook Air上可达5–6 token/秒；在高端M5 MacBook Pro上更达31–35 token/秒。项目还内置了一个实验性的OpenAI兼容本地API服务器，支持流式响应、工具调用，并能复用已缓存的提示词前缀以加速重复交互。安装极为简单：用户下载Mac应用后，首次运行会自动从Hugging Face下载约15GB的GGUF格式权重文件。\n\n其技术选型体现深厚的系统级洞察力：放弃依赖操作系统级的`mmap`映射，转而实现推理感知的定制化SSD流式加载——精准协调磁盘读取与GPU计算节奏。社区反馈印证其价值：有开发者成功在macOS 15等旧系统上编译（仅需微调两行Swift语法），有人对比llama.cpp的mmap方案探讨延迟优化空间，还有团队提出与新兴DiffusionGemma项目共享高性能内核。当端侧AI不再满足于小模型，TurboFieldfare证明：内存不是瓶颈，精巧调度存储、算力与模型结构，就能在笔记本上释放超大规模模型的真实能力。",
+        "en": "A new open-source inference engine called TurboFieldfare enables the 26-billion-parameter Gemma 4 26B-A4B-IT model to run smoothly on consumer-grade M-series Macs — including an 8 GB M2 MacBook Air — using only about 2 GB of RAM. Developed by drumih and released on GitHub, the engine is written entirely in Swift and leverages Apple’s Metal framework for GPU acceleration. Unlike conventional LLM runtimes that load the entire quantized model into memory, TurboFieldfare takes a radically different approach: it keeps only the shared model layers and KV cache in RAM, while dynamically streaming just the *routed expert weights* needed for each token directly from SSD during inference.\n\nThis breakthrough hinges on the model’s Mixture-of-Experts (MoE) architecture. Though Gemma 4 26B has 25.2 billion total parameters, only ~3.8 billion are activated per token — meaning most weights sit idle at any given moment. TurboFieldfare exploits that sparsity: when a token arrives, the router selects which four experts to activate, and the engine fetches *only those specific expert weight chunks* from SSD using bounded parallel `pread` calls. While SSD reads are in flight, the GPU concurrently computes the shared layer operations — effectively hiding I/O latency behind computation.\n\nBenchmark results show real-world viability: on an 8 GB M2 MacBook Air, TurboFieldfare delivers 5–6 tokens per second; on a high-end M5 MacBook Pro, it achieves 31–35 tokens per second. The project also includes an experimental OpenAI-compatible local API server supporting streaming responses and tool calls — and even reuses cached prompt prefixes to accelerate repeated interactions. Installation is straightforward: users download a Mac app, which automatically fetches the 15 GB GGUF-weight file from Hugging Face on first launch.\n\nThe engineering choices reflect deep systems awareness. Instead of relying on OS-level `mmap`, TurboFieldfare implements custom, inference-aware SSD streaming — tightly synchronizing disk reads with GPU compute cycles. Community feedback confirms its significance: developers report successful builds on older macOS versions (with minor Swift syntax tweaks), compare trade-offs against llama.cpp’s mmap strategy, and even propose cross-project kernel sharing with emerging diffusion-LLM hybrids. As on-device AI pushes beyond toy models, TurboFieldfare demonstrates that memory isn’t destiny — clever orchestration of storage, compute, and model structure can unlock capabilities once thought impossible on laptops."
+      },
+      "background": {
+        "zh": "Gemma 4 26B-A4B-IT是Google DeepMind推出的指令微调混合专家（MoE）大语言模型，总参数252亿，但每个token仅激活约38亿参数。MoE模型通过路由机制为每个输入选择少量专家子网络，从而在不显著增加计算开销的前提下扩展模型容量。Metal是Apple为Apple芯片设备提供的底层图形与通用计算API，现已全面支持机器学习任务。",
+        "en": "Gemma 4 26B-A4B-IT is a Google DeepMind instruction-tuned Mixture-of-Experts (MoE) LLM with 25.2B total parameters but only ~3.8B active per token. MoE models use a router to select a sparse subset of expert subnetworks for each input, enabling higher capacity without proportional compute cost. Metal is Apple’s low-level graphics and compute API, now fully exposed for ML workloads on Apple Silicon."
+      },
+      "discussion": {
+        "zh": "开发者普遍赞赏其创新的SSD流式加载设计（优于mmap方案），分享了适配旧版macOS的编译修复方法，就延迟表现与llama.cpp展开讨论，并提议与DiffusionGemma等项目共享高性能内核，体现出广泛的技术认可与协作意愿。",
+        "en": "Developers praised the novel SSD-streaming approach over mmap, shared practical build fixes for older macOS versions, debated latency trade-offs versus llama.cpp, and proposed cross-project kernel collaboration — reflecting broad technical validation and enthusiasm."
+      },
+      "sources": [
+        {
+          "url": "https://huggingface.co/bartowski/google_gemma-4-26B-A4B-it-GGUF",
+          "title": "bartowski/google_ gemma - 4 - 26 B - A 4 B - it -GGUF · Hugging Face"
+        },
+        {
+          "url": "https://openrouter.ai/google/gemma-4-26b-a4b-it:free",
+          "title": "Gemma 4 26 B A 4 B (free) - API Pricing & Benchmarks | OpenRouter"
+        },
+        {
+          "url": "https://gemma4.com/",
+          "title": "Gemma 4 — Google DeepMind"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Mixture_of_experts",
+          "title": "Mixture of experts - Wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49096969",
+      "slug": "2026-07-30-02-handbook-md-benchmark-reveals-llms-fail-to-follow-long-policy-documents-17fc0bf2",
+      "path": "/article/2026-07-30-02-handbook-md-benchmark-reveals-llms-fail-to-follow-long-policy-documents-17fc0bf2",
+      "rank": 2,
+      "score": 9.0,
+      "source": "hackernews",
+      "author": "spIrr",
+      "url": "https://arxiv.org/abs/2607.25398",
+      "published_at": "2026-07-29T13:01:57+00:00",
+      "fetched_at": "2026-07-30T04:17:07.064067+00:00",
+      "tags": [
+        "LLM",
+        "long-context",
+        "AI-safety",
+        "instruction-following",
+        "agent-governance"
+      ],
+      "image_path": "media/hackernews-story-49096969.png",
+      "title": {
+        "zh": "Handbook.md基准测试揭示大模型无法可靠遵循长政策文档",
+        "en": "Handbook.md benchmark reveals LLMs fail to follow long policy documents"
+      },
+      "summary": {
+        "zh": "Handbook.md基准测试包含65个真实政策遵循任务，证实即使将长篇结构化政策文档完整放入上下文，当前最先进的大语言模型仍无法稳定可靠地遵守其中规则。 这一发现动摇了智能体AI部署中的一个核心假设：将治理文档嵌入上下文即可确保安全合规行为，对金融、医疗等受监管行业的实际应用构成严重风险。 该基准采用真实员工手册和合规文档；模型性能在上下文超过约4000词后急剧下降，失效原因与KV缓存限制和量化效应强相关，而不仅限于注意力范围。",
+        "en": "The Handbook.md benchmark—comprising 65 real-world policy-following tasks—demonstrates that state-of-the-art LLMs consistently fail to reliably adhere to long, structured policy documents, even when those documents are fully included in context. This finding undermines a core assumption in agentic AI deployment—that embedding governance documents in context suffices for safe, compliant behavior—posing serious risks for real-world applications in regulated industries. The benchmark uses real employee handbooks and compliance documents; performance drops sharply beyond ~4,000 tokens, and failures correlate strongly with KV cache limitations and quantization effects—not just attention span."
+      },
+      "body": {
+        "zh": "一项名为Handbook.md的新基准测试揭示了当前最先进语言模型的一个关键缺陷：即便将冗长详尽的政策文档完整提供给模型，它们仍无法稳定、一致地遵循其中规则。该基准由Liudas Panavas等学者开发，通过65个精心设计的任务，评估大模型对真实企业员工手册、合规指南和操作规程的遵守能力。每个任务要求模型在数百至数千词的程序性文本（例如IT安全协议、HR入职流程或客服升级规则）中进行推理并据此行动。结果令人警醒：包括顶级商用模型和开源模型在内的所有参测模型，均未能实现超过60%的可靠遵循率；许多模型在处理更长或更复杂的条款时，准确率甚至跌破30%。\n\n这并非单纯由输入长度导致——而是指令记忆与上下文锚定能力的系统性失效。不同于短提示下模型出色的指令遵循表现，长政策场景需要模型持续关注层级化约束、条件逻辑及跨段落引用条款。论文指出，模型常忽略前文规定、混淆相互矛盾的条款，或在关键限制超出其有效注意窗口时，自行编造看似合理却违反规定的操作。这些失败正对应已知架构瓶颈：KV缓存压缩、量化失真以及注意力范围有限——都会随上下文增长而显著削弱信息保真度。\n\n影响远超学术评测范畴。当AI智能体越来越多地应用于医疗流程、金融报告或企业自动化等受监管领域时，依赖静态‘手册式’治理的设想正被证明过于乐观。真实用户反馈印证了这一点：有工程师指出，Claude模型常在交互约10分钟后，无视CLAUDE.md文件中明确规定的‘禁止生成大段注释’等规则，但若在任务中途重申同一规则，则能立即执行。这表明真正起作用的是即时提示层的强化，而非文档级的单次灌输。\n\nHandbook.md并非断言长上下文模型本身有缺陷，而是指出其应用场景存在根本错配。该基准重新定义了‘治理’——它不是一次性把2万词手册塞进上下文就能生效，而应是持续、交互式且常需状态维护的过程。对构建智能体系统的开发者而言，核心启示很明确：切勿假设模型‘已读手册’；而应通过工具调用防护、运行时校验或迭代式澄清等机制，主动设计持续对齐路径。",
+        "en": "A new benchmark called Handbook.md has exposed a critical weakness in today’s most advanced language models: their inability to consistently follow lengthy, detailed policy documents—even when those documents are explicitly provided in context. Developed by Liudas Panavas and colleagues, the benchmark evaluates how well LLMs adhere to real-world employee handbooks, compliance guidelines, and operational policies across 65 carefully designed tasks. Each task requires the model to reason over hundreds or thousands of tokens of procedural text—such as IT security protocols, HR onboarding steps, or customer service escalation rules—and then act accordingly. The results are stark: no current model, including top-tier commercial and open-weight models, achieves reliable adherence above 60% accuracy, with many dropping below 30% on longer or more nuanced instructions.\n\nThis isn’t just a matter of token count—it’s a systemic failure in instruction retention and contextual grounding. Unlike short prompts where models excel at following directives, long-policy scenarios demand sustained attention to hierarchical constraints, conditional logic, and cross-referenced clauses. The paper shows that models often ignore earlier sections, conflate contradictory rules, or invent plausible-but-unauthorized actions when key constraints fall outside their effective working window. These failures mirror known architectural bottlenecks: KV cache compression, quantization artifacts, and limited attention scope—all of which degrade fidelity over long contexts.\n\nThe implications extend far beyond academic benchmarks. As AI agents increasingly operate in regulated domains—healthcare workflows, financial reporting, or enterprise automation—reliance on static handbook-style governance is proving dangerously optimistic. Real-world users report similar breakdowns: one engineer described how Claude routinely bypassed explicit ‘no-code-commenting’ rules from a CLAUDE.md file after ~10 minutes of interaction, yet instantly complied when the same rule was repeated mid-task. This suggests that prompt-level reinforcement—not document-level ingestion—is what actually governs behavior.\n\nHandbook.md doesn’t argue that long-context models are broken—it argues they’re being misapplied. The benchmark reframes governance not as a one-time context dump, but as an ongoing, interactive, and often stateful process. For developers building agentic systems, the takeaway is clear: don’t assume your model ‘reads the manual.’ Instead, design for continuous alignment—via tool-calling guardrails, runtime validation, or iterative clarification—rather than hoping a 20,000-token policy doc will magically steer behavior."
+      },
+      "background": {
+        "zh": "长上下文推理指大语言模型在长文本序列中整合信息的能力，对法律分析、代码库导航等任务至关重要。尽管当前模型宣称支持高达100万词的上下文长度，实证研究表明，受注意力衰减和内存压缩等架构限制影响，其有效推理深度仍远低于此。",
+        "en": "Long-context reasoning refers to an LLM’s ability to synthesize information across extended text sequences—critical for tasks like legal analysis or codebase navigation. While models now support contexts up to 1M tokens, empirical evidence shows their effective reasoning depth remains far shorter due to architectural constraints like attention decay and memory compression."
+      },
+      "discussion": {
+        "zh": "评论者普遍认为问题根源在于模型本身的架构局限，而非提示工程不佳，包括KV缓存退化、量化噪声，以及与人类工作记忆容量受限的类比；多人指出本地推理或针对特定手册微调虽可提升可靠性，但难以规模化。",
+        "en": "Commenters broadly agree the issue stems from fundamental model limitations—not poor prompting—including KV cache degradation, quantization noise, and analogies to human working memory constraints; several note that local inference or fine-tuning on specific handbooks improves reliability, but isn’t scalable."
+      },
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2607.25398",
+          "title": "[2607.25398] HANDBOOK . md : A Benchmark for Long-Context Agentic..."
+        },
+        {
+          "url": "https://ai-tldr.dev/releases/surge-ai-handbook-benchmark/",
+          "title": "HANDBOOK . md — Surge AI benchmark keeps frontier... | AI/TLDR"
+        },
+        {
+          "url": "https://pulseaugur.com/cluster/170638-research-paper-handbook-md-finds-long-policy-documents-fail-to-govern-ai-agents",
+          "title": "Research paper \" Handbook . md \" finds long policy documents fail to..."
+        }
+      ]
+    },
+    {
+      "id": "rss:simonwillison.net_atom_everything_:dc6dd2ecfc18702f",
+      "slug": "2026-07-30-03-researcher-demonstrates-self-replicating-prompt-worm-in-copilot-for-word-550de4c2",
+      "path": "/article/2026-07-30-03-researcher-demonstrates-self-replicating-prompt-worm-in-copilot-for-word-550de4c2",
+      "rank": 3,
+      "score": 9.0,
+      "source": "rss",
+      "author": "Simon Willison",
+      "url": "https://simonwillison.net/2026/Jul/29/ai-worming-through-word/#atom-everything",
+      "published_at": "2026-07-29T18:43:03+00:00",
+      "fetched_at": "2026-07-30T04:17:06.680699+00:00",
+      "tags": [
+        "prompt-injection",
+        "AI-security",
+        "Microsoft-Copilot",
+        "document-automation",
+        "adversarial-ml"
+      ],
+      "image_path": "media/rss-simonwillison-net-atom-everything--dc6dd2ecfc18702f.jpg",
+      "title": {
+        "zh": "研究员发现Copilot for Word中的自复制提示蠕虫",
+        "en": "Researcher demonstrates self-replicating prompt worm in Copilot for Word"
+      },
+      "summary": {
+        "zh": "哈康·默洛伊发现并披露了一种自复制提示注入蠕虫，该蠕虫利用不可见文本在Copilot处理的Word文档间自主传播恶意指令，全程无需用户交互。 这是首个在主流生产力AI工具中实现跨文档自主传播的提示注入攻击实例，迫切引发人们对AI办公套件中信任边界、文档溯源及整体安全模型的重新审视。 蠕虫采用白字白底等隐蔽方式嵌入指令；Copilot将其误判为用户请求并复制到输出文档中；微软获知后有144天响应期，但尚未发布全面修复方案。",
+        "en": "Håkon Måløy discovered and disclosed a self-replicating prompt injection worm that spreads autonomously across Word documents processed by Copilot, using invisible text to embed and propagate malicious instructions without user interaction. This represents the first documented case of autonomous, cross-document propagation of prompt injection attacks in a mainstream productivity AI tool—raising urgent questions about trust boundaries, document provenance, and the security model of AI-augmented office suites. The worm uses white-on-white text or similar obfuscation to hide instructions; Copilot treats them as part of the user's request and copies them into outputs; Microsoft received 144 days’ notice but has not yet released a full fix."
+      },
+      "body": {
+        "zh": "挪威研究员哈康·默洛伊（Håkon Måløy）发现了一个针对微软Copilot for Word的新型安全漏洞：一种可自我复制的提示注入蠕虫。与传统提示注入攻击不同——后者依赖人工构造恶意输入——该蠕虫将隐藏指令嵌入普通Word文档中。当这类文档被用作Copilot辅助撰写或编辑的参考材料时，Copilot会将其中的隐藏指令误读为用户指令的一部分，从而对目标文档执行改写、摘要等操作；更关键的是，它会把恶意指令一并复制进新生成的文档中。这个被污染的文档随即成为新的传播载体，只要再次进入Copilot工作流，就能继续触发攻击——甚至无需原始攻击文档存在。\n\n该攻击利用了所谓“上下文坍塌”（context collapse）现象：即基于大语言模型的助手（如Copilot）倾向于将输入上下文中的所有文本——无论是否可见、格式如何或意图为何——同等视为权威指令。默洛伊的原型验证使用了白字白底（选中才可见）技术，但零宽字符、文档元数据等其他隐蔽手段同样可行。该蠕虫不依赖宏、脚本或文档权限，完全运行在Copilot的自然语言处理流程内。\n\n微软已获负责任披露，并获得144天响应窗口，但截至报道发布时尚无全面缓解方案。当前临时措施（如禁用Copilot或拒用不可信文档）对企业用户而言难以落地，因其高度依赖AI辅助协作。这一问题暴露了更深层的架构挑战：旨在批量处理任意文档的生成式AI工具，天然模糊了“数据”与“代码”的边界。\n\n真正令人担忧的是其现实可行性。不同于实验室环境下的理论越狱或概念验证，该蠕虫可在日常文档场景中传播——撰写报告、修订合同、整理会议纪要——这些正是用户频繁粘贴或引用外部文件的典型场景。它将被动的文档共享转变为活跃的攻击通道，用户只需在Copilot中打开或处理一份文件，攻击即可自动触发。这已不仅是一个漏洞，更是对AI增强型办公软件中信任机制、来源验证与执行边界的范式重构。",
+        "en": "A Norwegian researcher named Håkon Måløy has uncovered a novel and alarming security vulnerability in Microsoft’s Copilot for Word: a self-replicating prompt injection worm. Unlike traditional prompt injections—which rely on manually crafted malicious inputs—the worm embeds hidden instructions inside ordinary Word documents. When such a document is used as source material in a Copilot-assisted drafting or editing session, Copilot interprets the hidden instructions not as content but as part of the user’s request. As a result, it may rewrite, summarize, or otherwise manipulate the target document—and crucially, copy the malicious instructions into the newly generated output. That transformed document then becomes a new carrier, capable of triggering the same behavior when fed into future Copilot workflows—even without the original attacker-controlled file present.\n\nThis attack exploits what researchers call 'context collapse': the tendency of LLM-based assistants like Copilot to treat all text in their input context—regardless of visibility, formatting, or intent—as equally authoritative. Måløy’s proof-of-concept used white-on-white text (invisible unless highlighted), but other obfuscation methods—including zero-width Unicode characters or metadata fields—could work just as well. The worm doesn’t require macros, scripts, or document-level permissions; it operates entirely within Copilot’s natural language processing pipeline.\n\nMicrosoft was notified responsibly and given 144 days to respond—but as of publication, no comprehensive mitigation exists. Current workarounds, such as disabling Copilot or avoiding untrusted documents, are impractical for enterprise users who depend on AI-assisted collaboration. The issue highlights a deeper architectural challenge: generative AI tools designed to ingest and act on arbitrary document collections inherently blur the line between data and code.\n\nWhat makes this especially concerning is its real-world plausibility. Unlike theoretical jailbreaks or lab-only exploits, this worm propagates through everyday document workflows—drafting reports, editing contracts, summarizing meeting notes—all scenarios where users routinely paste or reference external files. It transforms passive document sharing into an active attack vector, with no need for user interaction beyond opening or processing a file in Copilot. This isn’t just a bug—it’s a paradigm shift in how we think about trust, provenance, and execution boundaries in AI-augmented productivity software."
+      },
+      "background": {
+        "zh": "提示注入是一种对抗性技术，攻击者通过在输入提示中注入恶意指令来操控大语言模型。Copilot for Word将大语言模型能力深度集成至文档编辑流程中，会将用户提供的全部文本（包括粘贴内容或引用文档）作为上下文用于生成或编辑操作。这种输入上下文与模型行为的高度耦合，催生了区别于传统软件漏洞的全新攻击面。",
+        "en": "Prompt injection is an adversarial technique where attackers manipulate large language models by injecting malicious instructions into input prompts. Copilot for Word integrates LLM capabilities directly into document editing, using user-provided text—including pasted or referenced documents—as context for generating or editing content. This tight coupling of input context and model behavior creates new attack surfaces distinct from traditional software vulnerabilities."
+      },
+      "discussion": {
+        "zh": "在Hacker News上，读者担忧隐形文本攻击正日益常态化，并就根本原因展开讨论：问题出在Copilot的设计缺陷，还是整个行业对‘被动’文档内容天然安全的错误假设？",
+        "en": "On Hacker News, readers expressed concern over the normalization of invisible text attacks and debated whether the root cause lies in Copilot’s design—or in broader industry assumptions about ‘passive’ document content being inherently safe."
+      },
+      "sources": [
+        {
+          "url": "https://enklypesalt.com/posts/context-collapse-part3-ai-worming-through-word/",
+          "title": "Context Collapse, Part 3 - AI Worming through Word | En Klype Salt"
+        },
+        {
+          "url": "https://www.schneier.com/blog/archives/2024/03/llm-prompt-injection-worm.html",
+          "title": "LLM Prompt Injection Worm - Schneier on Security"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Prompt_injection",
+          "title": "Prompt injection - Wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "rss:simonwillison.net_atom_everything_:4930bf7708b02209",
+      "slug": "2026-07-30-04-ai-cryptanalysis-arrives-at-peak-moment-for-post-quantum-standards-b33a5b68",
+      "path": "/article/2026-07-30-04-ai-cryptanalysis-arrives-at-peak-moment-for-post-quantum-standards-b33a5b68",
+      "rank": 4,
+      "score": 9.0,
+      "source": "rss",
+      "author": "Simon Willison",
+      "url": "https://simonwillison.net/2026/Jul/29/matthew-green/#atom-everything",
+      "published_at": "2026-07-29T18:18:15+00:00",
+      "fetched_at": "2026-07-30T04:17:06.680728+00:00",
+      "tags": [
+        "post-quantum-cryptography",
+        "cryptanalysis",
+        "AI-security",
+        "cryptography",
+        "quantum-computing"
+      ],
+      "image_path": "media/rss-simonwillison-net-atom-everything--4930bf7708b02209.svg",
+      "title": {
+        "zh": "AI密码分析恰逢后量子密码标准落地关键期",
+        "en": "AI cryptanalysis arrives at peak moment for post-quantum standards"
+      },
+      "summary": {
+        "zh": "马修·格林指出，当前全球向NIST后量子密码标准（含HAWK等候选方案）的迁移，是AI开展实质性密码分析的最佳历史时机；Anthropic近期已演示Claude成功恢复HAWK-256签名密钥材料。 这一交汇可能在PQC标准大规模部署前加速确立其可信度，或提前暴露隐藏缺陷，直接影响未来数十年数字信任基础设施的安全根基，尤其在量子威胁迫近而旧系统仍广泛使用之际。 格林将该时机与伊姆帕利亚佐的‘迷你密码学世界’关联：只要公钥密码本身可行，AI就理应在这些新PQC问题上取得进展——并非因其本质脆弱，而是因其刚被提出、数学结构丰富且未经充分检验；Anthropic的实验针对HAWK-256和简化轮数AES-128，均未影响实际运行系统。",
+        "en": "Matthew Green argues that the current global transition to NIST-standardized post-quantum cryptography — including candidates like HAWK — represents the optimal historical moment for AI systems to meaningfully advance cryptanalysis, citing Anthropic's recent demonstration of Claude recovering HAWK-256 signing material. This convergence could accelerate confidence in PQC standards or expose hidden flaws before widespread deployment, directly impacting long-term digital trust infrastructure — especially as quantum threats loom and legacy systems remain vulnerable. Green ties the timing to Impagliazzo’s ‘Minicrypt’ world: if public-key cryptography is possible at all, then AI cryptanalysis should succeed now on novel PQC problems — not because they’re weak, but because they’re newly exposed and mathematically rich. Anthropic’s results targeted HAWK-256 and a reduced-round AES-128, neither of which affects production systems."
+      },
+      "body": {
+        "zh": "著名密码学家、约翰霍普金斯大学教授马修·格林（Matthew Green）指出，人工智能密码分析能力的崛起，与全球后量子密码（PQC）标准的部署正处在罕见而关键的历史交汇点。各国政府和企业正陆续从RSA、ECC等传统公钥算法，转向美国国家标准与技术研究院（NIST）遴选的新标准，如CRYSTALS-Dilithium和Falcon；同时，HAWK等候选方案仍在接受最终评估。整个密码学界正在对一批全新数学基础的算法展开前所未有的实战级压力测试。\n\n这一转变不仅是技术升级，更是时间窗口。过去数十年，公钥密码长期依赖整数分解、离散对数等问题——这些假设经受了数十年人工攻击的反复检验。如今它们被弃用，并非因已被攻破，而是因量子计算机在理论上终将瓦解其安全性。新PQC标准转而依赖格密码、哈希签名或编码理论等新难题，但这些方向缺乏同等深度的历史分析积累。这种空白既带来机遇，也埋下风险。\n\n格林强调，当前正是AI辅助密码分析最富成效的时机：数十种候选算法尚在评估中，标准化进程尚未完全收官，实际部署才刚刚起步。相比久经考验的传统算法，这些新方案尚未经历数十年人类专家的持续审视。若Anthropic公司Claude等AI工具能快速识别结构缺陷、模糊边界或实现漏洞——正如其近期对HAWK-256签名材料的恢复及简化AES-128攻击的加速所展示的那样——密码学界收获的将不仅是预警，更是对自身分析方法论的实证强化。\n\n尤为关键的是，格林援引拉塞尔·伊姆帕利亚佐（Russell Impagliazzo）提出的“五个世界”复杂性理论框架来支撑观点。他指出，除非我们身处‘迷你密码学世界’（Minicrypt）——即单向函数存在但公钥密码不可能——否则AI驱动的密码分析理应在此刻蓬勃发展：因为新问题足够困难以保障安全，又足够新鲜以供探索。最优结果并非AI全面攻破一切，而是帮助我们在全球基础设施大规模采用前，清晰区分真正稳健的构造与潜在脆弱的设计。",
+        "en": "Matthew Green, a leading cryptography researcher and professor at Johns Hopkins University, has highlighted a rare and consequential alignment of forces: the global rollout of post-quantum cryptographic (PQC) standards coincides precisely with AI systems gaining real capability in cryptanalysis. As governments and enterprises begin migrating from RSA and ECC to NIST-selected algorithms like CRYSTALS-Dilithium and Falcon — and as newer candidates such as HAWK undergo final scrutiny — the cryptographic community is conducting an unprecedented, real-world stress test on entirely new mathematical foundations.\n\nThis transition isn’t just technical; it’s temporal. For decades, public-key cryptography rested on problems like integer factorization and discrete logarithms — assumptions hardened by decades of failed attacks. Now, those assumptions are being discarded not because they’ve been broken, but because quantum computers threaten them *in principle*. The resulting PQC standards rely on lattices, hashes, or codes — problems with less historical cryptanalytic scrutiny. That gap creates both opportunity and risk.\n\nGreen argues that this moment — with dozens of candidate algorithms still under evaluation, formal standardization ongoing, and implementations just beginning to ship — is uniquely fertile for AI-assisted cryptanalysis. Unlike mature, battle-tested schemes, these new algorithms haven’t yet endured decades of human-led analysis. If AI tools like Anthropic’s Claude can rapidly identify structural weaknesses, ambiguities, or implementation pitfalls — as reportedly demonstrated against HAWK-256 and a simplified AES-128 variant — the field gains not just warnings, but empirical validation of its analytical frameworks.\n\nCrucially, Green grounds his claim in computational complexity theory, invoking Russell Impagliazzo’s ‘Five Worlds’. He notes that unless we inhabit ‘Minicrypt’ — where one-way functions exist but public-key cryptography is impossible — then AI-driven cryptanalysis should thrive *now*, precisely because the new problems are hard enough to be useful, yet fresh enough to be approachable. The best outcome isn’t AI breaking everything, but AI helping us distinguish robust constructions from fragile ones — before they’re embedded in infrastructure worldwide."
+      },
+      "background": {
+        "zh": "后量子密码指被认为能同时抵御经典与量子计算机攻击的密码算法。NIST于2017年启动公开标准化流程，于2024年公布最终标准。伊姆帕利亚佐‘五个世界’是计算复杂性理论中的框架，依据SAT等问题的求解难度描述宇宙可能状态；其中‘迷你密码学世界’指单向函数存在但公钥密码不可行的世界。",
+        "en": "Post-quantum cryptography refers to cryptographic algorithms believed secure against attacks by both classical and quantum computers. NIST launched a public standardization process in 2017, selecting final standards in 2024. Impagliazzo’s Five Worlds is a framework in computational complexity theory describing hypothetical states of the universe based on the hardness of problems like SAT — with 'Minicrypt' being the world where one-way functions exist but public-key cryptography does not."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://www.nist.gov/pqc",
+          "title": "Post-quantum cryptography | NIST"
+        },
+        {
+          "url": "https://hawk-sign.info/",
+          "title": "Hawk"
+        },
+        {
+          "url": "https://thehackernews.com/2026/07/claude-ai-just-cracked-post-quantum.html",
+          "title": "Claude AI Just Cracked a Post-Quantum Test Scheme and Found a ..."
+        },
+        {
+          "url": "https://blog.computationalcomplexity.org/2004/06/impagliazzos-five-worlds.html",
+          "title": "Computational Complexity: Impagliazzo's Five Worlds"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1vaargb",
+      "slug": "2026-07-30-05-new-ai-security-leaderboard-measures-llm-robustness-against-jailbreaks-529b3c2d",
+      "path": "/article/2026-07-30-05-new-ai-security-leaderboard-measures-llm-robustness-against-jailbreaks-529b3c2d",
+      "rank": 5,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/ARGleave",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1vaargb/ai_security_leaderboard_benchmarking_model/",
+      "published_at": "2026-07-29T22:09:52+00:00",
+      "fetched_at": "2026-07-30T04:17:07.285049+00:00",
+      "tags": [
+        "AI safety",
+        "adversarial robustness",
+        "jailbreak detection",
+        "LLM evaluation",
+        "AI security"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1vaargb.jpg",
+      "title": {
+        "zh": "AI安全排行榜上线：1500个对抗提示测试大模型越狱鲁棒性",
+        "en": "New AI Security Leaderboard measures LLM robustness against jailbreaks"
+      },
+      "summary": {
+        "zh": "AI安全排行榜v1.0正式发布，采用自动化生成的1500个对抗提示，首次系统测量前沿大语言模型在各类危害领域中抵抗通用越狱攻击的成功率。 这是首个可扩展、基于实证的大语言模型安全基准，直面模型召回、AI智能体延期等现实风险，为行业建立标准化、透明化的安全评估范式奠定基础。 ‘通用越狱’定义为：在特定危害领域内，对超过75%明确有害问题触发配合性、细节性回答的提示；当前测试套件使用非自适应、自动生成的提示，暂未纳入开源权重模型，待方法论完善后再评估。",
+        "en": "The AI Security Leaderboard v1.0 launches with an automated 1500-prompt suite to measure universal jailbreak success rates across harmful domains for frontier LLMs. It establishes the first scalable, empirical benchmark for LLM security—addressing urgent real-world risks like model recalls and AI agent delays—and sets a foundation for standardized, transparent safety evaluation. A 'universal jailbreak' is defined as a prompt that elicits compliant, detailed responses to >75% of clearly harmful questions within a specific domain; the current suite uses non-adaptive, automatically generated prompts and excludes open-weight models pending methodological refinement."
+      },
+      "body": {
+        "zh": "一项名为‘AI安全排行榜’的新开放倡议正式上线，旨在填补人工智能评估领域的一个关键空白：系统衡量前沿大语言模型抵御越狱攻击的能力。尽管目前已有数十个排行榜对模型的推理、编程等能力进行排名，却始终缺乏专门评估安全性的基准——尤其是针对‘通用越狱’（universal jailbreak）这类能跨多个高危领域稳定绕过安全防护的提示攻击。该团队构建了一套自动化测试套件，包含1500个程序生成的对抗性提示，覆盖网络安全、CBRNE（化学、生物、放射性、核与爆炸物）等高风险主题。对每个模型，他们统计其触发‘通用越狱’的比例——即在某一危害领域内，对超过75%明确有害问题给出配合性、细节性回答的提示占比。\n\nv1.0版初步结果揭示了显著差异：部分顶级商用模型在网络安全领域对通用越狱的失败率超过40%，而另一些则低于5%。这些差距并非理论假设，而是直接影响现实部署决策。正如作者指出，美国政府机构已因越狱漏洞召回模型，AI智能体开发者也因对抗风险推迟上线。该基准有意采用基础、非自适应攻击方式，以确保可复现性和可扩展性，同时公开邀请社区共同规划后续方向。\n\n团队提出四大拓展方向：纳入开源权重模型（并解决其通过微调权重扩大攻击面带来的公平性挑战），扩展危害领域（如智能体劫持或恶意操控），提升场景真实性（例如用完整‘智能体式网络攻防任务’替代孤立问答），以及引入更强攻击方法（如边界点越狱优化）。团队还呼吁对抗鲁棒性研究者共享可复用资源——数据集、评估标准或评测流水线，以增强未来版本。\n\n这项工作的独特之处在于聚焦‘实证性、可扩展性与领域特异性’的安全度量，而非理论最坏情况分析或单次提示测试。它将越狱抵抗力视为一种可量化、可比对的工程属性——如同延迟或准确率——推动AI安全从碎片化红队演练走向共享、透明的运营级标准。",
+        "en": "A new open initiative called the AI Security Leaderboard has launched to fill a critical gap in AI evaluation: measuring how well frontier large language models resist jailbreak attacks. While dozens of leaderboards rank models on capabilities like reasoning or coding, none systematically assess security — especially against *universal jailbreaks*, prompts that reliably bypass safety guardrails across many harmful domains. The team behind the leaderboard built an automated test suite of 1,500 adversarial prompts, generated programmatically to probe models on high-risk topics like cybersecurity and CBRNE (chemical, biological, radiological, nuclear, and explosive threats). For each model, they measure the rate at which prompts trigger *universal jailbreaks* — defined as eliciting compliant, detailed responses to over 75% of clearly harmful questions within a domain.\n\nThe initial v1.0 results reveal stark disparities: some top-tier commercial models fail more than 40% of universal jailbreak attempts in cybersecurity, while others stay below 5%. These gaps aren’t just academic — they directly inform real-world deployment decisions. As the authors note, U.S. government agencies have already recalled models over jailbreak vulnerabilities, and AI agent developers are delaying releases due to adversarial risk. The benchmark intentionally starts with basic, non-adaptive attacks to ensure reproducibility and scalability, but explicitly invites community input on next steps.\n\nFour key expansion areas are under discussion: incorporating open-weight models (and addressing fairness concerns around weight-tuning attack surfaces), broadening harmful domains (e.g., agent hijacking or manipulative persuasion), increasing realism (e.g., simulating full agentic cyber tasks instead of isolated questions), and integrating stronger adaptive attacks like boundary point optimization. The team also solicits reusable artifacts — datasets, rubrics, or evaluation pipelines — from adversarial robustness researchers to strengthen future versions.\n\nWhat makes this effort distinctive is its focus on *empirical, scalable, and domain-specific* security measurement — not theoretical worst-case analysis or single-shot prompt tests. By treating jailbreak resistance as a quantifiable, benchmarkable property — like latency or accuracy — it pushes the field toward operational AI safety standards. The project is openly hosted, methodology-documented, and actively seeking feedback, signaling a collaborative shift from siloed red-teaming to shared, transparent security evaluation."
+      },
+      "background": {
+        "zh": "越狱攻击是精心设计的对抗性提示，旨在绕过大语言模型的安全训练，使其在对齐机制下仍输出有害内容。通用越狱能在不同模型和领域间泛化，危害性尤为突出。对抗性提示利用模型架构、训练数据或指令遵循机制中的弱点，已被OWASP LLM Top 10和MITRE ATLAS等权威框架列为大语言模型头号安全威胁。",
+        "en": "Jailbreaks are adversarial prompts designed to circumvent LLM safety training, enabling models to generate harmful content despite alignment efforts. Universal jailbreaks generalize across models and domains, making them especially dangerous. Adversarial prompts exploit weaknesses in model architecture, training data, or instruction-following mechanisms, and are recognized as a top LLM security threat in frameworks like OWASP LLM Top 10 and MITRE ATLAS."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://wardstone.ai/threats/adversarial-prompts",
+          "title": "Adversarial Prompts - LLM Security Threat | Wardstone"
+        },
+        {
+          "url": "https://www.researchgate.net/publication/400211315_Adversarial_Prompts_in_Large_Language_Models_A_Concise_Survey_on_Threats_and_Defenses",
+          "title": "(PDF) Adversarial Prompts in Large Language Models: A Concise..."
+        },
+        {
+          "url": "https://www.adasci.org/blog/adversarial-prompts-in-llms-a-comprehensive-guide",
+          "title": "Adversarial Prompts in LLMs: Comprehensive Guide & Defenses"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49103285",
+      "slug": "2026-07-30-06-top-ai-startups-publish-almost-no-peer-reviewed-research-be4d9c6b",
+      "path": "/article/2026-07-30-06-top-ai-startups-publish-almost-no-peer-reviewed-research-be4d9c6b",
+      "rank": 6,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "YeGoblynQueenne",
+      "url": "https://www.science.org/content/article/ai-s-top-startups-are-barely-publishing-their-research",
+      "published_at": "2026-07-29T21:25:40+00:00",
+      "fetched_at": "2026-07-30T04:17:07.063767+00:00",
+      "tags": [
+        "AI research",
+        "startup culture",
+        "open science",
+        "intellectual property",
+        "AI ethics"
+      ],
+      "image_path": "media/hackernews-story-49103285.svg",
+      "title": {
+        "zh": "顶尖AI初创公司极少发表同行评审论文",
+        "en": "Top AI startups publish almost no peer-reviewed research"
+      },
+      "summary": {
+        "zh": "《科学》杂志的一项分析发现，包括OpenAI、Anthropic和Hugging Face在内的头部AI初创公司极少发表同行评审论文，主要依赖博客、预印本和技术报告发布成果。 这一趋势损害了科学研究的可复现性，削弱了对AI主张的问责机制，并将基础性知识集中于私营主体手中，威胁着历来推动技术进步所依赖的开放、累积式科研进程。 该研究以累计引用量（而非论文数量）作为研究重要性的代理指标，OpenAI位居榜首；但这些引用大多来自博客文章和arXiv预印本等非同行评审来源。",
+        "en": "A Science analysis found that leading AI startups — including OpenAI, Anthropic, and Hugging Face — publish almost no peer-reviewed research, relying instead on blogs, preprints, and technical reports. This trend undermines scientific reproducibility, weakens accountability for AI claims, and concentrates foundational knowledge in private hands — threatening the open, cumulative progress that has historically driven technological advancement. The study used cumulative citations — not publication counts — as a proxy for research significance, placing OpenAI at the top; however, most cited work came from non-peer-reviewed sources like blog posts and arXiv preprints."
+      },
+      "body": {
+        "zh": "《科学》杂志近期刊发的一篇报道揭示了一个引人关注的现象：最具影响力的AI初创公司极少在同行评审期刊上发表研究成果。研究人员通过分析引用数据和出版记录发现，尽管OpenAI、Anthropic、Hugging Face和Waymo等公司在技术上取得重大突破，却几乎不参与正式学术出版。它们更倾向于通过博客文章、技术报告或预印本发布成果，且往往在产品上线后才披露——这与高校实验室和公共研究机构坚持将同行评审作为知识验证与共享核心标准的做法形成鲜明对比。\n\n这种趋势的影响远超学术规范层面。缺乏同行评审意味着模型性能、安全性或能力的主张难以获得独立验证；可复现性也随之受损：许多初创公司的技术报告刻意省略关键细节——如训练数据构成、超参数设置或评估协议——导致外部团队几乎无法复现实验结果。一位评论者坦言，其团队耗时六个月完成的基础性工作，尚未正式发表便已在别处以相似形式出现，且未获署名——此类风险正促使更多初创公司选择沉默而非公开。\n\n创始人列举了多重现实障碍：期刊审稿周期（通常6–12个月）与产品快速迭代节奏严重冲突；知识产权顾虑使其不敢在专利提交前披露细节；还有人反映顶级期刊以“过于应用化”或“理论创新不足”为由直接拒稿。一位创始人称，曾连续三年向一流期刊投稿，最终彻底放弃。与此同时，“博客化”趋势——即用新闻稿和演示替代学术交流——正使未经验证的主张常态化，削弱整个领域的方法论共识。\n\n这不仅是一个出版问题，更是AI基础知识生产与治理模式的结构性转变。当突破性成果被锁在企业内部或散落在短暂存在的网络页面中，整个研究社区便失去了在其基础上构建、质疑或改进的机会。开放科学倡导者警告，这正在加速AI核心基础设施的私有化，将关键知识与决策权集中于少数资金雄厚的企业手中，且缺乏问责与透明度。",
+        "en": "A recent Science article reveals a striking pattern across the most influential AI startups: they rarely publish their work in peer-reviewed journals. Analyzing citation data and publication records, researchers found that companies like OpenAI, Anthropic, Hugging Face, and Waymo — despite driving major technical advances — contribute minimally to the formal academic literature. Instead, they release findings via blog posts, technical reports, or preprints, often long after product launches. This trend stands in sharp contrast to university labs and public research institutions, where peer-reviewed publication remains the gold standard for validation and knowledge sharing.\n\nThe implications go beyond academic etiquette. Without rigorous peer review, claims about model performance, safety, or capabilities lack independent verification. Reproducibility suffers: many startup papers omit critical details — training data composition, hyperparameters, or evaluation protocols — making independent replication nearly impossible. As one commenter noted, their team spent six months on foundational work only to see similar results appear elsewhere without attribution — a risk that pushes startups toward silence rather than disclosure.\n\nStartup founders cite multiple practical barriers: journal review timelines (often 6–12 months) clash with rapid product cycles; IP concerns deter sharing before patents are filed; and some report outright rejection by top venues for being ‘too applied’ or ‘lacking theoretical novelty’. One founder described submitting to tier-1 journals for three years before abandoning the process entirely. Meanwhile, the rise of ‘blogification’ — where press releases and demos substitute for scholarly communication — risks normalizing unverified claims and eroding shared methodological standards.\n\nThis isn’t just a publishing problem — it’s a structural shift in how foundational AI knowledge is produced and governed. When breakthroughs live behind closed doors or in ephemeral online posts, the broader research community loses opportunities to build upon, critique, or improve them. Open science advocates warn this accelerates the privatization of AI’s core infrastructure, concentrating power and insight within a handful of well-funded firms — with little accountability or transparency."
+      },
+      "background": {
+        "zh": "同行评审是科学可信度的基石，确保研究成果在进入学术记录前经过严谨性、透明性和可复现性检验。在AI领域，开源科学实践（如共享代码、数据和模型）曾长期推动技术快速进步，但商业压力正日益使速度与专有优势优先于开放性。",
+        "en": "Peer review is the cornerstone of scientific credibility, ensuring rigor, transparency, and reproducibility before findings enter the scholarly record. In AI, open science practices — such as sharing code, data, and models — have historically accelerated progress, but commercial pressures increasingly prioritize speed and proprietary advantage over openness."
+      },
+      "discussion": {
+        "zh": "多位创始人和研究者分享了亲身经历：有人描述连续多年遭顶级期刊拒稿后最终放弃同行评审；另一人指出，担心OpenAI和Anthropic等大公司复制成果是其拒绝发表的核心原因；还有人批评AI研究的“博客化”倾向助长了缺乏实证支撑的主张。",
+        "en": "Founders and researchers shared firsthand experiences: one described multi-year journal rejections before abandoning peer review; another cited fear of copying by larger firms like OpenAI and Anthropic as a key deterrent to publishing; others criticized the 'blogification' of AI research for enabling unsubstantiated claims."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Open_Science_Infrastructure",
+          "title": "Open Science Infrastructure"
+        },
+        {
+          "url": "https://medium.com/analytics-vidhya/how-reproducibility-crisis-is-eating-away-the-credibility-of-machine-learning-technology-a4db017f85e4?responsesOpen=true",
+          "title": "How Reproducibility Crisis is Eating Away the Credibility of Machine ..."
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49102774",
+      "slug": "2026-07-30-07-architects-use-vision-pro-for-sunlight-aware-life-size-client-walkthroughs-f7b81b7f",
+      "path": "/article/2026-07-30-07-architects-use-vision-pro-for-sunlight-aware-life-size-client-walkthroughs-f7b81b7f",
+      "rank": 7,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "robbiet480",
+      "url": "https://christianselig.com/2026/07/vision-pro-house/",
+      "published_at": "2026-07-29T20:39:40+00:00",
+      "fetched_at": "2026-07-30T04:17:07.063817+00:00",
+      "tags": [
+        "spatial-computing",
+        "architecture",
+        "AR-VR",
+        "design-technology",
+        "Vision-Pro"
+      ],
+      "image_path": "media/hackernews-story-49102774.jpg",
+      "title": {
+        "zh": "建筑师用Vision Pro做日照模拟与实景比例客户漫游",
+        "en": "Architects use Vision Pro for sunlight-aware, life-size client walkthroughs"
+      },
+      "summary": {
+        "zh": "多家建筑设计公司正利用Apple Vision Pro，从Revit和Rhino模型中实时流式传输并开展真实身高、日照模拟的客户漫游体验，依托Enscape插件与精确物理校准实现。 此举将建筑客户评审从抽象二维效果图或易致眩晕的传统VR体验，转变为直观、具身的空间判断，大幅减少施工后期的返工成本，并通过早期以人为中心的验证提升设计质量。 该工作流完全基于现有建筑信息模型（BIM）工具（Revit、Rhino、Enscape），无需定制开发，并充分利用Vision Pro的眼动追踪、房间级空间映射与空间音频能力，确保数字模型在物理空间中精准锚定。",
+        "en": "Architectural firms are now using Apple Vision Pro to conduct life-size, sunlight-simulated client walkthroughs directly from Revit and Rhino models—enabled by real-time streaming via Enscape and precise physical calibration. This shifts architectural client review from abstract 2D renderings or disorienting VR experiences to intuitive, embodied spatial judgment—reducing costly late-stage changes and improving design outcomes through early, human-centered validation. The workflow relies on existing AEC tools (Revit, Rhino, Enscape), requires no custom development, and leverages Vision Pro’s eye tracking, room-scale mapping, and spatial audio to anchor digital models accurately in physical space."
+      },
+      "body": {
+        "zh": "苹果Vision Pro最引人注目的实际应用之一，并非出现在游戏或娱乐领域，而是建筑与设计行业。美国多家前沿设计公司正将这款头戴设备融入早期设计流程，为客户提供沉浸式、真实比例且具备日照模拟功能的三维漫游体验——此时建筑甚至尚未动工。\n\n整个流程始于Rhino3D或Revit等标准建模软件。设计师再通过Enscape等可视化插件，将高保真模型实时流式传输至Vision Pro。关键在于，设备可精准校准至客户的实际身高与视线高度——当客户“步入”未来客厅时，空间感知立刻变得自然可信。一位位于汉普顿的设计建造公司负责人表示，客户戴上头显数秒内，就能直观判断层高是否舒适、走廊动线是否顺畅、厨房岛台与冰箱间距是否合理。\n\n更进一步，从业者正结合太阳轨迹数据实现动态光照模拟。通过计算不同季节的日出日落角度，团队能清晰展示：三月上午九点阳光如何洒满卧室，而八月下午四点又如何在同个房间形成强烈西晒。这不仅关乎视觉效果，更直接影响真实设计决策——调整窗位、优化遮阳板尺寸、选择特定玻璃类型——所有这些都在建筑仅以代码和几何体存在的阶段完成。\n\n这一应用的价值在于打通了两个长期割裂的领域：精密的建筑结构与工程计算，以及人类对空间的直觉体验。Vision Pro并未取代CAD或能耗分析软件，而是以具身化方式增强其价值。由于整套工作流基于行业通用工具（Revit、Rhino、Enscape），落地门槛低，无需学习新格式或专属平台。对建筑师而言，这已不是概念演示，而是正在改变客户沟通、方案验证与施工前决策的日常工具。",
+        "en": "Apple Vision Pro is finding one of its most compelling real-world applications—not in gaming or entertainment—but in architecture and design. At forward-thinking firms across the US, architects are integrating the headset into early-stage design workflows to deliver immersive, proportionally accurate, and sunlight-aware 3D walkthroughs for clients—long before construction begins. Unlike traditional screen-based renderings or even earlier-generation VR headsets, the Vision Pro’s spatial computing capabilities enable precise eye-tracking, room-scale anchoring, and natural hand gestures, allowing clients to experience spaces at true human scale and orientation.\n\nThe process starts with standard architectural modeling tools like Rhino3D or Revit. Designers then use visualization plugins such as Enscape to stream high-fidelity models directly to the Vision Pro. Crucially, the headset can be calibrated to match a client’s exact height and eye level—so when they ‘step into’ their future living room, spatial perception feels instantly familiar and trustworthy. As one Hamptons-based design-build firm reports, this eliminates guesswork: within seconds of putting on the headset, clients intuitively grasp whether ceiling heights feel right, if a hallway flows naturally, or if a kitchen island sits too close to the fridge.\n\nBeyond spatial fidelity, practitioners are pushing further—leveraging solar simulation data to overlay dynamic lighting conditions. By calculating sun angles across seasons, teams can show how light floods a bedroom at 9 a.m. in March versus 4 p.m. in August, revealing potential overheating risks or missed passive solar opportunities. This isn’t just visual flair; it informs real design decisions—repositioning windows, adjusting overhangs, or selecting glazing types—all while the building exists only as code and geometry.\n\nWhat makes this especially significant is that it bridges two historically separate domains: precision architectural engineering and intuitive human experience. The Vision Pro doesn’t replace CAD or energy modeling software—it augments them with embodied understanding. And because the workflow builds on existing industry tools (Revit, Rhino, Enscape), adoption isn’t gated by new learning curves or proprietary formats. For architects, this isn’t futuristic speculation—it’s a practical, daily tool already reshaping client communication, design validation, and pre-construction decision-making."
+      },
+      "background": {
+        "zh": "空间计算指一种人机交互范式，即数字内容被锚定并感知于用户所处的真实物理环境中，通过传感器、计算机视觉与混合现实显示技术，将虚拟对象与现实场景自然融合。Apple Vision Pro是苹果推出的首款空间计算头戴设备，于2023年发布，2024年起在全球陆续上市，专为运行原生应用、以真实空间感知能力渲染三维内容而设计。",
+        "en": "Spatial computing refers to human-computer interaction where digital content is anchored to and perceived within the user's physical environment—blending virtual objects with real-world context using sensors, computer vision, and mixed reality displays. The Apple Vision Pro is Apple's first spatial computing headset, announced in 2023 and released globally in 2024, designed to run native apps and render 3D content with real-world spatial awareness."
+      },
+      "discussion": {
+        "zh": "一线从业者证实已在设计建造公司日常使用，指出相比平面效果图，该方案能瞬间提升空间直觉判断；多位评论者强调日照模拟是核心优势；另有用户提出，建成后还可用于既有住宅中管线走向的可视化定位。",
+        "en": "Practitioners confirm daily use in design-build firms, highlight instant spatial intuition gains over flat renderings, and emphasize solar simulation as a key differentiator—while one commenter notes potential post-construction utility for tracing wiring and plumbing in existing homes."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Spatial_computing",
+          "title": "Spatial computing"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Apple_Vision_Pro",
+          "title": "Apple Vision Pro - Wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49098965",
+      "slug": "2026-07-30-08-mitchell-hashimoto-launches-superlogical-to-build-mit-licensed-terminal-tools-on-d28d443f",
+      "path": "/article/2026-07-30-08-mitchell-hashimoto-launches-superlogical-to-build-mit-licensed-terminal-tools-on-d28d443f",
+      "rank": 8,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "yan",
+      "url": "https://www.superlogical.com/",
+      "published_at": "2026-07-29T15:41:33+00:00",
+      "fetched_at": "2026-07-30T04:17:07.063889+00:00",
+      "tags": [
+        "terminal",
+        "open-source",
+        "developer-tools",
+        "systems-programming",
+        "libghostty"
+      ],
+      "image_path": "media/hackernews-story-49098965.webp",
+      "title": {
+        "zh": "米切尔·哈希莫托创立Superlogical，基于libghostty构建开源终端工具",
+        "en": "Mitchell Hashimoto launches Superlogical to build MIT-licensed terminal tools on libghostty"
+      },
+      "summary": {
+        "zh": "米切尔·哈希莫托创立新公司 Superlogical，基于开源 libghostty 库构建 MIT 许可的终端开发者工具，并坚持上游优先的贡献策略。 这种模式通过强调互操作性、共同维护和宽松许可，强化了可嵌入式跨平台终端基础设施生态，有助于其在 IDE、远程开发工具及智能代理界面中更广泛采用。 Superlogical 将 libghostty 视为公共依赖项——采用相同 MIT 许可证与 C API——并承诺将所有通用终端改进提交至上游；Ghostty 项目本身已移交非营利组织，以保障 libghostty 的中立性与长期可持续性。",
+        "en": "Mitchell Hashimoto founded Superlogical, a new company building MIT-licensed terminal-based developer tools atop the open-source libghostty library, with a strict upstream-first contribution policy. This approach strengthens the ecosystem of embeddable, cross-platform terminal infrastructure by prioritizing interoperability, shared maintenance, and permissive licensing — enabling broader adoption in IDEs, remote development tools, and agent-driven interfaces. Superlogical consumes libghostty as a public dependency — same MIT license, same C API — and commits to upstreaming all shared terminal improvements; Ghostty itself was transferred to a non-profit to ensure libghostty's neutrality and longevity."
+      },
+      "body": {
+        "zh": "米切尔·哈希莫托——Vagrant、Packer 和 Terraform 的作者——创立了一家名为 Superlogical 的新公司，专注开发运行于终端内的开发者工具。与许多将基础设施包装成网页界面的初创公司不同，Superlogical 将终端视为头等交互界面：其工具设计为可嵌入、可组合、可扩展，并完全基于开源库 libghostty 构建。哈希莫托在其个人博客上详细阐述了这一构想，强调这并非封闭式产品路线，而是一种“上游优先”的工程承诺：所有共享组件均采用 MIT 许可证发布，所有改进均回馈至公共生态。\n\n项目根基是 libghostty——一个从 Ghostty 终端模拟器中提取出的跨平台 C 语言库。该库于 2025 年初发布，提供轻量、准确且高性能的虚拟终端模拟器 API，支持输入法（IME）、搜索、主题切换及原生渲染，兼容 Linux、macOS 和 Windows。尤为关键的是，哈希莫托在创立 Superlogical 前已将 Ghostty 移交非营利组织托管，确保 libghostty 成为中立、社区共有的基础模块，而非厂商控制的私有依赖。\n\nSuperlogical 的早期方向契合终端工具领域的模块化趋势：Hacker News 评论者将其类比为 COM/OLE 等历史组件模型——应用可嵌入并协同操作富功能子组件（例如在 Word 中编辑 Excel 图表）。也有用户指出它与 herdr（智能代理驱动的 TUI 多路复用器）、pi-web（分布式 Pi 编程会话的 Web 前端）和 firstmate（编码元环境）等新兴项目存在理念共鸣。这些讨论反映出开发者对可嵌入、可互操作终端界面的迫切需求，远不止于全屏终端模拟器本身。\n\nSuperlogical 的真正差异在于其许可与治理纪律：它不维护私有 fork，而是严格使用公开发布的 libghostty —— 同样 MIT 许可、同样公共 API —— 并将所有增强功能提交回上游，使所有使用者共同受益。此举规避了开源工具链中常见的碎片化问题：企业表面宣称开源，实则悄然偏离主线。对于依赖稳定、可嵌入终端原语的开发者——无论是 IDE 还是远程开发环境——Superlogical 代表了一种罕见的、以互操作性而非锁定效应为核心的选择。",
+        "en": "Mitchell Hashimoto — creator of Vagrant, Packer, and Terraform — has founded a new company called Superlogical, focused squarely on building developer tools that run inside the terminal. Unlike typical startups that wrap infrastructure in web dashboards, Superlogical embraces the terminal as a first-class interface: its tools are designed to be embedded, composed, and extended using the open-source libghostty library. Hashimoto announced the venture in a detailed essay on his personal site, framing it not as a proprietary product play but as an upstream-first engineering commitment — one where every shared component is MIT-licensed and contributions flow back into the public ecosystem.\n\nThe foundation is libghostty, a cross-platform C library extracted from Ghostty, the terminal emulator Hashimoto also created. Released earlier in 2025, libghostty provides a minimal, correct, and fast virtual terminal emulator API — supporting features like IME integration, search, theming, and native rendering across Linux, macOS, and Windows. Crucially, Hashimoto transferred ownership of Ghostty to a non-profit before launching Superlogical, ensuring libghostty remains a neutral, community-owned building block — not a vendor-controlled dependency.\n\nSuperlogical’s early work appears aligned with composability trends in terminal tooling: commenters on Hacker News drew parallels to historical component models like COM and OLE, where applications could embed and interoperate with rich subcomponents (e.g., editing an Excel chart inside Word). Others noted similarities to newer projects like herdr (an agentic TUI multiplexer), pi-web (a web frontend for distributed Pi coding sessions), and firstmate (a meta-coding environment). These comparisons highlight growing demand for modular, embeddable terminal surfaces — not just full-screen emulators.\n\nWhat sets Superlogical apart is its licensing and governance discipline. Rather than forking or maintaining private forks of libghostty, the company commits to consuming it exactly as shipped — same MIT license, same public API — and upstreaming improvements so *all* users benefit. This avoids the fragmentation common in open-source toolchains, where companies quietly diverge from upstream while claiming open-source alignment. For developers who rely on stable, embeddable terminal primitives — from IDEs to remote dev environments — Superlogical signals a rare bet on interoperability over lock-in."
+      },
+      "background": {
+        "zh": "终端模拟器已从简单的文本显示演变为 IDE、云端开发环境和 AI 代理中广泛使用的复杂可嵌入组件。libghostty 是从 Ghostty 中提取出的现代轻量级 C 语言库，提供简洁 API，支持嵌入具备完整功能的终端界面——包括渲染、输入处理和无障碍支持——且无需引入 GUI 框架或平台特定依赖。",
+        "en": "Terminal emulators have evolved from simple text displays to complex, embeddable components used in IDEs, cloud dev environments, and AI agents. libghostty is a modern, minimal C library extracted from Ghostty that exposes a clean API for embedding fully functional terminal surfaces — including rendering, input handling, and accessibility features — without dragging in GUI frameworks or platform-specific dependencies."
+      },
+      "discussion": {
+        "zh": "评论者普遍赞赏其上游优先理念及 Ghostty 的非营利托管模式，并将技术架构类比为 COM/OLE 及 herdr、pi-web 等新型 TUI 工具；一名用户批评标题过于模糊（仅用单个单词），但未质疑其技术实质。",
+        "en": "Commenters praised the upstream-first ethos and nonprofit stewardship of Ghostty, while drawing architectural parallels to COM/OLE and newer TUI tools like herdr and pi-web; one critic objected to the vague, single-word title but did not dispute the technical substance."
+      },
+      "sources": [
+        {
+          "url": "https://mitchellh.com/writing/libghostty-is-coming",
+          "title": "Libghostty Is Coming – Mitchell Hashimoto"
+        },
+        {
+          "url": "https://libghostty.tip.ghostty.org/",
+          "title": "libghostty: libghostty-vt - Virtual Terminal Emulator Library"
+        },
+        {
+          "url": "https://github.com/Uzaaft/awesome-libghostty",
+          "title": "GitHub - Uzaaft/awesome-libghostty · GitHub"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49101198",
+      "slug": "2026-07-30-09-nyc-renter-adds-smart-control-to-dumb-ptac-without-breaking-lease-c1103191",
+      "path": "/article/2026-07-30-09-nyc-renter-adds-smart-control-to-dumb-ptac-without-breaking-lease-c1103191",
+      "rank": 9,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "austinallegro",
+      "url": "https://prilik.com/blog/post/automating-ac-nyc/",
+      "published_at": "2026-07-29T18:28:51+00:00",
+      "fetched_at": "2026-07-30T04:17:07.064125+00:00",
+      "tags": [
+        "DIY",
+        "IoT",
+        "HVAC",
+        "rental-hacking",
+        "embedded-systems"
+      ],
+      "image_path": "media/hackernews-story-49101198.svg",
+      "title": {
+        "zh": "纽约租客为非智能空调加装远程控制不损押金",
+        "en": "NYC renter adds smart control to dumb PTAC without breaking lease"
+      },
+      "summary": {
+        "zh": "一名纽约租客为房东提供的PTAC空调加装步进电机和ESP32微控制器，实现远程调温，全程未改动线路、未违反租约、未危及押金。 它为数百万受困于老旧空调设备的租户提供了合规可行的智能家居升级路径，同时凸显了市场对超越厂商云生态、支持用户自定义的标准化家电接口的迫切需求。 系统采用开环位置控制（无反馈传感器），依靠校准后的步进数定位旋钮；不依赖联网固件更新或云端服务，安全性天然高于普通智能空调。",
+        "en": "A NYC renter retrofitted a landlord-provided PTAC air conditioner with a stepper motor and ESP32 microcontroller to enable remote temperature control—without altering wiring, voiding the lease, or risking the security deposit. It demonstrates a practical, lease-compliant path to smart home control for millions of renters stuck with legacy HVAC hardware—and highlights demand for standardized, user-accessible appliance interfaces beyond proprietary cloud ecosystems. The system uses open-loop position control (no feedback sensor) and relies on calibrated motor steps to approximate dial positions; it avoids network-connected firmware updates or cloud dependencies, making it inherently more secure than typical smart ACs."
+      },
+      "body": {
+        "zh": "在纽约租房的经典困境中——公寓里装着笨重的非智能PTAC（整体式窗式空调），但租约又禁止改动任何固定设施——一位开发者找到了巧妙的解决方案。他没有更换设备，也没有冒险违反租约，而是用步进电机、微控制器和3D打印支架搭建了一套低侵入式自动化系统，精准地旋转空调机械温控旋钮。整个方案不碰电线、不改管路、不拆机壳，纯粹模拟人工调节动作。\n\nPTAC在纽约公寓和酒店中极为常见：这是一种壁挂式、自包含的冷暖一体机组，通常靠旋钮或简易按钮控制。由于设备归房东所有且接入楼宇基础设施，租户几乎不可能获准安装智能温控器或改造内部电路。本项目完全绕开了这些限制——无需打孔、无需接线、更不会影响押金退还。\n\n硬件设计刻意精简：市售步进电机通过定制3D打印支架固定，由ESP32微控制器驱动并运行自定义固件。温度指令通过Wi-Fi下发，既可通过简易网页界面操作，也能接入Home Assistant智能家居平台。关键在于，它完全避开空调内部的专有逻辑，把旋钮当作“物理API”来用——左转或右转设定目标温度，其余交由空调自带温控器完成。\n\n原帖评论区盛赞这种“机械API”思路的优雅。有人指出，HVAC设备早已采用标准化接口（如温控端子排），建议其他家电也开放类似的模拟/数字接口，让用户自由选择自动化硬件。还有人提到，PTAC看似过时，实则折射出深层城市现实：纽约建筑规范、能源基础设施历史沿革，以及经济上倾向耐用、集中维护设备而非用户可升级产品的取向。几位读者甚至推荐改用ESPHome框架——凸显当前开源工具链已足够成熟便捷。\n\n这不仅是一次提升舒适度的DIY尝试，更是租户在约束中争取自主权的务实实践。而当物联网安全威胁日益严峻（2025年每天遭遇超82万次针对智能设备的黑客攻击），这套纯机械、无云连接、无固件漏洞、无远程攻击面的设计，反而显得格外可靠。",
+        "en": "In a classic New York rental dilemma — stuck with a clunky, non-smart PTAC (packaged terminal air conditioner) but forbidden from modifying permanent fixtures — one developer found a clever workaround. Rather than replace the unit or risk violating lease terms, they built a low-intrusion automation system using a stepper motor, microcontroller, and 3D-printed bracket to physically rotate the unit’s mechanical temperature dial. The setup doesn’t touch wiring, plumbing, or internal electronics; it simply mimics manual knob-turning with precision and repeatability.\n\nPTACs are ubiquitous in NYC apartments and hotels: self-contained, wall-mounted units that both heat and cool, often controlled by analog dials or basic push-button interfaces. Because they’re landlord-owned and hardwired into building infrastructure, renters rarely get permission to install smart thermostats or retrofit internal circuitry. This project sidesteps those constraints entirely — no drilling, no rewiring, no voided security deposit.\n\nThe hardware is deliberately minimal: an off-the-shelf stepper motor mounted via custom-printed brackets, driven by an ESP32 microcontroller running custom firmware. Temperature commands come via Wi-Fi — either through a simple web interface or integrated into Home Assistant. Crucially, the system avoids any software-level integration with the AC’s proprietary logic; instead, it treats the dial like a physical API — turning it left or right to set target temperature, then letting the unit’s built-in thermostat do the rest.\n\nCommenters on the original post praised the elegance of this ‘mechanical API’ approach. One noted how HVAC systems already standardize on simple, open interfaces like thermostat terminals — suggesting similar analog/digital headers should exist on other appliances. Others pointed out that while PTACs feel outdated, their persistence reflects deeper urban realities: NYC building codes, energy infrastructure legacy, and economic incentives favoring durable, centrally maintained units over consumer-upgradable gear. A few even recommended switching to ESPHome for faster firmware deployment — highlighting how accessible the toolchain has become.\n\nThis isn’t just a hack for comfort. It’s a quiet act of tenant agency — reclaiming control over indoor climate without confrontation or compromise. And as IoT security concerns mount (with over 820,000 daily hacking attempts targeting smart devices in 2025), its air-gapped, purely mechanical interaction stands out as refreshingly secure — no cloud dependency, no firmware vulnerabilities, no remote exploit surface."
+      },
+      "background": {
+        "zh": "PTAC是一种自包含式壁挂式暖通空调设备，广泛用于纽约公寓和酒店，通常仅配备机械旋钮或基础按键，不具备网络接口。步进电机在HVAC系统中常用于精确控制风门与阀门，其在温度变化环境中表现稳定，适合外部加装改造。",
+        "en": "PTACs are self-contained, wall-mounted HVAC units common in NYC apartments and hotels, typically controlled by mechanical dials or basic buttons—not networked interfaces. Stepper motors are widely used in HVAC for precise, repeatable motion control of dampers and valves, and their reliability in temperature-variable environments makes them suitable for external retrofitting."
+      },
+      "discussion": {
+        "zh": "评论者称赞‘机械API’思路，呼吁家电厂商提供标准化接口引脚；讨论了开环控制与反馈传感等设计取舍；并将PTAC视为纽约本地建筑法规与基础设施历史的产物。",
+        "en": "Commenters praised the 'mechanical API' concept, advocated for standardized appliance interface pins, debated design trade-offs like open-loop control vs. feedback sensing, and contextualized PTACs as artifacts of NYC-specific building regulations and infrastructure history."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Packaged_terminal_air_conditioner",
+          "title": "Packaged terminal air conditioner - Wikipedia"
+        },
+        {
+          "url": "https://www.controlsdrivesautomation.com/Stepper-motors-for-HVAC-applications",
+          "title": "CDA - Stepper motors for HVAC applications"
+        },
+        {
+          "url": "https://telnyx.com/resources/iot-hacking",
+          "title": "Understanding IoT hacking: Risks and prevention tips - Telnyx IoT Devices Vulnerability and Attack Vectors - GeeksforGeeks IoT Hacking Statistics 2026 | Latest Trends, Attacks & Data IoT Device Hacking - infosectrain.com IoT Hacking Statistics 2025: Threats, Risks & Regulations Ethical hacking for IoT: Security issues, challenges ..."
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1va7w4p",
+      "slug": "2026-07-30-10-tanml-open-source-toolkit-targets-audit-ready-tabular-model-validation-a09e5970",
+      "path": "/article/2026-07-30-10-tanml-open-source-toolkit-targets-audit-ready-tabular-model-validation-a09e5970",
+      "rank": 10,
+      "score": 8.0,
+      "source": "reddit",
+      "author": "/u/AccomplishedLeg1508",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1va7w4p/opensource_tabular_model_validation_toolkit_tanml/",
+      "published_at": "2026-07-29T20:22:16+00:00",
+      "fetched_at": "2026-07-30T04:17:07.284960+00:00",
+      "tags": [
+        "tabular-ml",
+        "model-validation",
+        "mlops",
+        "regulatory-compliance",
+        "explainable-ai"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1va7w4p.svg",
+      "title": {
+        "zh": "TanML开源工具包专注表格模型合规验证",
+        "en": "TanML open-source toolkit targets audit-ready tabular model validation"
+      },
+      "summary": {
+        "zh": "MIT许可的开源工具包TanML已在GitHub发布，支持表格机器学习模型的端到端验证（含漂移分析、SHAP可解释性、压力测试及审计就绪的Word报告），目前正面向从业者征集反馈。 它直击受监管行业核心痛点：模型验证必须严谨、可追溯且符合SR 11-7或BCBS 239等监管框架要求，而通用MLOps工具在此方面长期缺位。 TanML纯本地运行，支持SHAP本地可解释性分析，输出Word格式报告（非PDF或HTML），专为银行、保险与信贷风险场景设计；尚未与MLflow或Kubeflow等主流MLOps平台集成。",
+        "en": "TanML, an MIT-licensed open-source toolkit for end-to-end tabular ML model validation—including drift analysis, SHAP explainability, stress testing, and audit-ready Word reports—has been released on GitHub and is now seeking practitioner feedback. It addresses a critical unmet need in regulated sectors where model validation must be rigorous, traceable, and compliant with frameworks like SR 11-7 or BCBS 239—filling a gap left by generic MLOps tools. TanML runs locally, supports SHAP for local explainability, generates Word reports (not PDF or HTML), and targets banking, insurance, and credit risk workflows; it is not yet integrated with major MLOps platforms like MLflow or Kubeflow."
+      },
+      "body": {
+        "zh": "TanML是一个新兴的开源工具包，旨在填补机器学习运维中的一个长期空白：为受监管行业提供严格、端到端的表格模型验证能力。与通用型AutoML库不同，TanML精准聚焦于银行、保险和信贷风险领域的模型风险管理人、验证人员及合规官——这些领域中模型决策直接影响法律责任、财务结果与机构声誉。该工具完全本地运行，规避了云服务可能引发的数据隐私与审计追溯问题。\n\n其工作流覆盖模型全生命周期：从初始数据探查与预处理，到特征重要性排序、模型开发与评估，再到概念漂移与数据漂移检测、极端场景下的压力测试，以及基于SHAP的可解释性分析。尤为关键的是，TanML自动生成Word格式报告——结构清晰、叙述完整，专为满足内部审计团队及美联储、欧洲保险与职业养老金管理局（EIOPA）等外部监管机构的文档要求而设计。\n\nTanML的独特之处在于其监管就绪性：不仅追求统计严谨性，更强调在实际业务环境中可落地、可追溯、可审计。MIT许可证保障用户自由使用与修改；本地执行特性则适配金融机构常见的物理隔离（air-gapped）环境。开发者明确呼吁一线实践者反馈：哪些验证环节尚未覆盖？报告模板是否足以支撑独立审查？阻碍团队采用的主要障碍是什么——是集成复杂度、对特定模型（如XGBoost集成）支持不足，还是文档不充分？\n\n尽管TanML尚未广泛部署或参与基准测试，但它体现了行业正加速转向一类新型基础设施：既能保障机器学习技术严谨性，又能满足监管问责要求的工具。随着全球模型风险管理体系（MRM）持续完善，能自动化生成可追溯、可复现验证结果的工具，已从“锦上添花”变为“不可或缺”。对于仍在用零散脚本拼凑漂移监控或SHAP分析的团队而言，TanML提供了一种统一、合规、可审计的替代方案。",
+        "en": "TanML is an emerging open-source toolkit designed to address a persistent gap in machine learning operations: rigorous, end-to-end validation of tabular models for regulated industries. Unlike general-purpose AutoML libraries, TanML focuses squarely on the needs of model risk managers, validators, and compliance officers in banking, insurance, and credit risk—domains where model decisions carry legal, financial, and reputational consequences. The toolkit runs entirely locally, avoiding cloud dependencies that could raise data privacy or auditability concerns.\n\nThe workflow spans the full model lifecycle: from initial data profiling and preprocessing, through feature importance ranking and model development, to evaluation metrics, concept and data drift detection, stress testing under adverse scenarios, and SHAP-based explainability. Crucially, TanML generates Word-formatted reports—structured, narrative-rich, and designed to meet documentation standards expected by internal audit teams and external regulators like the Federal Reserve or EIOPA.\n\nWhat sets TanML apart is its regulatory grounding—not just statistical soundness, but operational readiness for model governance. Its MIT license ensures unrestricted use and modification, while local execution supports air-gapped environments common in financial institutions. The developers explicitly invite feedback from practitioners: Which validation steps are missing? Are report templates sufficient for independent review? What adoption barriers exist—integration complexity, lack of support for specific model types (e.g., XGBoost ensembles), or insufficient documentation?\n\nThough not yet widely adopted or benchmarked, TanML reflects a growing industry shift toward tooling that bridges technical ML rigor and regulatory accountability. As model risk management frameworks (MRM) mature globally, tools that automate traceable, reproducible validation—without sacrificing transparency—are no longer nice-to-have but essential infrastructure. For teams still stitching together custom scripts for drift monitoring or SHAP analysis, TanML offers a cohesive, auditable alternative worth evaluating."
+      },
+      "background": {
+        "zh": "表格机器学习模型广泛应用于信用评分、欺诈检测和保险定价等领域，因而面临严格的监管审查。模型风险管理（MRM）框架要求提供模型稳定性、公平性与鲁棒性的持续证据，包括漂移监测与可解释性分析。SHAP（Shapley加性解释）是一种基于博弈论归因的主流模型解释方法，已被业界广泛采用。",
+        "en": "Tabular ML models—used for credit scoring, fraud detection, and insurance pricing—are subject to strict regulatory scrutiny. Model Risk Management (MRM) frameworks require evidence of model stability, fairness, and robustness over time, including drift detection and explainability. SHAP (Shapley Additive exPlanations) is a widely adopted method for interpreting model predictions using game-theoretic attribution."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://pypi.org/project/tanml/",
+          "title": "tanml · PyPI"
+        },
+        {
+          "url": "https://shap.readthedocs.io/en/latest/example_notebooks/overviews/An+introduction+to+explainable+AI+with+Shapley+values.html",
+          "title": "An introduction to explainable AI with Shapley values — SHAP ..."
+        },
+        {
+          "url": "https://www.piwheels.org/project/tanml/",
+          "title": "piwheels - tanml"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1v9s4mz",
+      "slug": "2026-07-30-11-postslate-cuts-face-inference-latency-by-10x-using-ncnn-vulkan-backend-c0a332cf",
+      "path": "/article/2026-07-30-11-postslate-cuts-face-inference-latency-by-10x-using-ncnn-vulkan-backend-c0a332cf",
+      "rank": 11,
+      "score": 8.0,
+      "source": "reddit",
+      "author": "/u/ppchaos",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1v9s4mz/vendoragnostic_ml_inference_on_production_edge/",
+      "published_at": "2026-07-29T10:22:27+00:00",
+      "fetched_at": "2026-07-30T04:17:07.285178+00:00",
+      "tags": [
+        "edge-ai",
+        "vulkan",
+        "ml-inference",
+        "cross-platform",
+        "ncnn"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1v9s4mz.svg",
+      "title": {
+        "zh": "PostSlate用ncnn Vulkan后端将人脸推理延迟降低10倍",
+        "en": "PostSlate cuts face inference latency by 10x using ncnn Vulkan backend"
+      },
+      "summary": {
+        "zh": "PostSlate弃用厂商锁定的机器学习框架，转而采用ncnn的Vulkan后端，在NVIDIA、AMD、Intel和Apple Silicon GPU上实现人脸检测与嵌入推理速度提升10倍，并将模型体积减半。 这为真正跨平台的边缘AI提供了可落地的生产方案——缓解硬件碎片化问题，消除终端用户的安装障碍，并大幅降低面向异构硬件部署ML功能的维护成本。 ncnn的Vulkan后端多数算子在GPU执行，不支持的操作会回退至CPU；该方案采用fp16量化，并依赖操作系统预装的Vulkan驱动，无需CUDA、ROCm或OpenVINO运行时。",
+        "en": "PostSlate replaced vendor-locked ML frameworks with ncnn’s Vulkan backend, achieving 10× faster face detection and embedding inference and halving model size across NVIDIA, AMD, Intel, and Apple Silicon GPUs. This demonstrates a practical, production-ready path to truly cross-platform edge AI—reducing fragmentation, eliminating end-user installation friction, and lowering maintenance overhead for developers shipping ML features to heterogeneous hardware. ncnn’s Vulkan backend executes most layers on GPU but may fall back to CPU for unsupported ops; the implementation uses fp16 quantization and leverages pre-installed OS Vulkan drivers—not CUDA, ROCm, or OpenVINO runtimes."
+      },
+      "body": {
+        "zh": "PostSlate是一款桌面视频编辑工具，其背后的机器学习工程团队成功解决了一个长期困扰边缘AI部署的难题：在差异巨大的GPU硬件上——包括NVIDIA GeForce、AMD Radeon、Intel Iris Xe和Apple M系列芯片——实现快速且一致的本地模型推理。与云端推理不同，他们的模型必须在用户设备上运行，以保障隐私和实时响应，同时不能要求用户安装厂商专属驱动或运行时环境。\n\n团队直接排除了CUDA，因为它仅支持NVIDIA显卡；OpenVINO和ROCm同样受限于Intel和AMD平台。最终，他们选择了腾讯开源的轻量级推理框架ncnn的Vulkan后端。Vulkan是一种跨平台图形与计算API，在Windows、macOS和Linux上原生支持，更重要的是，所有主流GPU厂商的操作系统发行版都已预装Vulkan驱动。\n\n他们对两个核心模型进行了基准测试：用于人脸嵌入的ArcFace R50和用于人脸检测的SCRFD。在RTX 4070（fp16精度）上，ArcFace推理耗时从ONNX CPU版本的30毫秒降至仅3毫秒；SCRFD则从25毫秒降至2.5毫秒。模型体积也减半：ArcFace R50的ONNX文件从174 MB（fp32）压缩为87 MB（ncnn格式的fp16量化权重）。这些提升不仅体现在速度上——真正的优势在于部署极简：无需用户手动安装任何组件，不触发驱动提示，且运行时环境始终可用。\n\n这一实践反映了边缘AI的普遍趋势：从厂商锁定的技术栈转向基于开放标准、可移植的推理后端。尽管Vulkan并非所有算子都能在GPU上执行（部分操作会回退至CPU），但ncnn的Vulkan支持已足够成熟，可支撑生产级视觉任务。正如腾讯工程师倪辉在W3C中国WebEvolve 2024大会上指出，基于Vulkan的推理正日益成为低延迟、跨平台场景下的可靠选择。",
+        "en": "A production ML engineering team behind PostSlate—a desktop video editing application—has solved a persistent edge AI challenge: delivering fast, consistent on-device machine learning across wildly different GPUs. Unlike cloud-based inference, their models must run locally for privacy and responsiveness, supporting users with NVIDIA GeForce, AMD Radeon, Intel Iris Xe, and Apple M-series chips—all without installing vendor-specific drivers or runtimes.\n\nThe team rejected CUDA outright because it only works on NVIDIA hardware, and OpenVINO or ROCm were similarly limited to Intel and AMD respectively. Instead, they adopted ncnn’s Vulkan backend, a lightweight, open-source inference framework originally developed by Tencent. Vulkan is a cross-platform graphics and compute API supported natively on Windows, macOS, and Linux—and crucially, its drivers ship pre-installed with every major GPU vendor’s operating system distribution.\n\nBenchmarking two core models—ArcFace R50 for face embeddings and SCRFD for face detection—they measured dramatic improvements. On an RTX 4070 running fp16 precision, ArcFace inference dropped from 30 ms (ONNX CPU) to just 3 ms; SCRFD fell from 25 ms to 2.5 ms. Model size also halved: the ArcFace R50 ONNX file shrank from 174 MB (fp32) to 87 MB (fp16 quantized weights in ncnn format). These gains weren’t just about raw speed—the real win was deployment simplicity: zero user-facing install steps, no driver prompts, and guaranteed runtime availability.\n\nThis approach reflects a broader shift in edge AI: moving away from vendor-locked stacks toward portable, standards-based backends. While Vulkan doesn’t execute *every* layer on GPU (some ops may fall back to CPU), ncnn’s Vulkan support is mature enough for production vision workloads. As Hui Ni of Tencent noted at W3C China’s WebEvolve 2024 conference, Vulkan-based inference is increasingly viable for low-latency, cross-platform scenarios where consistency matters more than peak theoretical throughput."
+      },
+      "background": {
+        "zh": "Vulkan是由Khronos集团维护的低开销、跨平台图形与计算API，旨在替代OpenGL，提供对GPU资源的细粒度控制。ncnn是腾讯开发的高性能神经网络推理框架，专为移动端和嵌入式设备优化。ArcFace R50是一种广泛使用的人脸识别模型，基于ResNet-50架构，采用加性角度间隔损失函数。",
+        "en": "Vulkan is a low-overhead, cross-platform graphics and compute API maintained by the Khronos Group, designed to replace OpenGL and provide fine-grained control over GPU resources. ncnn is a high-performance neural network inference framework optimized for mobile and embedded devices, developed by Tencent. ArcFace R50 is a widely used face recognition model based on ResNet-50 architecture with additive angular margin loss."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://github.com/futz12/bergamot-ncnn-vulkan",
+          "title": "GitHub - futz12/bergamot- ncnn - vulkan : mobile-friendly mechine..."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=vSVECHe1WN4",
+          "title": "ncnn Vulkan Machine Learning Update - YouTube"
+        },
+        {
+          "url": "https://huggingface.co/py-feat/arcface_r50/tree/main",
+          "title": "py-feat/ arcface _ r 50 at main"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49104117",
+      "slug": "2026-07-30-12-llm-honeypot-satirizes-ai-with-geocities-style-web-art-67aa5bbd",
+      "path": "/article/2026-07-30-12-llm-honeypot-satirizes-ai-with-geocities-style-web-art-67aa5bbd",
+      "rank": 12,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "8thom",
+      "url": "https://llm2human.pages.dev/",
+      "published_at": "2026-07-29T22:51:03+00:00",
+      "fetched_at": "2026-07-30T04:17:07.063928+00:00",
+      "tags": [
+        "web-art",
+        "AI-satire",
+        "digital-nostalgia",
+        "LLM-security",
+        "retro-web"
+      ],
+      "image_path": "media/hackernews-story-49104117.svg",
+      "title": {
+        "zh": "LLM蜜罐用复古网页风格戏谑大语言模型",
+        "en": "LLM Honeypot satirizes AI with GeoCities-style web art"
+      },
+      "summary": {
+        "zh": "一个名为‘LLM蜜罐’的艺术性互动网站上线，采用GeoCities式复古网页风格，以戏谑方式探测并颠覆大语言模型的行为模式。 它通过网络史与设计素养重构AI批判视角，揭示大语言模型如何过度解读结构完整却毫无意义的输入，为模型可靠性及人机交互设计提供了微妙而重要的观察角度。 该网站纯由静态HTML/CSS构成，无后端亦未接入任何大语言模型；其‘蜜罐’效果完全依赖外部大语言模型如何解析并回应其中刻意设计的混乱标记与荒诞交互。",
+        "en": "An artistically driven, GeoCities-style website named 'LLM Honeypot' has launched as a satirical interactive installation that uses retro-web aesthetics to probe and subvert LLM behavior. It reframes AI critique through web history and design literacy, exposing how LLMs over-interpret structured but meaningless inputs — a subtle yet important lens on model reliability and human-AI interface design. The site is static HTML/CSS with no backend or LLM integration; its 'honeypot' effect emerges solely from how external LLMs parse and respond to its intentionally confusing markup and absurd interactivity."
+      },
+      "body": {
+        "zh": "在 llm2human.pages.dev 这个网址上，藏着一个刻意令人不适的数字作品：一个戏仿式的‘LLM蜜罐’网站，外观仿佛直接从1998年穿越而来。闪烁的动画GIF、平铺的背景图、霓虹色文字、徒劳跳动的访客计数器，还有超链接组成的‘网页环’——全都循环指向自身。这一切都以充满爱意又略带失真的方式，复刻了GeoCities时代那个混乱而由用户自主搭建的早期网络社区。但这并非单纯怀旧。它是一件披着破损网页外衣的艺术干预——目标不是诱捕人类访客，而是激发、迷惑，并揭示大语言模型在面对荒诞、非标准或语义过载输入时的真实反应。\n\n与传统网络安全蜜罐（通过伪造漏洞引诱攻击者）不同，该项目反转了逻辑：它是一个针对大语言模型自身的‘行为蜜罐’。网站通过堆叠大量复古网页噪声——格式错乱的HTML、自相矛盾的指令、超现实导航提示、以及自我指涉的循环结构——来测试模型在遭遇违背常规结构或意图的输入时，会以多大的自信（又有多盲目地）生成回应。网站甚至设置了虚构的‘转化程序’，邀请用户（或爬虫）‘下单’完成蜕变——这是对AI对齐仪式和提示工程表演的一次幽默调侃。\n\n该项目精准切中了当前关于AI透明度与交互设计的深层讨论。当大语言模型日益成为我们获取信息、服务与基础设施的中介时，它们对无意义输入仍坚持生成看似合理回答的倾向，便既是一种技术弱点，也是一种文化症候。LLM蜜罐并不利用安全漏洞，而是凸显模型如何轻易被美学与结构线索误导——而这些线索恰恰是它们未曾被训练去质疑的。它的力量正源于极简：无需微调，无需API密钥，只有原始HTML、CSS与反讽。\n\nHacker News上的评论者以温情与机智回应——为消逝的网页环叹息，惊叹OLED屏幕竟以完美纯黑呈现像素化GIF，还联想到Cameron’s World这一真实GeoCities废墟档案库。这些反应揭示了一个关键事实：这不仅关乎AI，更关乎记忆、媒介与进步背后的静默暴力——那些本应理解我们的工具，却常常认不出塑造了它们的历史。",
+        "en": "Tucked away at llm2human.pages.dev is a deliberately jarring digital artifact: a satirical ‘LLM Honeypot’ website that looks like it was ripped straight from 1998. Animated GIFs blink erratically, tiled backgrounds shimmer under neon text, visitor counters tick meaninglessly, and hyperlinked ‘web rings’ loop back to themselves — all rendered in lovingly inaccurate homage to GeoCities, the early web’s chaotic, user-built neighborhood. But this isn’t nostalgia for nostalgia’s sake. It’s an artistic intervention disguised as a broken webpage — one designed not to trap human visitors, but to provoke, confuse, and reveal how large language models respond when fed absurd, nonstandard, or semantically overloaded inputs.\n\nUnlike cybersecurity honeypots that lure malicious actors with fake vulnerabilities, this project flips the script: it’s a *behavioral* honeypot aimed at LLMs themselves. By presenting models with dense layers of retro-web noise — malformed HTML, contradictory instructions, surreal navigation prompts, and self-referential loops — it tests how confidently (and blindly) models generate responses when confronted with inputs that defy conventional structure or intent. The site even includes a mock ‘transformation procedure’ that invites users (or bots) to ‘order’ a metamorphosis — a tongue-in-cheek nod to AI alignment rituals and prompt engineering theater.\n\nThe project resonates deeply with current conversations about AI transparency and interaction design. As LLMs increasingly mediate access to information, services, and infrastructure, their tendency to hallucinate coherent answers — even to nonsense — becomes both a technical vulnerability and a cultural symptom. The LLM Honeypot doesn’t exploit security flaws; instead, it highlights how easily models can be led astray by aesthetic and structural cues they weren’t trained to question. Its power lies in its simplicity: no fine-tuning, no API keys — just raw HTML, CSS, and irony.\n\nCommenters on Hacker News responded with warmth and wit — mourning dead web rings, marveling at OLED screens rendering pixelated GIFs with perfect blacks, and drawing parallels to Cameron’s World, a curated archive of authentic GeoCities detritus. Their reactions underscore something vital: this isn’t just about AI. It’s about memory, mediation, and the quiet violence of progress — how tools built to understand us often fail to recognize the very history that shaped them."
+      },
+      "background": {
+        "zh": "GeoCities是1990年代开创性的网页托管服务，用户用动画GIF、留言簿和网页环搭建个人主页，象征早期网络的去中心化与业余创造力。网络安全领域中的LLM蜜罐指利用大语言模型模拟易受攻击的服务以吸引并分析攻击者，而本项目则将‘蜜罐’一词转用于艺术表达与行为批判。",
+        "en": "GeoCities was a pioneering 1990s web hosting service where users built personal homepages with animated GIFs, guestbooks, and web rings — embodying early web decentralization and amateur creativity. LLM honeypots in cybersecurity refer to systems using language models to simulate vulnerable services and engage attackers, but this project repurposes the term for artistic and behavioral critique."
+      },
+      "discussion": {
+        "zh": "评论者流露出对复古美学的亲切感，为已失效的网页环感到惋惜，调侃OLED屏幕以讽刺般的精准呈现老旧GIF，还联想到Cameron’s World等网络存档项目——体现出对网络历史与AI批判的双重共鸣。",
+        "en": "Commenters expressed nostalgic affection for the aesthetic, lamented the death of functional web rings, joked about OLED screens displaying vintage GIFs with ironic perfection, and drew connections to archival projects like Cameron’s World — reflecting broad appreciation for both web history and AI critique."
+      },
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2409.08234",
+          "title": "[2409.08234] LLM Honeypot: Leveraging Large Language Models as Advanced Interactive Honeypot Systems"
+        },
+        {
+          "url": "https://geocities.restorativland.org/",
+          "title": "The Geocities Gallery"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49099715",
+      "slug": "2026-07-30-13-keychron-unveils-first-open-source-gaming-mouse-firmware-8b599341",
+      "path": "/article/2026-07-30-13-keychron-unveils-first-open-source-gaming-mouse-firmware-8b599341",
+      "rank": 13,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "JLO64",
+      "url": "https://www.digitalfoundry.net/news/2026/07/keychron-announces-first-open-source-firmware-for-gaming-mice",
+      "published_at": "2026-07-29T16:36:59+00:00",
+      "fetched_at": "2026-07-30T04:17:07.063959+00:00",
+      "tags": [
+        "open-source",
+        "firmware",
+        "gaming-peripherals",
+        "QMK",
+        "HID"
+      ],
+      "image_path": "media/hackernews-story-49099715.jpg",
+      "title": {
+        "zh": "Keychron发布首款开源游戏鼠标固件",
+        "en": "Keychron unveils first open-source gaming mouse firmware"
+      },
+      "summary": {
+        "zh": "Keychron宣布推出首款面向游戏鼠标的开源固件，计划于2027年第一季度发布；目前尚未公开任何源代码，官方代码仓库仍为空。 此举有望突破当前游戏鼠标闭源固件的功能限制，推动整个外设行业更广泛地采用开源固件——尤其当它能切实解决跨设备HID通信、非常规形态支持等长期存在的短板时。 该固件专为鼠标设计（非键盘衍生），聚焦DPI分层切换、跨设备HID信号传输等功能；并非基于QMK构建，且目标是开箱即支持现代光学传感器与高轮询率需求。",
+        "en": "Keychron announced its first open-source firmware for gaming mice, scheduled for release in Q1 2027; no source code has been published yet, and the official repository remains empty. This could expand customization options for gaming mice beyond current proprietary limits and encourage broader industry adoption of open firmware — especially if it addresses real gaps like cross-device HID communication and support for non-standard form factors. The firmware is explicitly designed for mice (not keyboards), targeting features like DPI layer switching and inter-device HID signaling; it is not based on QMK and aims to support modern sensor and polling requirements out of the box."
+      },
+      "body": {
+        "zh": "Keychron宣布推出首款专为游戏鼠标设计的开源固件，标志着该公司从广为人知的机械键盘领域，正式拓展至可编程、社区驱动的外设生态。该固件计划于2027年第一季度发布，定位为专用于鼠标的独立解决方案，与QMK等以键盘为核心的开源项目形成区分。尽管目前尚未公开任何代码，Keychron强调此举旨在回应玩家对游戏外设深度定制的迫切需求——例如按键级宏编程、DPI分层切换，以及跨设备协同控制。\n\n这一消息发布之际，业界正日益关注闭源固件的局限性。有用户提到，自己曾购入一款不支持QMK的Keychron键盘，但社区很快完成了非官方移植，成功修复了关键问题：原厂固件在休眠时仅扫描单行按键（为省电），导致无法通过任意键唤醒电脑；而开源方案则实现了全键唤醒功能。这种自下而上的技术活力，凸显了开源固件的真实价值——用户真正需要的不仅是换键或改灯效，而是对电源管理、轮询机制和HID数据包结构的底层掌控。\n\n该固件的潜在差异化在于其“为鼠标而生”的设计哲学。QMK虽已支持部分鼠标（如Ploopy的轨迹球），但其核心架构仍围绕键盘优化，鼠标功能常属事后补充且受限。而Keychron的新固件据称从底层开始适配多按键、高轮询率、集成传感器的游戏鼠标。社区讨论中反复提及的实际痛点包括：键盘与鼠标间的可靠通信（例如按键盘快捷键切换鼠标DPI档位）、标准化高级HID描述符的缺失，以及对非常规形态（如轨迹球、人体工学鼠）的固件支持不足。\n\n不过，质疑声同样明显。多位评论者指出，提前6–9个月宣布“开源固件”，却连代码仓库都为空，容易被视作营销话术而非工程承诺。也有用户追问：既然QMK已支持部分鼠标且持续演进，为何还需另起炉灶？此事背后真正的意义，或许不在于Keychron一家的路线图，而在于整个外设行业是否将把固件开源视为基本要求，抑或仍将其当作可有可无的附加功能。",
+        "en": "Keychron has announced its first open-source firmware designed specifically for gaming mice — a move that marks the company’s expansion beyond its well-known mechanical keyboards into programmable, community-driven peripherals. Scheduled for release in Q1 2027, the firmware is positioned as a dedicated solution for mice, distinct from existing keyboard-focused projects like QMK. While no code has been published yet, Keychron frames the effort as a response to growing demand for deeper hardware customization in gaming peripherals — especially features like per-button macro scripting, DPI layer switching, and cross-device coordination.\n\nThe announcement arrives amid rising scrutiny of proprietary firmware limitations. As one commenter noted, even Keychron’s own keyboards initially lacked official QMK support — yet community porting efforts quickly filled the gap, enabling fixes like full-key wake-on-press functionality. That grassroots momentum underscores both the technical appetite for open firmware and the practical value of transparency: users want control over power management, polling behavior, and HID report structures — not just aesthetics or button remapping.\n\nWhat sets this initiative apart — at least in intent — is its focus on the mouse as a standalone, feature-rich HID device. Unlike QMK, which began as and remains heavily optimized for keyboards (with mouse support added later and often limited), Keychron’s firmware appears designed from the ground up for multi-button, high-polling, sensor-integrated mice. Community discussion highlights real unmet needs: reliable inter-device communication (e.g., pressing a keyboard key to toggle a mouse DPI layer), standardized HID descriptors for advanced controls, and better support for unconventional form factors — like trackballs or ergonomic mice — that remain underserved by mainstream firmware.\n\nStill, skepticism lingers. Several commenters point out that announcing open-source firmware six to nine months before release — with zero code in the claimed repository — risks appearing more like marketing than engineering. Others question whether a new ecosystem is truly necessary when QMK already supports some mice (e.g., Ploopy’s trackballs) and is actively evolving. The broader implication isn’t just about one company’s roadmap: it’s about whether peripheral makers will increasingly treat firmware openness as table stakes — or continue treating it as optional polish."
+      },
+      "background": {
+        "zh": "QMK固件是一个成熟的、由社区驱动的开源项目，主要面向键盘，已支持超3000款型号，可通过C语言代码和VIA等工具实现深度定制。USB HID（人机接口设备）是一种通用协议标准，使键盘、鼠标等输入设备能在Windows、macOS、Linux等系统上即插即用。",
+        "en": "QMK Firmware is a mature, community-driven open-source project primarily for keyboards, supporting over 3000 models and offering deep customization via C code and tools like VIA. USB HID (Human Interface Device) is a universal protocol standard that enables plug-and-play compatibility across operating systems for input devices including mice and keyboards."
+      },
+      "discussion": {
+        "zh": "评论者对‘画饼式’发布时间表持谨慎怀疑态度，就‘在QMK已支持鼠标的前提下是否还需新项目’展开辩论，并集中指出键盘与鼠标联动、非常规形态适配等尚未满足的实际需求。",
+        "en": "Commenters express cautious skepticism about the vaporware timeline, debate whether a new mouse-specific firmware is needed given QMK's existing mouse support, and highlight unmet needs like keyboard-mouse interoperation and better form factor flexibility."
+      },
+      "sources": [
+        {
+          "url": "https://qmk.fm/",
+          "title": "QMK Firmware"
+        },
+        {
+          "url": "https://github.com/qmk/qmk_firmware",
+          "title": "GitHub - qmk/qmk_firmware: Open-source keyboard firmware for ... QMK Firmware Quantum Mechanical Keyboard Firmware | QMK Firmware Drivers, Firmware & QMK Downloads | Royal Kludge Flashing Your Keyboard | QMK Firmware Firmware Downloads - VIA"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/USB_human_interface_device_class",
+          "title": "USB human interface device class - Wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49103089",
+      "slug": "2026-07-30-14-cold-emails-work-when-they-re-respectful-researched-and-human-a1133294",
+      "path": "/article/2026-07-30-14-cold-emails-work-when-they-re-respectful-researched-and-human-a1133294",
+      "rank": 14,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "holman",
+      "url": "https://zachholman.com/posts/cold-email",
+      "published_at": "2026-07-29T21:06:42+00:00",
+      "fetched_at": "2026-07-30T04:17:07.063994+00:00",
+      "tags": [
+        "communication",
+        "professional-development",
+        "job-search",
+        "email",
+        "networking"
+      ],
+      "image_path": "media/hackernews-story-49103089.jpg",
+      "title": {
+        "zh": "尊重而用心的冷邮件依然有效",
+        "en": "Cold emails work when they’re respectful, researched, and human"
+      },
+      "summary": {
+        "zh": "扎克·霍尔曼发表了一篇基于亲身经验的反思性文章，主张以充分调研、简洁表达和尊重态度为基础的冷邮件，是算法化求职与无人情味推广的一种可行且有人文温度的替代方案。 它挑战了‘冷邮件已过时或不道德’的普遍认知，为职场人在日益自动化的就业市场中寻求真实联结，提供了一套切实可行且价值观一致的方法框架。 霍尔曼强调，有效的冷邮件需要深度个性化——不只是称呼对方姓名，更要体现对其工作的真正了解，并将请求限定为一个微小、可执行的具体动作。",
+        "en": "Zach Holman published a reflective, experience-based essay advocating for cold emails grounded in research, brevity, and respect—as a viable, humane alternative to algorithmic job-searching and impersonal outreach. It challenges the prevailing assumption that cold emailing is obsolete or unethical, offering a practical, values-aligned framework for professionals seeking authentic connections in an increasingly automated labor market. Holman stresses that effective cold emails require deep personalization—not just name-dropping—but demonstrating real familiarity with the recipient’s work, and limiting asks to one small, actionable request."
+      },
+      "body": {
+        "zh": "在自动化推送泛滥、算法主导社交的数字时代，扎克·霍尔曼（Zach Holman）的文章《冷邮件》以一种安静却有力的方式指出：只要方式得当，冷邮件并未过时。它只是被低估、被误解，常被草率地贴上“群发骚扰”或“求职 desperation”的标签。霍尔曼基于多年亲自发送和收阅冷邮件的经验提出观点——这不是增长黑客的技巧，而是真诚建立联系、提问或开启机会的尝试。他的核心主张很朴素：人们回应的从来不是花哨的主题行或模板话术，而是你是否花时间了解对方是谁、为什么这条信息对他们有意义。\n\n他强调三条不可妥协的原则：做好功课（读对方博客、研究其作品）、保持简短（不超过四句话）、提出具体且低负担的请求（例如“能否请教一个后续问题？”，而非“能约杯咖啡聊聊吗？”）。更重要的是，他把冷邮件视为一种职业礼节，而非交易工具——这正像LinkedIn和ATS系统重塑招聘流程之前，人们写求职信或手写便条的方式。\n\n这篇文章之所以引发共鸣，在于它将冷邮件重新定义为一种关系行为，而非索取行为。霍尔曼分享了真实案例：比如Erlang语言联合创始人乔·阿姆斯特朗（Joe Armstrong）曾热情回复一封提问邮件，并非因为发件人资历显赫，而是因为邮件透露出真实的求知欲与尊重。这与当下默认做法形成鲜明对比：批量发送、AI生成、重数量轻个性的冷消息。\n\n文章尤为应时之处在于，它悄然挑战了平台依赖症。当求职者越来越依赖黑箱算法和不透明的人脉网络时，霍尔曼提醒我们：直接、人对人的沟通依然触手可及——而且往往比等待一次资料浏览或好友申请更有效。关键启示并非冷邮件必然成功，而是把人当人来对待，至今仍行得通——哪怕是在2024年。",
+        "en": "In a digital world saturated with automated outreach and algorithm-driven networking, Zach Holman’s essay *The Cold Email* makes a quiet but compelling case: cold emailing—when done thoughtfully—is not dead. It’s underused, misunderstood, and often unfairly dismissed as spammy or desperate. Holman draws from years of personal experience sending and receiving such messages—not as a growth-hacking tactic, but as a sincere attempt to connect, ask questions, or open doors. His core argument is simple: most people respond not to clever subject lines or templates, but to evidence that you’ve taken time to understand who they are and why your message matters to them.\n\nHe emphasizes three non-negotiable principles: do your research (read their blog, study their work), keep it short (no more than four sentences), and make the ask specific and low-friction (e.g., “Could I ask one follow-up question?” rather than “Can we meet for coffee?”). Crucially, he treats cold email not as a transactional tool but as an act of professional courtesy—one that mirrors how people used to write cover letters or send handwritten notes before LinkedIn and ATS systems reshaped hiring norms.\n\nThe essay resonates because it reframes cold outreach as relational rather than extractive. Holman shares examples where recipients—like Erlang co-creator Joe Armstrong—responded with surprising generosity, not because the sender was impressive, but because the email signaled genuine curiosity and respect. This stands in stark contrast to today’s default: mass-sent, AI-generated messages that prioritize volume over voice.\n\nWhat makes the piece especially timely is its quiet pushback against platform dependency. As job seekers increasingly rely on black-box algorithms and opaque networks, Holman reminds readers that direct, human-to-human contact remains accessible—and often more effective—than waiting for a profile view or connection request to land. The takeaway isn’t that cold email guarantees results, but that treating people like people still works—even in 2024."
+      },
+      "background": {
+        "zh": "冷邮件指在无事先关系的前提下，向他人发送的未经请求的邮件，常用于拓展人脉、求职或寻求合作。与垃圾邮件不同，合乎伦理的冷邮件注重相关性、前期调研与双向尊重。在LinkedIn和求职系统（ATS）兴起之前，个性化求职信和直接书面联络曾是职业拓展的标准做法。",
+        "en": "Cold emailing refers to unsolicited messages sent to individuals with whom the sender has no prior relationship, typically for networking, job inquiries, or collaboration. Unlike spam, ethical cold emails prioritize relevance, research, and reciprocity. Before the rise of LinkedIn and applicant tracking systems, personalized cover letters and direct correspondence were standard practice in professional outreach."
+      },
+      "discussion": {
+        "zh": "读者分享了亲身成功经历——从通过持续跟进获得工作，到收到技术大牛的详尽回复；同时就冷邮件究竟体现的是历久弥新的职业素养，还是平台主导时代下过时的做法展开了讨论。",
+        "en": "Readers shared personal success stories—from landing jobs after persistent follow-ups to receiving detailed replies from technical legends—and debated whether cold emailing reflects timeless professionalism or outdated norms in a platform-dominated era."
+      },
+      "sources": []
+    },
+    {
+      "id": "hackernews:story:49101852",
+      "slug": "2026-07-30-15-kimi-launches-k3-256k-api-with-256k-context-and-tiered-pricing-77394401",
+      "path": "/article/2026-07-30-15-kimi-launches-k3-256k-api-with-256k-context-and-tiered-pricing-77394401",
+      "rank": 15,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "monneyboi",
+      "url": "https://www.kimi.com/code/docs/en/kimi-code/models",
+      "published_at": "2026-07-29T19:25:33+00:00",
+      "fetched_at": "2026-07-30T04:17:07.064014+00:00",
+      "tags": [
+        "LLM",
+        "large-context-window",
+        "API-pricing",
+        "model-deployment",
+        "Kimi"
+      ],
+      "image_path": "media/hackernews-story-49101852.svg",
+      "title": {
+        "zh": "月之暗面推出K3-256k大模型API，支持256K上下文并分档计价",
+        "en": "Kimi launches K3-256k API with 256k context and tiered pricing"
+      },
+      "summary": {
+        "zh": "月之暗面正式发布K3-256k API，该版本将K3大模型上下文长度限制在256k，并在未超限时提供原K3模型一半的每token价格。 它通过平衡成本、性能与硬件限制，显著降低了长上下文应用的落地门槛，让256k级上下文大模型无需依赖极端硬件即可被更广泛的开发者采用。 超过256k时系统自动在客户端侧压缩上下文；在阈值内模型能力与K3完全一致，且该调整属于API层变更，非模型结构改动。",
+        "en": "Kimi launched the K3-256k API, a variant of its K3 LLM capped at 256k context length and priced at half the per-token rate of the full K3 model until that threshold is exceeded. It lowers the barrier to practical long-context applications by balancing cost, performance, and hardware constraints — making 256k-context LLMs accessible to more developers without requiring exotic infrastructure. The 256k cap triggers automatic client-side context compression when exceeded; the model itself remains functionally identical to K3 below the threshold, and the change is implemented at the API layer, not via architectural modification."
+      },
+      "body": {
+        "zh": "月之暗面（Moonshot AI）正式上线Kimi K3-256k API——这是其旗舰大模型K3的长上下文优化版本，最大支持256,000个token的上下文长度。与原版K3（支持最高100万token）不同，K3-256k设定了明确的256k硬性上限，并配套推出阶梯式定价：只要用户输入不超过256k token，即可享受原K3模型一半的每token价格；一旦超出，系统将自动在工具侧（如Kimi Code CLI或Claude Code）执行上下文压缩，确保会话继续运行。\n\n这一调整折射出当前大模型落地中的核心权衡：上下文长度、推理成本与硬件可行性之间的务实平衡。社区讨论指出，原生运行256k上下文推理需高达1.5TB显存，远超主流服务器甚至高端工作站能力；即便经Unsloth等方案1比特量化压缩后，仍需约570GB显存，已逼近苹果Mac Studio M3 Ultra的极限配置。如此严苛的硬件门槛，正是Kimi选择在API层设限而非单纯堆叠模型能力的关键原因。\n\n其定价逻辑类似OpenAI在272k（即2¹⁸）处设置的计费分界点——更长上下文意味着更高的每token计算量（FLOPs）和内存带宽消耗。但Kimi采用了更激进的“一刀切”设计，而非平滑渐进式加价。这种取舍提升了开发者对成本的可预期性，但也引发担忧：由于多数用户缺乏上下文管理意识，过度依赖自动压缩可能掩盖性能衰减问题。\n\nK3-256k的价值不在于突破极限，而在于精准锚定现实需求——据内部统计，90%的实际使用场景（如大型代码库分析、多文档摘要）完全落在256k以内。它为构建编码助手、智能体应用等提供了能力、成本与部署可行性的三重平衡点。",
+        "en": "Kimi, the large language model developed by Moonshot AI, has launched a new API variant called K3-256k — a version of its flagship K3 model optimized for long-context workloads up to 256,000 tokens. Unlike the original K3 model, which supports up to 1 million tokens in context, K3-256k introduces a hard cap at 256k and pairs it with a revised pricing structure: users pay half the per-token cost of the full K3 model — but only as long as their input stays within that 256k limit. Once exceeded, the system triggers automatic context compression on the client side (e.g., via Kimi Code CLI or Claude Code tools), effectively downgrading the session to fit within the window.\n\nThis move reflects a growing industry trend toward pragmatic tradeoffs between context length, inference cost, and hardware feasibility. As noted in community discussions, running native 256k-context inference demands extraordinary GPU memory — reportedly up to 1.5 TB of VRAM — far beyond consumer or even most enterprise hardware. Even optimized 1-bit quantized versions require ~570 GB, placing them near the upper limits of Apple’s Mac Studio M3 Ultra configuration. That stark hardware reality underscores why Kimi chose an API-level boundary rather than pushing raw model capability alone.\n\nThe pricing model itself mirrors OpenAI’s recent approach at 272k (2^18), where longer contexts incur higher per-token compute and memory costs. But Kimi’s implementation is more abrupt: a binary switch instead of a smooth gradient. This design choice prioritizes predictability and simplicity for developers — though some argue it may disincentivize thoughtful context management, especially since many users reportedly lack awareness of how context length affects performance and cost.\n\nWhat makes K3-256k notable isn’t just its scale, but its positioning: it targets the 90% of real-world use cases that fit within 256k — from large codebases to multi-document analysis — while sidestepping the extreme infrastructure overhead of full 1M-context deployment. For developers building agentic or coding assistants, this offers a compelling balance of capability, affordability, and deployability."
+      },
+      "background": {
+        "zh": "超长上下文窗口（如128k–256k+ token）使大模型能一次性处理整套代码库、法律文书或整本小说，但会显著推高显存与算力需求。RoPE插值、稀疏注意力、量化等技术虽可扩展上下文，但全长度推理仍极为吃资源。Kimi K3是月之暗面于2024年发布的前沿开源权重大模型，在编程、推理与多模态任务上表现突出，但综合性能仍略逊于GPT-5.6 Sol与Claude Fable 5等顶级闭源模型。",
+        "en": "Large context windows (e.g., 128k–256k+ tokens) enable LLMs to process entire codebases, legal documents, or books in one go — but they dramatically increase memory and compute requirements. Techniques like RoPE interpolation, attention sparsification, and quantization help extend context, yet full-length inference remains resource-intensive. Kimi K3, released earlier in 2024, is a frontier open-weight LLM excelling in coding, reasoning, and multimodal tasks, though it trails top proprietary models like GPT-5.6 Sol and Claude Fable 5."
+      },
+      "discussion": {
+        "zh": "开发者就256k上限展开讨论：有人视其为务实的API层优化，也有人认为是受硬件制约的妥协；焦点集中在显存需求、能耗成本及缺乏渐进式计价机制上。部分人担忧自动压缩削弱透明度，也有用户肯定其清晰的成本边界。",
+        "en": "Developers debated whether the 256k cap is a pragmatic API-level optimization or a hardware-driven compromise, with concerns about VRAM demands, energy cost, and the lack of gradual pricing. Some questioned if automatic compression undermines transparency, while others welcomed the clear cost boundary."
+      },
+      "sources": [
+        {
+          "url": "https://www.kimi.com/code/docs/en/kimi-code/models",
+          "title": "Model Configuration | Kimi Code Docs"
+        },
+        {
+          "url": "https://www.zhihu.com/question/2064106505993971519",
+          "title": "如何看待月之暗面发布kimi K3-256K大模型，能力和K3一样，不能看视频..."
+        },
+        {
+          "url": "https://arxiv.org/pdf/2607.24653",
+          "title": "Kimi K3: Open Frontier Intelligence - arXiv.org"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49100043",
+      "slug": "2026-07-30-16-cheapfoodmap-launches-as-a-crowdsourced-map-of-local-meals-under-10-d7e5bd48",
+      "path": "/article/2026-07-30-16-cheapfoodmap-launches-as-a-crowdsourced-map-of-local-meals-under-10-d7e5bd48",
+      "rank": 16,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "jaep1",
+      "url": "https://cheapfoodmap.com/",
+      "published_at": "2026-07-29T16:59:52+00:00",
+      "fetched_at": "2026-07-30T04:17:07.064101+00:00",
+      "tags": [
+        "crowdsourcing",
+        "affordable-tech",
+        "local-business",
+        "price-transparency",
+        "community-mapping"
+      ],
+      "image_path": "media/hackernews-story-49100043.png",
+      "title": {
+        "zh": "廉价美食地图上线：聚焦本地餐馆的10美元以下餐食",
+        "en": "CheapFoodMap launches as a crowdsourced map of local meals under $10"
+      },
+      "summary": {
+        "zh": "一名刚被裁员的开发者上线了CheapFoodMap，这是一个众包式地理定位地图，收录经核实的本地餐馆10美元以下正餐，目前已覆盖全美15座城市的1200余种餐食。 它直面日益加剧的食品不安全与信息不对称问题，让实惠又优质的本地餐食变得可发现；同时为‘以社区为先、重透明轻盈利’的技术实践提供了范例。 所有条目排除连锁品牌，须满足谷歌评分≥4.2星且评论数≥500，并经人工核实价格；当前德克萨斯州数据最全，后续将依靠用户更新拓展覆盖范围。",
+        "en": "CheapFoodMap launched as a crowdsourced, geolocated map of verified local meals under $10, built by a recently laid-off developer and initially covering 1,200 meals across 15 U.S. cities. It addresses rising food insecurity and information asymmetry by making affordable, high-quality local meals discoverable — while modeling ethical, community-first tech that prioritizes transparency over monetization. Entries exclude franchises, require ≥4.2-star Google rating with ≥500 reviews, and undergo manual price verification; coverage is strongest in Texas, with plans to expand via community updates."
+      },
+      "body": {
+        "zh": "CheapFoodMap 是一个新上线的公开协作工具，专门标注美国本地独立餐馆中售价10美元或更低的完整正餐——不包含任何连锁品牌或加盟餐厅。该项目由一位在工作18年后被裁员的开发者发起，是他给自己设定的“百日挑战”成果：用100天时间，在公众监督下打造一款真正有用的产品。其灵感来自韩国的“거지맵”（乞丐地图），那是大学生们自发维护的平价餐饮地图，只收录单价7000韩元以下的餐食。\n\n目前网站已覆盖全美15个城市，收录超1200种经核实的低价餐食，其中德克萨斯州（开发者所在达拉斯市）数据最丰富。初始数据源自谷歌评论：仅筛选评分4.2星以上、且至少拥有500条评价的商家；每一道上榜菜品都经过人工核实，确保标价≤10美元。这种“高口碑+真低价”的双重筛选机制，旨在挖掘真正物有所值的餐食，而非单纯便宜的食物。\n\nCheapFoodMap 的独特之处在于其刻意设计的限制条件：拒绝连锁品牌、不接受商业赞助、依赖用户实地验证而非网络爬虫抓取。但长期运营仍面临挑战。有评论者指出，GasBuddy（加油站价格比价平台）之所以成功，部分原因在于加油站本身有动力主动更新油价——而CheapFoodMap尚未建立类似激励机制。开发者坦诚征求反馈：如何在通胀频繁调价的背景下维持价格时效性？用户又凭什么相信一个众包网站上的10美元标价？\n\n更深层看，该项目引发关于“可负担性”的真实讨论：长途卡车司机、多子女家庭、小时工等群体纷纷分享经验——所谓“便宜”，不只是看标价，还要看分量、营养和是否容易到达。一位用户提到，八口之家花20美元吃饭，人均不到10美元，他们心中自有“划算”的标准。CheapFoodMap 不只是在标注餐厅，更是在记录普通人的真实生活成本。",
+        "en": "CheapFoodMap is a new, publicly built tool that maps independently owned restaurants offering full meals for $10 or less — no franchises, no chains. Created by a developer who was laid off after 18 years, the project emerged from a self-imposed 100-day challenge to build something useful in public. Inspired by Korea’s 거지맵 (Beggar’s Map) — a student-driven platform listing meals under 7,000 won — CheapFoodMap adapts that ethos to U.S. cities with strict local-only and price-verified criteria.\n\nThe site currently features over 1,200 verified meal options across 15 U.S. cities, with heaviest coverage in Texas (where the creator lives in Dallas). Initial entries were seeded from Google Reviews: only businesses rated 4.2 stars or higher with at least 500 reviews qualified, and each listed meal was manually confirmed to cost ≤$10. That dual filter — popularity *and* affordability — helps surface genuinely good value, not just cheap food.\n\nWhat sets CheapFoodMap apart is its intentional design constraints: it excludes corporate franchises, rejects sponsored placements, and prioritizes community verification over algorithmic scraping. But sustainability remains an open question. As one commenter noted, GasBuddy succeeded partly because gas stations themselves updated prices — a built-in incentive model CheapFoodMap lacks. The creator openly asks for feedback on how to keep pricing fresh amid inflation, and how users decide whether to trust a $10 claim on a crowd-sourced site.\n\nBeyond utility, the project sparks nuanced discussion about economic reality: truckers, large families, and hourly workers weigh in on what ‘affordable’ really means — not just dollar amounts, but portion size, nutritional value, and accessibility. One user pointed out that a family of eight might consider a $20 total bill ‘under $10 per person’ — revealing how context reshapes price perception. CheapFoodMap isn’t just mapping meals; it’s mapping lived economics."
+      },
+      "background": {
+        "zh": "거지맵（乞丐地图）是韩国大学生发起的众包项目，通过匿名提交和地图导航方式，汇总单价7000韩元以下的餐食信息。它最初在高校间流行，成为学生应对生活成本上涨的实用工具。",
+        "en": "거지맵 (Beggar's Map) is a Korean student-led crowdsourcing initiative that catalogs meals under 7,000 won using anonymous submissions and map-based navigation. It gained traction on university campuses as a practical tool for budget-conscious students navigating rising living costs."
+      },
+      "discussion": {
+        "zh": "评论者将该项目与GasBuddy的商家激励模式对比，讨论‘10美元以下’应指单道菜还是整餐，并强调家庭规模、营养密度等情境因素——说明‘可负担性’高度依赖具体生活场景。",
+        "en": "Commenters highlight parallels to GasBuddy’s business-incentive model, debate whether 'under $10' should mean per dish or per meal, and emphasize contextual factors like family size and nutritional value — underscoring that affordability is deeply situational."
+      },
+      "sources": [
+        {
+          "url": "https://kcampus.kr/real-life-reviews/need-a-meal-cheaper-than-7000-won-has-you-covered-9424",
+          "title": "Need a meal cheaper than 7,000 won? 거지맵 has you... | K-campus"
+        },
+        {
+          "url": "https://xn--v69ak0xskm.com/",
+          "title": "거지맵 | 저예산 푸드위키"
+        },
+        {
+          "url": "https://news.ycombinator.com/item?id=49100043",
+          "title": "Show HN: CheapFoodMap – A map of good meals... | Hacker News"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49096654",
+      "slug": "2026-07-30-17-darktable-remains-a-top-tier-free-raw-editor-despite-upgrade-and-performance-pai-545dc30d",
+      "path": "/article/2026-07-30-17-darktable-remains-a-top-tier-free-raw-editor-despite-upgrade-and-performance-pai-545dc30d",
+      "rank": 17,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "siatko",
+      "url": "https://www.darktable.org/",
+      "published_at": "2026-07-29T12:33:02+00:00",
+      "fetched_at": "2026-07-30T04:17:07.064152+00:00",
+      "tags": [
+        "photography",
+        "open-source",
+        "raw-processing",
+        "image-editing",
+        "linux"
+      ],
+      "image_path": "media/hackernews-story-49096654.png",
+      "title": {
+        "zh": "Darktable仍是顶级免费RAW编辑器，但升级和性能问题令人困扰",
+        "en": "Darktable remains a top-tier free RAW editor despite upgrade and performance pain points"
+      },
+      "summary": {
+        "zh": "Darktable 仍是一款成熟且持续开发的开源 RAW 编辑器，功能已接近商业软件水平，但用户持续反馈存在性能问题，且重大版本升级（如 v2 到 v3）带来破坏性变更。 作为专有照片编辑软件的自由替代方案，Darktable 赋予摄影师完整控制权、流程透明度和长期软件自主权——在创意工具订阅费上涨、厂商锁定加剧的当下尤为关键。 Darktable 采用线性、非破坏性的 pixelpipe 架构；所有编辑参数存于 XMP 侧文件；支持 GPU 加速但稳定性因硬件而异；darktable-cli 等命令行工具支持自动化；缺乏 Lightroom 那样的收藏集等图库组织功能。",
+        "en": "Darktable remains a mature, actively developed open-source RAW editor with strong feature parity against commercial tools, though users continue reporting performance issues and disruptive breaking changes between major versions (e.g., v2 to v3). As a libre alternative to proprietary photo editors, Darktable empowers photographers with full control, transparency, and long-term software sovereignty — especially vital amid rising subscription costs and vendor lock-in in creative tools. Darktable uses a linear, non-destructive pixelpipe architecture; edits are stored in XMP sidecar files; GPU acceleration is supported but not universally stable; CLI tools like darktable-cli enable automation; it lacks robust library organization features like Lightroom's collections."
+      },
+      "body": {
+        "zh": "Darktable 依然是专业级 RAW 照片处理领域中最强大的开源工具之一，而且完全免费。它基于非破坏性、模块化的像素处理流水线（称为“pixelpipe”），让摄影师能精细控制图像处理的每个环节：从去马赛克、白平衡调整，到在多种色彩空间中进行色彩分级、高级蒙版，再到利用 GPU 加速预览。其功能集可与 Adobe Lightroom 等商业软件比肩，支持数百种相机型号，并提供专业的色彩管理，确保从屏幕显示到打印输出全程色彩准确。\n\n然而，强大功能背后也存在现实挑战。多位长期用户反映，在包括近年款 MacBook Pro 在内的现代硬件上，Darktable 仍会出现明显性能卡顿——尤其在批量编辑或应用复杂模块时响应迟缓。更严重的是，重大版本升级（如从 v2 升级至 v3）曾严重破坏既有工作流：原有预设失效、部分常用模块被移除或行为变更，甚至已处理过的照片无法正确渲染，必须手动重调参数。\n\n尽管如此，许多专业人士和开发者依然坚定支持。一位身为软件工程师的摄影师特别推崇 darktable-cli 工具，用它自动化大批量后期流程；另一位用户则强调，借助自定义预设与多步骤校正，Darktable 能轻松应对数千张 RAW 文件的高效处理。不过，对 Lightroom 用户而言，学习门槛较高：界面逻辑、模块命名及组织方式（例如 Darktable 缺乏 Lightroom 风格的“收藏集”与图库式资产管理）均存在显著差异。\n\n真正让 Darktable 独树一帜的，不只是功能本身，更是其设计哲学。作为社区驱动项目，它优先保障技术准确性与流程透明度，而非操作便捷性。所有编辑操作均以人类可读的参数形式保存在 XMP 侧文件中，整个处理流水线默认保持线性直至最终导出。这使它既是强大的创作工具，也是理解数字摄影底层原理的优质教学资源。对重视控制权、开放性与长期可用性的摄影师来说，Darktable 仍是无可替代的选择——哪怕抵达这一目标需要耐心与实践。",
+        "en": "Darktable continues to stand out as one of the most capable open-source tools for professional-grade RAW photo development — and it’s completely free. Built around a non-destructive, modular pixel pipeline (dubbed the 'pixelpipe'), it gives photographers granular control over every stage of image processing: from demosaicing and white balance to color grading in multiple color spaces, advanced masking, and GPU-accelerated previews. Its feature set rivals commercial alternatives like Adobe Lightroom, supporting hundreds of camera models and offering deep color management for accurate output all the way to print.\n\nYet its strengths come with real-world trade-offs. Several long-time users report frustrating performance bottlenecks — even on modern hardware like recent MacBook Pros — where responsiveness lags during batch edits or when applying complex modules. More critically, major version transitions (notably from v2 to v3) disrupted existing workflows: presets broke, legacy modules disappeared or changed behavior, and previously processed images failed to render correctly without manual reconfiguration. This has driven some users to migrate to Lightroom or explore forks like Ansel, created by former maintainers dissatisfied with Darktable’s architectural direction.\n\nStill, many professionals and developers remain deeply committed. One user — a software engineer turned photographer — praises darktable-cli for automating post-processing pipelines, while another highlights how its flexibility scales effortlessly across thousands of RAW files using custom presets and multi-step corrections. The learning curve is steep, especially for those transitioning from Lightroom, due to differences in UI logic, module naming, and organizational paradigms (e.g., Darktable lacks Lightroom-style collections and library-based asset management).\n\nWhat sets Darktable apart isn’t just its features — it’s its philosophy. As a community-driven project, it prioritizes technical fidelity and workflow transparency over convenience. Every edit is stored as human-readable parameters in XMP sidecar files, and the entire pipeline preserves linearity until final export. That makes it both a powerful creative tool and a valuable educational resource for understanding digital photography’s underlying mechanics. For photographers who value control, openness, and longevity over polish, Darktable remains unmatched — even if getting there requires patience and persistence."
+      },
+      "background": {
+        "zh": "RAW 照片编辑是对数码相机传感器原始未压缩数据的处理，需专用软件解析色彩配置文件、降噪并进行色彩分级。与 JPEG 不同，RAW 文件保留最大动态范围和编辑灵活性，但也更依赖计算资源和精确的处理流水线控制。",
+        "en": "RAW photo editing involves processing unprocessed sensor data from digital cameras, requiring specialized software to interpret color profiles, apply noise reduction, and perform color grading. Unlike JPEGs, RAW files retain maximum dynamic range and editing flexibility but demand more computational resources and precise pipeline control."
+      },
+      "discussion": {
+        "zh": "用户普遍认可 Darktable 的深度与能力，但在易用性上意见分歧：有人视其为不可替代的利器，甚至愿为其付费；也有人因运行缓慢和版本升级混乱而放弃；前维护者因不满其架构方向另立分支 Ansel。",
+        "en": "Users praise Darktable’s depth and power but split on usability: some call it indispensable and worth paying for, others cite slow performance and confusing version upgrades as dealbreakers; a notable fork, Ansel, was created by ex-maintainers dissatisfied with its architectural direction."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Darktable",
+          "title": "Darktable - Wikipedia"
+        },
+        {
+          "url": "https://lwn.net/Articles/881853/",
+          "title": "Raw photo development with darktable [LWN.net]"
+        },
+        {
+          "url": "https://www.darktable.org/",
+          "title": "Darktable"
+        }
+      ]
+    },
+    {
+      "id": "rss:simonwillison.net_atom_everything_:b772d898ee876d6d",
+      "slug": "2026-07-30-18-sql-didn-t-replace-cobol-programmers-it-reshaped-their-work-dc5ca34e",
+      "path": "/article/2026-07-30-18-sql-didn-t-replace-cobol-programmers-it-reshaped-their-work-dc5ca34e",
+      "rank": 18,
+      "score": 7.0,
+      "source": "rss",
+      "author": "Simon Willison",
+      "url": "https://simonwillison.net/2026/Jul/29/d-richard-hipp/#atom-everything",
+      "published_at": "2026-07-29T21:15:21+00:00",
+      "fetched_at": "2026-07-30T04:17:06.680652+00:00",
+      "tags": [
+        "sql",
+        "abstraction",
+        "programming-history",
+        "developer-careers",
+        "d-richard-hipp"
+      ],
+      "image_path": "media/rss-simonwillison-net-atom-everything--b772d898ee876d6d.svg",
+      "title": {
+        "zh": "SQL没有取代COBOL程序员，而是改变了他们的工作方式",
+        "en": "SQL didn’t replace COBOL programmers—it reshaped their work"
+      },
+      "summary": {
+        "zh": "D. 理查德·希普将 SQL 的历史演进与当前 AI 辅助编程直接类比，指出抽象层的作用是重塑而非淘汰开发者角色。 这一类比有助于将当前对 AI 编程的担忧，重新理解为技术演进中的常态：工具不断抬高开发者需手动完成的‘底线’，从而释放精力投入更具战略性、创造性与人性化的工作。 希普在一次公开演讲中（YouTube 视频时间戳为 14:08）提出该类比，以 COBOL 程序员为例，说明专业化劳动并未因失业而消失，而是借助 SQL 的声明式抽象实现了角色升级。",
+        "en": "D. Richard Hipp drew a direct historical parallel between SQL’s rise and modern AI-assisted coding, arguing that abstraction layers shift—rather than eliminate—developer roles. This analogy helps reframe current AI-driven development fears as part of a long-standing pattern where tools raise the floor of what developers must do manually—freeing them to focus on more strategic, creative, and human-centered work. Hipp made the comparison during a public talk (timestamped at 14:08 in a YouTube video), using COBOL programmers as exemplars of specialized labor displaced—not by unemployment, but by role evolution enabled by SQL’s declarative abstraction."
+      },
+      "body": {
+        "zh": "D. 理查德·希普（D. Richard Hipp）——SQLite 的创造者、资深数据库架构师——用一段简洁却深刻的历史类比，直击当下围绕 AI 编程的焦虑核心。他在一次演讲中回顾了 20 世纪 70 至 80 年代 SQL 的兴起：在 SQL 出现之前，查询大型数据集必须手工编写冗长且易错的 COBOL 程序，通常由高薪聘请的专职程序员完成。这些程序员不只是写代码的人，更是熟悉文件结构、记录格式与批处理逻辑的领域专家。\n\n随后 SQL 登场：一种声明式语言，让用户只需说明“要什么数据”，而非“如何获取”。一条 SELECT 语句就能替代数百行 COBOL 代码。希普特别强调，这并未导致程序员消失，而是将工作重心从底层数据遍历，转向更高阶任务——例如数据库建模、查询性能调优、应用系统集成与业务逻辑设计。\n\n他的观点并非怀旧，而是为当下提供参照。当大语言模型开始自动生成模板代码、API 调用甚至测试用例时，许多人担忧开发岗位会被取代。但希普的类比提示另一种可能：抽象层不会抹去职业，只会重塑其内涵。当年的 COBOL 程序员并未失业，而是转型为数据库设计师、SQL 性能工程师或系统分析师。同理，今天的前端或后端工程师，或将减少手动编写接口胶水代码的时间，转而投入提示工程优化、AI 输出质量审核，或构建人机协同的健壮架构。\n\n这一视角之所以重要，在于它把注意力从‘我会不会被取代’的恐惧，转向‘当某一层变得透明，我该承担哪些新责任？’真正的挑战不在于抗拒抽象，而在于学会在更高一层有效工作。",
+        "en": "D. Richard Hipp—creator of SQLite and a veteran database architect—offers a quietly powerful historical analogy that cuts through today’s AI-driven anxiety about developer obsolescence. In a recent talk, he recalls how SQL transformed data access in the 1970s and 1980s: before SQL, querying large datasets required writing verbose, error-prone COBOL programs by hand—often by specialists paid premium rates. These programmers weren’t just coders; they were domain experts who understood file structures, record layouts, and batch processing logic.\n\nThen came SQL: a declarative language that let users describe *what* data they needed—not *how* to fetch it. A single SELECT statement could replace hundreds of lines of COBOL. Crucially, Hipp stresses this didn’t eliminate programming jobs. Instead, it shifted focus—from low-level data navigation to higher-level concerns like schema design, query optimization, application integration, and business logic.\n\nHis point isn’t nostalgia—it’s a lens for today’s moment. As LLMs begin generating boilerplate code, API integrations, and even test suites, many fear automation will displace developers. But Hipp’s analogy suggests a different trajectory: abstraction layers don’t erase roles—they redefine them. The COBOL programmer didn’t vanish; they became database designers, SQL tuners, or systems analysts. Similarly, today’s frontend or backend engineer may spend less time wiring REST calls and more time refining prompts, auditing AI outputs, or architecting resilient hybrid workflows.\n\nThis reframing matters because it redirects energy from existential dread toward skill evolution. Rather than asking ‘Will AI take my job?’, Hipp invites us to ask ‘What new responsibilities emerge when this layer becomes invisible?’ The answer lies not in resisting abstraction—but in learning to operate one level up."
+      },
+      "background": {
+        "zh": "COBOL（通用商业语言）是 20 世纪 60 至 80 年代主流的企业级编程语言，广泛用于金融与行政系统。SQL（结构化查询语言）于 1986 年标准化，首次以声明式方式实现对关系型数据库的操作，将数据检索逻辑从应用程序代码中解耦出来。",
+        "en": "COBOL (Common Business-Oriented Language) was a dominant enterprise programming language from the 1960s through the 1980s, especially for financial and administrative systems. SQL (Structured Query Language), standardized in 1986, introduced a declarative way to interact with relational databases—separating data retrieval logic from application code."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": []
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1vahcwo",
+      "slug": "2026-07-30-19-ganfs-uses-gan-discriminator-perturbations-to-rank-features-automatically-d69d2d9a",
+      "path": "/article/2026-07-30-19-ganfs-uses-gan-discriminator-perturbations-to-rank-features-automatically-d69d2d9a",
+      "rank": 19,
+      "score": 7.0,
+      "source": "reddit",
+      "author": "/u/One_Crow_4710",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1vahcwo/i_built_ganfs_a_python_package_that_uses_gans_to/",
+      "published_at": "2026-07-30T02:54:23+00:00",
+      "fetched_at": "2026-07-30T04:17:07.284897+00:00",
+      "tags": [
+        "feature-selection",
+        "GANs",
+        "automated-machine-learning",
+        "high-dimensional-data",
+        "adversarial-learning"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1vahcwo.svg",
+      "title": {
+        "zh": "ganfs用GAN判别器扰动自动排序特征",
+        "en": "ganfs uses GAN discriminator perturbations to rank features automatically"
+      },
+      "summary": {
+        "zh": "Harsh Patel 开源了 ganfs 工具包，它通过在无标签高维数据上训练 GAN，并测量判别器对单个特征扰动的敏感度，来自动排序特征。 它提供了一种无需领域专家、无需标签的特征选择新路径，有望加速网络安全、生物信息学等高维场景下的机器学习流程，尤其适用于标注成本高昂或难以获取的领域。 特征排序依赖于判别器在受控输入扰动下的输出方差；当前仅在 CIC-DDoS2019 数据集上验证，尚未公开与主流封装式或嵌入式方法的基准对比；GPU 显存优化仍在进行中。",
+        "en": "Harsh Patel open-sourced ganfs, a Python package that ranks features by measuring discriminator sensitivity to per-feature perturbations in a GAN trained on unlabeled high-dimensional data. It offers a domain-agnostic, unsupervised alternative to conventional feature selection—potentially accelerating ML workflows for cybersecurity, bioinformatics, and other high-dimensional domains where expert labeling is scarce or costly. Feature ranking relies on discriminator output variance under controlled input perturbations; the method is validated on CIC-DDoS2019 but lacks public benchmarks against SOTA wrappers or embedded methods; GPU memory optimization is still in progress."
+      },
+      "body": {
+        "zh": "一款名为 ganfs 的新开源 Python 工具包，旨在解决机器学习中一个长期存在的实际难题：在高维数据集中自动选择关键特征。与传统方法（如基于相关性的过滤法、递归特征消除或 L1 正则化模型）不同，ganfs 不依赖统计假设、领域知识或标注标签。它转而利用生成对抗网络（GAN）的对抗学习机制，识别出哪些输入特征对区分真实样本与合成样本最为关键。\n\n其核心思想简洁而精巧：ganfs 先在原始数据集上无监督地训练一个 GAN（无需标签），然后逐个扰动各个特征，并观察判别器（Discriminator）输出的变化幅度。那些扰动后导致判别器置信度下降最显著的特征——即让“假样本”更难被识别为假的特征——被判定为“最具信息量”。这种“最难伪造”的原则实现了完全无监督的特征排序，特别适用于入侵检测等场景，其开发者最初正是在大规模 DDoS 流量分析中验证了该方法的有效性。\n\n安装和使用方式贴近 scikit-learn 风格：执行 pip install ganfs 后，仅需几行代码即可完成拟合与转换。工具支持 CPU 和 GPU 运行，但作者也指出，目前正优化小数据集下的 GPU 显存占用。技术实现上，它借鉴了扰动式可解释性研究的思路——将判别器不仅视为分类器，更作为衡量特征敏感度的探针。\n\n不过，ganfs 仍处于早期阶段。其 arXiv 预印本（2025 年 4 月 v1 版）报告了在 CIC-DDoS2019 数据集上提升下游分类器准确率并大幅降低维度的效果，但未提供消融实验、与主流方法（如 Boruta、SHAP-GAN 混合方法或深度嵌入式选择）的运行时对比，也未测试非网络类数据。Reddit 社区讨论中，用户提出了关于计算开销、结果可复现性以及排序是否符合已知领域先验等关键问题。尽管如此，ganfs 将特征选择重新定义为一种对抗学习任务，而非统计建模或优化问题，为高维机器学习流程的自动化开辟了一条新思路。",
+        "en": "A new open-source Python package called ganfs aims to tackle one of machine learning’s most persistent practical hurdles: automated feature selection in high-dimensional data. Unlike traditional methods—such as correlation-based filters, recursive feature elimination, or L1-regularized models—ganfs doesn’t rely on statistical assumptions, domain knowledge, or labeled targets. Instead, it leverages the adversarial dynamics of generative adversarial networks (GANs) to identify which input features are most critical for distinguishing real data from synthetic samples.\n\nThe core idea is elegantly simple yet technically nuanced. ganfs trains a GAN on the raw dataset—no labels required—and then systematically perturbs individual features in the input space while monitoring how the Discriminator’s output changes. Features whose perturbation causes the largest drop in the Discriminator’s confidence (i.e., makes fake samples harder to distinguish from real ones) are deemed *most informative*. This ‘hard-to-fake’ principle yields a ranking without supervision, making it especially useful for unsupervised or semi-supervised scenarios like network intrusion detection, where the original developer applied it to DDoS traffic analysis.\n\nInstallation and usage mirror scikit-learn conventions: after pip install ganfs, users can fit and transform datasets with just a few lines. The package supports both CPU and GPU backends, though the author notes ongoing work to reduce GPU memory overhead for smaller datasets. Under the hood, the method draws from recent advances in perturbation-based interpretability—treating the Discriminator not just as a classifier but as a sensitivity probe for feature importance.\n\nWhile promising, ganfs remains early-stage. The arXiv preprint (v1, April 2025) reports improved downstream classifier accuracy and reduced dimensionality on the CIC-DDoS2019 dataset—but lacks ablation studies, runtime benchmarks against established baselines (e.g., Boruta, SHAP-GAN hybrids, or deep embedded selection), or tests on non-network domains. Community feedback on Reddit highlights these gaps, asking pointed questions about computational cost, reproducibility, and whether rankings align with known domain priors. Still, by reframing feature selection as an adversarial learning problem—not a statistical or optimization one—ganfs opens a fresh conceptual pathway for automation in high-dimensional ML pipelines."
+      },
+      "background": {
+        "zh": "特征选择通过识别最具预测力的输入变量来降低数据维度，从而提升模型速度、可解释性和泛化能力。传统方法分为过滤式（基于统计）、封装式（依赖模型搜索）和嵌入式（内置正则化）。GAN 由两个神经网络组成：生成器（Generator）负责合成数据，判别器（Discriminator）负责区分真假样本，二者通过对抗训练协同优化。",
+        "en": "Feature selection reduces dimensionality by identifying the most predictive input variables, improving model speed, interpretability, and generalization. Traditional approaches fall into filter (statistical), wrapper (model-driven search), and embedded (built-in regularization) categories. GANs consist of two neural networks—a Generator that creates synthetic data and a Discriminator that distinguishes real from fake—trained in adversarial competition."
+      },
+      "discussion": {
+        "zh": "Reddit 用户提出关于可解释性保障、普通硬件上的 GPU 显存占用，以及与 SHAP 或排列重要性等方法的对比等问题，反映出社区既保持审慎质疑，又对实证严谨性抱有切实期待。",
+        "en": "Reddit commenters asked about interpretability guarantees, GPU memory usage on modest hardware, and comparisons to SHAP or permutation importance—indicating healthy skepticism and interest in empirical rigor."
+      },
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2504.18566",
+          "title": "[2504.18566] Feature Selection via GANs (GANFS): Enhancing ... GAN-based novel feature selection approach with hybrid deep ... GAN-based novel feature selection approach with hybrid deep ... GAN-Guided Unsupervised, Wrapper Feature Selector for PolSAR ... A GAN-based anomaly detector using multi-feature fusion and ..."
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1va5io6",
+      "slug": "2026-07-30-20-neurips-authors-report-reviewers-ignoring-rebuttals-7e20c226",
+      "path": "/article/2026-07-30-20-neurips-authors-report-reviewers-ignoring-rebuttals-7e20c226",
+      "rank": 20,
+      "score": 7.0,
+      "source": "reddit",
+      "author": "/u/grumpket",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1va5io6/neurips_reviewers_not_engaging_d/",
+      "published_at": "2026-07-29T18:59:18+00:00",
+      "fetched_at": "2026-07-30T04:17:07.285224+00:00",
+      "tags": [
+        "NeurIPS",
+        "peer review",
+        "academic publishing",
+        "machine learning",
+        "conference policy"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1va5io6.svg",
+      "title": {
+        "zh": "NeurIPS作者称审稿人无视回复",
+        "en": "NeurIPS authors report reviewers ignoring rebuttals"
+      },
+      "summary": {
+        "zh": "一名匿名NeurIPS作者在Reddit发帖指出审稿人普遍不回应作者rebuttal，并提议对失职审稿人采取处罚措施（如扣减其本人投稿评分或系统权限），该机制目前已在领域主席（AC）层面部分实施。 审稿人在rebuttal阶段失联会削弱科研严谨性，损害青年作者权益，并危及NeurIPS同行评审的公信力，因此亟需建立切实有效的问责机制以保障公平与透明。 NeurIPS已对领域主席（AC）实施问责：2025年AC未按时提交meta-review导致其本人投稿评分被暂扣；2026年则升级为系统权限临时冻结。但目前普通审稿人尚未适用同类处罚。",
+        "en": "An anonymous NeurIPS author raised concerns on Reddit about widespread reviewer non-engagement during the rebuttal phase and proposed penalizing non-responsive reviewers by withholding scores or access for their own submissions—a policy already partially applied to Area Chairs. Reviewer disengagement during rebuttals weakens scientific rigor, disadvantages early-career authors, and threatens the credibility of NeurIPS’ peer review—making accountability reforms urgent for fairness and transparency. NeurIPS has already enforced accountability for Area Chairs: late meta-reviews in 2025 led to withheld scores for AC-submitted papers, and in 2026, delayed meta-reviews triggered temporary access suspension. No such penalty currently applies to regular reviewers."
+      },
+      "body": {
+        "zh": "越来越多NeurIPS作者公开表达不满：审稿人在会议讨论阶段常常忽视作者的 rebuttal（申诉回复）。一位作者在Reddit热门帖中指出，许多审稿人在提交初评后便彻底失联，导致作者无法澄清误解、纠正事实错误或回应方法论质疑。这种沉默并非偶然——它直接削弱了rebuttal环节的根本意义：这不是走形式，而是旨在提升论文质量与评审公平性的双向实时对话。\n\n这个问题由来已久，但持续未解令人担忧。NeurIPS等顶级机器学习会议采用OpenReview平台进行开放同行评审，作者与审稿人可公开交换意见。然而不少审稿人将rebuttal窗口视为可选项，而非评审流程的必要环节。有作者反馈，他们提交了详尽逐条的回复，却始终未获任何回应——哪怕这些回复明确指出了审稿人对方法或结果的误读。\n\n应对方案从温和提醒到制度性问责不等。原帖作者建议，在OpenReview上礼貌公开留言：“我们很乐意进一步说明，请随时告知。”另一些人则主张更刚性措施：将审稿表现与其本人投稿权益挂钩。事实上，NeurIPS已在Area Chair（领域主席）层面试行类似机制——2026年，未按时提交meta-review的AC被暂停系统权限，直至补全任务；2025年，延迟提交meta-review的AC所投论文甚至被暂扣评分。\n\n尽管执行仍不统一，这场讨论折射出学术出版更深层的张力：投稿量激增、审稿疲劳加剧、激励机制错位。若缺乏有效反馈闭环，rebuttal就可能沦为形式主义表演，而非实质交流。对青年研究者而言，模糊或失联的评审不仅拖慢发表进度，还可能扭曲职业发展路径，并削弱对整个系统的信任。随着NeurIPS持续推进评审改革（如2026年试点“前置meta-review”），学界正呼吁一种超越善意、真正落地的问责机制。",
+        "en": "A growing number of NeurIPS authors are voicing frustration over a recurring problem: reviewers failing to read or respond to author rebuttals during the conference’s discussion phase. In a widely discussed Reddit post, one author described how reviewers often go silent after initial reviews—leaving authors unable to clarify misunderstandings, correct factual errors, or address methodological concerns. This lack of engagement undermines the core purpose of the rebuttal period: not as a formality, but as a live, two-way dialogue meant to improve paper quality and review fairness.\n\nThe issue isn’t new—but its persistence is alarming. NeurIPS, like other top ML conferences, relies heavily on open peer review via OpenReview, where authors and reviewers exchange comments publicly. Yet many reviewers treat the rebuttal window as optional rather than integral. Some authors report submitting detailed, point-by-point responses only to receive no follow-up—even when those responses directly correct misinterpretations of their methodology or results.\n\nProposed solutions range from gentle nudges to structural accountability. The original poster suggested explicitly prompting reviewers with polite, public comments like “We’re happy to clarify any points—please let us know.” Others have floated stronger measures: tying reviewer performance to consequences for their own submissions. Notably, NeurIPS has already implemented such logic for Area Chairs (ACs)—in 2026, ACs who missed meta-review deadlines had their access suspended until tasks were completed, and in 2025, late meta-reviews led to withheld scores for AC-submitted papers.\n\nWhile enforcement remains inconsistent, the conversation reflects deeper tensions in academic publishing: rising submission volumes, reviewer fatigue, and misaligned incentives. Without meaningful feedback loops, rebuttals risk becoming performative rituals rather than substantive exchanges. For early-career researchers especially, opaque or unresponsive reviews can delay publication, distort career trajectories, and erode trust in the system. As NeurIPS continues refining its review cycle—including pilots like pre-response meta-reviews—the community is pushing for accountability that goes beyond goodwill."
+      },
+      "background": {
+        "zh": "NeurIPS在初审后设有作者rebuttal环节：作者可在限定字数内回应审稿意见。随后审稿人有数天时间阅读回复并更新评论，再由领域主席综合决定。这一阶段对澄清技术细节、纠正误读至关重要，但完全依赖审稿人自愿参与。",
+        "en": "At NeurIPS, after initial reviews, authors submit a rebuttal—a limited-word response addressing reviewer concerns. Reviewers then have several days to read rebuttals and update comments before final decisions. This phase is critical for clarifying technical points and correcting misreadings, but relies entirely on voluntary reviewer participation."
+      },
+      "discussion": {
+        "zh": "该Reddit帖子引发众多资深研究者共鸣，许多人分享亲身经历并支持问责机制，但也有观点指出单靠处罚无法解决审稿负荷过重与激励错位等系统性问题。",
+        "en": "The Reddit thread drew broad agreement from experienced researchers, with many sharing similar experiences and supporting accountability measures—though some cautioned that penalties alone won’t fix systemic overload and incentive misalignment."
+      },
+      "sources": [
+        {
+          "url": "https://blog.neurips.cc/2026/03/23/refining-the-review-cycle-neurips-2026-area-chair-pilot/",
+          "title": "Refining the Review Cycle: NeurIPS 2026 Area Chair Pilot"
+        },
+        {
+          "url": "https://neurips.cc/Conferences/2025/ReviewerGuidelines",
+          "title": "2025 Reviewer Guidelines - neurips.cc"
+        },
+        {
+          "url": "https://toxigon.com/neurips-discussion-no-responses-what-happens",
+          "title": "When NeurIPS Discussions Go Silent: What Happens Next - Toxigon"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49098198",
+      "slug": "2026-07-30-21-ai-boom-drives-massive-hiring-of-electricians-and-carpenters-2b1ed846",
+      "path": "/article/2026-07-30-21-ai-boom-drives-massive-hiring-of-electricians-and-carpenters-2b1ed846",
+      "rank": 21,
+      "score": 6.0,
+      "source": "hackernews",
+      "author": "thm",
+      "url": "https://www.nytimes.com/2026/07/29/business/economy/data-center-electricians-training.html",
+      "published_at": "2026-07-29T14:43:47+00:00",
+      "fetched_at": "2026-07-30T04:17:07.064038+00:00",
+      "tags": [
+        "AI-infrastructure",
+        "labor-market",
+        "data-centers",
+        "skilled-trades",
+        "tech-economy"
+      ],
+      "image_path": "media/hackernews-story-49098198.svg",
+      "title": {
+        "zh": "AI热潮催生电工木工大规模招聘",
+        "en": "AI boom drives massive hiring of electricians and carpenters"
+      },
+      "summary": {
+        "zh": "多家AI巨头正大规模招聘数千名电工和木工建设超大规模数据中心，并出资开展大规模技能培训，显著推高行业薪资。 这一转变揭示了AI发展对实体基础设施的深度依赖，也凸显了AI供应链中一个被长期低估的关键瓶颈：熟练技工的供给不足。 单个超大规模AI数据中心需30–50兆瓦电力；全球AI数据中心用电需求预计2027年达68吉瓦；数据中心电工年薪最高达15.6万美元，比同类岗位高42%。",
+        "en": "Major AI companies are recruiting thousands of electricians and carpenters to build hyperscale data centers, funding large-scale trade training programs and driving wages up significantly. This shift reveals how AI’s growth depends on physical infrastructure—and highlights a critical, underappreciated bottleneck in the AI supply chain: the availability of skilled tradespeople. A single hyperscale AI data center requires 30–50 megawatts of power; global AI data center electricity demand is projected to reach 68 gigawatts by 2027, and data center electricians now earn up to $156,000 annually—42% more than comparable roles."
+      },
+      "body": {
+        "zh": "人工智能不仅正在重塑软件和芯片设计，更在重新构建物理世界。随着超大规模AI数据中心在美国各地加速落地——从德克萨斯州乡村到俄亥俄州工业带——Meta、谷歌和贝莱德等公司正成千上万地招募电工、木工、暖通空调技工和结构焊工。这些岗位不在硅谷写字楼里，而在施工现场。\n\n单个AI训练集群的功耗可达1吉瓦（GW），相当于一座中型城市的用电量，需要铺设数英里高压电缆管道、部署多重冗余备用发电机，并建造符合精密温控要求的服务器机架。这种基础设施需求前所未有。\n\n劳动力缺口极为严峻。行业报告显示，到2027年美国将短缺近50万名熟练技工，而全球AI数据中心电力需求预计达68吉瓦——接近加州全州电网总容量。为填补缺口，科技公司与公用事业企业已投入超2.15亿美元，联合社区学院和工会学徒项目，开设面向数据中心的电工速成认证课程。\n\n薪酬水平随之跃升：数据中心电工年薪普遍为8.5万至14万美元，比普通商用电工高出42%；部分高技能岗位甚至达15.6万美元。木工和钣金工也因承建加固混凝土基座、架空地板系统和防火机柜等Tier IV级高可用设施而获得溢价。但这一热潮也伴随波动风险：业内专家指出，数据中心建设周期高度依赖AI投资节奏和电网并网审批，常呈现“一年狂建、次年停滞”的 boom-bust 模式。\n\n对入行者而言，机会真实存在，却非铁饭碗。相比稳定的市政或公用事业岗位，单个数据中心项目通常仅持续12–18个月，之后可能因电网升级或许可延迟而暂停。这场转变更深层的意义在于：无需四年制学位、只需技术认证的“新领职业”（new-collar jobs），正成为AI物理底座的核心支柱。正如一位培训师所言：“我们接的不只是服务器电源线——我们是在一寸寸铺设计算的未来。”",
+        "en": "Artificial intelligence isn’t just reshaping software and chip design—it’s rewiring the physical world. As hyperscale AI data centers multiply across the U.S., companies like Meta, Google, and BlackRock are recruiting thousands of electricians, carpenters, HVAC technicians, and structural welders—not in Silicon Valley offices, but at construction sites in rural Texas, Ohio, and Arizona. These facilities demand unprecedented electrical infrastructure: a single AI training cluster can draw 1 gigawatt of power—equivalent to a midsize city—and requires miles of high-voltage conduit, redundant backup generators, and precision-cooled server racks built to exacting tolerances.\n\nThe labor shortage is acute. According to industry reports, the U.S. faces a shortfall of nearly half a million skilled trades workers by 2027, even as AI data center power demand surges toward 68 gigawatts globally—roughly matching California’s entire grid. To close the gap, tech firms and utilities have poured over $215 million into accelerated electrician training programs, partnering with community colleges and union apprenticeships to fast-track certifications in data-center-specific electrical systems.\n\nWages reflect the urgency: data center electricians now earn $85,000–$140,000 annually—up to 42% more than traditional commercial electricians—with some specialized roles hitting $156,000. Carpenters and sheet metal workers are also seeing premium pay for building reinforced concrete foundations, raised flooring systems, and fire-rated enclosures that meet Tier IV uptime standards. Yet this boom carries volatility: experts warn that data center construction follows sharp boom-and-bust cycles, tied closely to AI investment waves and utility interconnection timelines.\n\nFor workers entering the trades, the opportunity is real—but not guaranteed. Unlike stable utility or municipal jobs, data center projects often last 12–18 months before pausing for grid upgrades or permitting delays. Still, the shift signals a broader revaluation: ‘new-collar’ roles—requiring technical certification, not four-year degrees—are becoming central to AI’s physical backbone. As one industry trainer put it: ‘We’re not just wiring servers—we’re wiring the future of computation, one conduit at a time.’"
+      },
+      "background": {
+        "zh": "超大规模数据中心是容纳数万台服务器的巨型设施，专为AI训练与推理优化。其电力、散热和结构系统远超普通企业级数据中心。‘Tier IV’认证代表最高级别的容错性与可用性，对供配电、消防抑制和物理安防等施工标准有严苛要求。",
+        "en": "Hyperscale data centers are massive facilities housing tens of thousands of servers optimized for AI training and inference. They require specialized electrical, cooling, and structural systems far beyond standard enterprise data centers. 'Tier IV' certification denotes the highest level of fault tolerance and uptime reliability, demanding rigorous construction standards for power distribution, fire suppression, and physical security."
+      },
+      "discussion": {
+        "zh": "读者态度分化：有人为技工收入提升感到欣慰，也有人警示建设周期的 boom-bust 波动性及职业稳定性风险；一条评论虚构了美以伊乌战争扩大化说法，该内容无事实依据且与本文无关。",
+        "en": "Readers expressed cautious optimism: some welcomed higher wages for tradespeople, while others warned of boom-bust volatility and questioned long-term career stability; one comment falsely claimed an expanded US-Israel-Iran-Ukraine war, which was unsupported and unrelated to the article’s content."
+      },
+      "sources": [
+        {
+          "url": "https://techplustrends.com/power-requirements-ai-data-centers/",
+          "title": "Power Requirements for AI Data Centers (2026): Complete Guide"
+        },
+        {
+          "url": "https://uspeglobal.com/articles/ai-data-center-power-requirements/",
+          "title": "AI Data Center Power Requirements: Complete Capacity Guide"
+        },
+        {
+          "url": "https://www.hanwhadatacenters.com/blog/what-are-the-power-requirements-for-ai-data-centers/",
+          "title": "What Are the Power Requirements for AI Data Centers?"
+        },
+        {
+          "url": "https://www.machinebrief.com/news/big-tech-electrician-training-ai-data-centers-meta-google-blackrock-skilled-trades-july-2026",
+          "title": "$215M+ Poured Into Electrician Training for AI Data Centers |"
+        },
+        {
+          "url": "https://lumichats.com/blog/new-collar-jobs-ai-data-center-boom-2026-usa-no-degree",
+          "title": "Data Center Electricians Make $140K: No Degree... — LumiChats Blog"
+        },
+        {
+          "url": "https://www.gadgetreview.com/data-center-electricians-are-making-six-figures-as-ai-demand-explodes",
+          "title": "Data Center Electricians Are Making Six Figures as... - Gadget Review"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1v9v4e7",
+      "slug": "2026-07-30-22-iclr-2027-deadline-falls-8-days-before-neurips-2026-decisions-45829721",
+      "path": "/article/2026-07-30-22-iclr-2027-deadline-falls-8-days-before-neurips-2026-decisions-45829721",
+      "rank": 22,
+      "score": 6.0,
+      "source": "reddit",
+      "author": "/u/1414vo",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1v9v4e7/iclr_2027_deadline_is_before_neurips_2026/",
+      "published_at": "2026-07-29T12:43:33+00:00",
+      "fetched_at": "2026-07-30T04:17:07.284765+00:00",
+      "tags": [
+        "ICLR",
+        "NeurIPS",
+        "academic-conferences",
+        "research-policy",
+        "machine-learning-community"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1v9v4e7.svg",
+      "title": {
+        "zh": "ICLR 2027截稿日比NeurIPS 2026结果公布早8天",
+        "en": "ICLR 2027 deadline falls 8 days before NeurIPS 2026 decisions"
+      },
+      "summary": {
+        "zh": "ICLR 2027将全文投稿截止日定为2026年9月16日，比NeurIPS 2026录用结果公布日（9月24日）早8天。 这一日程冲突破坏了机器学习研究者惯用的修订策略，可能使在NeurIPS审稿期间改进的论文处于不利地位，削弱顶级会议间的公平性与科学严谨性。 截至目前，ICLR 2027截止日为刚性安排，主办方未宣布任何补救措施，例如延期、修订通道或两会议协调决策时间表。",
+        "en": "ICLR 2027 set its full paper submission deadline for September 16, 2026 — eight days before NeurIPS 2026’s acceptance decisions are scheduled to be released on September 24. This scheduling conflict undermines a common revision strategy used by ML researchers and may disadvantage papers that improved during NeurIPS review, reducing fairness and scientific rigor across top-tier venues. The ICLR 2027 deadline is fixed and non-negotiable as of current announcements; no official mitigation — such as extended deadlines, revision tracks, or coordinated decision timelines — has been communicated by either conference’s organizing teams."
+      },
+      "body": {
+        "zh": "机器学习研究社区正对两大顶会ICLR 2027与NeurIPS 2026之间新公布的日程冲突表达关切。根据官方时间表，ICLR 2027的全文投稿截止日定为2026年9月16日，而NeurIPS 2026的录用结果要到9月24日才公布——两者仅相隔8天。这一紧凑安排给作者带来实际困境：那些先投NeurIPS、并可能收到建设性评审意见或边缘拒稿反馈的研究者，将无法在ICLR截止前据此修改论文。\n\n与小型研讨会不同，ICLR和NeurIPS均为高选择性、严格同行评议的顶会，其日程安排直接影响作者的投稿策略。长期以来，许多研究者习惯依据NeurIPS的审稿意见（若能及时获得）优化论文后转投ICLR，尤其因二者在深度学习与基础机器学习领域高度重叠。但今年，NeurIPS结果发布晚于ICLR截稿，作者彻底失去这一关键修订窗口。\n\n问题不仅关乎流程，更涉及公平性。那些在NeurIPS审稿期间显著提升的论文——例如补充了实验、改进了表述，或通过答辩回应了质疑——如今面临人为设置的再投稿障碍。同样，收到模糊或存疑拒稿意见的作者，也来不及针对性修改就已错过ICLR提交期。\n\n尽管会议排期本身极为复杂，需协调场地、审稿人招募与编辑日历等因素，但此次错位尤为突出，因为它违背了机器学习社区长期形成的非正式惯例。ICLR 2027组委会尚未公开说明为何将截止日定得如此之早，也未透露任何弹性机制（如增设late-breaking track或修订通道）。目前，研究者只能提前提交初稿，或干脆放弃本轮ICLR——两种选择均不利于科研质量与参与公平。",
+        "en": "The machine learning research community is raising concerns over a newly announced scheduling conflict between two flagship conferences: ICLR 2027 and NeurIPS 2026. According to the official timeline, ICLR 2027’s full paper submission deadline is set for September 16, 2026 — just eight days before NeurIPS 2026 is scheduled to release its acceptance decisions on September 24. This tight window creates a practical dilemma for authors who submitted to NeurIPS first and may have received constructive feedback or even learned of a borderline rejection that could inform meaningful revisions.\n\nUnlike workshops or smaller venues, both ICLR and NeurIPS are highly selective, peer-reviewed conferences where timing directly affects strategic submission choices. Many researchers traditionally use NeurIPS reviews — when available — to strengthen papers before resubmitting to ICLR, especially given their overlapping scopes in deep learning and foundational ML. With decisions arriving only after ICLR’s deadline, authors lose that opportunity entirely this cycle.\n\nThe issue isn’t merely logistical; it touches on fairness and equity. Papers that improved significantly during the NeurIPS review period — perhaps through additional experiments, clearer exposition, or rebuttal-driven refinements — now face an artificial barrier to re-entry. Likewise, authors who received ambiguous or contested rejections at NeurIPS won’t have time to address concerns before ICLR closes submissions.\n\nWhile conference scheduling is inherently complex — involving venue availability, reviewer recruitment cycles, and editorial calendars — this misalignment stands out because it contradicts longstanding informal norms in the ML community. There’s no public explanation from the ICLR 2027 organizing committee about why the deadline was set so early, nor any indication of flexibility (e.g., a late-breaking or revision track). For now, researchers must adapt by either submitting earlier drafts to ICLR or skipping the cycle altogether — both suboptimal outcomes for scientific rigor and inclusivity."
+      },
+      "background": {
+        "zh": "ICLR（国际学习表征会议）和NeurIPS（神经信息处理系统大会）是机器学习领域最具影响力的两大年度顶会，以高录用门槛和学术引领力著称。研究者常向两者投稿，并习惯依据前一轮审稿反馈修改后再投另一会。",
+        "en": "ICLR (International Conference on Learning Representations) and NeurIPS (Conference on Neural Information Processing Systems) are two of the most prestigious annual conferences in machine learning, known for high selectivity and influence on research direction. Authors often submit to both, sometimes revising based on feedback from one before submitting to the other."
+      },
+      "discussion": {
+        "zh": "Reddit用户普遍抱怨两会议缺乏协调，并担忧此举损害公平性；部分人指出，早期职业研究者及缺乏预投稿反馈渠道的作者受到的影响尤为严重。",
+        "en": "Reddit users expressed frustration over the lack of coordination and concern about fairness, with some suggesting that early-career researchers and those without access to pre-submission feedback loops are disproportionately affected."
+      },
+      "sources": []
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1v9owaf",
+      "slug": "2026-07-30-23-workshop-reviewers-request-new-experiments-after-paper-acceptance-43308b30",
+      "path": "/article/2026-07-30-23-workshop-reviewers-request-new-experiments-after-paper-acceptance-43308b30",
+      "rank": 23,
+      "score": 6.0,
+      "source": "reddit",
+      "author": "/u/rokk07",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1v9owaf/workshop_paper_accepted_reviewers_asked_new/",
+      "published_at": "2026-07-29T07:21:00+00:00",
+      "fetched_at": "2026-07-30T04:17:07.285096+00:00",
+      "tags": [
+        "academic-publishing",
+        "machine-learning",
+        "peer-review",
+        "workshops",
+        "research-ethics"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1v9owaf.svg",
+      "title": {
+        "zh": "研讨会论文录用后审稿人要求补充实验",
+        "en": "Workshop reviewers request new experiments after paper acceptance"
+      },
+      "summary": {
+        "zh": "一名研究者投稿至某顶会附属研讨会的论文已被录用，但审稿人在无正式修改轮次的情况下要求补充新实验。 这揭示了研讨会同行评审中的系统性模糊地带：审稿人在录用后提出实质性修改要求却不再复审，既损害公平性，加重作者负担，也暴露出版规范的缺失。 多数机器学习研讨会采用单轮评审制，终稿提交被视为最终润色环节，不支持实质性修改；而期刊或TMLR等平台则明确支持带版本追踪的多轮修订。",
+        "en": "A researcher’s accepted workshop paper received unsolicited requests for new experiments despite no formal revision phase or second review round. This highlights a systemic ambiguity in workshop peer review: when reviewers request substantive changes post-acceptance without re-evaluation, it undermines fairness, increases author burden, and exposes gaps in publishing norms. Most ML workshops use single-round review and treat camera-ready submission as a final, non-substantive polishing step—not a revision opportunity—unlike journals or platforms like TMLR that support tracked, multi-turn revisions."
+      },
+      "body": {
+        "zh": "一位研究者最近在 Reddit 的 r/MachineLearning 版块分享了一个令人困惑的情况：其论文已被某顶级会议附属的研讨会录用，但审稿人却在录用后提出需补充新实验——而该研讨会并未设置正式的修改轮次或二次评审环节。作者唯一需要完成的后续步骤是提交终稿（camera-ready version），这意味着这些新增实验请求既不会被重新评审，也不会影响录用结果。这造成了一种程序上的灰色地带：审稿人的建议虽具分量，却缺乏可追溯性与问责机制，引发关于公平性、透明度和作者工作负担的质疑。\n\nNeurIPS、ICML 或 KDD 等顶会附属的研讨会，通常采用比主会更宽松的时间安排和更简化的评审流程。多数实行单轮评审——录用即最终决定，终稿修改一般仅限于文字勘误、格式调整或参考文献更新。不同于 TMLR 等支持多轮修订历史与明确版本追踪的平台，大多数机器学习研讨会并未为录用后的实质性修改提供评估机制。例如，KDD 2026 某研讨会页面虽注明“终稿可修订”，但其定位仍是润色优化，而非科学内容的扩展。\n\n矛盾核心在于审稿人意图与流程设计之间的错位。部分审稿人可能真心希望提升论文质量；另一些人则将终稿阶段默认为事实上的修改轮次，模糊了“建议”与“义务”的边界。对作者而言，执行请求意味着无偿加班与时间压力；拒绝则可能被视作不配合，甚至影响未来审稿印象。由于尚无统一规范，实际处理方式高度依赖研讨会主席的裁量及特定社区的惯例。\n\n问题不在于是否接受反馈，而在于让流程与期望相匹配。负责任的同行评议必须清晰界定：若审稿人期待修改，主办方就应提供正式修订轮次，或明确说明哪些修改属自愿、哪些属必需。否则，作者承担额外劳动成本，审稿人却无需对其未被复核的建议负责。随着机器学习研究节奏加快，维护研讨会评审公信力的关键，正在于让这类非正式实践变得可见、可讨论且可协商。",
+        "en": "A researcher recently shared a puzzling situation on Reddit’s r/MachineLearning: their paper was accepted to a workshop co-located with a top-tier machine learning conference, yet reviewers later asked for additional experiments—despite there being no formal revision or second review phase. The only remaining step is submitting the camera-ready version, meaning these requests won’t be re-evaluated by reviewers or factored into the acceptance decision. This creates a procedural gray zone: reviewers are offering suggestions that carry weight but lack accountability or follow-up, raising questions about fairness, transparency, and workload expectations.\n\nWorkshops at major conferences like NeurIPS, ICML, or KDD often operate under looser timelines and lighter review processes than main conferences. Many use single-round review—acceptance is final, and camera-ready revisions are typically limited to minor fixes (typos, formatting, citation updates). Unlike journals or venues like TMLR—which support multi-round revision histories and explicit revision tracking—most ML workshops don’t build in mechanisms to assess post-acceptance changes. As one KDD 2026 workshop page notes, camera-ready revision is open, but it’s framed as an opportunity for polishing, not substantive scientific expansion.\n\nThe core tension lies in reviewer intent versus process design. Some reviewers may genuinely want to strengthen the work before presentation; others may treat the camera-ready stage as a de facto revision round—blurring lines between feedback and obligation. For authors, complying risks unpaid labor and timeline pressure; ignoring requests risks perceived uncooperativeness or future reviewer bias. There’s no universal policy, so outcomes depend heavily on workshop chairs’ guidance and norms within specific communities.\n\nThis isn’t about rejecting feedback—it’s about aligning expectations with process. Ethical peer review requires clarity: if reviewers expect changes, the venue must provide either a formal revision round or clear guidelines on what’s optional versus expected. Without that, authors face asymmetrical responsibility: they bear the cost of extra work, while reviewers face no consequence for unreviewed suggestions. As machine learning research accelerates, maintaining trust in workshop evaluation hinges on making such informal practices visible, discussable, and equitable."
+      },
+      "background": {
+        "zh": "与主会议同期举办的学术研讨会通常评审标准更宽松、截止日期更短、流程更简化。不同于期刊或TMLR等新兴平台，它们极少设置修改轮次，也不要求对更新内容进行再次评审。终稿一般只需修正排版、笔误等非科学性细节。",
+        "en": "Academic workshops co-located with major conferences typically have lighter review standards, shorter deadlines, and less formal processes than main conferences. Unlike journals or some newer venues (e.g., TMLR), they rarely include revision cycles or require re-review of updated content. Camera-ready versions are usually expected to reflect only minor, non-scientific edits."
+      },
+      "discussion": {
+        "zh": "虽然原文未附评论摘录，但r/MachineLearning社区常见建议是主动联系研讨会主席确认要求性质；许多用户表示，即便非强制，也会酌情补充实验以维持学术关系。",
+        "en": "While the original post didn’t include comment excerpts, Reddit discussions in r/MachineLearning commonly advise contacting workshop chairs for clarification—and many users report complying with such requests informally to maintain goodwill, even when not required."
+      },
+      "sources": [
+        {
+          "url": "https://hyperboliclearning.github.io/events/kdd2026workshop",
+          "title": "KDD 2026 Workshop : Geometric Space, Architecture and Learning ..."
+        },
+        {
+          "url": "https://kyunghyuncho.me/tmlr-how-to-check-the-difference-between-revisions/",
+          "title": "[TMLR] how to check the difference between revisions – Kyunghyun..."
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1v9maa7",
+      "slug": "2026-07-30-24-university-student-seeks-adults-who-used-ai-for-friendship-or-romance-2d118b9a",
+      "path": "/article/2026-07-30-24-university-student-seeks-adults-who-used-ai-for-friendship-or-romance-2d118b9a",
+      "rank": 24,
+      "score": 6.0,
+      "source": "reddit",
+      "author": "/u/Ok-Suggestion2488",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1v9maa7/exploring_humanai_relationships_honours_thesis_r/",
+      "published_at": "2026-07-29T05:02:01+00:00",
+      "fetched_at": "2026-07-30T04:17:07.285307+00:00",
+      "tags": [
+        "human-AI interaction",
+        "AI ethics",
+        "social AI",
+        "HCI",
+        "qualitative research"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1v9maa7.svg",
+      "title": {
+        "zh": "阳光海岸大学本科生招募AI交友或恋爱经历者参与调研",
+        "en": "University student seeks adults who used AI for friendship or romance"
+      },
+      "summary": {
+        "zh": "阳光海岸大学本科荣誉生朱莉娅·贝恩正在招募过去六个月内曾用AI进行交友或恋爱的18岁以上成年人，参与其毕业论文所需的25–30分钟匿名问卷调查。 这项研究填补了关键空白：帮助我们理解情感沉浸式AI系统如何影响现实中的亲密关系实践、心理健康及社会期待——尤其当这类工具日益普及并触手可及时。 问卷完全匿名，已获校方伦理审批（编号S262259），仅面向过去六个月内使用AI进行陪伴或恋爱互动的成年人；这是受指导的本科荣誉论文项目，尚非经同行评审的研究成果。",
+        "en": "Julia Bain, an honours student at the University of the Sunshine Coast, is recruiting adults aged 18+ who used AI for friendship or romance in the past six months to participate in a 25–30 minute anonymous survey for her undergraduate thesis. This research addresses a critical gap in understanding how emotionally immersive AI systems affect real-world relationship practices, mental wellbeing, and social expectations—especially as such tools become more mainstream and accessible. The survey is anonymous, ethics-approved (S262259), and open only to adults who engaged with AI for companionship or romance within the last six months; it is part of a supervised undergraduate honours thesis, not peer-reviewed research."
+      },
+      "body": {
+        "zh": "朱莉娅·贝恩是澳大利亚昆士兰州阳光海岸大学的一名本科荣誉学位学生，正在开展一项关于人类与人工智能建立情感联结的定性研究。她的课题聚焦于近期（过去六个月内）曾将AI系统——例如Replika、Character.AI或其他陪伴型聊天机器人——用于交友或恋爱目的的成年人。为获取第一手经验资料，她面向18岁以上、符合上述条件的群体发起了一项匿名在线问卷调查。\n\n该问卷耗时约25至30分钟，包含开放式和反思性问题，涉及用户使用AI陪伴的动机、情绪反应、对AI互动真实性的感知，以及他们在与AI建立关系时设定或难以设定的边界。问卷不收集任何可识别个人身份的信息，所有数据均严格遵循阳光海岸大学人类研究伦理委员会批准号S262259的规范处理。参与者被鼓励坦诚表达真实想法，问卷没有标准答案。\n\n这项研究横跨人机交互（HCI）、AI伦理与社会心理学领域。随着情感化AI工具日益普及且愈发拟人化，学界越来越关注这类技术如何影响人们对亲密关系、信任感及人际关系规范的期待——尤其在年轻群体或社交孤立人群中。贝恩的毕业论文正是这一新兴学术方向的组成部分：它不把AI仅视作工具，而是将其视为一种“关系性主体”，其使用行为折射出人类社会行为的深层模式。\n\n目前该问卷仍在招募阶段，尚未发布任何研究成果。但这一本科生主导的研究本身已体现出学术关注点的重要转向：从纯技术性能评估，转向对人类真实体验的深入理解。它也表明，本科阶段的研究同样可以切中技术与社会交汇处的关键议题。感兴趣的公众可通过公开链接查阅项目说明文档和问卷入口，贝恩也欢迎通过电子邮件或Reddit评论区进一步交流。",
+        "en": "Julia Bain, an undergraduate honours student at the University of the Sunshine Coast in Queensland, Australia, is conducting qualitative research into how people form emotional connections with artificial intelligence. Her project focuses specifically on adults who have recently engaged with AI systems—such as Replika, Character.AI, or other companion chatbots—not just for information or productivity, but for companionship, friendship, or romantic interaction. To gather firsthand insights, she has launched an anonymous online survey targeting individuals aged 18 and older who have had such experiences within the past six months.\n\nThe survey takes approximately 25 to 30 minutes to complete and asks open-ended and reflective questions about users’ motivations, emotional responses, perceived authenticity of AI interactions, and boundaries they set—or struggle to set—with AI partners. It does not collect personally identifiable information, and all data is handled in accordance with ethics approval S262259 from the university’s Human Research Ethics Committee. Participants are encouraged to share their honest, unfiltered perspectives—there are no right or wrong answers.\n\nThis work sits at the intersection of human-computer interaction (HCI), AI ethics, and social psychology. As emotionally engaging AI tools become more widespread and sophisticated, researchers are increasingly concerned about how these technologies shape expectations around intimacy, trust, and relationship norms—especially among younger or socially isolated users. Bain’s thesis contributes to a small but growing body of academic inquiry that treats AI companions not merely as tools, but as relational agents whose use reveals deeper patterns in human social behaviour.\n\nWhile the survey itself is still recruiting participants—and no findings have been published yet—the initiative reflects a timely shift in academic attention: away from purely technical benchmarks toward lived human experience with AI. It also underscores how undergraduate research can meaningfully engage with urgent, real-world questions about technology and society. For those interested, the full project information sheet and survey link are publicly available, and Bain welcomes questions via email or Reddit comments."
+      },
+      "background": {
+        "zh": "人机关系研究关注人们如何与专为社交或情感互动设计的AI系统互动——例如能模拟共情、记忆或人格特征的聊天机器人。当这些系统以‘朋友’或‘伴侣’为卖点推广时，会引发关于情感依恋、欺骗风险与心理依赖的伦理争议。该领域的学术研究仍处于早期阶段，但在人机交互（HCI）与AI伦理学界正逐步增多。",
+        "en": "Human-AI relationship research examines how people interact with AI systems designed for social or emotional engagement—like chatbots that simulate empathy, memory, or personality. Such systems raise ethical questions about attachment, deception, and psychological dependency, especially when marketed as 'friends' or 'partners'. Academic work in this area remains limited but growing, particularly in HCI and AI ethics communities."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": []
+    }
+  ]
+}
