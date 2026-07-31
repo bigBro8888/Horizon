@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>MLVC solves cross-platform entropy mismatch for neural video codecs - Now AI News</title>
+  <meta name="description" content="MLVC introduces a multi-platform learned video codec that avoids cross-NPU entropy model mismatches by transmitting entropy-scale parameters via the hyperprior, enabling bitstream " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-07-31-12-mlvc-solves-cross-platform-entropy-mismatch-for-neural-video-codecs-87f6ce8b" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-07-31-12-mlvc-solves-cross-platform-entropy-mismatch-for-neural-video-codecs-87f6ce8b" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-07-31-12-mlvc-solves-cross-platform-entropy-mismatch-for-neural-video-codecs-87f6ce8b" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-07-31-12-mlvc-solves-cross-platform-entropy-mismatch-for-neural-video-codecs-87f6ce8b" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="MLVC solves cross-platform entropy mismatch for neural video codecs" />
+  <meta property="og:description" content="MLVC introduces a multi-platform learned video codec that avoids cross-NPU entropy model mismatches by transmitting entropy-scale parameters via the hyperprior, enabling bitstream " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-07-31-12-mlvc-solves-cross-platform-entropy-mismatch-for-neural-video-codecs-87f6ce8b" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vb3xwd.png" />
+  <meta property="article:published_time" content="2026-07-30T19:40:56+00:00" />
+  <meta property="article:modified_time" content="2026-07-31T04:49:16.589987+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MLVC solves cross-platform entropy mismatch for neural video codecs" />
+  <meta name="twitter:description" content="MLVC introduces a multi-platform learned video codec that avoids cross-NPU entropy model mismatches by transmitting entropy-scale parameters via the hyperprior, enabling bitstream " />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vb3xwd.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-07-31-12-mlvc-solves-cross-platform-entropy-mismatch-for-neural-video-codecs-87f6ce8b"}, "headline": "MLVC solves cross-platform entropy mismatch for neural video codecs", "description": "MLVC introduces a multi-platform learned video codec that avoids cross-NPU entropy model mismatches by transmitting entropy-scale parameters via the hyperprior, enabling bitstream ", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vb3xwd.png"], "datePublished": "2026-07-30T19:40:56+00:00", "dateModified": "2026-07-31T04:49:16.589987+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vb3xwd.png" alt="MLVC solves cross-platform entropy mismatch for neural video codecs" />
+    <div class="article-page-tags"><span>#learned-video-coding</span> <span>#neural-compression</span> <span>#hardware-acceleration</span> <span>#cross-platform-compatibility</span> <span>#entropy-coding</span></div>
+    <h1>MLVC solves cross-platform entropy mismatch for neural video codecs</h1>
+    <p class="article-page-meta">News time: 2026-07-31T04:35:59.707740+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>For over a decade, neural networks have reshaped image recognition, natural language processing, and even audio compression—but video streaming still relies almost entirely on hand-crafted standards like H.264, H.265, and AV1. Why hasn’t AI taken over video compression the way it did computer vision? It’s not just about raw efficiency: neural codecs often outperform classical ones in rate-distortion metrics, but they stumble at deployment. A major, underappreciated barrier is numerical inconsistency across hardware—especially in entropy modeling, the final stage where bitstreams are assembled and decoded.</p>
+<p>Entropy coding in learned codecs depends on precise agreement between encoder and decoder about probability distributions. When those models run on different NPUs—say, Apple’s M3 Neural Engine versus Intel’s AI Boost—the subtle differences in how INT8 operations are implemented (e.g., FP16-simulated quantization, rounding modes, accumulator bit widths) cause divergent probability estimates. Even tiny mismatches cascade into catastrophic decoding failures: one wrong bit flips the entire stream. Traditional fixes like integer quantization or fixed-point specification fall short because today’s NPU toolchains lack standardized, bit-exact execution paths.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>MLVC, introduced by researchers from Microsoft, tackles this head-on—not by forcing hardware to behave identically, but by <em>making the entropy model itself portable</em>. Instead of baking scale parameters into the neural network’s arithmetic, MLVC transmits them explicitly via the hyperprior—a lightweight side channel that ensures both encoder and decoder use identical entropy contexts. This decouples numerical robustness from hardware fidelity.</p>
+<p>The result is real-time performance across diverse consumer hardware: ~100 FPS encoding and decoding for 360p–540p video on Apple, Intel, and Qualcomm NPUs. Benchmarks show MLVC achieves over 70% BD-rate improvement over hardware-accelerated HEVC (H.265) in MOS-based quality tests—while remaining interoperable where prior neural codecs fail. Crucially, MLVC is open-source, with full implementation available on GitHub, inviting scrutiny, integration, and co-development with hardware vendors.</p>
+<p>This isn’t just another incremental codec—it’s a systems-aware rethinking of how learned compression bridges the gap between algorithmic promise and real-world infrastructure. By treating cross-platform consistency as a first-class design constraint—not an afterthought—MLVC points toward a future where neural video codecs finally move beyond labs and benchmarks into browsers, conferencing apps, and streaming services.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vb3xwd/mlvc_multiplatform_learned_video_codec_for/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/microsoft/mlvc" target="_blank" rel="noopener">Multi-platform Learned Video Codec (MLVC) - GitHub</a><a href="https://arxiv.org/abs/2606.28027" target="_blank" rel="noopener">[2606.28027] MLVC: Multi-platform Learned Video Codec for ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

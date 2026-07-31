@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Simon Willison releases alpha OpenAI-compatible chat server with content-addressable state - Now AI News</title>
+  <meta name="description" content="Simon Willison released llm-chat-completions-server 0.1a0, an alpha OpenAI-compatible chat API server that uses LLM 0.32rc1&#x27;s content-addressable logs to store and deduplicate conv" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-07-31-17-simon-willison-releases-alpha-openai-compatible-chat-server-with-content-address-2b2f02d7" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-07-31-17-simon-willison-releases-alpha-openai-compatible-chat-server-with-content-address-2b2f02d7" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-07-31-17-simon-willison-releases-alpha-openai-compatible-chat-server-with-content-address-2b2f02d7" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-07-31-17-simon-willison-releases-alpha-openai-compatible-chat-server-with-content-address-2b2f02d7" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Simon Willison releases alpha OpenAI-compatible chat server with content-addressable state" />
+  <meta property="og:description" content="Simon Willison released llm-chat-completions-server 0.1a0, an alpha OpenAI-compatible chat API server that uses LLM 0.32rc1&#x27;s content-addressable logs to store and deduplicate conv" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-07-31-17-simon-willison-releases-alpha-openai-compatible-chat-server-with-content-address-2b2f02d7" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--c8cdfd360cc42f47.svg" />
+  <meta property="article:published_time" content="2026-07-30T15:43:16+00:00" />
+  <meta property="article:modified_time" content="2026-07-31T04:49:16.589987+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Simon Willison releases alpha OpenAI-compatible chat server with content-addressable state" />
+  <meta name="twitter:description" content="Simon Willison released llm-chat-completions-server 0.1a0, an alpha OpenAI-compatible chat API server that uses LLM 0.32rc1&#x27;s content-addressable logs to store and deduplicate conv" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--c8cdfd360cc42f47.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-07-31-17-simon-willison-releases-alpha-openai-compatible-chat-server-with-content-address-2b2f02d7"}, "headline": "Simon Willison releases alpha OpenAI-compatible chat server with content-addressable state", "description": "Simon Willison released llm-chat-completions-server 0.1a0, an alpha OpenAI-compatible chat API server that uses LLM 0.32rc1's content-addressable logs to store and deduplicate conv", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--c8cdfd360cc42f47.svg"], "datePublished": "2026-07-30T15:43:16+00:00", "dateModified": "2026-07-31T04:49:16.589987+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--c8cdfd360cc42f47.svg" alt="Simon Willison releases alpha OpenAI-compatible chat server with content-addressable state" />
+    <div class="article-page-tags"><span>#LLM</span> <span>#API</span> <span>#OpenAI-compat</span> <span>#content-addressable</span> <span>#chat-server</span></div>
+    <h1>Simon Willison releases alpha OpenAI-compatible chat server with content-addressable state</h1>
+    <p class="article-page-meta">News time: 2026-07-31T04:35:59.064252+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>Simon Willison has launched llm-chat-completions-server 0.1a0 — a lightweight, locally runnable server that exposes installed LLM models via an OpenAI-style <code>/v1/chat/completions</code> API endpoint. Unlike typical chat APIs where clients must manage and resend full conversation histories for every request, this server leverages the newly introduced content-addressable log design in LLM 0.32rc1 to store and deduplicate messages by cryptographic hash. Each user or assistant message is hashed independently, enabling efficient reuse across conversations and supporting forked or branching dialogues without redundant storage.</p>
+<p>The architecture reflects a deliberate shift toward state-aware local LLM tooling. Instead of treating each chat completion as a stateless request, the server builds on LLM’s updated database schema — where message IDs are derived from their content rather than sequential integers. This means identical prompts or responses generate identical IDs, automatically eliminating duplication and enabling structural representation of conversation trees. Willison built the server specifically to validate whether this new schema could robustly support real-world OpenAI-compatible interaction patterns.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Setup is intentionally minimal: users install it as an LLM plugin using <code>uv tool install llm --pre</code>, then run <code>llm install llm-chat-completions-server</code> followed by <code>llm chat-completions-server -p 9001</code>. Once running, the server serves all locally available models (including those added via other LLM plugins) on port 9001. The example curl command shows how clients send multi-turn messages — including prior assistant replies — just like with OpenAI’s API, but with backend de-duplication happening transparently.</p>
+<p>Notably, Willison credits GPT-5.6 Sol — an internal model — for writing the entire implementation, highlighting how modern LLMs can now reliably generate production-ready code for well-specified API contracts. While still an alpha release (denoted by the <code>0.1a0</code> version), the project signals growing maturity in local-first LLM infrastructure: prioritizing interoperability, storage efficiency, and developer ergonomics over cloud dependency. It’s a small tool with architectural ambition — one that treats conversation history not as transient payload, but as structured, shareable, and compressible data.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/30/llm-chat-completions-server/#atom-everything" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://simonwillison.net/2026/Jul/30/llm-rc1/" target="_blank" rel="noopener">Release: llm 0.32rc1 - simonwillison.net</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

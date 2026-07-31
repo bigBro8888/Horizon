@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>LLM CLI 0.32rc1 introduces content-addressable logging and conversation trees - Now AI News</title>
+  <meta name="description" content="LLM 0.32rc1 introduces a content-addressable message store schema with cryptographic hashing for deduplication and native support for forked conversation trees, alongside new model" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-07-31-18-llm-cli-0-32rc1-introduces-content-addressable-logging-and-conversation-trees-473ac772" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-07-31-18-llm-cli-0-32rc1-introduces-content-addressable-logging-and-conversation-trees-473ac772" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-07-31-18-llm-cli-0-32rc1-introduces-content-addressable-logging-and-conversation-trees-473ac772" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-07-31-18-llm-cli-0-32rc1-introduces-content-addressable-logging-and-conversation-trees-473ac772" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="LLM CLI 0.32rc1 introduces content-addressable logging and conversation trees" />
+  <meta property="og:description" content="LLM 0.32rc1 introduces a content-addressable message store schema with cryptographic hashing for deduplication and native support for forked conversation trees, alongside new model" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-07-31-18-llm-cli-0-32rc1-introduces-content-addressable-logging-and-conversation-trees-473ac772" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--1ada26250cb6e798.svg" />
+  <meta property="article:published_time" content="2026-07-30T15:30:20+00:00" />
+  <meta property="article:modified_time" content="2026-07-31T04:49:16.589987+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="LLM CLI 0.32rc1 introduces content-addressable logging and conversation trees" />
+  <meta name="twitter:description" content="LLM 0.32rc1 introduces a content-addressable message store schema with cryptographic hashing for deduplication and native support for forked conversation trees, alongside new model" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--1ada26250cb6e798.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-07-31-18-llm-cli-0-32rc1-introduces-content-addressable-logging-and-conversation-trees-473ac772"}, "headline": "LLM CLI 0.32rc1 introduces content-addressable logging and conversation trees", "description": "LLM 0.32rc1 introduces a content-addressable message store schema with cryptographic hashing for deduplication and native support for forked conversation trees, alongside new model", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--1ada26250cb6e798.svg"], "datePublished": "2026-07-30T15:30:20+00:00", "dateModified": "2026-07-31T04:49:16.589987+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--1ada26250cb6e798.svg" alt="LLM CLI 0.32rc1 introduces content-addressable logging and conversation trees" />
+    <div class="article-page-tags"><span>#LLM</span> <span>#CLI</span> <span>#logging</span> <span>#database-schema</span> <span>#open-source</span></div>
+    <h1>LLM CLI 0.32rc1 introduces content-addressable logging and conversation trees</h1>
+    <p class="article-page-meta">News time: 2026-07-31T04:35:59.064280+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>Simon Willison has released LLM 0.32rc1, a major release candidate for the popular open-source LLM command-line interface tool. This version completes foundational work begun in the earlier 0.32a0 pre-release and delivers a redesigned internal logging architecture — one that significantly improves fidelity when capturing prompts, responses, and metadata from modern large language models, including newly supported variants like gpt-5.6-sol, gpt-5.6-terra, and gpt-5.6-luna.</p>
+<p>The centerpiece of this update is a shift to content-addressable storage for message records. Instead of assigning arbitrary sequential IDs, each stored message is now hashed using its full content — prompt, model parameters, system instructions, and response — to generate a unique, deterministic ID. This means identical interactions produce identical IDs, enabling automatic deduplication across logs. More importantly, it allows the database to natively represent <em>forked conversations</em>: when a user branches from an earlier message (e.g., to try alternative replies or explore different reasoning paths), the new messages retain explicit parent-child relationships, forming a tree rather than a flat list.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>This schema change is non-destructive: only new tables are added, and existing log data remains fully intact and readable. Still, because it alters how future logs are written and indexed, the author strongly recommends backing up your current logs.db before upgrading. A simple command — <code>llm logs backup logs-backup.db</code> — handles this safely and is documented directly in the release notes.</p>
+<p>For developers and power users who rely on LLM for reproducible experimentation, debugging, or audit trails, these changes are transformative. Content addressability ensures that every logged interaction is uniquely identifiable and tamper-evident — if the content changes, the hash changes. Conversation trees support richer analysis, versioning, and navigation of exploratory dialogues, moving beyond linear chat history toward structured, traceable reasoning workflows. As conversational AI tools increasingly emphasize transparency and repeatability, LLM’s move reflects a broader industry shift toward treating interactions as first-class, versioned artifacts — not just ephemeral text.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Jul/30/llm-rc1/#atom-everything" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/Content-addressable_storage" target="_blank" rel="noopener">Content-addressable storage</a><a href="https://www.emergentmind.com/topics/conversational-forking-mechanism" target="_blank" rel="noopener">Conversational Forking Mechanism - emergentmind.com</a><a href="https://knowtree.chat/" target="_blank" rel="noopener">KnowTree — AI Conversation Graph for Branching Chat</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
