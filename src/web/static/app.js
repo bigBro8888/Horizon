@@ -24,6 +24,15 @@ const I18N = {
     prev: "上一页",
     next: "下一页",
     pageInfo: (page, pages, total) => `第 ${page}/${pages} 页 · ${total} 条`,
+    shareTools: "分享与收藏",
+    favorite: "收藏",
+    favoriteHint: "已提示收藏：请按 Ctrl+D（Mac 为 ⌘D）加入浏览器收藏夹",
+    wechatTitle: "微信分享",
+    wechatText: "请用微信扫码打开并分享当前页面",
+    copyLink: "复制链接",
+    copied: "链接已复制",
+    instagramHint: "Instagram 不支持网页直连分享，链接已复制，可粘贴到 Instagram",
+    sharePopupBlocked: "弹窗被拦截，请允许后重试",
   },
   en: {
     heroKicker: "",
@@ -48,6 +57,15 @@ const I18N = {
     prev: "Previous",
     next: "Next",
     pageInfo: (page, pages, total) => `Page ${page}/${pages} · ${total} items`,
+    shareTools: "Share & save",
+    favorite: "Save",
+    favoriteHint: "Press Ctrl+D (⌘D on Mac) to bookmark this page",
+    wechatTitle: "Share to WeChat",
+    wechatText: "Scan the QR code with WeChat to open and share this page",
+    copyLink: "Copy link",
+    copied: "Link copied",
+    instagramHint: "Instagram has no web share URL. Link copied — paste it in Instagram",
+    sharePopupBlocked: "Popup blocked. Please allow popups and try again",
   },
 };
 
@@ -335,12 +353,150 @@ function applyStaticText() {
   document.getElementById("siteTitle").textContent = siteTitle;
   document.getElementById("heroTitle").innerHTML = formatSiteTitle(siteTitle);
   document.title = siteTitle;
+  syncShareLabels();
+}
+
+function syncShareLabels() {
+  const tr = t();
+  const tools = document.getElementById("shareTools");
+  if (tools) tools.setAttribute("aria-label", tr.shareTools);
+  const favoriteLabel = document.getElementById("favoriteLabel");
+  if (favoriteLabel) favoriteLabel.textContent = tr.favorite;
+  const favoriteBtn = document.getElementById("favoriteBtn");
+  if (favoriteBtn) {
+    favoriteBtn.title = tr.favorite;
+    favoriteBtn.setAttribute("aria-label", tr.favorite);
+  }
+  const wechatTitle = document.getElementById("wechatModalTitle");
+  const wechatText = document.getElementById("wechatModalText");
+  const copyBtn = document.getElementById("copyShareLink");
+  if (wechatTitle) wechatTitle.textContent = tr.wechatTitle;
+  if (wechatText) wechatText.textContent = tr.wechatText;
+  if (copyBtn) copyBtn.textContent = tr.copyLink;
 }
 
 function updateLangButtons() {
   document.querySelectorAll(".lang-btn").forEach((b) => {
     b.classList.toggle("active", b.dataset.lang === state.lang);
   });
+  document.querySelectorAll("[data-share-lang]").forEach((group) => {
+    group.hidden = group.dataset.shareLang !== state.lang;
+  });
+  syncShareLabels();
+}
+
+function sharePageUrl() {
+  return window.location.href.split("#")[0];
+}
+
+function sharePageTitle() {
+  return document.title || "Now AI News";
+}
+
+function showShareToast(message) {
+  const toast = document.getElementById("shareToast");
+  if (!toast) return;
+  toast.textContent = message;
+  toast.hidden = false;
+  window.clearTimeout(showShareToast.timer);
+  showShareToast.timer = window.setTimeout(() => {
+    toast.hidden = true;
+  }, 2600);
+}
+
+async function copyShareLink() {
+  const url = sharePageUrl();
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url);
+    } else {
+      const input = document.createElement("input");
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      input.remove();
+    }
+    showShareToast(t().copied);
+    return true;
+  } catch (e) {
+    showShareToast(url);
+    return false;
+  }
+}
+
+function openShareWindow(url) {
+  const popup = window.open(url, "_blank", "noopener,noreferrer,width=640,height=720");
+  if (!popup) showShareToast(t().sharePopupBlocked);
+}
+
+function closeWechatModal() {
+  const modal = document.getElementById("wechatModal");
+  if (modal) modal.hidden = true;
+}
+
+function openWechatModal() {
+  const modal = document.getElementById("wechatModal");
+  const qr = document.getElementById("wechatQr");
+  if (!modal || !qr) return;
+  const url = sharePageUrl();
+  qr.src =
+    "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" +
+    encodeURIComponent(url);
+  modal.hidden = false;
+}
+
+function bookmarkPage() {
+  const tr = t();
+  // Browsers block programmatic bookmarks; guide the user instead.
+  showShareToast(tr.favoriteHint);
+  try {
+    if (window.external && "AddFavorite" in window.external) {
+      window.external.AddFavorite(sharePageUrl(), sharePageTitle());
+    }
+  } catch (e) {
+    /* ignore legacy IE path failures */
+  }
+}
+
+function handleShareAction(action) {
+  const url = sharePageUrl();
+  const title = sharePageTitle();
+  if (action === "wechat") {
+    openWechatModal();
+    return;
+  }
+  if (action === "weibo") {
+    openShareWindow(
+      "https://service.weibo.com/share/share.php?url=" +
+        encodeURIComponent(url) +
+        "&title=" +
+        encodeURIComponent(title)
+    );
+    return;
+  }
+  if (action === "x") {
+    openShareWindow(
+      "https://twitter.com/intent/tweet?url=" +
+        encodeURIComponent(url) +
+        "&text=" +
+        encodeURIComponent(title)
+    );
+    return;
+  }
+  if (action === "facebook") {
+    openShareWindow(
+      "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url)
+    );
+    return;
+  }
+  if (action === "instagram") {
+    copyShareLink().then(() => showShareToast(t().instagramHint));
+    return;
+  }
+  if (action === "favorite") {
+    bookmarkPage();
+  }
 }
 
 function todayStr() {
@@ -624,6 +780,20 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".lang-btn").forEach((b) => {
     b.addEventListener("click", () => setLang(b.dataset.lang));
   });
+  document.getElementById("shareTools")?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-share]");
+    if (!button) return;
+    handleShareAction(button.dataset.share);
+  });
+  document.getElementById("copyShareLink")?.addEventListener("click", () => {
+    copyShareLink();
+  });
+  document.querySelectorAll("[data-close-wechat]").forEach((el) => {
+    el.addEventListener("click", closeWechatModal);
+  });
+  document.getElementById("wechatModal")?.addEventListener("click", (event) => {
+    if (event.target.id === "wechatModal") closeWechatModal();
+  });
   document.getElementById("sortLatest").addEventListener("click", showAllArticles);
   document.getElementById("datePickerBtn").addEventListener("click", openDatePicker);
   document.getElementById("filterDate").addEventListener("change", (e) => setDateFilter(e.target.value));
@@ -648,7 +818,10 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("click", closeReader);
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeReader();
+    if (e.key === "Escape") {
+      closeWechatModal();
+      closeReader();
+    }
   });
   bootstrap();
 });
