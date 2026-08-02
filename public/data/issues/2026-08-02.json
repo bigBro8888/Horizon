@@ -1,0 +1,743 @@
+{
+  "date": "2026-08-02",
+  "generated_at": "2026-08-02T04:44:07.900130+00:00",
+  "total_fetched": 19,
+  "count": 14,
+  "articles": [
+    {
+      "id": "hackernews:story:49137060",
+      "slug": "2026-08-02-01-lean-kernel-soundness-bug-14576-allows-proof-of-false-1a5391a6",
+      "path": "/article/2026-08-02-01-lean-kernel-soundness-bug-14576-allows-proof-of-false-1a5391a6",
+      "rank": 1,
+      "score": 9.0,
+      "source": "hackernews",
+      "author": "juhopitk",
+      "url": "https://leodemoura.github.io/blog/2026-8-1-postmortem-for-kernel-soundness-bug-14576/",
+      "published_at": "2026-08-01T18:32:20+00:00",
+      "fetched_at": "2026-08-02T04:34:49.418333+00:00",
+      "tags": [
+        "formal-verification",
+        "proof-assistants",
+        "soundness-bug",
+        "lean",
+        "systems-reliability"
+      ],
+      "image_path": "media/hackernews-story-49137060.svg",
+      "title": {
+        "zh": "Lean内核出现严重健全性漏洞#14576",
+        "en": "Lean kernel soundness bug #14576 allows proof of false"
+      },
+      "summary": {
+        "zh": "Lean内核被发现存在健全性漏洞#14576：在对带幻影参数的归纳类型执行消去操作时，内核错误地丢弃参数，导致非法类型项可被接受并推导出False。 该漏洞动摇了数学定理和系统验证对Lean的根本信任，表明即使经过形式化验证的内核，其实际实现仍可能存在破坏逻辑健全性的缺陷。 漏洞发生于对含幻影参数的嵌套归纳类型执行消去操作时；内核会从生成的辅助类型中丢弃这些参数，从而跳过对应位置参数的类型检查，允许注入非法类型项并最终推出False。",
+        "en": "Lean’s kernel was found to contain soundness bug #14576, which allows acceptance of an ill-typed proof of False due to incorrect handling of phantom parameters during inductive elimination. This bug compromises the foundational trust in Lean for mathematics and systems verification, revealing that even formally verified kernels can harbor implementation flaws that break logical soundness in practice. The bug occurs when eliminating nested inductive types with phantom parameters; the kernel drops them from auxiliary types, skipping type checks on arguments in those positions—enabling injection of ill-typed terms leading to False."
+      },
+      "body": {
+        "zh": "一篇近期发布的事故复盘报告披露了Lean证明助手可信内核中的一个严重健全性漏洞——编号#14576。该漏洞于2026年中被发现，允许构造出被Lean内核正式接受的`False`（假命题）证明，直接破坏了Lean最根本的逻辑健全性保障。这并非普通崩溃或功能缺陷：它动摇了Lean的核心承诺——即所有通过其内核验证的项，在其类型理论下必然逻辑有效。\n\n漏洞发生在对嵌套归纳类型的“消去”（即模式匹配）过程中，当该类型带有*幻影参数*（phantom parameters）时触发：这些参数出现在类型定义中，却未在任何构造器字段中实际使用。内核在为消去操作生成辅助类型时，会静默丢弃这些幻影参数，导致类型检查器跳过对相应位置参数的验证。攻击者便可在此处注入非法类型项，诱使内核接受不一致的推导。\n\n更值得警惕的是，该利用代码被刻意设计成也能触发另一主流证明检查器的类似漏洞，凸显了跨系统实现的脆弱性。研究人员证实，独立内核查验器（例如独立运行的Lean验证器）仍可安全使用——但前提是原始内核与核查器内核都已更新至修复版本，因为绕过交叉验证需两个独立实现同时存在缺陷。正如一位评论者所引：“我只证明了它正确，却未曾运行测试。”\n\n此次事件再度引发关于形式化验证本身边界的讨论。尽管Lean的核心逻辑在数学上依然健全，其*具体实现*却引入了现实风险——与任何复杂软件无异。这份复盘并未归咎于Lean的设计，而是强调：细微的工程决策（如优化启发式、模块间代码复用）可能悄然侵蚀信任基础。对数学家、系统开发者及AI辅助形式化工作者而言，它是一记清醒提醒：验证工具不是魔法神谕，而是需要持续审慎、多样化校验策略与对“正确性”主张保持谦逊的工程产物。",
+        "en": "A recently published postmortem reveals a critical soundness bug—designated #14576—in the Lean proof assistant’s trusted kernel. The flaw, discovered in mid-2026, permits construction of a formally accepted proof of `False`, directly violating Lean’s foundational guarantee of logical soundness. This isn’t a mere crash or usability issue: it undermines the very premise that terms accepted by Lean’s kernel are logically valid under its type theory.\n\nThe bug arises during elimination (pattern matching) on nested inductive types with *phantom parameters*—type parameters that appear in the type definition but not in any constructor fields. When the kernel generates auxiliary types for elimination, these phantom parameters are silently dropped, causing the type checker to skip validation of arguments placed in those positions. An attacker can then inject an ill-typed term there, tricking the kernel into accepting an inconsistent derivation.\n\nWhat makes this especially sobering is that the exploit was deliberately crafted to also trigger a similar bug in another major proof checker—demonstrating cross-system fragility. Researchers confirmed that independent kernel checkers (e.g., standalone Lean verifiers) remain safe *only if both the original and checker kernels are patched*, since the exploit requires two coordinated bugs to bypass cross-checking entirely. As one commenter noted, this echoes decades-old wisdom: \"I have only proved it correct, not tried it.\"\n\nThe incident has reignited debate about the limits of formal verification itself. While Lean’s core logic remains mathematically sound, its *implementation* introduces real-world risk—just like any complex software. The postmortem doesn’t blame Lean’s design, but highlights how subtle implementation choices (e.g., optimization heuristics, code reuse across modules) can erode trust. For mathematicians, system developers, and AI-assisted formalizers alike, it serves as a reminder: verification tools are not magical oracles—they are engineered artifacts requiring vigilance, diversity of checking strategies, and humility about correctness claims."
+      },
+      "background": {
+        "zh": "在Lean等证明助手中，“内核”是最小且高度可信的组件，负责依据底层类型论检查证明项是否良构。健全性意味着：只要内核接受某项，就不可能从中推导出矛盾（如‘False’）。高保障软件与数学证明的形式化验证正依赖这一基本保证。",
+        "en": "In proof assistants like Lean, the 'kernel' is a minimal, highly trusted component responsible for checking whether a proof term is well-typed according to the underlying type theory. Soundness means that if the kernel accepts a term, it cannot derive a contradiction like 'False'. Formal verification relies on this guarantee for high-assurance software and mathematical proofs."
+      },
+      "discussion": {
+        "zh": "评论者普遍持清醒务实态度，指出连Rust等更简单类型检查器也会出现类似问题；部分人主张采用Metamath等更严格的基础进行交叉验证，另一些人则从哲学层面反思‘已证明正确’与‘实际可运行’之间的鸿沟。",
+        "en": "Commenters express sober realism—not alarmism—about soundness bugs, noting that even simpler type checkers (like Rust’s) face similar issues; some advocate for cross-checking with alternative foundations like Metamath, while others reflect philosophically on the gap between proven correctness and working implementations."
+      },
+      "sources": [
+        {
+          "url": "https://leodemoura.github.io/blog/2026-8-1-postmortem-for-kernel-soundness-bug-14576/",
+          "title": "Postmortem for Kernel Soundness Bug #14576 — Leonardo de Moura"
+        },
+        {
+          "url": "https://news.ycombinator.com/item?id=49137060",
+          "title": "Postmortem for Kernel Soundness Bug #14576 | Hacker News"
+        }
+      ]
+    },
+    {
+      "id": "rss:simonwillison.net_atom_everything_:518c46c1375437aa",
+      "slug": "2026-08-02-02-openai-s-internal-astra-model-solves-ten-decade-old-math-problems-for-under-2-00-3a9f00d2",
+      "path": "/article/2026-08-02-02-openai-s-internal-astra-model-solves-ten-decade-old-math-problems-for-under-2-00-3a9f00d2",
+      "rank": 2,
+      "score": 9.0,
+      "source": "rss",
+      "author": "Simon Willison",
+      "url": "https://simonwillison.net/2026/Aug/1/ten-advances-in-mathematics/#atom-everything",
+      "published_at": "2026-08-01T20:34:49+00:00",
+      "fetched_at": "2026-08-02T04:34:48.929137+00:00",
+      "tags": [
+        "AI",
+        "mathematics",
+        "automated-theorem-proving",
+        "theoretical-computer-science",
+        "LLM-research"
+      ],
+      "image_path": "media/rss-simonwillison-net-atom-everything--518c46c1375437aa.svg",
+      "title": {
+        "zh": "OpenAI内部Astra模型以不到2000美元解决十个十年未解数学难题",
+        "en": "OpenAI’s internal Astra model solves ten decade-old math problems for under $2,000 each"
+      },
+      "summary": {
+        "zh": "OpenAI内部Astra模型以单题不足2000美元（按GPT-5.6 Sol token计价）的成本，解决了十个停滞十年以上的数学与理论计算机科学难题，并在GitHub上开源了全部Lean 4形式化证明。 这表明AI辅助的形式化推理已跨越成本与能力临界点，使高置信度证明生成不再局限于顶尖研究团队，或将重塑数学研究、密码学分析与软件形式验证的工作范式。 所有证明均以Lean 4语言形式化并公开托管；2000美元成本基于GPT-5.6 Sol定价（输入5美元/百万tokens，输出30美元/百万tokens）；OpenAI未披露具体提示词设计或失败尝试次数。",
+        "en": "OpenAI’s internal Astra model solved ten decade-stagnant mathematical and theoretical computer science problems, each for under $2,000 in GPT-5.6 Sol token costs, producing Lean 4 formal proofs published openly on GitHub. This demonstrates that AI-assisted formal reasoning has crossed a cost and capability threshold, making high-assurance proof generation accessible outside elite research groups—and potentially reshaping how mathematics, cryptography, and software verification are conducted. The proofs are formalized in Lean 4 and hosted publicly; the $2,000 figure reflects GPT-5.6 Sol pricing ($5/million input tokens, $30/million output tokens); OpenAI did not disclose prompt engineering details or failure rates."
+      },
+      "body": {
+        "zh": "OpenAI宣布，其下一代模型家族Astra的内部版本成功解决了十个在数学与理论计算机科学领域停滞至少十年的开放性难题。公司称，每个问题的解决成本均低于2000美元，依据的是GPT-5.6 Sol模型的token定价——这一成本远低于Anthropic近期为发现密码学弱点而投入的10万美元（使用Claude模型）。与以往依赖人工引导或专用工具的AI辅助证明不同，OpenAI此次输出的是完全形式化的Lean 4证明，并已开源至github.com/openai/ten-proofs仓库。\n\n这些成果覆盖多个方向：几何学、计算复杂性理论、密码学与组合数学，其中包括对Erdős单位距离猜想的证伪——该猜想自1940年代提出后长期未被攻克。除代码外，OpenAI还公开了一篇详细说明每项证明的技术论文，以及一份由大语言模型生成的‘推理过程回溯’PDF，尝试还原模型如何逐步构建关键思路（基于未公开的内部推理轨迹）。尽管OpenAI尚未公布具体提示词或失败统计（例如：多少次尝试未果），但其在形式化验证和成本数据上的透明度，为AI驱动定理证明设立了新的可复现标准。\n\n这一进展呼应了陶哲轩提出的‘大数学’（big mathematics）构想：人类负责高层次直觉与问题建模，AI承担繁重的技术执行、穷举搜索与形式验证。数学界反应复杂——Kirwin Hampshire近期发表的《数学的暗夜》一文，将此刻比作1997年‘深蓝’击败卡斯帕罗夫的震撼时刻，流露出学科身份危机感。但数学不仅追求正确性，更珍视洞见；AI生成的证明能否催生新概念框架，而不仅是答案本身，仍是悬而未决的问题。\n\n其影响亦超出学术圈。若此类形式化推理能力变得廉价且可靠，或将显著加速密码协议、编译器正确性及安全关键系统的形式验证进程。2000美元/题的成本门槛意味着，这类能力可能很快进入高校实验室甚至高阶学生的研究工具箱，使过去仅限顶尖团队使用的深度形式化推理真正走向普及。",
+        "en": "OpenAI has announced that an internal version of its upcoming Astra model solved ten long-standing open problems in mathematics and theoretical computer science—each with no major progress for at least ten years. The company reports spending less than $2,000 per problem using GPT-5.6 Sol token pricing, a dramatic cost reduction compared to Anthropic’s recent $100,000 effort to uncover cryptographic weaknesses with Claude. Unlike prior AI-assisted proofs that relied on human-guided scaffolding or narrow domain tools, OpenAI’s approach produced fully formalized Lean 4 proofs, published openly in the github.com/openai/ten-proofs repository.\n\nThe results span diverse areas: geometry, complexity theory, cryptography, and combinatorics—including a disproof of the Erdős unit distance conjecture, a problem open since the 1940s. Accompanying the code is a peer-accessible paper detailing each solution, plus an LLM-generated ‘reasoning walkthrough’ PDF reconstructing how the model arrived at key insights—based on unpublished internal reasoning traces. While OpenAI has not released the exact prompts or failure rates (e.g., how many unsolved attempts occurred before success), the transparency around formalization and cost metrics sets a new benchmark for reproducibility in AI-driven theorem proving.\n\nThis development echoes Terence Tao’s vision of ‘big mathematics’: a collaborative ecosystem where humans focus on high-level intuition and problem framing, while AI handles exhaustive search, verification, and technical execution. Mathematicians are reacting with both excitement and unease—Kirwin Hampshire’s recent essay ‘The Dark Night of Mathematics’ captures a growing sense of existential reckoning, likening the moment to Deep Blue’s 1997 chess victory over Kasparov. Yet unlike chess, mathematics prizes not just correctness but insight; whether AI-generated proofs can yield new conceptual frameworks—not just answers—remains an open question.\n\nStill, the implications extend beyond academia. If formal reasoning at this scale becomes affordable and reliable, it could accelerate verification of cryptographic protocols, compiler correctness, and safety-critical system specifications. The $2,000-per-proof threshold suggests such capabilities may soon be accessible to research labs and even advanced students—potentially democratizing deep formal reasoning previously reserved for elite teams with massive compute budgets."
+      },
+      "background": {
+        "zh": "自动定理证明是利用软件对数学命题进行逻辑验证的技术；Lean是一种主流交互式定理证明器，凭借强类型检查支持高可靠性形式化验证。‘十年停滞’问题指那些广为人知、但十余年来无实质性突破的开放性难题——例如Erdős单位距离问题，它探讨平面上n个点中最多能有多少对点恰好相距为1。",
+        "en": "Automated theorem proving uses software to verify mathematical statements logically; Lean is a popular interactive theorem prover that supports formal verification with strong type-checking. 'Decade-stagnant' problems refer to well-known open questions with no major progress for ten+ years—such as the Erdős unit distance problem, which asks how many pairs of points at unit distance can exist among n points in the plane."
+      },
+      "discussion": {
+        "zh": "数学家们既惊叹又忧虑，将此刻类比‘深蓝’对国际象棋的冲击；部分人视AI为‘大数学’时代的协作者，另一些人则担忧人类洞见的流失，以及OpenAI报告中缺失的失败率等关键评估数据。",
+        "en": "Mathematicians express awe and anxiety, comparing the moment to Deep Blue’s impact on chess; some welcome AI as a collaborator in ‘big mathematics’, while others worry about loss of human insight and the absence of failure statistics in OpenAI’s report."
+      },
+      "sources": [
+        {
+          "url": "https://digg.com/tech/9qjs9782",
+          "title": "OpenAI Astra Model Solves Ten Open Problems · Digg"
+        },
+        {
+          "url": "https://scalevise.com/resources/openai-model-disproves-erdos-unit-distance-problem/",
+          "title": "OpenAI Model Disproves Erdős Unit Distance Problem"
+        },
+        {
+          "url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+          "title": "Previewing GPT-5.6 Sol: a next-generation model | OpenAI"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1vcrki2",
+      "slug": "2026-08-02-03-katago-neural-network-learns-board-symmetry-without-explicit-constraints-9477fdb9",
+      "path": "/article/2026-08-02-03-katago-neural-network-learns-board-symmetry-without-explicit-constraints-9477fdb9",
+      "rank": 3,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/icosaplex",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1vcrki2/how_symmetric_are_the_insides_of_a_go_network_r/",
+      "published_at": "2026-08-01T16:18:53+00:00",
+      "fetched_at": "2026-08-02T04:34:49.685011+00:00",
+      "tags": [
+        "interpretability",
+        "symmetry",
+        "neural-networks",
+        "game-ai",
+        "mechanistic-interp"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1vcrki2.svg",
+      "title": {
+        "zh": "KataGo神经网络自发学会围棋棋盘对称性",
+        "en": "KataGo neural network learns board symmetry without explicit constraints"
+      },
+      "summary": {
+        "zh": "Lightvector 的研究表明，KataGo 神经网络在仅使用随机八重数据增强、且无任何架构对称性约束的情况下，其内部表征自发形成了近乎完美的旋转与镜像对称性。 这表明强大神经网络可在无需显式设计的情况下内化领域基本对称性，为构建更鲁棒、泛化性更强、更可解释的游戏AI、视觉模型及物理建模系统提供了重要启示。 对称性随网络深度增强：高层战略特征（如中央影响力）近乎完全不变，而底层边缘检测器仍具朝向敏感性；分析方法包括真实对局位置上的激活探测、聚类与特征消融。",
+        "en": "Lightvector’s study shows that KataGo’s neural network spontaneously develops near-perfect rotational and reflectional symmetry in its internal representations — despite using only stochastic 8-fold data augmentation and no architectural symmetry constraints. This demonstrates that powerful neural networks can internalize fundamental domain symmetries without explicit design — offering insights for building more robust, generalizable, and interpretable AI systems in games, vision, and physics-based domains. The symmetry strengthens with network depth; high-level strategic features (e.g., central influence) show near-perfect invariance, while low-level edge detectors remain orientation-sensitive. Analysis used activation probing, clustering, and ablation across real-game positions."
+      },
+      "body": {
+        "zh": "一项新的机制可解释性研究发现，开源超人类围棋AI KataGo 在其神经网络内部自发形成了高度对称的棋盘表征——尽管其架构未显式引入旋转或镜像对称约束，训练中仅依赖随机的八重空间数据增强。该研究由 KataGo 维护者 Lightvector 发起，旨在探究网络隐藏层究竟在多大程度上编码了与朝向无关的概念（例如“角部围空”或“边路势力”），而非为每种朝向单独学习、记忆特定模式。\n\n与 AlphaGo Zero 使用手工设计的对称感知训练流程不同，KataGo 采用标准卷积残差网络结构，仅在每个训练批次前对棋盘状态进行随机翻转、旋转或转置。这使其成为检验对称性是否真正“内生涌现”的理想对象：即这种对称性不仅体现在最终输出的统计一致性上，更反映在神经元激活和特征检测器的结构性不变性中。\n\n研究人员通过激活探测、特征消融以及跨数千局棋位置的对称对齐聚类分析发现：大量中间层神经元对同一棋盘状态的全部八种朝向表现出几乎一致（至多符号或缩放差异）的响应。更关键的是，这种对称性随网络深度增加而增强，表明高层特征正逐步抽象为与朝向无关的概念。一个意外发现是，某些高层战略特征（如“中央影响力”或“地域均衡性”）近乎完美对称，而底层边缘检测特征则仍保留较强朝向敏感性。\n\n这项工作不仅技术扎实，方法也颇具启发性：分析与初稿主要由 AI 协助完成，但全程由人类在围棋规则与神经网络行为方面的专业知识主导。文章写得通俗易懂，附有完整开源代码，尽量避免术语堆砌——既适合机器学习研究者，也欢迎对AI内部运作好奇的普通读者。随着可解释性工具日益成熟，此类研究正将抽象数学原理（如群论中的对称性）与真实神经回路行为切实连接起来。",
+        "en": "A new mechanistic interpretability study reveals that KataGo — the open-source, superhuman Go AI — develops highly symmetric internal representations of the board, even though its architecture imposes no explicit rotational or reflectional symmetry and relies only on stochastic 8-fold data augmentation during training. The study, authored by Lightvector (the maintainer of KataGo), probes how much the network’s hidden layers encode orientation-invariant concepts — such as ‘a corner enclosure’ or ‘a side moyo’ — versus orientation-specific patterns that must be relearned for each of the eight possible board transformations.\n\nUnlike AlphaGo Zero, which used hand-crafted symmetry-aware training pipelines, KataGo trains with standard convolutional residual networks and applies random spatial augmentations per batch: flipping, rotating, and transposing board states before feeding them to the model. This makes it an ideal testbed for asking whether symmetry emerges *internally* — not just as a statistical regularity in outputs, but as structural invariance in neuron activations and feature detectors.\n\nUsing activation probing, feature ablation, and symmetry-aligned clustering across thousands of game positions, the researchers found strong evidence of emergent symmetry: many mid-layer neurons respond identically (up to sign or scaling) across all eight orientations of the same board state. Crucially, this symmetry increases deeper in the network — suggesting progressive abstraction toward orientation-agnostic concepts. One unexpected finding was that certain high-level strategic features — like ‘central influence’ or ‘territorial balance’ — show near-perfect symmetry, while low-level edge-detection features remain more orientation-sensitive.\n\nThe work stands out not only for its technical rigor but also for its methodology: it was largely AI-assisted in drafting and analysis, yet guided throughout by human expertise in Go and neural network behavior. The writeup is intentionally accessible, includes full code, and avoids jargon where possible — making it valuable both for ML researchers and curious practitioners. As interpretability tools mature, studies like this help bridge the gap between abstract mathematical principles (e.g., group theory of symmetries) and concrete neural circuit behavior."
+      },
+      "background": {
+        "zh": "KataGo 是一款基于 AlphaGo Zero 自博弈框架的开源围棋AI，采用卷积残差网络并通过强化学习训练。机制可解释性旨在从电路层面逆向解析神经网络，识别特定神经元、特征或通路如何实现具体计算。",
+        "en": "KataGo is an open-source Go AI based on AlphaGo Zero’s self-play framework, using convolutional residual networks trained via reinforcement learning. Mechanistic interpretability seeks to reverse-engineer neural networks at the circuit level — identifying how specific neurons, features, or pathways implement computations."
+      },
+      "discussion": {
+        "zh": "Reddit评论普遍赞赏文章的清晰易懂，多位机器学习研究者指出其方法严谨，并认为结论对计算机视觉与物理建模中的对称性研究具有广泛参考价值；也有用户询问能否将该分析扩展至基于Transformer的围棋AI。",
+        "en": "Reddit comments highlight appreciation for the clarity and accessibility of the writeup, with several ML researchers noting its methodological rigor and relevance to broader symmetry questions in vision and physics models. Some users asked about extending the analysis to transformer-based Go AIs."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/KataGo",
+          "title": "KataGo - Wikipedia"
+        },
+        {
+          "url": "https://katagotraining.org/",
+          "title": "KataGo Distributed Training"
+        },
+        {
+          "url": "https://grokipedia.com/page/KataGo",
+          "title": "KataGo — Grokipedia"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1vcipzz",
+      "slug": "2026-08-02-04-vision-language-models-score-high-on-radiology-benchmarks-while-erasing-clinical-b983237f",
+      "path": "/article/2026-08-02-04-vision-language-models-score-high-on-radiology-benchmarks-while-erasing-clinical-b983237f",
+      "rank": 4,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/ade17_in",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1vcipzz/vlms_can_score_well_on_benchmarks_while_silently/",
+      "published_at": "2026-08-01T09:27:26+00:00",
+      "fetched_at": "2026-08-02T04:34:49.685067+00:00",
+      "tags": [
+        "vision-language-models",
+        "medical-ai",
+        "evaluation-bias",
+        "radiology",
+        "hallucination"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1vcipzz.svg",
+      "title": {
+        "zh": "视觉语言模型在放射报告评测中高分却抹除关键临床术语",
+        "en": "Vision-language models score high on radiology benchmarks while erasing clinical terms"
+      },
+      "summary": {
+        "zh": "研究团队提出了TEBS新评估框架，首次量化视觉语言模型生成放射报告时对临床术语的抹除与偏见引入，揭示高评测分数常掩盖具有临床危害性的术语缺失。 这暴露了重大安全风险：基于有缺陷指标部署的模型可能生成看似流畅实则遗漏关键诊断信息的报告，导致误诊漏诊，并在临床实践中固化偏见。 TEBS依托RadLex、SNOMED CT等权威医学本体识别罕见但关键术语的抹除，并通过放射科医师验证的模板评估偏见；已在IU-Xray和MIMIC-CXR数据集上测试，并由认证放射科医师参与验证。",
+        "en": "Researchers introduced TEBS, a new evaluation framework that quantifies clinical terminology erasure and bias in VLM-generated radiology reports — revealing that high benchmark scores often mask clinically harmful omissions. This exposes a critical safety risk: models deployed based on flawed metrics may produce reports that appear fluent but omit life-critical findings, potentially delaying diagnosis or reinforcing biases in clinical practice. TEBS uses curated medical ontologies (e.g., RadLex, SNOMED CT) to detect erasure of rare but clinically essential terms and measures bias via clinician-validated templates; it was tested on IU-Xray and MIMIC-CXR datasets and validated by board-certified radiologists."
+      },
+      "body": {
+        "zh": "一项新研究揭示了视觉语言模型（VLM）在放射科报告生成（RRG）任务中评估方式的重大缺陷。研究人员发现，当前广泛使用的评测指标（如BLEU、METEOR和CIDEr）系统性地奖励那些泛泛而谈、高度模板化且缺乏临床实质的报告输出。这些模型常将关键但罕见的诊断术语——例如“气胸”“间质性肺水肿”或“胸腔积液”——悄然删除，代之以模糊表述如“未见急性心肺异常”，即便X光片明确显示病变。更严重的是，部分模型还会引入带有偏见或刻板印象的语言，例如过度使用性别化描述（“女性患者表现为…”）或默认生成“正常”结论，无视影像证据。\n\n这并非偶然的语言偏差，而是评测体系的设计缺陷。论文指出，现有指标仅关注生成文本与参考报告之间的词汇重叠度，而参考报告本身往往也充斥着模板化、低信息量的表达。因此，模型学会通过主动回避专业术语来“刷分”——作者将这种现象称为“临床静默”。由于标准指标无法区分一份真正正常的报告和一份刻意回避关键信息的空洞报告，这种危险的术语抹除始终未被察觉。\n\n为此，研究团队提出了一套新验证框架，名为“术语抹除与偏见评分”（TEBS）。TEBS利用RadLex、SNOMED CT等权威医学词典，量化生成报告相比真实报告丢失了多少临床关键术语；同时独立评估非证据支持的偏见表述或模板化短语的引入程度。该框架还纳入放射科医生人工评审环节，判断术语缺失是否实质性损害诊断价值。\n\n这一问题的影响远超放射科领域。若评测高分误导开发者与监管方，误判模型具备临床安全性，实际部署可能延误诊断、固化偏见，甚至削弱医护人员对AI辅助文书的信任。研究呼吁：评估目标不应只是语言相似性，更应是临床效用。当AI逐步进入医院工作流时，“模型没说什么”或许比“说了什么”更值得警惕。",
+        "en": "A new study exposes a dangerous gap in how vision-language models (VLMs) are evaluated for radiology report generation (RRG). Researchers found that widely used benchmark metrics — such as BLEU, METEOR, and CIDEr — consistently reward outputs that are generic, repetitive, and clinically bland. These models often generate reports that sound plausible but omit rare yet critical findings like 'pneumothorax', 'interstitial edema', or 'pleural effusion', replacing them with vague phrases like 'no acute cardiopulmonary abnormality' — even when the chest X-ray clearly shows pathology. Worse, the models sometimes introduce biased or stereotyped language, such as overusing gendered assumptions ('female patient presents with…') or defaulting to 'normal' descriptions regardless of image evidence.\n\nThis isn’t just stylistic drift — it’s a systemic failure of evaluation design. The paper demonstrates that current metrics treat clinical precision as optional: they prioritize lexical overlap with reference reports, which themselves often contain template-driven, low-variance language. As a result, models learn to 'game' the system by deleting uncommon but diagnostically essential terms — a phenomenon the authors term 'clinical silence'. This erasure goes undetected because standard metrics cannot distinguish between a truly normal report and one that simply avoids saying anything meaningful.\n\nTo address this, the researchers propose a new validation framework called *Terminology Erasure & Bias Scoring* (TEBS). TEBS quantifies how much clinically relevant terminology is dropped from generated reports compared to ground-truth references — using curated medical lexicons like RadLex and SNOMED CT — and separately measures the introduction of non-evidence-based, biased, or templated phrases. It also incorporates clinician-in-the-loop validation, where radiologists rate whether omissions meaningfully degrade diagnostic utility.\n\nThe implications extend beyond radiology. If benchmark scores mislead developers and regulators into believing models are clinically safe, real-world deployment could delay diagnoses, reinforce biases, or erode trust in AI-assisted documentation. The study urges rethinking not just *what* we measure, but *why*: validation metrics must reflect clinical impact, not just linguistic similarity. As AI moves toward integration in hospital workflows, measuring what models *don’t say* may be as vital as measuring what they do."
+      },
+      "background": {
+        "zh": "放射报告自动生成利用视觉语言模型，根据胸部X光片自动生成自由文本描述，旨在辅助放射科医生并减轻文书负担。常用评测指标（如BLEU）源于通用自然语言任务，侧重词汇重合度而非临床准确性。临床术语抹除指模型为规避风险而主动舍弃罕见但诊断价值极高的术语，转而使用高频泛化词汇——这种行为在传统指标下完全不可见。",
+        "en": "Radiology report generation uses vision-language models to automatically produce free-text descriptions of chest X-rays, aiming to assist radiologists and reduce documentation burden. Common benchmarks rely on n-gram overlap metrics designed for general language tasks — not clinical fidelity. Clinical terminology erasure refers to the model's tendency to drop rare, high-value diagnostic terms in favor of safer, more frequent words — a behavior invisible to standard metrics."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://github.com/mk-runner/Awesome-Radiology-Report-Generation",
+          "title": "GitHub - mk-runner/Awesome-Radiology-Report-Generation: paper list, dataset, and tools for radiology report generation · GitHub"
+        },
+        {
+          "url": "https://www.sciencedirect.com/science/article/pii/S1361841523000592",
+          "title": "Radiology report generation with a learned knowledge base and multi-modal alignment - ScienceDirect"
+        },
+        {
+          "url": "https://www.nature.com/articles/s41591-024-03302-1",
+          "title": "Collaboration between clinicians and vision–language models in radiology report generation | Nature Medicine"
+        },
+        {
+          "url": "https://kevinmd.com/2026/03/ai-in-clinical-documentation-the-hidden-risk-of-automation-bias.html",
+          "title": "AI in clinical documentation: the hidden risk of automation bias"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49138302",
+      "slug": "2026-08-02-05-seedance-2-5-enables-30-second-one-take-ai-video-with-up-to-30-reference-images-f402973e",
+      "path": "/article/2026-08-02-05-seedance-2-5-enables-30-second-one-take-ai-video-with-up-to-30-reference-images-f402973e",
+      "rank": 5,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "njaremko",
+      "url": "https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5",
+      "published_at": "2026-08-01T20:45:12+00:00",
+      "fetched_at": "2026-08-02T04:34:49.418180+00:00",
+      "tags": [
+        "AI video generation",
+        "multimodal AI",
+        "ByteDance",
+        "generative AI",
+        "creative tools"
+      ],
+      "image_path": "media/hackernews-story-49138302.svg",
+      "title": {
+        "zh": "字节Seedance 2.5支持单次生成30秒视频，最多接入30张参考图",
+        "en": "Seedance 2.5 enables 30-second one-take AI video with up to 30 reference images"
+      },
+      "summary": {
+        "zh": "Seedance 2.5正式上线，支持原生30秒单次生成，并可在一次输入中接入最多30张图像、10段视频和10段音频作为多模态参考素材。 它为可控、长时AI视频生成树立了新标杆，也凸显了中西方创作需求的差异：中国侧重高冲击力动作画面，而欧美影视从业者更关注对白同步与演员一致性。 Seedance 2.5支持基于参考素材的帧级局部编辑，在多人物运动或镜头横移等复杂场景下，动作连贯性与画面闪烁抑制效果相比2.0版本有可测量提升。",
+        "en": "Seedance 2.5 launches with native 30-second one-take video generation and supports up to 30 images, 10 videos, and 10 audio clips as multimodal references in a single input. It sets a new benchmark for controllable, long-duration AI video generation and highlights diverging regional priorities—action-centric visuals in China versus dialogue- and actor-consistency-focused needs in Western filmmaking. Seedance 2.5 enables localized frame-level editing using reference inputs and shows measurable improvements in motion coherence and flicker reduction over Seedance 2.0, especially in multi-subject or panning-shot scenarios."
+      },
+      "body": {
+        "zh": "字节跳动正式发布AI视频生成模型Seedance 2.5，显著提升了单次生成、高精度控制与视觉质量。与需多次迭代或分段拼接的旧版本不同，Seedance 2.5支持原生30秒视频“一镜到底”生成——官方称之为“单次成片”。这不仅是时长突破：模型首次允许用户在一次输入中混合多达30张图像、10段视频和10段音频作为参考素材，从而精细调控动作节奏、构图逻辑、光影风格与时间轴，无需繁琐调试。\n\n该升级凸显字节对“强视觉冲击型内容”的战略侧重——例如舞蹈编排、产品特写或电影级运镜，而非以对白驱动的叙事场景。有海外开发者指出，官方演示中仅含一张人物正脸参考图，且完全未涉及口型同步或语音驱动动画。这种设计取向与中国短视频生态高度契合：在抖音等平台上，画面表现力往往比台词更关键。\n\n技术层面，Seedance 2.5强化了局部编辑能力：用户可基于参考素材，单独调整画面中某区域（如只修正角色手臂姿态，同时保留背景运动），这对专业流程至关重要——无论是广告分镜、VFX预演还是创意提案。早期测试者反馈，相比2.0版本，新模型在多人物快速运动、镜头推拉等复杂场景下，动作连贯性明显提升，画面闪烁大幅减少。\n\n不过，高成本仍是现实门槛。尽管Seed平台提供免排队的Web端体验，但高清长时生成仍依赖大量算力——有创作者估算，产出一小时精修视频可能耗费超万元推理费用。这也引发社区讨论：部分用户倾向选择即将开源的MiniMax H3等轻量模型，以换取本地部署、更低显卡要求（如RTX 3080即可运行）和更高可控性，哪怕画质略有妥协。Seedance 2.5的意义，不仅在于刷新AI视频质量上限，更在于推动行业思考：创意工具究竟应在性能、精度与实用性之间如何取舍。",
+        "en": "ByteDance has launched Seedance 2.5, its latest AI video generation model, marking a notable leap in controllable, high-fidelity video synthesis. Unlike earlier versions that required iterative prompting or stitching, Seedance 2.5 delivers native 30-second clips in a single pass — what the team calls 'one-take creation'. This isn’t just about duration: the model now accepts rich multimodal references all at once — up to 30 images, 10 video clips, and 10 audio files — letting users precisely steer motion, composition, lighting, and timing without complex workarounds.\n\nThe upgrade reflects ByteDance’s strategic focus on action-oriented, visually dynamic content — think cinematic stunts, dance sequences, or fast-paced product showcases — rather than dialogue-heavy narrative scenes. As one Hacker News commenter observed, the official demo materials emphasize high-effect shots and contain only one human-facing reference image, with zero emphasis on lip-sync or speech-driven animation. That design choice aligns closely with dominant use cases in China’s short-video ecosystem, where visual impact often outweighs spoken storytelling.\n\nTechnically, Seedance 2.5 improves localized editing control: users can now modify specific regions of a generated frame (e.g., adjusting a character’s arm pose while preserving background motion) using reference inputs. This granularity matters for professional workflows — storyboarding, ad production, or VFX previs — where fidelity and repeatability are non-negotiable. Early adopters report noticeably sharper motion coherence and reduced flicker compared to Seedance 2.0, especially in fast-moving scenes involving multiple subjects or camera pans.\n\nStill, accessibility remains a hurdle. While Seedance 2.5 is available via Seed’s web interface with no queue, high-resolution or extended-length generations demand significant compute — some creators estimate $10,000+ in inference costs for an hour of polished output. That cost barrier sparks debate: some prefer open-weight alternatives like MiniMax H3 (soon to be released) for greater local control and lower hardware requirements, even if quality lags slightly. Ultimately, Seedance 2.5 doesn’t just raise the bar for AI video quality — it sharpens the conversation about *how* creative tools should balance power, precision, and practicality."
+      },
+      "background": {
+        "zh": "AI视频生成模型能将文本、图像或视频提示转化为短视频片段。“参考式控制”指通过输入示例媒体（如人物姿势照片或动作视频片段）来引导输出，而非仅依赖文字描述。Seedance是字节跳动自研系列，与Kling、Sora等开源或通用模型有明确区分。",
+        "en": "AI video generation models convert text, images, or video prompts into short video clips. 'Reference-based control' means guiding output by supplying example media — such as a person’s pose from a photo or motion from a video clip — rather than relying solely on text descriptions. Seedance is ByteDance’s proprietary series, distinct from open models like Kling or Sora."
+      },
+      "discussion": {
+        "zh": "Hacker News用户热议地域使用差异（中国重动作表现 vs 西方重视频到视频迁移）、专业级应用的成本门槛，以及Seedance 2.5画质优势与MiniMax H3等开源模型在可控性和硬件门槛上的取舍。",
+        "en": "Hacker News users debated regional usage patterns (China's action focus vs. Western v2v demands), cost barriers for professional use, and trade-offs between Seedance 2.5's quality and open-weight alternatives like MiniMax H3 offering more control and lower hardware requirements."
+      },
+      "sources": [
+        {
+          "url": "https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5",
+          "title": "One - take Creation, Flexible Referencing: Introducing Seedance 2 . 5"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=vKe1zdW_6iw",
+          "title": "Seedance 2 . 5 Just Dropped – Here's What's New - YouTube"
+        },
+        {
+          "url": "https://www.seeddance.io/models/seedance-2-5",
+          "title": "Seedance 2 . 5 Free: Try ByteDance AI Video, No Queue, Instant Results"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49138188",
+      "slug": "2026-08-02-06-diátaxis-framework-reorganizes-technical-documentation-into-four-clear-types-70c26454",
+      "path": "/article/2026-08-02-06-diátaxis-framework-reorganizes-technical-documentation-into-four-clear-types-70c26454",
+      "rank": 6,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "ryanseys",
+      "url": "https://diataxis.fr/",
+      "published_at": "2026-08-01T20:33:27+00:00",
+      "fetched_at": "2026-08-02T04:34:49.418256+00:00",
+      "tags": [
+        "documentation",
+        "technical-writing",
+        "software-engineering",
+        "developer-experience",
+        "open-source"
+      ],
+      "image_path": "media/hackernews-story-49138188.svg",
+      "title": {
+        "zh": "Diátaxis将技术文档分为四类以提升清晰度和可维护性",
+        "en": "Diátaxis framework reorganizes technical documentation into four clear types"
+      },
+      "summary": {
+        "zh": "Diátaxis 是一种将技术文档划分为教程、操作指南、参考文档和说明四类的框架，目前已获得开发者社区广泛采用，并启动了多语言翻译工作；实践者反馈其显著提升了文档的清晰度、一致性与可维护性。 它之所以重要，是因为糟糕的文档会拖慢新人上手、抬高支持成本、削弱用户对软件的信任；而Diátaxis提供了一种简单、与语言无关且普适性强的结构，帮助工程团队将文档视为头等公民和可持续维护的资产。 四类文档边界严格：教程必须是纯步骤导向且目标明确；操作指南预设一定基础，专注解决具体问题；参考文档须精准、简洁且需标注版本；说明则聚焦背景、历史与设计动因，而非语法或操作步骤。",
+        "en": "Diátaxis—a documentation framework organizing technical content into tutorials, how-to guides, reference, and explanation—has gained strong community adoption and active translation efforts, with practitioners reporting improved clarity, consistency, and maintainability in real-world documentation projects. It matters because poor documentation slows down onboarding, increases support costs, and undermines trust in software—while Diátaxis offers a simple, language-agnostic, and widely applicable structure that helps engineering teams treat documentation as first-class, maintainable artifacts. Each documentation type has strict boundaries: tutorials are strictly step-by-step and goal-oriented; how-to guides assume some prior knowledge and solve specific problems; reference must be precise, concise, and versioned; explanations focus on context, history, and rationale—not syntax or steps."
+      },
+      "body": {
+        "zh": "Diátaxis 并非一个工具或模板生成器，而是一种概念框架，旨在解决软件开发中长期存在的难题：技术文档混乱、不一致且难以维护。其核心理念是：所有技术文档都服务于四种明确的用户需求，因此应严格划分为四类对应形式——教程（通过动手实践学习）、操作指南（解决特定问题）、参考文档（准确描述API或接口等事实性细节）以及说明（阐释底层概念与背景知识）。这种划分并非主观臆断：每种类型都有明确定义的目标、读者预期、语气、结构甚至写作风格，让作者清楚知道该写什么、怎么写。\n\n这一框架源于真实开发场景中的挫败感。其创建者丹尼尔·普罗奇达（Daniele Procida）曾任Canonical文档负责人，在重构Ubuntu庞大文档体系时提出Diátaxis。他发现，将教程式步骤、概念解释与API规格混在一起，既让用户困惑，也让工程师更新文档变得低效。通过严格区分内容类型，Diátaxis降低了用户查阅和开发者维护的认知负担。一位Hacker News用户坦言：“一旦你读过它，就会发现所有现有文档原来都是混乱又费解的。”这并非消极批判，而是清晰视角带来的顿悟。\n\nDiátaxis 的实用性还体现在其轻量性上。它无需新工具链、构建系统或强制元数据规范，团队可渐进式采用——重分类已有页面、重命名目录（如 `tutorial/`、`reference/`），并统一写作规范。多家实践团队报告称，新人上手速度显著提升，支持工单数量明显下降。有团队曾用它为交付给客户的复杂遗留代码库编写文档，结果框架帮助他们梳理出大量隐含的设计逻辑与历史原因，这是传统README文件难以承载的。\n\n当然，Diátaxis 并非万能解药。尤其在版本迭代中保持参考文档和教程的准确性仍具挑战。有评论者指出，若缺乏自动化机制或“验证时间戳”，文档极易过时。另有贡献者正推动多语言翻译，法语、西班牙语和日语等部分译本已在测试站点上线。这些努力表明，Diátaxis 正从一种写作方法，演变为全球开发者体验团队共享的语言体系。",
+        "en": "Diátaxis is not a tool or a template generator—it’s a conceptual framework designed to solve a persistent problem in software development: chaotic, inconsistent, and unmaintainable documentation. At its core, Diátaxis proposes that all technical documentation serves one of four distinct user needs—and therefore should be written in one of four corresponding forms: tutorials (for learning by doing), how-to guides (for solving specific problems), reference (for accurate, factual details about APIs or interfaces), and explanations (for understanding underlying concepts and context). This separation isn’t arbitrary; each type has defined goals, audience expectations, tone, structure, and even writing voice—making it easier for authors to know *what* to write and *how* to write it.\n\nThe framework emerged from real-world frustration. Daniele Procida, its creator and former Canonical documentation lead, developed Diátaxis while overhauling Ubuntu’s sprawling documentation ecosystem. He observed that mixing tutorial-style steps with conceptual explanations or API specs confused readers—and made maintenance harder for writers. By enforcing strict boundaries between content types, Diátaxis reduces cognitive load for both users navigating docs and engineers updating them. As one practitioner noted on Hacker News, once you adopt Diátaxis, \"you will see all documentation as the flawed and confusing mess it is.\" That’s not cynicism—it’s clarity revealing long-standing dysfunction.\n\nWhat makes Diátaxis especially practical is its lightness. It doesn’t require new tooling, build systems, or enforced metadata schemas. Teams can apply it incrementally—reclassifying existing pages, renaming directories (e.g., `tutorial/`, `reference/`), and aligning author guidelines. Several adopters report dramatic improvements in onboarding speed and support ticket reduction. One team used it to document a legacy codebase handed over to a client, finding that the framework helped surface hidden design rationales and clarify *why* certain patterns existed—something traditional READMEs rarely capture.\n\nStill, Diátaxis isn’t a silver bullet. Maintaining accuracy—especially for reference and tutorials across versions—remains challenging. As one commenter pointed out, without automation or verification timestamps, docs drift. Others highlight translation efforts now underway, with partial versions already live in French, Spanish, and Japanese. These initiatives reflect Diátaxis’ growing role not just as a writing method, but as a shared vocabulary for global developer experience teams."
+      },
+      "background": {
+        "zh": "在Diátaxis出现之前，多数技术文档采用随意结构——常把安装说明、API列表与概念概述混在同一份README或冗长手册中，导致重复、不一致，且难以随版本更新保持准确。该框架借鉴了早期‘文档系统’理念和以用户为中心的设计原则，但将其简化为可直接落地的四象限模型。",
+        "en": "Before Diátaxis, most technical documentation followed ad hoc structures—often mixing installation instructions, API listings, and conceptual overviews in single READMEs or monolithic manuals. This led to redundancy, inconsistency, and difficulty maintaining accuracy across releases. The framework draws inspiration from earlier models like the 'Documentation System' concept and user-centered design principles, but simplifies them into an actionable, four-quadrant model."
+      },
+      "discussion": {
+        "zh": "实践者称赞Diátaxis能明确写作风格、显著改善交接文档质量，同时也担忧长期维护中内容易过时，呼吁引入‘验证时间戳’等机制；多语言翻译工作正在推进，法语、西班牙语等部分译本已上线预览。",
+        "en": "Practitioners praise Diátaxis for clarifying authorial voice and improving handover documentation, while also raising concerns about long-term maintenance drift and advocating for features like verification timestamps; translation efforts are actively underway, with multilingual previews already available."
+      },
+      "sources": [
+        {
+          "url": "https://diataxis.fr/",
+          "title": "Diátaxis"
+        },
+        {
+          "url": "https://ubuntu.com/blog/diataxis-a-new-foundation-for-canonical-documentation",
+          "title": "Diátaxis , a new foundation for Canonical documentation | Ubuntu"
+        },
+        {
+          "url": "https://idratherbewriting.com/blog/what-is-diataxis-documentation-framework",
+          "title": "What is Diátaxis and should you be using it with your documentation ?"
+        }
+      ]
+    },
+    {
+      "id": "rss:simonwillison.net_atom_everything_:fe470f21b2646aa3",
+      "slug": "2026-08-02-07-235-ai-organizations-back-open-weight-models-amid-us-regulatory-debate-6a857f13",
+      "path": "/article/2026-08-02-07-235-ai-organizations-back-open-weight-models-amid-us-regulatory-debate-6a857f13",
+      "rank": 7,
+      "score": 8.0,
+      "source": "rss",
+      "author": "Simon Willison",
+      "url": "https://simonwillison.net/2026/Aug/2/open-letters/#atom-everything",
+      "published_at": "2026-08-02T04:16:52+00:00",
+      "fetched_at": "2026-08-02T04:34:48.929004+00:00",
+      "tags": [
+        "AI policy",
+        "open-weight models",
+        "AI governance",
+        "US regulation",
+        "AI ethics"
+      ],
+      "image_path": "media/rss-simonwillison-net-atom-everything--fe470f21b2646aa3.svg",
+      "title": {
+        "zh": "235家AI机构联署支持开源权重模型",
+        "en": "235 AI organizations back open-weight models amid US regulatory debate"
+      },
+      "summary": {
+        "zh": "2026年7月24日，微软、英伟达、亚马逊等235家AI机构联合发布《开放权重与美国人工智能领导力》公开信，反对美国限制开放权重AI模型，并明确支持模型蒸馏作为正当开发技术。 这是迄今规模最大的AI产业联合声明，直面美国日益收紧的监管压力，在AI安全、国家安全与技术创新之间划出关键政策分界线。 该信明确将模型蒸馏定性为标准且有益的开发实践，与Anthropic同期呼吁监管大规模蒸馏形成对立；并强调开放权重模型支持更广范围的审计、更快的漏洞发现和去中心化改进，驳斥‘开放必然增加风险’的论点。",
+        "en": "On July 24, 2026, 235 AI organizations—including Microsoft, NVIDIA, Amazon, and later OpenAI—published the 'Open Weights and American AI Leadership' letter opposing U.S. restrictions on open-weight AI models and defending model distillation as a legitimate development technique. This letter represents the largest coordinated industry stance to date in favor of open-weight AI models amid intensifying U.S. regulatory scrutiny, shaping the policy debate around AI safety, national security, and innovation trade-offs. The letter explicitly defends model distillation as a standard, beneficial practice—unlike Anthropic’s concurrent call to regulate industrial-scale distillation—and notes that open-weight models enable broader auditing, faster vulnerability discovery, and decentralized improvement, countering claims that openness inherently increases risk."
+      },
+      "body": {
+        "zh": "2026年7月下旬，微软、英伟达、亚马逊、Y Combinator和Linux基金会等235家人工智能相关机构联合发布公开信《开放权重与美国人工智能领导力》，呼吁反对美国政府以安全为由限制开放权重AI模型。该信于7月24日发布，之后OpenAI也加入签署。信中明确指出：开放权重模型非但不损害安全，反而通过广泛审查、快速发现漏洞及社区共建防护机制来提升整体安全性。\n\n这封信直接回应了近期监管层的担忧——尤其是2026年6月Anthropic发布Claude Fable 5之后引发的讨论。Fable 5是Anthropic首款面向公众的“神话级”模型，虽已上线，但内置分类器会主动拦截涉及网络安全、生物化学及模型蒸馏的请求，并将此类任务转交能力较弱的Claude Opus处理。此前，其更强大的底层模型Claude Mythos 5仅限内部或特定合作方使用。这一实践凸显了能力、透明度与管控之间的深层张力。公开信警告：过度依赖闭源模型将制造单点故障风险、削弱市场竞争，并使关键技术集中于少数企业手中；而开放权重模型则通过去中心化与集体监督缓解这些隐患。\n\n信中一个值得注意的立场是明确支持“模型蒸馏”——即用已有模型的输出训练新模型的技术。签署方将其类比为开源软件的发展传统，强调这是模型改进、评估与验证的常规手段，不应被误读为恶意窃取。这与Anthropic三天后发布的立场形成鲜明对比：Anthropic承认不主张全面禁止开放权重模型，但同时警告威权国家可能利用开放模型构建超越美国的AI系统，或发动网络与生物攻击，并呼吁对大规模工业级蒸馏活动加强监管。\n\n7月28日，《前沿节奏》（Pacing the Frontier）声明进一步拓展讨论维度——该声明获1324名前沿AI公司员工联署，包括OpenAI首席科学家Jakub Pachocki、Safe Superintelligence创始人Ilya Sutskever、Anthropic CEO Dario Amodei等。他们呼吁美国政府推动国际协作，共同开发技术与治理工具，以有意识地调控自动化AI研发的加速趋势。现实案例包括Anthropic用Claude Code生成80%代码、OpenAI借Sol降低20%端到端服务成本等。这些信件共同表明：业界共识并未瓦解，而是从‘是否需要治理’转向‘如何在开放、安全、创新与地缘竞争间取得平衡’。",
+        "en": "In late July 2026, a major coalition of 235 AI-related organizations—including Microsoft, NVIDIA, Amazon, Y Combinator, and The Linux Foundation—released the open letter 'Open Weights and American AI Leadership'. Signed on July 24 and later joined by OpenAI, the letter argues forcefully against proposed U.S. government restrictions on open-weight AI models, which some policymakers have floated citing safety concerns. The signatories contend that openness is not at odds with safety—in fact, it enhances it—by enabling broad scrutiny, rapid vulnerability detection, and community-driven safeguards.\n\nThe letter directly responds to growing regulatory anxiety, especially after the June 2026 public release of Anthropic’s Claude Fable 5—a highly capable model deliberately shipped with built-in classifiers to block requests related to cybersecurity, biology, chemistry, and model distillation. That release followed earlier internal restrictions on its even more powerful counterpart, Claude Mythos 5, highlighting real tensions between capability, transparency, and control. The open letter warns that overreliance on closed models creates dangerous single points of failure, stifles competition, and concentrates power among a handful of providers—risks that open-weight models help mitigate through decentralization and collective oversight.\n\nA notable and nuanced stance in the letter is its defense of distillation—the practice of training new models using outputs from existing ones. Framing it as analogous to open-source software development, the signatories urge policymakers not to conflate this common, constructive technique with malicious misuse. This stands in sharp contrast to Anthropic’s position: three days later, Anthropic published its own response, warning that authoritarian states could exploit open weights to build rival frontier models or enable cyber- and bio-attacks—and calling for stricter oversight of industrial-scale distillation, even while affirming it does not support an outright ban.\n\nAdding another layer to the debate, the July 28 'Pacing the Frontier' statement—signed by 1,324 employees from leading AI labs including OpenAI, Anthropic, and Safe Superintelligence—shifted focus toward global coordination. It calls for international technical and governance tools to deliberately slow automated AI research acceleration, citing real-world examples like Anthropic’s 80% code-generation rate with Claude Code and OpenAI’s 20% cost reduction via Sol. Together, these letters reveal a fracturing consensus: not over whether AI needs governance, but over *how* to balance openness, security, innovation, and geopolitical competition."
+      },
+      "background": {
+        "zh": "开放权重AI模型指公开发布模型参数（权重），允许任何人检查、修改并在本地运行，区别于仅通过API调用的闭源模型。模型蒸馏是一种常用技术，即用大模型的输出训练小模型或新模型，用于压缩、评估与知识迁移。近期美国政府加强对开放模型的审查，主要担忧其可能被恶意行为者或敌对国家滥用。",
+        "en": "Open-weight AI models release model parameters (weights) publicly, allowing anyone to inspect, modify, and run them locally—unlike closed models accessed only via API. Distillation trains a smaller or newer model using outputs from a larger one, widely used for compression, evaluation, and transfer learning. The U.S. government has recently increased scrutiny of open models due to fears they could be misused by malicious actors or adversarial states."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Claude_Fable_5",
+          "title": "Claude Fable 5"
+        },
+        {
+          "url": "https://openai.com/index/introducing-gpt-oss/",
+          "title": "Introducing gpt-oss | OpenAI"
+        },
+        {
+          "url": "https://www.linkedin.com/pulse/open-weight-ai-models-why-every-enterprise-should-paying-misra-gi2qc",
+          "title": "Open - Weight AI Models : Why Every Enterprise Should Be Paying..."
+        }
+      ]
+    },
+    {
+      "id": "rss:simonwillison.net_atom_everything_:9d04b3a9a2417e2b",
+      "slug": "2026-08-02-08-people-reject-ai-assistants-contacting-them-on-behalf-of-coworkers-55bd61be",
+      "path": "/article/2026-08-02-08-people-reject-ai-assistants-contacting-them-on-behalf-of-coworkers-55bd61be",
+      "rank": 8,
+      "score": 8.0,
+      "source": "rss",
+      "author": "Simon Willison",
+      "url": "https://simonwillison.net/2026/Aug/1/greg-brockman/#atom-everything",
+      "published_at": "2026-08-01T22:29:44+00:00",
+      "fetched_at": "2026-08-02T04:34:48.929083+00:00",
+      "tags": [
+        "ai-ethics",
+        "generative-ai",
+        "human-computer-interaction",
+        "ai-misuse",
+        "workplace-ai"
+      ],
+      "image_path": "media/rss-simonwillison-net-atom-everything--9d04b3a9a2417e2b.svg",
+      "title": {
+        "zh": "同事的AI代发消息，人们本能抗拒",
+        "en": "People reject AI assistants contacting them on behalf of coworkers"
+      },
+      "summary": {
+        "zh": "格雷格·布罗克曼指出，OpenAI员工普遍抗拒接收同事AI助手代发的任务请求，即便这些任务他们本愿亲自协助完成，凸显了职场中人们对AI作为沟通中介的深层不适。 这揭示了企业级AI的关键设计约束：绕过人类主体性、擅自发起沟通的自动化，会损害信任、协作与心理安全感，从而阻碍实际落地并加剧人机目标错位。 抵触情绪特指AI在未经实时授权情况下‘代表’某人自主行动，而非用户自己操控AI；即便请求内容简单无害，该效应依然存在。这表明，人类对意图的感知与关系语境，比功能效用更具决定性。",
+        "en": "Greg Brockman reported that OpenAI employees resist receiving task requests from coworkers’ AI assistants—even for tasks they’d willingly do if asked directly—highlighting a widespread social discomfort with AI-as-intermediary in workplace communication. This reveals a critical design constraint for enterprise AI: automation that bypasses human agency in communication risks undermining trust, collaboration, and psychological safety—making adoption harder and misalignment more likely. The resistance occurs specifically when AI acts autonomously *on behalf of* a person—not when users control AI themselves—and applies even to low-stakes, helpful tasks. It underscores that perceived intent and relational context matter more than functional utility."
+      },
+      "body": {
+        "zh": "在OpenAI内部，一项看似平常却意味深长的工作实践浮出水面：许多员工将ChatGPT接入Slack实现自动化——但当某位同事的AI助手直接向他人发送求助消息时，收件人普遍表现出抵触情绪。OpenAI联合创始人兼总裁格雷格·布罗克曼（Greg Brockman）亲历这一现象，并在社交媒体上简洁而有力地指出：即便任务本身完全愿意帮忙，人们仍本能排斥由同事的AI代为发起的请求。\n\n这并非能力问题，而是情境与关系问题。同一位员工，若收到同事本人发来的文档审阅、代码调试或项目说明请求，会欣然应允；但当同一请求以“张三的ChatGPT”名义发出时，却可能引发犹豫甚至反感。这种阻力并非来自技术缺陷，而根植于职业场景中的人际信任、互惠习惯与心理安全感。\n\n布罗克曼的观察挑战了一个常见设计预设：自动发送消息天然更高效。事实上，让AI充当沟通中介，反而可能削弱人类赖以判断善意、紧急程度和真实意图的关键社交线索——语气、时机、上下文。当AI在未经实时人工确认的情况下“代表”某人发起联络，请求容易变得扁平化、去人格化，甚至令人感到冒犯。\n\n这对开发者、产品经理和企业IT团队提出明确警示：AI工具不能只模仿人类流程，更要尊重工作的社会结构。真正的增强型设计，意味着坚持透明原则（例如清晰标注“该请求由李四实时指导AI生成”）、确保用户主动授权、并严格限制AI自主外呼行为。正如布罗克曼所言：“人们希望AI帮我们省下时间——或让共处时光更有价值——而不是成为隔开彼此的一层屏障。”这个分寸，既是伦理要求，也是落地关键。",
+        "en": "At OpenAI, a quiet but telling workplace experiment has surfaced: many employees connect ChatGPT to Slack for automation—but when a coworker’s AI assistant messages someone directly to request help, the response is often negative. Greg Brockman, OpenAI’s President and Co-Founder, observed this firsthand and shared a concise yet powerful insight on social media: people consistently resist being contacted by another person’s AI, even for tasks they’d readily assist with if asked face-to-face or via direct message.\n\nThis isn’t about capability—it’s about context and connection. The same person who would happily review a document, debug a script, or clarify a project timeline when pinged by a colleague becomes hesitant or annoyed when that same request arrives from an AI agent labeled as “Alex’s ChatGPT.” The friction isn’t technical; it’s social. It reveals how deeply human interaction is woven into professional trust, reciprocity, and psychological safety.\n\nBrockman’s observation cuts against a common assumption in AI product design: that automating communication is inherently efficient. In reality, inserting AI as an intermediary can erode relational cues—tone, timing, intent—that humans rely on to interpret goodwill and urgency. When AI acts *on behalf of* someone without their active, moment-to-moment oversight, it risks flattening nuance and making requests feel transactional, impersonal, or even invasive.\n\nThe implication is clear for developers, product managers, and enterprise IT teams: AI tools shouldn’t just mimic human workflows—they must respect the social architecture of work. Designing AI to *augment* rather than *replace* human contact means prioritizing transparency (e.g., clearly signaling when a human is actively guiding the AI), preserving opt-in consent, and avoiding autonomous outreach unless explicitly authorized. As Brockman puts it, people want AI to “give time back—or enhance time together—not become a layer separating people.” That distinction is ethical, practical, and profoundly human."
+      },
+      "background": {
+        "zh": "以ChatGPT为代表的生成式AI正加速接入Slack、Microsoft Teams等办公平台，支持自动起草、摘要生成与任务协调。这类AI由大语言模型（LLM）驱动，能模拟类人对话，但缺乏内建的社会意识与责任归属机制。",
+        "en": "Generative AI tools like ChatGPT are increasingly integrated into workplace platforms such as Slack and Microsoft Teams, enabling automated drafting, summarization, and task coordination. Large language models (LLMs) power these agents, allowing them to simulate human-like communication—but without built-in social awareness or accountability mechanisms."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": []
+    },
+    {
+      "id": "hackernews:story:49139102",
+      "slug": "2026-08-02-09-ai-financial-advice-works-well-if-you-ask-the-right-questions-f0714978",
+      "path": "/article/2026-08-02-09-ai-financial-advice-works-well-if-you-ask-the-right-questions-f0714978",
+      "rank": 9,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "foxtrot8672",
+      "url": "https://mitsloan.mit.edu/ideas-made-to-matter/ai-financial-advice-surprisingly-good-especially-if-you-ask-right-questions",
+      "published_at": "2026-08-01T22:25:12+00:00",
+      "fetched_at": "2026-08-02T04:34:49.418303+00:00",
+      "tags": [
+        "AI",
+        "financial-literacy",
+        "LLM-applications",
+        "behavioral-finance",
+        "Hacker-News"
+      ],
+      "image_path": "media/hackernews-story-49139102.svg",
+      "title": {
+        "zh": "AI理财建议效果不错，但前提是你问对问题",
+        "en": "AI financial advice works well—if you ask the right questions"
+      },
+      "summary": {
+        "zh": "麻省理工学院斯隆管理学院研究人员发现，大语言模型在用户提问清晰时，能就标准理财话题给出高质量建议；但面对个性化、强情境或多目标权衡类问题，表现明显下降。 这打破了AI在理财领域‘完全无用’或‘随时可取代人类’的二元认知；它表明AI适合作为可扩展、规则明确的辅助工具，同时也凸显了提升公众金融素养和落实负责任AI部署的紧迫性。 AI在共识性强的话题（如指数基金投资）上表现良好，但在深度情境化权衡（如失业风险下兼顾养老与子女教育金）中明显乏力；当前评估普遍忽略记忆能力、个人历史和真实风险语境。",
+        "en": "MIT Sloan researchers found that LLMs give high-quality financial advice on standard topics when prompted clearly—but performance degrades significantly with personal, contextual, or multi-objective questions. This challenges the binary view of AI as either 'useless' or 'ready to replace humans'—instead, it shows AI excels as a scalable, rules-based assistant in finance, while highlighting urgent needs in financial literacy education and responsible AI deployment. AI performs well on consensus-driven topics (e.g., index fund investing), but struggles with deeply contextual trade-offs (e.g., balancing retirement savings against college funding amid job insecurity); evaluations often ignore memory, personal history, and real-world risk framing."
+      },
+      "body": {
+        "zh": "麻省理工学院斯隆管理学院近期一项研究指出，大语言模型（LLM）能提供出人意料地靠谱的理财建议——但前提是用户能提出恰当的问题。研究将AI回答与CFP（认证财务规划师）委员会标准等权威基准对比，发现其在核心原则上高度一致：分散投资、低费率指数基金、善用税收优惠账户，以及避免情绪化或投机性决策。然而，一旦问题涉及个人具体情境——如失业风险、照护责任或跨代财富目标——AI表现便明显下滑，人类顾问在此类复杂判断上仍具不可替代优势。\n\n这不仅关乎模型能力，更取决于用户准备程度。Hacker News评论区多位用户强调，公众普遍存在的金融素养短板，使得许多人根本不知道该问什么，甚至提出危险的错误问题。有人提到亲友坚持为婴幼儿开储蓄账户“靠18年复利致富”，也有人目睹他人把迷因币或Funko玩偶当作长期投资。这些并非极端个例，而是反映出一个根本矛盾：AI能回答什么，与用户真正理解并能有效提问之间存在巨大鸿沟。\n\n研究还揭示了当前AI理财评估方式的结构性缺陷：多数测试采用单次、无上下文、无记忆的提示，而真实财务规划是跨越数年、伴随人生阶段持续演进的过程。有评论者提议，通过系统提示赋予AI“切身利害关系”（例如：“若此建议导致亏损，你须承担法律责任”）或可提升其风险意识，但尚无实证支持。另有观点指出，相比软件工程等高度开放的领域，个人理财存在广泛共识的最佳实践，反而使其成为LLM最易落地的应用场景之一。\n\n不过，实际应用仍面临准确率之外的障碍。财务顾问常收取2000美元制作一份99%为模板内容的《财务建议书》（SoA），而AI已能高效完成此类任务。但信任建立、法律责任归属及监管合规等问题仍未解决。已有工具如Fable，通过接入Monarch Money实时数据，正帮助用户优化资产配置、判断再平衡时机，甚至评估购房、创业出售等重大财务决策。未来方向并非AI取代顾问，而是角色重构：人类专注共情、伦理判断与多目标权衡，AI则承担可规模化、规则明确的基础指导。",
+        "en": "A recent MIT Sloan study reveals that large language models (LLMs) can deliver surprisingly competent financial advice—but only when users frame their questions thoughtfully. The research tested AI responses against benchmarks like the CFP Board’s standards and found strong alignment on core principles: diversification, low-cost index investing, tax-advantaged accounts, and avoiding emotional or speculative decisions. Yet performance dropped sharply when questions involved personal context—job loss, caregiving responsibilities, or multi-generational wealth goals—where human advisors still hold clear advantages.\n\nThis isn’t just about model capability; it’s about user readiness. As Hacker News commenters point out, widespread financial illiteracy means many people don’t know *what* to ask—or worse, ask dangerously misguided questions. One commenter recounted being urged to open savings accounts for toddlers “to earn compound interest over 18 years,” while others cited real-world examples of people treating meme coins or collectibles as legitimate long-term investments. These aren’t edge cases—they reflect a foundational gap between what AI can answer and what users actually understand.\n\nThe study also highlights structural limitations in how AI advice is evaluated. Most tests use one-shot, context-free prompts without memory or personalized history—unlike real-life financial planning, which evolves across years and life events. Some commenters suggest prompting techniques like assigning AI ‘skin in the game’ (e.g., “You’ll be held liable if this advice fails”) might improve risk awareness, though no empirical validation yet exists. Others note that finance, unlike software engineering, has broad consensus on best practices—making it unusually amenable to LLM assistance.\n\nStill, adoption faces friction beyond accuracy. Financial planners routinely charge $2,000 for Statements of Advice (SoAs) that are largely boilerplate—a task AI already handles well. Yet trust, liability, and regulatory compliance remain unresolved. Tools like Fable—fed live Monarch Money data—are already helping users rebalance portfolios and evaluate major life purchases. The future isn’t AI replacing advisors, but reshaping roles: humans focusing on empathy, ethics, and complex trade-offs, while AI handles scalable, rules-based guidance."
+      },
+      "background": {
+        "zh": "金融素养指理解并有效运用各类财务技能的能力，包括个人财务管理、预算编制和投资决策。行为金融学研究心理因素如何影响财务决策，常揭示过度自信、损失厌恶等系统性偏差。大语言模型缺乏真实经验、长期记忆和法律责任能力，尽管模式识别能力强，但无法承担受托责任。",
+        "en": "Financial literacy refers to the ability to understand and effectively use various financial skills, including personal financial management, budgeting, and investing. Behavioral finance studies how psychological factors influence financial decisions—often revealing systematic biases like overconfidence or loss aversion. LLMs lack real-world experience, memory, or legal accountability, making them unsuitable for fiduciary roles despite strong pattern-matching abilities."
+      },
+      "discussion": {
+        "zh": "Hacker News评论者强调现实中的金融素养缺失问题，质疑AI若无‘切身利害关系’能否真正建模风险，对比了理财领域基于共识的简洁性与软件工程的开放复杂性，并指出已有从业者借助Fable等工具接入实时财务数据开展实践。",
+        "en": "Hacker News commenters stressed real-world financial illiteracy, questioned whether AI can truly model risk without 'skin in the game', contrasted finance's consensus-based simplicity with software engineering's open-ended complexity, and noted early adoption by practitioners using tools like Fable with live financial data."
+      },
+      "sources": [
+        {
+          "url": "https://www.newsletter.datadrivenvc.io/p/llm-applications-in-finance-and-investing",
+          "title": "LLM Applications in Finance & Investing"
+        },
+        {
+          "url": "https://www.linkedin.com/posts/norbertgehrke_kong-et-al-llms-in-finance-require-bias-activity-7430009487329026048-J0N1",
+          "title": "LLM Bias in Finance : Evaluating Large Language Models... | LinkedIn"
+        },
+        {
+          "url": "https://lumenalta.com/insights/ai-limitations-what-artificial-intelligence-can-t-do",
+          "title": "AI ’s limitations : 5 things artificial intelligence can’t do | Lumenalta"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49134599",
+      "slug": "2026-08-02-10-second-edition-of-the-art-of-64-bit-assembly-released-f4d96166",
+      "path": "/article/2026-08-02-10-second-edition-of-the-art-of-64-bit-assembly-released-f4d96166",
+      "rank": 10,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "0x54MUR41",
+      "url": "https://nostarch.com/art-64-bit-assembly-v2",
+      "published_at": "2026-08-01T14:09:00+00:00",
+      "fetched_at": "2026-08-02T04:34:49.418363+00:00",
+      "tags": [
+        "assembly-language",
+        "systems-programming",
+        "low-level",
+        "computer-architecture",
+        "programming-education"
+      ],
+      "image_path": "media/hackernews-story-49134599.jpg",
+      "title": {
+        "zh": "《64位汇编语言的艺术》第二版正式发布",
+        "en": "Second edition of 'The Art of 64-bit Assembly' released"
+      },
+      "summary": {
+        "zh": "No Starch Press出版社正式推出《64位汇编语言的艺术》第二版，这是一本800页、全面更新的现代x86-64汇编编程指南，以NASM汇编器为核心教学工具。 它再次印证：即便在抽象层级日益升高的今天，汇编能力仍是系统编程、安全研究与性能调优不可或缺的基础，同时也填补了当前高质量、教学友好的现代汇编教材空白。 本书以NASM为主要汇编器，涵盖System V与Microsoft x64两种调用约定，并包含SIMD、调试流程、内存模型感知并发等实用主题；同时明确对比NASM、GAS与MASM在语法和功能上的差异。",
+        "en": "The second edition of 'The Art of 64-bit Assembly'—an 800-page, fully updated guide using NASM and covering modern x86-64 systems programming—has been released by No Starch Press. It reaffirms that assembly literacy remains essential for systems programming, security research, and performance optimization—even amid rising abstraction—and fills a growing gap in up-to-date, pedagogically sound educational resources. The book uses NASM as its primary assembler, covers both System V and Microsoft x64 calling conventions, and includes practical topics like SIMD, debugging workflows, and memory-model-aware concurrency—while explicitly comparing NASM, GAS, and MASM syntax and capabilities."
+      },
+      "body": {
+        "zh": "Noon Press出版社推出了兰德尔·海德（Randall Hyde）所著《64位汇编语言的艺术》第二版，这是一本全面修订、大幅扩充的800页深度指南，面向希望掌握现代x86-64汇编编程的开发者。本书并非面向初学者的入门读物，而是为已熟悉C语言和基础计算机体系结构的读者设计，旨在剥离高级抽象，直击寄存器操作、指令编码、内存布局等底层机制。\n\n新版全面适配当前Linux与Windows开发环境，更新所有代码示例，替换过时工具链说明，并新增对现代调试流程、SIMD基础及内存模型感知并发模式的讲解。书中以NASM汇编器为主要教学工具，强调跨平台可移植性与语法清晰性；同时专门对比NASM、GNU汇编器（GAS）和MASM在关键场景下的差异，例如宏展开行为、循环支持与字符串处理能力。\n\n该书发布后在Hacker News引发热烈讨论——争议焦点并非技术错误，而是教学理念：有人盛赞其严谨性与稀缺价值，认为在高级框架泛滥的时代，此类扎实的低层训练尤为珍贵；也有人批评开篇营销文案中关于“AI无法胜任汇编”的表述喧宾夺主，分散了对核心内容的关注。技术层面亦有深入交流：有用户分享LLVM内置汇编器在表达式解析与重定位优化上的进展；另有读者询问是否存在更侧重Linux生态的同类教材。\n\n真正耐人寻味的是这种需求的持续存在。尽管抽象层不断加厚，汇编仍在逆向工程、固件分析、漏洞利用及数据库/游戏引擎热点路径优化中不可替代。正如一位评论者坦言：“我学过的最令人抓狂的语言——却依然极其有用。”这种“难而必要”的张力，正是本书所拥抱的技艺本质，而非怀旧情怀。",
+        "en": "Noon Press has released the second edition of *The Art of 64-bit Assembly*, an extensively revised and expanded 800-page guide to modern x86-64 assembly programming. Authored by Randall Hyde, the book targets developers seeking deep fluency in low-level systems programming—not as historical curiosity, but as practical tooling for performance-critical code, compiler internals, OS development, and security research. The new edition updates all examples for current Linux and Windows environments, replaces outdated toolchain references, and adds coverage of modern debugging workflows, SIMD fundamentals, and memory-model-aware concurrency patterns.\n\nUnlike introductory programming texts, this book assumes familiarity with C and basic computer architecture—then deliberately strips away abstractions to expose how high-level constructs map to registers, instructions, and memory layout. It uses NASM as its primary assembler, emphasizing portability and clarity over vendor-specific syntax, though it explicitly compares NASM, GAS, and MASM across key use cases. Readers encounter real-world constraints: stack alignment rules, calling conventions (System V and Microsoft x64), and the subtle impact of instruction encoding choices on cache behavior.\n\nThe release sparked lively discussion on Hacker News—not over technical flaws, but over pedagogical philosophy. Some praised its rigor and rarity in an era dominated by high-level frameworks; others criticized early marketing language referencing AI limitations, arguing it distracted from the book’s substance. Technical side debates emerged too: one contributor highlighted LLVM’s integrated assembler improvements for expression handling, while another asked about Linux-focused alternatives given the book’s dual-platform approach.\n\nWhat stands out is the persistent demand for such material. Despite decades of abstraction layers, assembly remains indispensable for reverse engineering, firmware analysis, exploit development, and optimizing hot loops in databases or game engines. As one commenter put it: 'The most godforsaken language I ever had to learn—but still very very useful.' That tension—between difficulty and necessity—is precisely what the book embraces, not as nostalgia, but as craft."
+      },
+      "background": {
+        "zh": "x86-64是英特尔x86指令集架构的64位扩展，广泛应用于桌面电脑、服务器和云基础设施。汇编语言提供对硬件的直接控制，支持极致性能优化与深层系统理解，但需熟练掌握寄存器、内存寻址方式及平台特定的ABI规则。",
+        "en": "x86-64 is the 64-bit extension of Intel's x86 instruction set architecture, widely used in desktops, servers, and cloud infrastructure. Assembly language provides direct control over hardware, enabling fine-grained optimization and deep system understanding—but requires mastery of registers, memory addressing modes, and platform-specific ABI rules."
+      },
+      "discussion": {
+        "zh": "Hacker News评论呈现两极分化：部分读者盛赞其深度与现实价值，另一些则纠结于营销文案措辞或工具偏好；技术性讨论包括LLVM内置汇编器改进细节及不同汇编器对比，凸显汇编语言在表层争议之下持续存在的实际意义。",
+        "en": "Hacker News comments were polarized: some lauded the book’s depth and relevance, while others fixated on minor marketing phrasing or tool preferences; technical contributions included LLVM assembler insights and cross-assembler comparisons, reinforcing assembly’s enduring utility despite surface-level nitpicking."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/brian-chau/go_x86_64_assembly_instruction_set",
+          "title": "GitHub - brian-chau/go_ x 86 _ 64 _ assembly _ instruction _ set"
+        },
+        {
+          "url": "https://practicaldev-herokuapp-com.global.ssl.fastly.net/taw/100-languages-speedrun-episode-40-x86-64-assembly-jjj",
+          "title": "100 Languages Speedrun: Episode 40: x 86 - 64 Assembly"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49136821",
+      "slug": "2026-08-02-11-google-reader-s-shutdown-accelerated-rss-decline-and-web-centralization-1d200349",
+      "path": "/article/2026-08-02-11-google-reader-s-shutdown-accelerated-rss-decline-and-web-centralization-1d200349",
+      "rank": 11,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "pudgywalsh",
+      "url": "https://openrss.org/blog/how-google-helped-destroy-adoption-of-rss-feeds",
+      "published_at": "2026-08-01T18:07:07+00:00",
+      "fetched_at": "2026-08-02T04:34:49.418406+00:00",
+      "tags": [
+        "RSS",
+        "web-standards",
+        "open-web",
+        "Google-Reader",
+        "decentralization"
+      ],
+      "image_path": "media/hackernews-story-49136821.svg",
+      "title": {
+        "zh": "谷歌关闭Reader加速RSS衰落与网络中心化",
+        "en": "Google Reader’s shutdown accelerated RSS decline and web centralization"
+      },
+      "summary": {
+        "zh": "2023年OpenRSS.org发布的一篇评论文章指出，谷歌2013年关闭Google Reader及其后续对RSS的长期忽视，显著削弱了RSS的普及，并加速了网络内容向专有、广告驱动平台的集中。 这一批评揭示了单个企业决策如何削弱开放网络标准，将权力从用户和内容发布者手中转移至中心化平台，也凸显了当前将RSS作为数字主权与去中心化运动重要组成部分的复兴努力。 Google Reader于2005年10月上线，2013年7月1日关停；其关闭恰逢谷歌大力推广用户极少使用的Google+社交网络；RSS技术本身轻量高效，在Ruby on Rails等框架中实现极为简便。",
+        "en": "A 2023 essay on OpenRSS.org argues that Google’s 2013 shutdown of Google Reader—and its subsequent lack of RSS support—played a decisive role in weakening RSS adoption and accelerating the centralization of web content on proprietary, ad-driven platforms. This critique highlights how a single corporate decision can erode open web standards, shifting power from users and publishers to centralized platforms—and underscores ongoing efforts to revive RSS as part of broader decentralization and digital sovereignty movements. Google Reader launched in October 2005 and was discontinued on 1 July 2013; its shutdown coincided with Google’s push into Google+, a failed social network that received internal priority despite low adoption; RSS remains technically lightweight and easy to implement in frameworks like Ruby on Rails."
+      },
+      "body": {
+        "zh": "2013年，谷歌悄然关闭了当时最主流的RSS聚合服务Google Reader，官方理由是“使用率下降”。但包括OpenRSS.org 2023年那篇引发广泛讨论的长文在内的许多观察者指出，这一说辞掩盖了更深层的战略转向：谷歌早已将重心移向Google+等专有平台，后来进一步押注YouTube和Discover——这些平台依靠算法推荐内容，并通过精准广告盈利。关闭Reader不只是撤下一款工具，更是从开放网络中抽走了关键基础设施，使RSS失去主流曝光、开发者动力和企业背书。\n\nRSS长期提供一种去中心化的协议级替代方案：任何人可发布订阅源，任何人可用任意兼容客户端阅读，无需平台审批或分发许可。Google Reader的普及让数百万用户（尤其是博主、开发者和早期采用者）接受了这种模式。它的消失留下巨大空白——Feedly和Inoreader虽随后崛起，却缺乏谷歌级别的集成能力、用户规模和公信力。与此同时，社交媒体平台全力优化参与度指标，用算法时间线取代按时间排序、由用户掌控的原始信息流。\n\n影响是结构性的。随着RSS淡出大众视野，越来越多网站停止发布或维护订阅源——Shopify和Rails仍是例外，添加RSS支持对它们而言轻而易举——但多数CMS和SaaS平台已将其边缘化。开发者也转向为特定平台定制的API，而非面向开放聚合的标准。直至今日，主流新闻网站常省略RSS链接，或提供失效的订阅地址；浏览器甚至不再默认显示“发现RSS源”的提示。\n\n然而RSS从未真正消亡。它仍在多个领域活跃：播客分发完全依赖RSS；技术博客坚持输出标准格式；注重隐私的读者如NetNewsWire持续使用；新兴去中心化项目如Hyperfeed和BICLE更将其视为抵抗平台锁定的基础架构。当AI训练数据来源争议、浏览器厂商权力扩张、广告导向的协议设计等问题日益凸显，Google Reader的故事便不再只是怀旧，而是一则关于企业决策如何悄然重塑开放网络根基的警示案例。",
+        "en": "In 2013, Google quietly shut down Google Reader—the most widely used RSS feed aggregator of its time—citing 'declining usage' as the official reason. But many observers, including contributors to the 2023 essay on OpenRSS.org, argue that this explanation masked a deeper strategic shift: Google had already pivoted toward proprietary, ad-driven platforms like Google+ and later YouTube and Discover, where content discovery is algorithmically controlled and monetized through targeted advertising. The discontinuation didn’t just remove a tool—it withdrew critical infrastructure from the open web, depriving RSS of mainstream visibility, developer incentives, and corporate legitimacy.\n\nRSS had long offered a decentralized, protocol-based alternative to centralized feeds: anyone could publish a feed, anyone could read it with any compatible client, and no platform gatekept distribution. Google Reader’s popularity normalized this model for millions of users, especially bloggers, developers, and early adopters. Its removal left a vacuum that few competitors filled at scale—Feedly and Inoreader gained traction but lacked Google’s integration, reach, and trust. Meanwhile, social media platforms aggressively optimized for engagement metrics, burying chronological, user-controlled feeds in favor of algorithmic timelines.\n\nThe consequences were structural. As RSS faded from mainstream use, websites gradually stopped publishing or maintaining feeds—Shopify and Rails remain notable exceptions, where adding RSS support remains trivial—but most CMSs and SaaS platforms deprioritized it. Developers shifted focus to APIs designed for platform-specific integrations rather than open syndication standards. Even today, major news outlets often omit RSS links or serve broken feeds, while browsers no longer surface feed detection UIs.\n\nYet RSS never truly died. It persists in niches: podcast distribution (which relies entirely on RSS), technical blogs, privacy-conscious readers like NetNewsWire, and emerging decentralized efforts like Hyperfeed and BICLE. These projects treat RSS not as legacy tech, but as foundational scaffolding for resisting platform lock-in. As debates over AI training data provenance, browser vendor control, and ad-driven protocol design intensify, the story of Google Reader serves less as nostalgia and more as a cautionary case study in how corporate decisions can reshape open infrastructure—often without fanfare, and always with lasting effect."
+      },
+      "background": {
+        "zh": "RSS（简易信息聚合）是一种基于XML的网页订阅格式，允许网站自动向订阅者推送更新。用户可通过阅读器将多个来源的内容聚合到一处，无需依赖算法推荐、账户体系或平台授权。在关停前，Google Reader是最主流的RSS服务，既是面向用户的工具，也是事实上的RSS互操作性标杆。",
+        "en": "RSS (Really Simple Syndication) is an XML-based web feed format that enables automatic content distribution from websites to subscribers. It allows users to aggregate updates from multiple sources in one place using feed readers—without relying on algorithms, accounts, or platform permissions. Google Reader was the most popular such service before its shutdown, serving as both a consumer-facing tool and a de facto standard-bearer for RSS interoperability."
+      },
+      "discussion": {
+        "zh": "评论者怀念围墙花园出现前的互联网，争论RSS是否仍有生命力，质疑谷歌关停理由不实，并指出NetNewsWire及Rails内置RSS等切实可行的替代方案。",
+        "en": "Commenters express nostalgia for pre-walled-garden internet, debate RSS’s current viability, criticize Google’s stated rationale as disingenuous, and highlight working alternatives like NetNewsWire and Rails-integrated RSS feeds."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Google_Reader",
+          "title": "Google Reader - Wikipedia"
+        },
+        {
+          "url": "https://github.com/poga/hyperfeed",
+          "title": "GitHub - poga/hyperfeed: decentralized rss publishing · GitHub"
+        },
+        {
+          "url": "https://bitcointalk.org/index.php?topic=5564751.0",
+          "title": "BICLE v0.1 - The Decentralized Feed Protocol"
+        }
+      ]
+    },
+    {
+      "id": "rss:simonwillison.net_atom_everything_:453d766c216078df",
+      "slug": "2026-08-02-12-datasette-apps-0-2a0-adds-invisible-sandboxed-iframe-debugging-bb1179c6",
+      "path": "/article/2026-08-02-12-datasette-apps-0-2a0-adds-invisible-sandboxed-iframe-debugging-bb1179c6",
+      "rank": 12,
+      "score": 7.0,
+      "source": "rss",
+      "author": "Simon Willison",
+      "url": "https://simonwillison.net/2026/Aug/1/datasette-apps/#atom-everything",
+      "published_at": "2026-08-01T21:23:56+00:00",
+      "fetched_at": "2026-08-02T04:34:48.929110+00:00",
+      "tags": [
+        "Datasette",
+        "tooling",
+        "debugging",
+        "AI-agent-integration",
+        "web-development"
+      ],
+      "image_path": "media/rss-simonwillison-net-atom-everything--453d766c216078df.svg",
+      "title": {
+        "zh": "datasette-apps 0.2a0上线隐形沙箱调试功能",
+        "en": "Datasette-apps 0.2a0 adds invisible sandboxed iframe debugging"
+      },
+      "summary": {
+        "zh": "datasette-apps 0.2a0 新增 `app_debug()` 函数，支持在隐形沙箱 iframe 中执行 JavaScript 测试；同时新增 `app_list()` 函数，用于枚举当前用户有权编辑的应用，二者均基于 Datasette Agent 0.4a0 的 `context.browser_task()` 机制。 这些工具大幅提升了 Datasette 应用的开发体验与自动化能力，使 AI 代理能在不干扰界面、无需人工干预的情况下安全地测试、检查和管理应用。 `app_debug()` 使用 `opacity: 0` 和 `pointer-events: none` 实现隐形 iframe，保持其完整运行状态（包括 JS 执行与布局测量），但需注意部分浏览器仍可能对离屏内容进行资源节流。",
+        "en": "Datasette-apps 0.2a0 introduces `app_debug()` for invisible, sandboxed iframe-based JavaScript testing and `app_list()` for enumerating user-editable apps, both built for Datasette Agent 0.4a0's `context.browser_task()`. These tools significantly improve developer ergonomics and automation potential for Datasette Apps, enabling AI agents to safely test, inspect, and manage applications without manual intervention or UI disruption. The `app_debug()` iframe remains fully active despite being invisible (using `opacity: 0` and `pointer-events: none`), preserving JavaScript execution and layout measurement — though browser throttling of offscreen content remains a known caveat."
+      },
+      "body": {
+        "zh": "datasette-apps 0.2a0 是一个预发布版本，该插件允许用户直接在 Datasette 内创建、编辑和托管 HTML/JavaScript 应用。此次更新专为适配 Datasette Agent（一个基于大语言模型的数据探索助手）而设计，新增两项关键能力：最引人注目的是 `app_debug()` 函数，它采用一种创新的调试方式——将应用加载进一个完全沙箱化的 iframe 中，并通过 CSS 设置 `opacity: 0` 和 `pointer-events: none` 实现视觉隐藏与交互屏蔽。这样，Datasette Agent 就能在不干扰用户界面的前提下，在应用的真实运行环境中执行 JavaScript，例如验证功能是否正常、测量 DOM 元素尺寸等。\n\n另一项新工具 `app_list()` 则让 Datasette Agent 能够自动列出当前用户有编辑权限的所有应用。这使自动化成为可能：Agent 不再需要人工指定应用名称，而是能动态发现、选择并操作可编辑的应用——比如根据自然语言指令修改代码或重新生成界面。这两项功能均依赖于 Datasette Agent 0.4a0 新增的 `context.browser_task()` 机制，该机制为 AI 代理提供了安全、隔离的浏览器执行环境。\n\n此次更新标志着 Datasette 正从单纯的数据浏览工具，逐步演变为轻量级协作式应用平台。应用以单个 HTML 文件形式内嵌存储，每次编辑都记录在 SQLite 数据库中；如今又支持 AI 代理对其进行安全测试与管理，真正实现了数据与应用的一体化开发体验。隐形 iframe 技术尤为巧妙：相比 `display: none` 或 `visibility: hidden`（会暂停渲染和脚本执行），`opacity: 0` 保持 iframe 完整活跃，但需注意部分浏览器仍可能对不可见 iframe 进行资源节流。\n\n对于构建数据驱动型工具或内部仪表板的开发者而言，datasette-apps 与 Datasette Agent 的组合，显著降低了定制 UI 的开发、迭代与验证门槛——所有操作都在数据原本所在的可信环境中完成。这是迈向“数据原生”应用运行时的重要一步。",
+        "en": "Datasette-apps 0.2a0 — an alpha release of the plugin that lets users create, edit, and host HTML/JavaScript apps directly inside Datasette — introduces two powerful new tools designed specifically for integration with Datasette Agent, the LLM-powered assistant for Datasette. The most notable addition is `app_debug()`, a novel debugging mechanism that loads an app inside a fully sandboxed iframe with zero visibility and no user interaction: it uses CSS `opacity: 0` and `pointer-events: none` to hide the iframe while keeping it live in the DOM. This allows Datasette Agent to execute JavaScript inside the app’s context — checking functionality, measuring element dimensions, or validating rendering — without disrupting the user interface or requiring visible test windows.\n\nThe second new tool, `app_list()`, enables Datasette Agent to programmatically discover which apps a signed-in user has permission to edit. This powers automation: instead of hardcoding app names or relying on manual discovery, the agent can now dynamically enumerate editable apps and act on them — for example, editing, testing, or regenerating them based on natural-language instructions. Both tools rely on Datasette Agent 0.4a0’s new `context.browser_task()` infrastructure, which provides secure, isolated browser execution contexts for agent-initiated tasks.\n\nThis release reflects a deeper shift toward treating Datasette not just as a data explorer, but as a lightweight, collaborative application platform. By embedding apps *inside* Datasette — stored as single HTML files with version history tracked in SQLite — and now enabling AI agents to safely test and manage them, the ecosystem bridges low-code development with programmatic, LLM-driven workflows. The invisible iframe technique is especially clever: unlike hidden `display: none` or `visibility: hidden` elements (which pause rendering and JavaScript), `opacity: 0` preserves full execution — though developers should be aware that some browsers may still throttle inactive iframes, as noted in recent web performance research.\n\nFor developers building data-centric tools or internal dashboards, datasette-apps + Datasette Agent lowers the barrier to creating, iterating, and verifying custom UIs — all within the same trusted environment where their data already lives. It’s a small but meaningful step toward making Datasette a true 'data-native' application runtime."
+      },
+      "background": {
+        "zh": "Datasette 是一款开源工具，用于探索和发布 SQLite 数据库中的数据。datasette-apps 是其插件，允许已登录用户在 Datasette 内部创建并托管纯 HTML/JS/CSS 应用。Datasette Agent 是一个基于大语言模型的助手，通过细粒度授权的专用工具（如 SQL 查询或应用管理）与 Datasette 交互，而非执行任意代码。",
+        "en": "Datasette is an open-source tool for exploring and publishing data from SQLite databases. Datasette-apps is a plugin that lets authenticated users create and host simple HTML/JS/CSS apps inside Datasette itself. Datasette Agent is an LLM-powered assistant that interacts with Datasette via narrowly scoped, permissioned tools — such as SQL querying or app management — rather than raw code execution."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://agent.datasette.io/",
+          "title": "Datasette Agent : an AI assistant for Datasette to help explore and..."
+        },
+        {
+          "url": "https://github.com/datasette/datasette-apps",
+          "title": "GitHub - datasette/ datasette - apps : Apps that live inside Datasette"
+        },
+        {
+          "url": "https://www.richardfu.net/keeping-iframes-running-when-hidden-a-journey-through-browser-optimizations/",
+          "title": "Keeping iframes Running When Hidden: A Journey... - Richard Fu"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1vclrah",
+      "slug": "2026-08-02-13-practitioner-seeks-gpu-friendly-opd-opsd-and-grpo-implementations-32d17152",
+      "path": "/article/2026-08-02-13-practitioner-seeks-gpu-friendly-opd-opsd-and-grpo-implementations-32d17152",
+      "rank": 13,
+      "score": 7.0,
+      "source": "reddit",
+      "author": "/u/LatentBotNet",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1vclrah/github_repo_to_learn_the_opdopsd_and_how_they/",
+      "published_at": "2026-08-01T12:11:34+00:00",
+      "fetched_at": "2026-08-02T04:34:49.685237+00:00",
+      "tags": [
+        "reinforcement-learning",
+        "llm-alignment",
+        "model-distillation",
+        "gpu-optimization",
+        "open-source-rl"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1vclrah.png",
+      "title": {
+        "zh": "开发者寻求消费级GPU可运行的OPD、OPSD与GRPO实现",
+        "en": "Practitioner seeks GPU-friendly OPD OPSD and GRPO implementations"
+      },
+      "summary": {
+        "zh": "一名实践者公开征集可在RTX 4090/5090等消费级GPU上运行的GitHub仓库或实操配置，以实证对比OPD、OPSD与GRPO在小型语言模型对齐任务中的表现。 这凸显了大模型对齐研究中一个关键的可及性缺口：若缺乏显存友好、文档完善的实现，实践者便无法验证、对比或拓展新方法，从而拖慢教学普及、结果复现与开源创新。 OPD采用策略内逐词蒸馏且无需价值网络；OPSD通过自我对齐完全取消教师模型；GRPO以组归一化优势估计替代价值网络——三者均比标准PPO或RLHF流程更节省显存。",
+        "en": "A practitioner publicly requested GitHub repositories or practical configurations enabling empirical comparison of OPD, OPSD, and GRPO on consumer GPUs like the RTX 4090/5090 for learning SLM alignment. This highlights a critical accessibility gap in LLM alignment research: without GPU-friendly, well-documented implementations, practitioners cannot validate, compare, or build upon new methods—slowing pedagogy, reproducibility, and open innovation. OPD uses on-policy token-level distillation without a value critic; OPSD eliminates the teacher entirely via self-alignment; GRPO replaces the critic with group-normalized advantage estimation—making all three more memory-efficient than standard PPO or RLHF pipelines."
+      },
+      "body": {
+        "zh": "一名机器学习实践者在Reddit发帖，寻求可在消费级显卡（如NVIDIA RTX 4090或即将发布的5090）上运行的开源实现，用于实操学习三种新兴大模型对齐技术：策略内蒸馏（OPD）、策略内自蒸馏（OPSD）和组相对策略优化（GRPO）。这一请求折射出当前LLM社区的一个普遍痛点：许多前沿对齐方法虽见于论文，却缺乏开箱即用、显存友好的代码库。若无多卡集群或云算力支持，学习者与独立研究者难以通过实验直观比较这些算法在训练稳定性、样本效率及最终对齐效果上的差异。\n\nOPD与OPSD是传统强化学习的替代路径。不同于标准RL依赖标量奖励信号计算策略梯度，OPD采用逐词监督，在学生模型**自身采样输出**（即on-policy）的基础上，从教师模型中蒸馏知识，从而规避监督微调（SFT）中常见的暴露偏差问题。OPSD更进一步——无需外部教师：同一模型同时承担教师与学生角色，通过迭代式自我精炼持续提升输出质量。而GRPO则是专为大语言模型设计的PPO变体，它使用组内归一化优势估计替代价值网络，既提升了稀疏奖励场景下的训练稳定性，又避免了额外critic参数开销。\n\n发帖者特别强调实用性约束：他需要的是具体可行的配置方案——包括适配的小型语言模型（SLM）、公开数据集及超参设置——全部需满足约24 GB显存限制。这暗示其目标并非工业级训练，而是轻量但教学意义明确的实验环境，例如在UltraFeedback或SRLM子集上，用Phi-3、Qwen2.5-0.5B或TinyLlama开展数学推理或指令遵循任务的微调。\n\n该请求的价值在于其现实根基：它精准指出了算法创新与工程落地之间的断层，并呼吁社区共享经过实战检验、文档完备的代码仓库。若获高质量回应，将显著降低初学者探索SFT或DPO之外对齐范式的门槛，助其建立关于奖励建模、蒸馏保真度与梯度方差之间权衡的深层直觉。",
+        "en": "A machine learning practitioner has posted on Reddit asking for accessible, open-source implementations of three emerging LLM alignment techniques—On-Policy Distillation (OPD), On-Policy Self-Distillation (OPSD), and Group Relative Policy Optimization (GRPO)—that can run on consumer-grade hardware like the NVIDIA RTX 4090 or upcoming 5090. The request reflects a growing pain point in the LLM community: many cutting-edge alignment methods are described in academic papers but lack ready-to-run, memory-efficient codebases. Without access to multi-GPU clusters or cloud credits, learners and independent researchers struggle to empirically compare how these algorithms behave—especially in terms of training stability, sample efficiency, and final alignment quality.\n\nOPD and OPSD represent alternatives to traditional reinforcement learning. Unlike standard RL approaches that optimize a scalar reward signal via policy gradients, OPD distills from a teacher model using per-token supervision while sampling *on-policy*—i.e., generating outputs from the current student model itself. This avoids exposure bias common in supervised fine-tuning. OPSD takes this further by eliminating the need for a separate teacher: the same model acts as both teacher and student, refining its own outputs through iterative self-distillation. GRPO, meanwhile, is a PPO variant designed specifically for LLMs—it estimates advantages using group-normalized rewards instead of a value network, making it more stable in sparse-reward settings and easier to implement without critic overhead.\n\nThe poster emphasizes practical constraints: they want not just theory, but working configurations—specific small language models (SLMs), datasets, and hyperparameters—that fit under ~24 GB VRAM. This suggests interest in lightweight yet pedagogically meaningful setups, such as fine-tuning Phi-3, Qwen2.5-0.5B, or TinyLlama on math reasoning or instruction-following tasks using public datasets like UltraFeedback or Self-Rewarding Language Models (SRLM) subsets.\n\nWhat makes this request especially valuable is its grounding in real-world accessibility. It highlights a gap between algorithmic innovation and implementation maturity—and invites the community to share battle-tested, documented repos. If answered well, it could lower the barrier for newcomers to experiment with post-training alignment beyond basic SFT or DPO, fostering deeper intuition about trade-offs between reward modeling, distillation fidelity, and gradient variance."
+      },
+      "background": {
+        "zh": "策略内蒸馏（OPD）用教师模型提供的逐词监督替代标量奖励优化，并基于学生当前策略生成的样本进行训练。策略内自蒸馏（OPSD）是OPD的延伸，让单一模型同时担任教师与学生角色。GRPO是一种PPO变体，它通过对候选输出组内的奖励进行归一化来计算优势函数，无需训练价值网络。",
+        "en": "On-Policy Distillation (OPD) replaces scalar reward optimization with token-level supervision from a teacher model, using samples generated by the current student policy. On-Policy Self-Distillation (OPSD) extends OPD by letting a single model serve as both teacher and student. GRPO is a PPO variant that computes advantages by normalizing rewards within candidate output groups, avoiding the need for a learned value function."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2607.15161",
+          "title": "On - Policy Delta Distillation"
+        },
+        {
+          "url": "https://siyan-zhao.github.io/blog/2026/opsd/",
+          "title": "Self - Distilled Reasoner: On - Policy Self - Distillation | Siyan Zhao"
+        },
+        {
+          "url": "https://www.emergentmind.com/topics/grpo-algorithm",
+          "title": "GRPO Algorithm Overview"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1vcsv1s",
+      "slug": "2026-08-02-14-first-time-solo-author-weighs-emnlp-vs-aacl-commitment-after-borderline-arr-revi-ea9b0aff",
+      "path": "/article/2026-08-02-14-first-time-solo-author-weighs-emnlp-vs-aacl-commitment-after-borderline-arr-revi-ea9b0aff",
+      "rank": 14,
+      "score": 6.0,
+      "source": "reddit",
+      "author": "/u/Effective-Yam-7656",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1vcsv1s/emnlp_vs_aacl_commitment_meta_35_reviews_334_what/",
+      "published_at": "2026-08-01T17:11:05+00:00",
+      "fetched_at": "2026-08-02T04:34:49.685180+00:00",
+      "tags": [
+        "NLP",
+        "academic-conferences",
+        "ARR",
+        "EMNLP",
+        "AACL"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1vcsv1s.jpg",
+      "title": {
+        "zh": "首次独立作者纠结EMNLP还是AACL投稿",
+        "en": "First-time solo author weighs EMNLP vs AACL commitment after borderline ARR review"
+      },
+      "summary": {
+        "zh": "一名首次独立作者就一篇ARR评审结果为3.5分（审稿分3/3/4）的论文，向社区咨询应承诺投向EMNLP还是AACL（2026年5月截稿），综合考量声誉、录用概率与职业发展。 这体现了ARR评审模式的实际影响：作者需主动解读临界分数，并在不断整合的NLP会议格局中做出策略选择，对刚起步的研究者确立学术身份尤为关键。 论文元评分为3.5（标注为‘临界会议级’），反驳后审稿分提升（2.5→3、2.5→3、4→4），元评审肯定其实证严谨性与反驳效果；主要短板是呈现质量，现已修正。",
+        "en": "A first-time solo author seeks community guidance on committing an ARR-reviewed paper (meta-score 3.5, reviews 3/3/4) to either EMNLP or AACL for May 2026, weighing prestige, track likelihood, and career impact. This reflects a real-world consequence of ARR’s decoupled review model: authors must now strategically interpret borderline scores and navigate shifting prestige perceptions across newly consolidated NLP venues, especially as early-career researchers shape their publication identity. The paper’s meta-review is 3.5 ('Borderline Conference'), with improved reviewer scores post-rebuttal (2.5→3, 2.5→3, 4→4) and praise for empirical rigor and rebuttal effectiveness; presentation quality was the main cited weakness, now resolved."
+      },
+      "body": {
+        "zh": "一名首次独立投稿的作者正面临一个关键的职业早期抉择：在ACL滚动评审（ARR）完成对2026年5月提交论文的评审后，该将论文承诺投向EMNLP还是AACL？这篇论文收到三份审稿意见，反驳后评分均有提升——R1和R2的总体评分均从2.5升至3，R3保持4分，最终元评审得分为3.5，标注为“临界会议级”。元评审整体积极，肯定了论文的经验严谨性和实用价值，并指出作者在反驳中成功回应了主要关切。值得注意的是，领域主席曾表示，给出3.5分的主要原因在于论文呈现与可读性问题，而非技术缺陷；而这些问题已在修改后解决。\n\n这一困境折射出NLP学者当前投稿策略的深层变化。与传统会议投稿不同，ARR将评审与会议选择分离：论文先经统一评审，再由作者根据分数和适配度自主决定承诺去向。因此，像EMNLP（ACL北美分会旗舰会议）与AACL（亚洲ACL分会于2022年新设的联合会议）之间的权衡，已不再仅取决于接受概率，更关乎受众匹配、学术可见度、职业阶段及实际影响力。\n\n两个会议均设有Main（主会）和Findings（成果）两条录用通道，其中Main通常倾向更具突破性或广泛意义的工作。基于3/3/4的审稿分与3.5元评分，该文大概率可被EMNLP Findings或AACL Main接收，但进入EMNLP Main尚存不确定性。社区经验表明，EMNLP Main更看重方法创新或跨领域启发性，而AACL Main则对扎实、可复现的实证工作包容度更高——尤其欢迎来自非传统学术中心的研究者。\n\n对青年学者而言，这一选择的影响远超流程本身。承诺EMNLP可能在欧美学术网络中带来更广认知度；选择AACL则可能强化区域联系，并通过其快速成长的社区获得更贴近的指导支持。两者并无绝对优劣之分，关键在于研究主题最契合哪个平台，以及作者希望在哪里建立长期学术关系。",
+        "en": "A first-time solo author is facing a pivotal early-career decision: whether to commit their paper to EMNLP or AACL following the ACL Rolling Review (ARR) process for May 2026 submissions. The paper received three reviews with scores that improved after rebuttal — R1 moved from 2.5 to 3 on overall assessment, R2 similarly rose to 3, and R3 held steady at 4 — resulting in a final meta-review score of 3.5, labeled 'Borderline Conference.' The meta-review was broadly positive, praising the paper’s empirical rigor and practical relevance, and noting that the authors successfully addressed major concerns during rebuttal. Interestingly, the Area Chair reportedly leaned toward 3.5 largely due to presentation and readability issues — not technical flaws — and those concerns have since been resolved.\n\nThis dilemma reflects a broader shift in how NLP researchers navigate conference commitments. Unlike traditional submission cycles, ARR decouples review from venue selection: papers are reviewed once centrally, then authors choose where to commit based on scores and fit. That means decisions like this one — between EMNLP (the flagship conference of the ACL’s North American chapter) and AACL (the umbrella conference for Asian chapters, launched in 2022) — now hinge less on raw acceptance odds and more on strategic alignment: audience, visibility, career stage, and perceived prestige.\n\nBoth venues accept papers into Main or Findings tracks, with Main typically reserved for higher-impact work. Given the 3/3/4 reviewer scores and 3.5 meta-score, the author is likely competitive for either EMNLP Findings or AACL Main — but EMNLP Main remains uncertain. Community norms suggest EMNLP Main tends to favor papers with stronger novelty or broader implications, while AACL Main has shown greater openness to solid, well-executed empirical work — especially from researchers outside traditional hubs.\n\nFor early-career scholars, the choice carries weight beyond logistics. Committing to EMNLP may offer wider name recognition in Western academic networks; AACL could signal regional engagement or provide stronger mentorship opportunities through its growing community. Neither decision is objectively 'wrong' — but each shapes visibility, networking, and future submission strategy. Ultimately, the author’s best move may be less about prestige rankings and more about where their work resonates most — and where they want to build relationships."
+      },
+      "background": {
+        "zh": "ACL滚动评审（ARR）是由计算语言学协会（ACL）运营的集中式滚动同行评审平台，服务于旗下顶级NLP会议。作者只需提交一次，即可根据评审结果选择承诺投向EMNLP或AACL等参与会议。EMNLP是ACL北美分会历史悠久的旗舰会议；AACL于2022年启动，整合了ACL-IJCNLP、PACLIC等主要亚洲NLP会议，形成统一平台。",
+        "en": "ACL Rolling Review (ARR) is a centralized, rolling peer-review service for top-tier NLP conferences under the Association for Computational Linguistics. It allows authors to submit once and then commit to participating venues—including EMNLP and AACL—based on review outcomes. EMNLP is the long-standing flagship conference of ACL’s North American chapter, while AACL, launched in 2022, unifies major Asian NLP conferences (e.g., ACL-IJCNLP, PACLIC) under one umbrella."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://aclrollingreview.org/",
+          "title": "ACL Rolling Review – A peer review platform for the Association for..."
+        },
+        {
+          "url": "https://aclrollingreview.org/cfp",
+          "title": "CALL FOR PAPERS – ACL Rolling Review – A peer review platform..."
+        }
+      ]
+    }
+  ]
+}

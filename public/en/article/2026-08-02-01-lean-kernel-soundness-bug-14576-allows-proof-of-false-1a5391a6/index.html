@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Lean kernel soundness bug #14576 allows proof of false - Now AI News</title>
+  <meta name="description" content="Lean’s kernel was found to contain soundness bug #14576, which allows acceptance of an ill-typed proof of False due to incorrect handling of phantom parameters during inductive eli" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-02-01-lean-kernel-soundness-bug-14576-allows-proof-of-false-1a5391a6" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-02-01-lean-kernel-soundness-bug-14576-allows-proof-of-false-1a5391a6" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-02-01-lean-kernel-soundness-bug-14576-allows-proof-of-false-1a5391a6" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-02-01-lean-kernel-soundness-bug-14576-allows-proof-of-false-1a5391a6" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Lean kernel soundness bug #14576 allows proof of false" />
+  <meta property="og:description" content="Lean’s kernel was found to contain soundness bug #14576, which allows acceptance of an ill-typed proof of False due to incorrect handling of phantom parameters during inductive eli" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-02-01-lean-kernel-soundness-bug-14576-allows-proof-of-false-1a5391a6" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49137060.svg" />
+  <meta property="article:published_time" content="2026-08-01T18:32:20+00:00" />
+  <meta property="article:modified_time" content="2026-08-02T04:44:07.900130+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Lean kernel soundness bug #14576 allows proof of false" />
+  <meta name="twitter:description" content="Lean’s kernel was found to contain soundness bug #14576, which allows acceptance of an ill-typed proof of False due to incorrect handling of phantom parameters during inductive eli" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49137060.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-02-01-lean-kernel-soundness-bug-14576-allows-proof-of-false-1a5391a6"}, "headline": "Lean kernel soundness bug #14576 allows proof of false", "description": "Lean’s kernel was found to contain soundness bug #14576, which allows acceptance of an ill-typed proof of False due to incorrect handling of phantom parameters during inductive eli", "image": ["https://nowainews.com/media/hackernews-story-49137060.svg"], "datePublished": "2026-08-01T18:32:20+00:00", "dateModified": "2026-08-02T04:44:07.900130+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49137060.svg" alt="Lean kernel soundness bug #14576 allows proof of false" />
+    <div class="article-page-tags"><span>#formal-verification</span> <span>#proof-assistants</span> <span>#soundness-bug</span> <span>#lean</span> <span>#systems-reliability</span></div>
+    <h1>Lean kernel soundness bug #14576 allows proof of false</h1>
+    <p class="article-page-meta">News time: 2026-08-02T04:34:49.418333+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A recently published postmortem reveals a critical soundness bug—designated #14576—in the Lean proof assistant’s trusted kernel. The flaw, discovered in mid-2026, permits construction of a formally accepted proof of <code>False</code>, directly violating Lean’s foundational guarantee of logical soundness. This isn’t a mere crash or usability issue: it undermines the very premise that terms accepted by Lean’s kernel are logically valid under its type theory.</p>
+<p>The bug arises during elimination (pattern matching) on nested inductive types with <em>phantom parameters</em>—type parameters that appear in the type definition but not in any constructor fields. When the kernel generates auxiliary types for elimination, these phantom parameters are silently dropped, causing the type checker to skip validation of arguments placed in those positions. An attacker can then inject an ill-typed term there, tricking the kernel into accepting an inconsistent derivation.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>What makes this especially sobering is that the exploit was deliberately crafted to also trigger a similar bug in another major proof checker—demonstrating cross-system fragility. Researchers confirmed that independent kernel checkers (e.g., standalone Lean verifiers) remain safe <em>only if both the original and checker kernels are patched</em>, since the exploit requires two coordinated bugs to bypass cross-checking entirely. As one commenter noted, this echoes decades-old wisdom: "I have only proved it correct, not tried it."</p>
+<p>The incident has reignited debate about the limits of formal verification itself. While Lean’s core logic remains mathematically sound, its <em>implementation</em> introduces real-world risk—just like any complex software. The postmortem doesn’t blame Lean’s design, but highlights how subtle implementation choices (e.g., optimization heuristics, code reuse across modules) can erode trust. For mathematicians, system developers, and AI-assisted formalizers alike, it serves as a reminder: verification tools are not magical oracles—they are engineered artifacts requiring vigilance, diversity of checking strategies, and humility about correctness claims.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://leodemoura.github.io/blog/2026-8-1-postmortem-for-kernel-soundness-bug-14576/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://leodemoura.github.io/blog/2026-8-1-postmortem-for-kernel-soundness-bug-14576/" target="_blank" rel="noopener">Postmortem for Kernel Soundness Bug #14576 — Leonardo de Moura</a><a href="https://news.ycombinator.com/item?id=49137060" target="_blank" rel="noopener">Postmortem for Kernel Soundness Bug #14576 | Hacker News</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
