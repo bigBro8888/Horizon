@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Cloudflare deploys FP8 KV cache quantization for Kimi and GLM inference - Now AI News</title>
+  <meta name="description" content="Cloudflare introduced FP8 quantization for the KV cache in its LLM inference service, enabling faster and more memory-efficient serving of open models including Kimi K2.6 and GLM. " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-04-12-cloudflare-deploys-fp8-kv-cache-quantization-for-kimi-and-glm-inference-28f92af8" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-04-12-cloudflare-deploys-fp8-kv-cache-quantization-for-kimi-and-glm-inference-28f92af8" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-04-12-cloudflare-deploys-fp8-kv-cache-quantization-for-kimi-and-glm-inference-28f92af8" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-04-12-cloudflare-deploys-fp8-kv-cache-quantization-for-kimi-and-glm-inference-28f92af8" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Cloudflare deploys FP8 KV cache quantization for Kimi and GLM inference" />
+  <meta property="og:description" content="Cloudflare introduced FP8 quantization for the KV cache in its LLM inference service, enabling faster and more memory-efficient serving of open models including Kimi K2.6 and GLM. " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-04-12-cloudflare-deploys-fp8-kv-cache-quantization-for-kimi-and-glm-inference-28f92af8" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49158581.png" />
+  <meta property="article:published_time" content="2026-08-03T17:08:46+00:00" />
+  <meta property="article:modified_time" content="2026-08-04T04:39:36.637985+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Cloudflare deploys FP8 KV cache quantization for Kimi and GLM inference" />
+  <meta name="twitter:description" content="Cloudflare introduced FP8 quantization for the KV cache in its LLM inference service, enabling faster and more memory-efficient serving of open models including Kimi K2.6 and GLM. " />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49158581.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-04-12-cloudflare-deploys-fp8-kv-cache-quantization-for-kimi-and-glm-inference-28f92af8"}, "headline": "Cloudflare deploys FP8 KV cache quantization for Kimi and GLM inference", "description": "Cloudflare introduced FP8 quantization for the KV cache in its LLM inference service, enabling faster and more memory-efficient serving of open models including Kimi K2.6 and GLM. ", "image": ["https://nowainews.com/media/hackernews-story-49158581.png"], "datePublished": "2026-08-03T17:08:46+00:00", "dateModified": "2026-08-04T04:39:36.637985+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49158581.png" alt="Cloudflare deploys FP8 KV cache quantization for Kimi and GLM inference" />
+    <div class="article-page-tags"><span>#LLM-inference</span> <span>#quantization</span> <span>#KV-cache</span> <span>#cloud-infrastructure</span> <span>#AI-optimization</span></div>
+    <h1>Cloudflare deploys FP8 KV cache quantization for Kimi and GLM inference</h1>
+    <p class="article-page-meta">News time: 2026-08-04T04:28:35.934925+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Cloudflare has rolled out FP8 quantization for the key-value (KV) cache in large language model inference—specifically for open models like Kimi K2.6 and GLM—marking a practical step toward more efficient, scalable, and cost-effective AI serving. In a detailed technical blog post, Cloudflare explains how compressing the KV cache from higher-precision formats (like BF16) down to FP8 slashes memory usage by up to 50%, cuts latency, and allows more concurrent requests per GPU. This isn’t weight quantization—it’s targeted at the dynamic, per-request KV tensors that grow with sequence length and dominate memory bandwidth during decoding.</p>
+<p>The optimization works by storing K and V tensors in FP8 format while keeping attention computation in BF16, with dequantization fused directly into the attention kernel. That avoids runtime overhead and preserves numerical stability better than naive INT8 approaches. Cloudflare reports measurable gains: faster token generation, longer context support, and reduced GPU memory pressure—especially valuable for developers deploying open LLMs on constrained infrastructure.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>However, the rollout comes with caveats. Validation so far covers only Kimi K2.6—not GLM variants, Qwen, or Llama-family models—raising questions about generalizability across architectures. Community feedback highlights this gap, noting that KV quantization sensitivity varies significantly between model families. Also unaddressed is zero-data-retention (ZDR) policy: users must trust Cloudflare not to log or inspect prompts and responses, as no ZDR guarantee is offered. Pricing remains opaque—visible only inside the dashboard—and alternative quantization schemes like nf4 (used in bitsandbytes) aren’t evaluated despite known advantages for certain workloads.</p>
+<p>Still, Cloudflare’s transparency stands out. Unlike many inference providers who treat KV optimizations as black-box internals, they openly document the technique, trade-offs, and limitations. For developers weighing inference latency against fidelity—or building privacy-sensitive agents—the FP8 KV cache offers a compelling middle ground: not as aggressive as INT4, but more efficient than full-precision caches. As vLLM and other runtimes mature FP8 support, this move may accelerate industry-wide adoption of memory-aware attention optimizations.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://blog.cloudflare.com/smaller-faster-safer-models/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://docs.vllm.ai/en/latest/features/quantization/quantized_kvcache/" target="_blank" rel="noopener">Quantized KV Cache - vLLM</a><a href="https://vllm.ai/blog/2026-04-22-fp8-kvcache" target="_blank" rel="noopener">The State of FP8 KV-Cache and Attention Quantization in vLLM</a><a href="https://dev.to/tech_nuggets/kv-cache-quantization-what-fp8int8-k-and-v-actually-buy-you-and-where-they-break-4fnl" target="_blank" rel="noopener">KV cache quantization: what FP8/INT8 K and V actually buy you ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
