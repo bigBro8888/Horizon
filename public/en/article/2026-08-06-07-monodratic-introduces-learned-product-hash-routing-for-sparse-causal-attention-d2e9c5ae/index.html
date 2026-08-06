@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Monodratic introduces learned product-hash routing for sparse causal attention - Now AI News</title>
+  <meta name="description" content="Monodratic introduces a novel sparse causal attention mechanism that uses differentiable, learned product-hash routing to select remote token blocks while guaranteeing local contex" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-06-07-monodratic-introduces-learned-product-hash-routing-for-sparse-causal-attention-d2e9c5ae" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-06-07-monodratic-introduces-learned-product-hash-routing-for-sparse-causal-attention-d2e9c5ae" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-06-07-monodratic-introduces-learned-product-hash-routing-for-sparse-causal-attention-d2e9c5ae" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-06-07-monodratic-introduces-learned-product-hash-routing-for-sparse-causal-attention-d2e9c5ae" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Monodratic introduces learned product-hash routing for sparse causal attention" />
+  <meta property="og:description" content="Monodratic introduces a novel sparse causal attention mechanism that uses differentiable, learned product-hash routing to select remote token blocks while guaranteeing local contex" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-06-07-monodratic-introduces-learned-product-hash-routing-for-sparse-causal-attention-d2e9c5ae" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vg3jda.svg" />
+  <meta property="article:published_time" content="2026-08-05T10:28:44+00:00" />
+  <meta property="article:modified_time" content="2026-08-06T04:41:08.966869+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Monodratic introduces learned product-hash routing for sparse causal attention" />
+  <meta name="twitter:description" content="Monodratic introduces a novel sparse causal attention mechanism that uses differentiable, learned product-hash routing to select remote token blocks while guaranteeing local contex" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vg3jda.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-06-07-monodratic-introduces-learned-product-hash-routing-for-sparse-causal-attention-d2e9c5ae"}, "headline": "Monodratic introduces learned product-hash routing for sparse causal attention", "description": "Monodratic introduces a novel sparse causal attention mechanism that uses differentiable, learned product-hash routing to select remote token blocks while guaranteeing local contex", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vg3jda.svg"], "datePublished": "2026-08-05T10:28:44+00:00", "dateModified": "2026-08-06T04:41:08.966869+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vg3jda.svg" alt="Monodratic introduces learned product-hash routing for sparse causal attention" />
+    <div class="article-page-tags"><span>#attention-mechanisms</span> <span>#sparse-transformers</span> <span>#routing</span> <span>#causal-modeling</span> <span>#associative-memory</span></div>
+    <h1>Monodratic introduces learned product-hash routing for sparse causal attention</h1>
+    <p class="article-page-meta">News time: 2026-08-06T04:28:18.364316+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>Monodratic is a new sparse attention architecture designed to scale causal modeling—especially for long-context tasks—without sacrificing accuracy or violating causality. At its core lies <em>learned product-hash routing</em>, a mechanism that replaces brute-force global attention with intelligent, data-driven selection of remote token blocks. After applying Rotary Positional Embeddings (RoPE) to preserve relative position information, Monodratic assigns source token blocks to bounded causal 'posting lists'. Each query then computes a compact product hash address, retrieves candidate blocks from those lists, reranks them using learned scores, selects exactly two remote blocks (from up to five eligible), and <em>guarantees inclusion of local context</em>. Final attention is computed only over this small, dynamically assembled set—making it both causal and highly efficient.</p>
+<p>The architecture was evaluated on associative recall, a synthetic but rigorous test of memory and long-range dependency modeling. With just two selected remote blocks, Monodratic achieved 99.35% mean accuracy across three random seeds—far surpassing untrained routing (55.3%) and local-only attention (19.7%). Notably, when the ground-truth target block was manually forced into the selection (while keeping the same total attention budget), performance reached perfect 100%—suggesting the bottleneck lies not in attention computation, but in routing fidelity. The sparse attention outputs also matched dense oracle outputs to within 1.43e-6 absolute error, confirming numerical reliability.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Implementation-wise, Monodratic is deliberately modular: it operates as a stateless mixer transforming <code>[batch, seq, width]</code> tensors, leaving normalization, residuals, feed-forward layers, and inference scheduling to the host model. Its CPU-based routing scales nearly linearly—timing exponent 0.993 from 4K to 32K tokens—with zero posting overflows under balanced configurations. However, the work remains experimental: evaluations use synthetic tasks, the PyTorch implementation isn’t kernel-fused, and no claims are made about natural language fluency or real-world latency.</p>
+<p>What makes Monodratic distinctive is its tight coupling of learnability, sparsity, and hard causality guarantees—unlike many sparse attention methods that trade off one for another. It doesn’t approximate softmax over all tokens; instead, it learns <em>where</em> to look, then computes exact attention over the selected subset. This bridges the gap between routing efficiency (as in mixture-of-experts or retrieval-augmented models) and the precision required for causal sequence modeling—offering a promising path toward scalable, interpretable, and memory-efficient transformers.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vg3jda/monodratic_learned_producthash_routing_for_sparse/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://arxiv.org/abs/2311.18724" target="_blank" rel="noopener">[2311.18724] Routing-Guided Learned Product Quantization for Graph-Based Approximate Nearest Neighbor Search</a><a href="https://www.youtube.com/watch?v=qKUobBR5R1A" target="_blank" rel="noopener">Why Rotating Vectors Solves Positional Encoding in Transformers</a><a href="https://www.emergentmind.com/topics/rope" target="_blank" rel="noopener">ROPE : Mechanics, Topology &amp; Neural Embeddings</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
