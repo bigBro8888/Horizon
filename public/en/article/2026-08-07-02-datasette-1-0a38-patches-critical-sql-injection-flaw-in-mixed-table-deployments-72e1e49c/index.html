@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Datasette 1.0a38 patches critical SQL injection flaw in mixed-table deployments - Now AI News</title>
+  <meta name="description" content="Datasette 1.0a38 fixes a critical SQL injection vulnerability that allowed unauthorized read access to private tables when public and private tables coexist in the same database un" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-07-02-datasette-1-0a38-patches-critical-sql-injection-flaw-in-mixed-table-deployments-72e1e49c" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-07-02-datasette-1-0a38-patches-critical-sql-injection-flaw-in-mixed-table-deployments-72e1e49c" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-07-02-datasette-1-0a38-patches-critical-sql-injection-flaw-in-mixed-table-deployments-72e1e49c" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-07-02-datasette-1-0a38-patches-critical-sql-injection-flaw-in-mixed-table-deployments-72e1e49c" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Datasette 1.0a38 patches critical SQL injection flaw in mixed-table deployments" />
+  <meta property="og:description" content="Datasette 1.0a38 fixes a critical SQL injection vulnerability that allowed unauthorized read access to private tables when public and private tables coexist in the same database un" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-07-02-datasette-1-0a38-patches-critical-sql-injection-flaw-in-mixed-table-deployments-72e1e49c" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--f0184da42a584a16.svg" />
+  <meta property="article:published_time" content="2026-08-06T18:24:34+00:00" />
+  <meta property="article:modified_time" content="2026-08-07T04:13:30.647137+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Datasette 1.0a38 patches critical SQL injection flaw in mixed-table deployments" />
+  <meta name="twitter:description" content="Datasette 1.0a38 fixes a critical SQL injection vulnerability that allowed unauthorized read access to private tables when public and private tables coexist in the same database un" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--f0184da42a584a16.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-07-02-datasette-1-0a38-patches-critical-sql-injection-flaw-in-mixed-table-deployments-72e1e49c"}, "headline": "Datasette 1.0a38 patches critical SQL injection flaw in mixed-table deployments", "description": "Datasette 1.0a38 fixes a critical SQL injection vulnerability that allowed unauthorized read access to private tables when public and private tables coexist in the same database un", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--f0184da42a584a16.svg"], "datePublished": "2026-08-06T18:24:34+00:00", "dateModified": "2026-08-07T04:13:30.647137+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--f0184da42a584a16.svg" alt="Datasette 1.0a38 patches critical SQL injection flaw in mixed-table deployments" />
+    <div class="article-page-tags"><span>#security</span> <span>#SQL injection</span> <span>#Datasette</span> <span>#authentication</span> <span>#web frameworks</span></div>
+    <h1>Datasette 1.0a38 patches critical SQL injection flaw in mixed-table deployments</h1>
+    <p class="article-page-meta">News time: 2026-08-07T04:02:59.276479+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>Datasette, the open-source tool for exploring and publishing data from SQLite databases, has released version 1.0a38 to address a critical security vulnerability. The flaw allowed attackers with access to <em>any public table</em> in a Datasette instance to bypass permission controls and read data from <em>private tables</em> residing in the same SQLite database — even when the <code>execute-sql</code> permission was explicitly disabled for those users.</p>
+<p>This vulnerability exploited how Datasette’s SQL query execution layer handled table name sanitization in multi-table environments. When public and private tables coexisted in one database file and were governed by Datasette’s built-in permissions system, a crafted SQL query could inject table names that evaded validation checks. As a result, users authorized only for public tables could construct queries like <code>SELECT * FROM private_table</code>, effectively sidestepping access restrictions.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The fix tightens input validation during SQL parsing, ensuring table identifiers referenced in raw queries are strictly limited to those the user is permitted to access. Importantly, the patch also ships in Datasette 0.65.3 — a stable backport for users not yet ready to adopt the alpha 1.0 series. Site administrators running mixed-access configurations are strongly advised to upgrade immediately, especially if they rely on Datasette’s native permission model without additional authentication layers.</p>
+<p>While the affected configuration — hosting both public and private tables in a single database under permission-based access control — is uncommon in practice, its existence poses real risk for organizations using Datasette for internal dashboards or hybrid public/private data portals. Simon Willison, Datasette’s creator, notes he hasn’t personally observed this setup in the wild, but stresses that the exploit was technically straightforward and required no elevated privileges beyond basic read access to a public table.</p>
+<p>For most users deploying Datasette with either fully public or fully private databases — or using external auth plugins like <code>datasette-auth-passwords</code> — the risk is minimal. Still, this incident underscores how subtle logic flaws in permission enforcement can undermine otherwise robust security models — especially in tools designed for simplicity and rapid deployment.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Aug/6/datasette/#atom-everything" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://docs.datasette.io/en/stable/authentication.html" target="_blank" rel="noopener">Authentication and permissions - Datasette documentation</a><a href="https://simonw.substack.com/p/a-new-sql-powered-permissions-system" target="_blank" rel="noopener">A new SQL-powered permissions system in Datasette 1.0a20</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
