@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>pgrust speeds up Postgres analytics by up to 300x using Rust, SIMD, and operator fusion - Now AI News</title>
+  <meta name="description" content="The pgrust project—a Rust-based rewrite of PostgreSQL&#x27;s query engine—achieves up to 300x faster analytical query performance through batching, operator fusion, and SIMD, while main" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="pgrust speeds up Postgres analytics by up to 300x using Rust, SIMD, and operator fusion" />
+  <meta property="og:description" content="The pgrust project—a Rust-based rewrite of PostgreSQL&#x27;s query engine—achieves up to 300x faster analytical query performance through batching, operator fusion, and SIMD, while main" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49208535.png" />
+  <meta property="article:published_time" content="2026-08-07T11:00:35+00:00" />
+  <meta property="article:modified_time" content="2026-08-08T03:14:11.970544+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="pgrust speeds up Postgres analytics by up to 300x using Rust, SIMD, and operator fusion" />
+  <meta name="twitter:description" content="The pgrust project—a Rust-based rewrite of PostgreSQL&#x27;s query engine—achieves up to 300x faster analytical query performance through batching, operator fusion, and SIMD, while main" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49208535.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8"}, "headline": "pgrust speeds up Postgres analytics by up to 300x using Rust, SIMD, and operator fusion", "description": "The pgrust project—a Rust-based rewrite of PostgreSQL's query engine—achieves up to 300x faster analytical query performance through batching, operator fusion, and SIMD, while main", "image": ["https://nowainews.com/media/hackernews-story-49208535.png"], "datePublished": "2026-08-07T11:00:35+00:00", "dateModified": "2026-08-08T03:14:11.970544+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49208535.png" alt="pgrust speeds up Postgres analytics by up to 300x using Rust, SIMD, and operator fusion" />
+    <div class="article-page-tags"><span>#PostgreSQL</span> <span>#query-optimization</span> <span>#Rust</span> <span>#SIMD</span> <span>#formal-verification</span></div>
+    <h1>pgrust speeds up Postgres analytics by up to 300x using Rust, SIMD, and operator fusion</h1>
+    <p class="article-page-meta">News time: 2026-08-08T02:59:47.556064+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A new experimental PostgreSQL extension called pgrust has demonstrated dramatic speedups—up to 300 times faster—for analytical workloads. Developed by engineer malisper, pgrust is not a patch or optimizer layered on top of PostgreSQL, but a ground-up rewrite of the query execution engine in Rust. It retains full compatibility with PostgreSQL’s wire protocol, SQL semantics, and on-disk format, meaning existing applications can connect without modification—though it currently runs as an extension, not a standalone replacement.</p>
+<p>The performance leap comes from three core technical innovations: batching (processing data in chunks rather than row-by-row), operator fusion (merging sequential operations like filter-project-join into single optimized passes), and SIMD acceleration (leveraging modern CPU vector instructions to process multiple values in parallel). These techniques are common in high-performance analytical databases—but rarely applied so deeply within a production-grade, transaction-safe system like PostgreSQL.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Crucially, pgrust doesn’t sacrifice correctness for speed. The author emphasizes formal verification—proving over 1,000 user-facing functions behave identically to upstream PostgreSQL—and differential fuzzing, where identical SQL queries are executed against both pgrust and vanilla PostgreSQL to catch semantic mismatches. This dual validation approach is unusually rigorous for an early-stage database project and directly addresses the biggest barrier to adoption: trust.</p>
+<p>Still, pgrust remains experimental. Its GitHub README warns it is not production-ready, lacks support for existing PostgreSQL extensions, and has no stable ABI. It currently passes PostgreSQL’s full regression test suite—a strong signal—but real-world workloads may expose edge cases. Community reactions reflect this tension: some praise its technical ambition and potential to push PostgreSQL’s architecture forward; others question whether speed gains justify replacing a battle-tested, community-maintained codebase—especially when alternatives like kdb+ already deliver extreme throughput for niche analytical use cases.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://malisper.me/how-we-made-postgres-hundreds-of-times-faster-the-query-engine/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/malisper/pgrust" target="_blank" rel="noopener">GitHub - malisper/pgrust: Postgres rewritten in Rust, now ...</a><a href="https://pgrust.com/" target="_blank" rel="noopener">pgrust — postgres, rewritten in rust</a><a href="https://betterstack.com/community/guides/databases/pgrust-postgres/" target="_blank" rel="noopener">PGRust: A Rust Rewrite of PostgreSQL That Passes All ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

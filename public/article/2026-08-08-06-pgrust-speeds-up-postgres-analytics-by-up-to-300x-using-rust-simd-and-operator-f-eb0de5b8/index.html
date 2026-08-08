@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>pgrust用Rust重写Postgres查询引擎，分析性能提升最高达300倍 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="pgrust项目用Rust重写了PostgreSQL查询引擎，通过批处理、算子融合和SIMD技术，使分析型查询性能最高提升300倍，并借助形式化证明与差分模糊测试确保与原版PostgreSQL逻辑一致。 这表明PostgreSQL沿用数十年的C语言架构可在不破坏兼容性的前提下实现根本性加速，或将重塑分析型负载在广泛信赖的开源基础设施上的运行方式。 pgrus" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="pgrust用Rust重写Postgres查询引擎，分析性能提升最高达300倍" />
+  <meta property="og:description" content="pgrust项目用Rust重写了PostgreSQL查询引擎，通过批处理、算子融合和SIMD技术，使分析型查询性能最高提升300倍，并借助形式化证明与差分模糊测试确保与原版PostgreSQL逻辑一致。 这表明PostgreSQL沿用数十年的C语言架构可在不破坏兼容性的前提下实现根本性加速，或将重塑分析型负载在广泛信赖的开源基础设施上的运行方式。 pgrus" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49208535.png" />
+  <meta property="article:published_time" content="2026-08-07T11:00:35+00:00" />
+  <meta property="article:modified_time" content="2026-08-08T03:14:11.970544+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="pgrust用Rust重写Postgres查询引擎，分析性能提升最高达300倍" />
+  <meta name="twitter:description" content="pgrust项目用Rust重写了PostgreSQL查询引擎，通过批处理、算子融合和SIMD技术，使分析型查询性能最高提升300倍，并借助形式化证明与差分模糊测试确保与原版PostgreSQL逻辑一致。 这表明PostgreSQL沿用数十年的C语言架构可在不破坏兼容性的前提下实现根本性加速，或将重塑分析型负载在广泛信赖的开源基础设施上的运行方式。 pgrus" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49208535.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-08-08-06-pgrust-speeds-up-postgres-analytics-by-up-to-300x-using-rust-simd-and-operator-f-eb0de5b8"}, "headline": "pgrust用Rust重写Postgres查询引擎，分析性能提升最高达300倍", "description": "pgrust项目用Rust重写了PostgreSQL查询引擎，通过批处理、算子融合和SIMD技术，使分析型查询性能最高提升300倍，并借助形式化证明与差分模糊测试确保与原版PostgreSQL逻辑一致。 这表明PostgreSQL沿用数十年的C语言架构可在不破坏兼容性的前提下实现根本性加速，或将重塑分析型负载在广泛信赖的开源基础设施上的运行方式。 pgrus", "image": ["https://nowainews.com/media/hackernews-story-49208535.png"], "datePublished": "2026-08-07T11:00:35+00:00", "dateModified": "2026-08-08T03:14:11.970544+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49208535.png" alt="pgrust用Rust重写Postgres查询引擎，分析性能提升最高达300倍" />
+    <div class="article-page-tags"><span>#PostgreSQL</span> <span>#query-optimization</span> <span>#Rust</span> <span>#SIMD</span> <span>#formal-verification</span></div>
+    <h1>pgrust用Rust重写Postgres查询引擎，分析性能提升最高达300倍</h1>
+    <p class="article-page-meta">新闻时间: 2026-08-08T02:59:47.556064+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>一款名为pgrust的新型实验性PostgreSQL扩展实现了分析型查询性能最高达300倍的提升。该项目由工程师malisper主导，不是对PostgreSQL的简单优化补丁，而是用Rust语言从零重写的查询执行引擎。它完全兼容PostgreSQL的网络协议、SQL语义和磁盘存储格式，现有应用可无缝连接——不过目前以扩展形式运行，而非独立替代品。</p>
+<p>这一性能飞跃源于三项核心技术：批处理（以数据块而非单行方式处理）、算子融合（将过滤、投影、连接等连续操作合并为一次高效执行）以及SIMD加速（利用现代CPU的向量指令并行处理多个数据）。这些技术在高性能分析数据库中并不新鲜，但极少被如此深度集成到PostgreSQL这类兼顾事务安全与生产稳定性的系统中。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>尤为关键的是，pgrust并未以牺牲正确性换取速度。作者强调采用形式化验证——已证明超过1000个面向用户的函数行为与上游PostgreSQL完全一致；同时结合差分模糊测试，即对同一SQL查询在pgrust和原生PostgreSQL上并行执行，自动比对结果差异。这种双重验证策略在早期数据库项目中极为罕见，直击用户最核心的顾虑：能否信任。</p>
+<p>不过pgrust仍处于实验阶段。其GitHub仓库明确警告：尚未达到生产就绪状态，不支持现有PostgreSQL扩展，也无稳定扩展ABI。目前虽已通过PostgreSQL全部回归测试套件——这是强有力的正确性信号——但真实业务负载仍可能暴露边界问题。社区讨论也呈现两极：有人赞赏其技术雄心，认为它有望推动PostgreSQL架构演进；也有人质疑：当kdb+等专用分析系统早已提供极致吞吐时，是否值得用一个非官方维护的方案替代经过数十年实战检验的PostgreSQL？</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://malisper.me/how-we-made-postgres-hundreds-of-times-faster-the-query-engine/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://github.com/malisper/pgrust" target="_blank" rel="noopener">GitHub - malisper/pgrust: Postgres rewritten in Rust, now ...</a><a href="https://pgrust.com/" target="_blank" rel="noopener">pgrust — postgres, rewritten in rust</a><a href="https://betterstack.com/community/guides/databases/pgrust-postgres/" target="_blank" rel="noopener">PGRust: A Rust Rewrite of PostgreSQL That Passes All ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
