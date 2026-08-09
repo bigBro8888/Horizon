@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>二分类中何时用ROC-AUC，何时用F1分数 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="一名从业者在Reddit上提出一个基础性问题，寻求关于二分类任务中何时选用ROC-AUC、何时选用F1分数的明确指导。 选错评估指标会误导模型开发，掩盖关键缺陷（例如欺诈检测中精确率过低），导致上线系统纸面表现良好却实际失效。 ROC-AUC不依赖阈值、对类别不平衡鲁棒，但前提是排序质量比硬分类更重要；F1分数依赖特定阈值，强调精确率与召回率的平衡，更适合类" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="二分类中何时用ROC-AUC，何时用F1分数" />
+  <meta property="og:description" content="一名从业者在Reddit上提出一个基础性问题，寻求关于二分类任务中何时选用ROC-AUC、何时选用F1分数的明确指导。 选错评估指标会误导模型开发，掩盖关键缺陷（例如欺诈检测中精确率过低），导致上线系统纸面表现良好却实际失效。 ROC-AUC不依赖阈值、对类别不平衡鲁棒，但前提是排序质量比硬分类更重要；F1分数依赖特定阈值，强调精确率与召回率的平衡，更适合类" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vj1ke5.jpg" />
+  <meta property="article:published_time" content="2026-08-08T17:18:05+00:00" />
+  <meta property="article:modified_time" content="2026-08-09T03:13:18.246836+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="二分类中何时用ROC-AUC，何时用F1分数" />
+  <meta name="twitter:description" content="一名从业者在Reddit上提出一个基础性问题，寻求关于二分类任务中何时选用ROC-AUC、何时选用F1分数的明确指导。 选错评估指标会误导模型开发，掩盖关键缺陷（例如欺诈检测中精确率过低），导致上线系统纸面表现良好却实际失效。 ROC-AUC不依赖阈值、对类别不平衡鲁棒，但前提是排序质量比硬分类更重要；F1分数依赖特定阈值，强调精确率与召回率的平衡，更适合类" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vj1ke5.jpg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35"}, "headline": "二分类中何时用ROC-AUC，何时用F1分数", "description": "一名从业者在Reddit上提出一个基础性问题，寻求关于二分类任务中何时选用ROC-AUC、何时选用F1分数的明确指导。 选错评估指标会误导模型开发，掩盖关键缺陷（例如欺诈检测中精确率过低），导致上线系统纸面表现良好却实际失效。 ROC-AUC不依赖阈值、对类别不平衡鲁棒，但前提是排序质量比硬分类更重要；F1分数依赖特定阈值，强调精确率与召回率的平衡，更适合类", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vj1ke5.jpg"], "datePublished": "2026-08-08T17:18:05+00:00", "dateModified": "2026-08-09T03:13:18.246836+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vj1ke5.jpg" alt="二分类中何时用ROC-AUC，何时用F1分数" />
+    <div class="article-page-tags"><span>#machine-learning</span> <span>#classification</span> <span>#evaluation-metrics</span> <span>#ROC-AUC</span> <span>#F1-score</span></div>
+    <h1>二分类中何时用ROC-AUC，何时用F1分数</h1>
+    <p class="article-page-meta">新闻时间: 2026-08-09T03:06:46.885376+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一位从业者最近在Reddit上提出了一个看似简单却极具实践意义的问题：在二分类任务中，究竟该何时选用ROC-AUC，又该何时选用F1分数来评估模型性能？这个问题远非理论探讨，而是直接影响模型开发、上线与业务结果的关键决策。</p>
+<p>ROC-AUC衡量的是模型将正样本排在负样本之上的能力，不依赖于任何特定分类阈值。它通过计算ROC曲线（横轴为假正率、纵轴为真正率）下的面积，汇总模型在<em>所有可能阈值</em>下的表现。正因它对阈值不敏感、且不受类别分布影响，ROC-AUC特别适用于重视排序质量而非硬分类结果的场景，例如信用风险评分或人工复核候选名单排序。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>F1分数则是在<em>固定阈值</em>（通常为0.5）下计算的单点指标，是精确率与召回率的调和平均数——因此当误报和漏报代价都较高时尤为适用，比如疾病诊断或金融欺诈识别。与ROC-AUC不同，F1对类别不平衡极为敏感：若负样本远多于正样本，优化F1会迫使模型偏向提升召回率，常以牺牲精确率为代价。</p>
+<p>最终选择取决于实际业务约束。若下游系统支持灵活调整阈值，且关注的是相对排序能力，ROC-AUC更稳健、更适合跨模型比较；但若必须锁定一个硬决策边界，且两类错误后果不对称，则F1（甚至单独的精确率或召回率）更能反映真实效果。正如Google机器学习速成课指出，ROC-AUC在类别大致平衡的数据集上效果最佳；而在严重不平衡场景下，精确率-召回率曲线（及其衍生的F1）往往更具指导意义。</p>
+<p>没有放之四海而皆准的答案。高ROC-AUC不代表部署阈值下精确率可用；高F1也不代表模型整体排序能力强。从业者应让评估指标服务于业务目标，而非教科书惯例。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vj1ke5/evaluation_metrics_d/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc" target="_blank" rel="noopener">Classification: ROC and AUC | Machine Learning | Google for Developers</a><a href="https://www.evidentlyai.com/classification-metrics/explain-roc-curve" target="_blank" rel="noopener">How to explain the ROC AUC score and ROC curve?</a><a href="https://medium.com/@yogeswariyrsk/machine-learning-series-part-16-f1-score-and-the-precision-recall-tradeoff-914ad0bbb393" target="_blank" rel="noopener">Machine Learning Series (Part 16): F 1 Score and the... | Medium</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>When to use ROC-AUC versus F1-score for binary classification - Now AI News</title>
+  <meta name="description" content="A practitioner posed a foundational question on Reddit asking for clear guidance on when to use ROC-AUC versus F1-score for binary classification evaluation. Selecting the wrong me" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="When to use ROC-AUC versus F1-score for binary classification" />
+  <meta property="og:description" content="A practitioner posed a foundational question on Reddit asking for clear guidance on when to use ROC-AUC versus F1-score for binary classification evaluation. Selecting the wrong me" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vj1ke5.jpg" />
+  <meta property="article:published_time" content="2026-08-08T17:18:05+00:00" />
+  <meta property="article:modified_time" content="2026-08-09T03:13:18.246836+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="When to use ROC-AUC versus F1-score for binary classification" />
+  <meta name="twitter:description" content="A practitioner posed a foundational question on Reddit asking for clear guidance on when to use ROC-AUC versus F1-score for binary classification evaluation. Selecting the wrong me" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vj1ke5.jpg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-09-12-when-to-use-roc-auc-versus-f1-score-for-binary-classification-5386bb35"}, "headline": "When to use ROC-AUC versus F1-score for binary classification", "description": "A practitioner posed a foundational question on Reddit asking for clear guidance on when to use ROC-AUC versus F1-score for binary classification evaluation. Selecting the wrong me", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vj1ke5.jpg"], "datePublished": "2026-08-08T17:18:05+00:00", "dateModified": "2026-08-09T03:13:18.246836+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vj1ke5.jpg" alt="When to use ROC-AUC versus F1-score for binary classification" />
+    <div class="article-page-tags"><span>#machine-learning</span> <span>#classification</span> <span>#evaluation-metrics</span> <span>#ROC-AUC</span> <span>#F1-score</span></div>
+    <h1>When to use ROC-AUC versus F1-score for binary classification</h1>
+    <p class="article-page-meta">News time: 2026-08-09T03:06:46.885376+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A practitioner recently asked a deceptively simple but deeply practical question on Reddit: when should you choose ROC-AUC over F1-score—or vice versa—to evaluate a binary classifier? This isn’t just academic; it’s a daily decision that shapes model development, deployment, and business impact.</p>
+<p>ROC-AUC measures how well a model ranks positive instances above negative ones, regardless of the classification threshold. It summarizes performance across <em>all</em> possible thresholds by computing the area under the ROC curve—a plot of true positive rate versus false positive rate. Because it’s threshold-agnostic and insensitive to class distribution, ROC-AUC excels in scenarios where ranking quality matters more than hard predictions—like risk scoring or prioritizing candidates for human review.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>F1-score, by contrast, is a single-point metric calculated at a <em>fixed</em> threshold (usually 0.5). It balances precision and recall using their harmonic mean—making it ideal when both false positives and false negatives carry significant real-world costs, such as medical diagnosis or fraud detection. Unlike ROC-AUC, F1 is highly sensitive to class imbalance: if negatives vastly outnumber positives, optimizing for F1 forces the model to prioritize recall, often at the expense of precision.</p>
+<p>The choice ultimately hinges on your problem’s operational reality. If your downstream system allows flexible threshold tuning—and you care about relative ordering—ROC-AUC is robust and comparable across models. But if you must commit to one hard decision boundary, and misclassifications have asymmetric consequences, F1 (or even precision or recall alone) may better reflect actual performance. As Google’s ML Crash Course notes, ROC-AUC works best on roughly balanced datasets; on severely imbalanced ones, precision-recall curves—and thus F1—are often more informative.</p>
+<p>There’s no universal winner. A high ROC-AUC doesn’t guarantee usable precision at deployment threshold; a strong F1 doesn’t mean the model ranks well overall. Practitioners should align metrics with stakeholder needs—not textbook defaults.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vj1ke5/evaluation_metrics_d/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc" target="_blank" rel="noopener">Classification: ROC and AUC | Machine Learning | Google for Developers</a><a href="https://www.evidentlyai.com/classification-metrics/explain-roc-curve" target="_blank" rel="noopener">How to explain the ROC AUC score and ROC curve?</a><a href="https://medium.com/@yogeswariyrsk/machine-learning-series-part-16-f1-score-and-the-precision-recall-tradeoff-914ad0bbb393" target="_blank" rel="noopener">Machine Learning Series (Part 16): F 1 Score and the... | Medium</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
