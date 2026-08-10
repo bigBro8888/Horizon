@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>SQLite用压缩JSON数组存储文本修订历史 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Simon Willison构建了一个SQLite文本版本控制原型，将全部历史修订版本以zstd压缩的JSON数组形式存入BLOB字段，在1000次模拟编辑中实现254倍压缩率。 该方案为本地优先或资源受限的应用提供了一种轻量、可嵌入的版本控制替代方案，特别适合需要高效存储完整文本历史的场景。 原型通过将历史按每行最多128个版本或3 MB未压缩JSON进行" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="SQLite用压缩JSON数组存储文本修订历史" />
+  <meta property="og:description" content="Simon Willison构建了一个SQLite文本版本控制原型，将全部历史修订版本以zstd压缩的JSON数组形式存入BLOB字段，在1000次模拟编辑中实现254倍压缩率。 该方案为本地优先或资源受限的应用提供了一种轻量、可嵌入的版本控制替代方案，特别适合需要高效存储完整文本历史的场景。 原型通过将历史按每行最多128个版本或3 MB未压缩JSON进行" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--aa5eb22285cdf802.svg" />
+  <meta property="article:published_time" content="2026-08-09T22:05:00+00:00" />
+  <meta property="article:modified_time" content="2026-08-10T03:27:24.255574+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SQLite用压缩JSON数组存储文本修订历史" />
+  <meta name="twitter:description" content="Simon Willison构建了一个SQLite文本版本控制原型，将全部历史修订版本以zstd压缩的JSON数组形式存入BLOB字段，在1000次模拟编辑中实现254倍压缩率。 该方案为本地优先或资源受限的应用提供了一种轻量、可嵌入的版本控制替代方案，特别适合需要高效存储完整文本历史的场景。 原型通过将历史按每行最多128个版本或3 MB未压缩JSON进行" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--aa5eb22285cdf802.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b"}, "headline": "SQLite用压缩JSON数组存储文本修订历史", "description": "Simon Willison构建了一个SQLite文本版本控制原型，将全部历史修订版本以zstd压缩的JSON数组形式存入BLOB字段，在1000次模拟编辑中实现254倍压缩率。 该方案为本地优先或资源受限的应用提供了一种轻量、可嵌入的版本控制替代方案，特别适合需要高效存储完整文本历史的场景。 原型通过将历史按每行最多128个版本或3 MB未压缩JSON进行", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--aa5eb22285cdf802.svg"], "datePublished": "2026-08-09T22:05:00+00:00", "dateModified": "2026-08-10T03:27:24.255574+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--aa5eb22285cdf802.svg" alt="SQLite用压缩JSON数组存储文本修订历史" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#versioning</span> <span>#data-compression</span> <span>#text-history</span> <span>#database-design</span></div>
+    <h1>SQLite用压缩JSON数组存储文本修订历史</h1>
+    <p class="article-page-meta">新闻时间: 2026-08-10T03:17:51.569128+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>一种新的SQLite文本版本控制实验方案提出：不采用逐行存储或差分编码，而是将全部修订版本打包为一个经zlib或zstd压缩的JSON字符串数组。开发者Simon Willison在遛狗时想到这一思路——文档反复编辑时，大量文本内容保持不变，天然具备高度冗余，非常适合通用压缩算法发挥作用。相比每次编辑都新增一条20 KB的记录，该方案将所有历史版本合并存入单个BLOB字段，显著节省空间。</p>
+<p>其核心理念极为简洁：数据库表包含两列——一列是zstd压缩后的JSON二进制数据（如<code>["第一版文本", "第二版文本", "第三版文本"]</code>），另一列则以明文JSON数组形式存储时间戳（Unix秒数），无需压缩。初步测试模拟了1000次文档编辑，原始修订文本总量达20.4 MB，经zstd压缩后仅剩80.3 KB，压缩率达254倍。这种极致压缩并非依赖复杂差分逻辑，而是直接利用通用压缩器对高度重复的字符串序列进行处理。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>但若每次编辑都解压-修改-再压缩整个数组，性能开销会随历史增长而飙升。为此，原型引入分区策略：将历史拆分到多行中，每行最多容纳128个版本，或不超过3 MB未压缩JSON。这在压缩率与更新效率之间取得实用平衡，适用于磁盘与CPU资源受限的嵌入式或边缘场景。</p>
+<p>尽管尚无查询延迟、事务一致性或并发支持的实测数据，该设计体现了对数据库版本控制的重新思考——它不追求替代Git，而是解决“微型版本化”难题：在本地优先应用、笔记工具或基于SQLite的协作编辑器中，每一KB的存储和每一次毫秒级CPU消耗都至关重要。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Aug/9/sqlite-text-history-prototype/#atom-everything" target="_blank" rel="noopener">阅读原文</a>
+      
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

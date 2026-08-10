@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>SQLite prototype stores text revision history as compressed JSON array - Now AI News</title>
+  <meta name="description" content="Simon Willison prototyped a SQLite-based text versioning scheme that stores all historical revisions as a single zstd-compressed JSON array in a BLOB column, achieving 254× compres" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="SQLite prototype stores text revision history as compressed JSON array" />
+  <meta property="og:description" content="Simon Willison prototyped a SQLite-based text versioning scheme that stores all historical revisions as a single zstd-compressed JSON array in a BLOB column, achieving 254× compres" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--aa5eb22285cdf802.svg" />
+  <meta property="article:published_time" content="2026-08-09T22:05:00+00:00" />
+  <meta property="article:modified_time" content="2026-08-10T03:27:24.255574+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SQLite prototype stores text revision history as compressed JSON array" />
+  <meta name="twitter:description" content="Simon Willison prototyped a SQLite-based text versioning scheme that stores all historical revisions as a single zstd-compressed JSON array in a BLOB column, achieving 254× compres" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--aa5eb22285cdf802.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-10-13-sqlite-prototype-stores-text-revision-history-as-compressed-json-array-5207c84b"}, "headline": "SQLite prototype stores text revision history as compressed JSON array", "description": "Simon Willison prototyped a SQLite-based text versioning scheme that stores all historical revisions as a single zstd-compressed JSON array in a BLOB column, achieving 254× compres", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--aa5eb22285cdf802.svg"], "datePublished": "2026-08-09T22:05:00+00:00", "dateModified": "2026-08-10T03:27:24.255574+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--aa5eb22285cdf802.svg" alt="SQLite prototype stores text revision history as compressed JSON array" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#versioning</span> <span>#data-compression</span> <span>#text-history</span> <span>#database-design</span></div>
+    <h1>SQLite prototype stores text revision history as compressed JSON array</h1>
+    <p class="article-page-meta">News time: 2026-08-10T03:17:51.569128+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>A new experimental approach to versioning text in SQLite databases proposes storing full revision histories—not as separate rows or diffs—but as a single, zlib- or zstd-compressed JSON array of all prior versions. Developer Simon Willison conceived the idea during a dog walk, reasoning that repeated content across successive edits (e.g., paragraphs unchanged between revisions) creates high redundancy ideal for compression. Instead of appending a new 20 KB row for every edit of a long document, the prototype bundles all versions into one binary BLOB column—dramatically reducing storage overhead.</p>
+<p>The core insight is simplicity: a table holds two columns—one BLOB containing zstd-compressed JSON like <code>["v1 text", "v2 text", "v3 text"]</code>, and another TEXT column storing uncompressed timestamps as a JSON array of Unix seconds. Early tests simulated 1,000 edits to a document and found raw revision data totaling 20.4 MB shrank to just 80.3 KB after zstd compression—a 254× reduction. That efficiency stems not from clever delta encoding, but from leveraging general-purpose compression algorithms on highly repetitive string sequences.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>However, updating such a monolithic blob on every edit would require full decompression, modification, and recompression—costly for large histories. To address this, the prototype adopts a pragmatic partitioning strategy: splitting the history across multiple rows, each capped at either 128 revisions or 3 MB of uncompressed JSON. This balances compression gains with update performance, making the scheme viable for real-world embedded or edge applications where disk space and CPU are constrained.</p>
+<p>While still a prototype without benchmarks on query latency, transaction safety, or concurrency, the design reflects a broader shift toward rethinking database versioning beyond traditional models like temporal tables or audit logs. It’s especially relevant for local-first apps, note-taking tools, or collaborative editors built atop SQLite—where lightweight, self-contained, and portable history storage matters more than enterprise-grade ACID guarantees. As Willison notes, it’s less about replacing Git and more about solving the ‘tiny versioning’ problem where every kilobyte counts.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Aug/9/sqlite-text-history-prototype/#atom-everything" target="_blank" rel="noopener">Read original</a>
+      
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
