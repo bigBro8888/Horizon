@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Researchers hijack SMM using artificially prolonged CPU instructions - Now AI News</title>
+  <meta name="description" content="Researchers demonstrated SMM hijacking by executing a single, extremely long-latency instruction (e.g., &#x27;rep; nop&#x27; with billions of repeats) to disrupt SMM timing assumptions and g" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-11-04-researchers-hijack-smm-using-artificially-prolonged-cpu-instructions-aa16fcfd" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-11-04-researchers-hijack-smm-using-artificially-prolonged-cpu-instructions-aa16fcfd" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-11-04-researchers-hijack-smm-using-artificially-prolonged-cpu-instructions-aa16fcfd" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-11-04-researchers-hijack-smm-using-artificially-prolonged-cpu-instructions-aa16fcfd" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Researchers hijack SMM using artificially prolonged CPU instructions" />
+  <meta property="og:description" content="Researchers demonstrated SMM hijacking by executing a single, extremely long-latency instruction (e.g., &#x27;rep; nop&#x27; with billions of repeats) to disrupt SMM timing assumptions and g" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-11-04-researchers-hijack-smm-using-artificially-prolonged-cpu-instructions-aa16fcfd" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49245491.png" />
+  <meta property="article:published_time" content="2026-08-10T16:03:14+00:00" />
+  <meta property="article:modified_time" content="2026-08-11T03:17:57.745385+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Researchers hijack SMM using artificially prolonged CPU instructions" />
+  <meta name="twitter:description" content="Researchers demonstrated SMM hijacking by executing a single, extremely long-latency instruction (e.g., &#x27;rep; nop&#x27; with billions of repeats) to disrupt SMM timing assumptions and g" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49245491.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-11-04-researchers-hijack-smm-using-artificially-prolonged-cpu-instructions-aa16fcfd"}, "headline": "Researchers hijack SMM using artificially prolonged CPU instructions", "description": "Researchers demonstrated SMM hijacking by executing a single, extremely long-latency instruction (e.g., 'rep; nop' with billions of repeats) to disrupt SMM timing assumptions and g", "image": ["https://nowainews.com/media/hackernews-story-49245491.png"], "datePublished": "2026-08-10T16:03:14+00:00", "dateModified": "2026-08-11T03:17:57.745385+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49245491.png" alt="Researchers hijack SMM using artificially prolonged CPU instructions" />
+    <div class="article-page-tags"><span>#security</span> <span>#firmware</span> <span>#SMM</span> <span>#exploitation</span> <span>#low-level</span></div>
+    <h1>Researchers hijack SMM using artificially prolonged CPU instructions</h1>
+    <p class="article-page-meta">News time: 2026-08-11T03:10:09.020036+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A new proof-of-concept exploit demonstrates how System Management Mode (SMM)—a highly privileged, OS-invisible CPU mode—can be hijacked not through memory corruption or firmware bugs, but by deliberately stalling the CPU with an abnormally long instruction. The technique, implemented in the GitHub project <code>smiiiiiiiiiiiiiiii</code>, uses a massively repeated <code>rep; nop</code> instruction to stretch execution latency far beyond typical hardware expectations. During this stall, an SMI (System Management Interrupt) triggers, and because the CPU is still technically executing the same instruction when SMM activates, the exploit manipulates timing assumptions built into SMM handler design—effectively gaining control over SMM code execution.</p>
+<p>SMM has long operated as a 'ring −2' enclave: invisible to the OS, unmonitored by hypervisors, and inaccessible to users—even root. It was originally designed for hardware compatibility tasks like thermal management and legacy BIOS support, but over decades it evolved into a hidden execution environment used for DRM, secure boot enforcement, and vendor telemetry. Crucially, SMM code runs from SMRAM (System Management RAM), which is supposed to be isolated—but this exploit bypasses isolation not by breaching memory protections, but by exploiting <em>timing</em> and <em>control flow assumptions</em> baked into firmware.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The core insight is subtle but profound: SMM handlers assume that when an SMI arrives, the CPU is between instructions—not mid-instruction—and that any instruction completes within predictable bounds. By violating that assumption with a single instruction that takes milliseconds (not nanoseconds) to finish, the researchers force SMM to resume execution in an unexpected context. This reveals a fundamental architectural gap: no mechanism exists for the OS or user to audit, constrain, or even observe what SMM does—or how long it waits for instructions to complete.</p>
+<p>While the attack requires root privileges to inject the malicious instruction sequence, its significance lies not in privilege escalation per se, but in exposing how deeply opaque and unaccountable SMM remains. As one commenter noted, it’s less a 'vulnerability' than a demonstration of intentional design choices that place firmware control entirely outside user sovereignty. Vendors have known about timing-based SMM risks for years—the exploit’s README even cites firmware comments advising timeout configuration—but no standard exists to enforce safe limits or expose SMM behavior transparently.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/xoreaxeaxeax/smiiiiiiiiiiiiiiii" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/System_Management_Mode" target="_blank" rel="noopener">System Management Mode - Wikipedia</a><a href="https://nixhacker.com/digging-into-smm/" target="_blank" rel="noopener">Firmware security 3: Digging into System management mode ( SMM )</a><a href="https://vanbulck.net/files/woot26-smm.pdf" target="_blank" rel="noopener">SoK: 20 Years of Power, Privilege, and Peril in x86 System ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
