@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Researchers extract internal reasoning traces from closed LLM APIs - Now AI News</title>
+  <meta name="description" content="Researchers developed a method to recover internal chain-of-thought reasoning traces from closed LLM APIs—like Anthropic’s Opus 4.8—by replaying distorted API outputs into weaker, " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-12-03-researchers-extract-internal-reasoning-traces-from-closed-llm-apis-66745487" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-12-03-researchers-extract-internal-reasoning-traces-from-closed-llm-apis-66745487" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-12-03-researchers-extract-internal-reasoning-traces-from-closed-llm-apis-66745487" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-12-03-researchers-extract-internal-reasoning-traces-from-closed-llm-apis-66745487" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Researchers extract internal reasoning traces from closed LLM APIs" />
+  <meta property="og:description" content="Researchers developed a method to recover internal chain-of-thought reasoning traces from closed LLM APIs—like Anthropic’s Opus 4.8—by replaying distorted API outputs into weaker, " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-12-03-researchers-extract-internal-reasoning-traces-from-closed-llm-apis-66745487" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49257876.svg" />
+  <meta property="article:published_time" content="2026-08-11T13:22:00+00:00" />
+  <meta property="article:modified_time" content="2026-08-12T03:42:02.821136+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Researchers extract internal reasoning traces from closed LLM APIs" />
+  <meta name="twitter:description" content="Researchers developed a method to recover internal chain-of-thought reasoning traces from closed LLM APIs—like Anthropic’s Opus 4.8—by replaying distorted API outputs into weaker, " />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49257876.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-12-03-researchers-extract-internal-reasoning-traces-from-closed-llm-apis-66745487"}, "headline": "Researchers extract internal reasoning traces from closed LLM APIs", "description": "Researchers developed a method to recover internal chain-of-thought reasoning traces from closed LLM APIs—like Anthropic’s Opus 4.8—by replaying distorted API outputs into weaker, ", "image": ["https://nowainews.com/media/hackernews-story-49257876.svg"], "datePublished": "2026-08-11T13:22:00+00:00", "dateModified": "2026-08-12T03:42:02.821136+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49257876.svg" alt="Researchers extract internal reasoning traces from closed LLM APIs" />
+    <div class="article-page-tags"><span>#LLM security</span> <span>#chain-of-thought</span> <span>#API exploitation</span> <span>#model distillation</span> <span>#AI ethics</span></div>
+    <h1>Researchers extract internal reasoning traces from closed LLM APIs</h1>
+    <p class="article-page-meta">News time: 2026-08-12T03:28:47.092609+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A team of researchers has demonstrated a novel technique to recover chain-of-thought (CoT) reasoning traces from proprietary large language model APIs—despite those APIs being explicitly designed to hide or summarize such intermediate steps. The method exploits subtle inconsistencies in how frontier models like Anthropic’s Claude Opus 4.8 format and truncate reasoning in their final API responses. For example, when solving AIME-level math problems, Opus sometimes states the answer before deriving it—but the API output may reorder or smooth over that sequence, inadvertently preserving structural clues about the original trace. By replaying these distorted outputs into weaker, more jailbreakable models (e.g., smaller open-weight LLMs), the researchers successfully reconstruct high-fidelity reasoning paths that were never meant to be exposed.</p>
+<p>This is not traditional prompt injection or jailbreaking. Instead, it leverages cross-model portability of reasoning traces: CoT structures generated by one model retain enough semantic and syntactic coherence to guide another—even if the second model is less capable. As one commenter noted, the technique effectively treats the API response as a <em>compressed, lossy transcript</em> of thought—and uses a more malleable model as a decompressor. The approach works even without direct access to logits or hidden states, relying only on standard API calls and carefully engineered queries.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The implications extend beyond curiosity. Recovered traces can feed model distillation pipelines, enabling cheaper fine-tuning of smaller models using high-quality reasoning from expensive frontier APIs. They also raise serious questions about API security assumptions: many providers assume that omitting reasoning in output guarantees its confidentiality—but this work shows that omission ≠ erasure. Moreover, if reasoning traces are portable and recoverable, they may unintentionally leak training data patterns, problem-specific heuristics, or even internal indexing strategies—as suggested by observations that models appear heavily overtrained on certain competition problems.</p>
+<p>While the technique currently requires manual curation and model-specific tuning, it reveals a systemic gap in how API interfaces handle reasoning transparency. It challenges the industry’s implicit contract: users pay for tokens, but receive only curated outputs—not the full cognitive labor behind them. As discussion threads highlight, this isn’t just a bug—it’s an emergent property of how CoT reasoning scales across model generations, and one that may persist until API design explicitly hardens against trace reconstruction.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://stolen-thoughts.com/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/Chain-of-thought_prompting" target="_blank" rel="noopener">Chain-of-thought prompting</a><a href="https://en.wikipedia.org/wiki/Knowledge_distillation" target="_blank" rel="noopener">Knowledge distillation - Wikipedia</a><a href="https://openai.com/index/api-model-distillation/" target="_blank" rel="noopener">Model Distillation in the API | OpenAI</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
