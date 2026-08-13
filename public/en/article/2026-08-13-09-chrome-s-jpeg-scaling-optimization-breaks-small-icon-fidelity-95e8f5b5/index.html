@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Chrome’s JPEG scaling optimization breaks small icon fidelity - Now AI News</title>
+  <meta name="description" content="Chrome applies JPEG decompression-time scaling to small images, causing visible fidelity loss in icons; Firefox currently uses full-decode-then-scale, producing sharper results. Th" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-13-09-chrome-s-jpeg-scaling-optimization-breaks-small-icon-fidelity-95e8f5b5" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-13-09-chrome-s-jpeg-scaling-optimization-breaks-small-icon-fidelity-95e8f5b5" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-13-09-chrome-s-jpeg-scaling-optimization-breaks-small-icon-fidelity-95e8f5b5" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-13-09-chrome-s-jpeg-scaling-optimization-breaks-small-icon-fidelity-95e8f5b5" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Chrome’s JPEG scaling optimization breaks small icon fidelity" />
+  <meta property="og:description" content="Chrome applies JPEG decompression-time scaling to small images, causing visible fidelity loss in icons; Firefox currently uses full-decode-then-scale, producing sharper results. Th" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-13-09-chrome-s-jpeg-scaling-optimization-breaks-small-icon-fidelity-95e8f5b5" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49272549.svg" />
+  <meta property="article:published_time" content="2026-08-12T14:00:54+00:00" />
+  <meta property="article:modified_time" content="2026-08-13T03:46:02.040773+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Chrome’s JPEG scaling optimization breaks small icon fidelity" />
+  <meta name="twitter:description" content="Chrome applies JPEG decompression-time scaling to small images, causing visible fidelity loss in icons; Firefox currently uses full-decode-then-scale, producing sharper results. Th" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49272549.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-13-09-chrome-s-jpeg-scaling-optimization-breaks-small-icon-fidelity-95e8f5b5"}, "headline": "Chrome’s JPEG scaling optimization breaks small icon fidelity", "description": "Chrome applies JPEG decompression-time scaling to small images, causing visible fidelity loss in icons; Firefox currently uses full-decode-then-scale, producing sharper results. Th", "image": ["https://nowainews.com/media/hackernews-story-49272549.svg"], "datePublished": "2026-08-12T14:00:54+00:00", "dateModified": "2026-08-13T03:46:02.040773+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49272549.svg" alt="Chrome’s JPEG scaling optimization breaks small icon fidelity" />
+    <div class="article-page-tags"><span>#web-browsers</span> <span>#image-processing</span> <span>#JPEG</span> <span>#frontend-development</span> <span>#rendering</span></div>
+    <h1>Chrome’s JPEG scaling optimization breaks small icon fidelity</h1>
+    <p class="article-page-meta">News time: 2026-08-13T03:32:13.942638+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Web developers relying on small JPEG images—especially for UI icons—have recently encountered unexpected visual degradation in Chrome. A deep technical investigation by Guillaume Tech reveals that Chrome applies a low-level JPEG decompression scaling optimization: instead of fully decoding the JPEG and then resizing it, Chrome decodes only a lower-resolution version directly from the compressed bitstream. This saves memory and CPU, but at a cost: chroma subsampling artifacts become visibly exaggerated, edges blur, and fine details vanish—particularly in images under 100×100 pixels.</p>
+<p>The issue is most acute in Electron-based desktop applications, where Chrome’s rendering engine powers the UI. One developer reported that upgrading Electron triggered widespread icon corruption across their product, forcing them to delay the release. Firefox, by contrast, currently performs full JPEG decompression before scaling—resulting in sharper, more faithful rendering, albeit with higher resource use. This divergence isn’t just cosmetic: it exposes a real inconsistency in how browsers interpret the same image bytes, undermining the expectation of cross-browser pixel-perfect rendering.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The community response has been both pragmatic and technically nuanced. Several commenters reaffirm a long-standing best practice: JPEG is fundamentally unsuited for icons due to its lossy compression and chroma subsampling (which discards color detail to save space). PNG—or modern alternatives like WebP with lossless mode—is strongly preferred for crisp alpha-transparent graphics. Others emphasize resolution discipline: serving a 20×20 icon as a 20×20 asset—not a scaled-down 2000×2000 JPEG—avoids interpolation entirely and eliminates the problem at its source.</p>
+<p>Mozilla is now actively working to implement similar decompression-time scaling in Firefox (tracked in Bugzilla #2033250), aiming for performance parity—but this raises new questions about whether consistency should mean adopting Chrome’s trade-offs, or whether browsers should prioritize fidelity by default. For now, the takeaway is clear: if your design depends on sharp, small raster graphics, avoid JPEG entirely, specify exact display dimensions, and test across engines—not just browsers.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://guillaumetech.github.io/posts/jpg-scaling-chrome/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/Chroma_subsampling" target="_blank" rel="noopener">Chroma subsampling - Wikipedia</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

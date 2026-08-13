@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Adam’s per-coordinate adaptation breaks low-rank bias in matrix factorization - Now AI News</title>
+  <meta name="description" content="The paper identifies that Adam’s per-coordinate second-moment adaptation—not adaptivity per se—breaks rotational invariance in factored models and erodes GD’s implicit low-rank bia" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-13-03-adam-s-per-coordinate-adaptation-breaks-low-rank-bias-in-matrix-factorization-4a38563a" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-13-03-adam-s-per-coordinate-adaptation-breaks-low-rank-bias-in-matrix-factorization-4a38563a" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-13-03-adam-s-per-coordinate-adaptation-breaks-low-rank-bias-in-matrix-factorization-4a38563a" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-13-03-adam-s-per-coordinate-adaptation-breaks-low-rank-bias-in-matrix-factorization-4a38563a" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Adam’s per-coordinate adaptation breaks low-rank bias in matrix factorization" />
+  <meta property="og:description" content="The paper identifies that Adam’s per-coordinate second-moment adaptation—not adaptivity per se—breaks rotational invariance in factored models and erodes GD’s implicit low-rank bia" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-13-03-adam-s-per-coordinate-adaptation-breaks-low-rank-bias-in-matrix-factorization-4a38563a" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vmjb3p.png" />
+  <meta property="article:published_time" content="2026-08-12T16:39:12+00:00" />
+  <meta property="article:modified_time" content="2026-08-13T03:46:02.040773+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Adam’s per-coordinate adaptation breaks low-rank bias in matrix factorization" />
+  <meta name="twitter:description" content="The paper identifies that Adam’s per-coordinate second-moment adaptation—not adaptivity per se—breaks rotational invariance in factored models and erodes GD’s implicit low-rank bia" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vmjb3p.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-13-03-adam-s-per-coordinate-adaptation-breaks-low-rank-bias-in-matrix-factorization-4a38563a"}, "headline": "Adam’s per-coordinate adaptation breaks low-rank bias in matrix factorization", "description": "The paper identifies that Adam’s per-coordinate second-moment adaptation—not adaptivity per se—breaks rotational invariance in factored models and erodes GD’s implicit low-rank bia", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vmjb3p.png"], "datePublished": "2026-08-12T16:39:12+00:00", "dateModified": "2026-08-13T03:46:02.040773+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vmjb3p.png" alt="Adam’s per-coordinate adaptation breaks low-rank bias in matrix factorization" />
+    <div class="article-page-tags"><span>#optimization</span> <span>#implicit_bias</span> <span>#matrix_factorization</span> <span>#deep_learning_theory</span> <span>#adaptive_optimizers</span></div>
+    <h1>Adam’s per-coordinate adaptation breaks low-rank bias in matrix factorization</h1>
+    <p class="article-page-meta">News time: 2026-08-13T03:32:13.923856+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A new theoretical analysis reveals that Adam’s widely used per-coordinate second-moment adaptation—while effective for training speed—actively undermines a key implicit bias of gradient descent: the tendency to recover low-rank solutions in underdetermined matrix factorization problems. In models where the weight matrix is factored as W = UV^T, the loss function is rotationally invariant: rotating both U and V by the same orthogonal matrix Q leaves W unchanged and thus preserves the loss. Gradient descent respects this symmetry, naturally favoring low-rank solutions when data is rank-deficient. But Adam does not—its adaptive denominator √v_t computes separate second-moment estimates for each parameter coordinate, making the update rule sensitive to how the factors are <em>parameterized</em>, not just what they represent.</p>
+<p>The study tests nine optimizers on matrix sensing tasks, carefully controlling for training loss to isolate implicit bias—not fitting capacity. Two clear clusters emerge: GD, shared-scalar Adam (where v_t is a single scalar across all parameters), Muon, and Shampoo preserve low-rank recovery; standard Adam, RMSProp, Lion, Signum, and Adafactor do not. Crucially, the authors introduce a one-parameter interpolation between per-coordinate and global second-moment adaptation—and observe monotonic improvement in low-rank recovery as anisotropy decreases. This directly implicates coordinate-wise adaptivity—not adaptivity itself—as the culprit.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Muon stands out as a surprising case: it achieves exact recovery on truly low-rank targets but degrades fastest as spectral ‘tail’ energy increases—even crossing over to perform worse than GD beyond ~4% tail energy. This reconciles conflicting prior reports: Muon <em>does</em> exhibit spectral simplicity bias, but only up to a point; its behavior is highly sensitive to spectral structure. The paper also diagnoses a flaw in the author’s earlier optimizer: per-coordinate gradient clipping disrupted the very low-rank structure it was designed to promote—switching to global norm clipping reduced recovery error from 0.347 to 0.220.</p>
+<p>One important caveat: while a 43–44% held-out error reduction is reported on hyperspectral data, this uses a train-only learning rate rule that disadvantages Adam. When each optimizer selects its optimal learning rate, the gap shrinks significantly—confirming that the mechanism, not the magnitude, is the core claim. The theory formally covers memoryless optimizers; momentum variants like Muon and Adam are validated empirically but lack full theoretical proof.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vmjb3p/the_loss_does_not_see_the_basis_but_adam_does_r/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://adibhasan.com/blog/adam-explained/" target="_blank" rel="noopener">Adam and AdamW: How They Work and When They Fail - Adib Hasan</a><a href="https://apxml.com/courses/optimization-techniques-ml/chapter-3-adaptive-learning-rate-algorithms/adam-optimizer" target="_blank" rel="noopener">Adam Optimization Algorithm Explained</a><a href="https://www.emergentmind.com/topics/rotational-adam-optimizer" target="_blank" rel="noopener">Rotational Adam Optimizer</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

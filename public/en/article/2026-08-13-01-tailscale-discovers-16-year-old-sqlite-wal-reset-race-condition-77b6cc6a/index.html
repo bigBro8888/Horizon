@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Tailscale discovers 16-year-old SQLite WAL reset race condition - Now AI News</title>
+  <meta name="description" content="Tailscale identified and helped fix a 16-year-old SQLite WAL reset race condition (present since 2008) that caused silent database corruption in its production control plane, leadi" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-13-01-tailscale-discovers-16-year-old-sqlite-wal-reset-race-condition-77b6cc6a" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-13-01-tailscale-discovers-16-year-old-sqlite-wal-reset-race-condition-77b6cc6a" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-13-01-tailscale-discovers-16-year-old-sqlite-wal-reset-race-condition-77b6cc6a" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-13-01-tailscale-discovers-16-year-old-sqlite-wal-reset-race-condition-77b6cc6a" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Tailscale discovers 16-year-old SQLite WAL reset race condition" />
+  <meta property="og:description" content="Tailscale identified and helped fix a 16-year-old SQLite WAL reset race condition (present since 2008) that caused silent database corruption in its production control plane, leadi" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-13-01-tailscale-discovers-16-year-old-sqlite-wal-reset-race-condition-77b6cc6a" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49272832.png" />
+  <meta property="article:published_time" content="2026-08-12T14:22:30+00:00" />
+  <meta property="article:modified_time" content="2026-08-13T03:46:02.040773+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tailscale discovers 16-year-old SQLite WAL reset race condition" />
+  <meta name="twitter:description" content="Tailscale identified and helped fix a 16-year-old SQLite WAL reset race condition (present since 2008) that caused silent database corruption in its production control plane, leadi" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49272832.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-13-01-tailscale-discovers-16-year-old-sqlite-wal-reset-race-condition-77b6cc6a"}, "headline": "Tailscale discovers 16-year-old SQLite WAL reset race condition", "description": "Tailscale identified and helped fix a 16-year-old SQLite WAL reset race condition (present since 2008) that caused silent database corruption in its production control plane, leadi", "image": ["https://nowainews.com/media/hackernews-story-49272832.png"], "datePublished": "2026-08-12T14:22:30+00:00", "dateModified": "2026-08-13T03:46:02.040773+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49272832.png" alt="Tailscale discovers 16-year-old SQLite WAL reset race condition" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#database</span> <span>#race-condition</span> <span>#systems-debugging</span> <span>#open-source</span></div>
+    <h1>Tailscale discovers 16-year-old SQLite WAL reset race condition</h1>
+    <p class="article-page-meta">News time: 2026-08-13T03:32:13.942451+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>In a meticulous forensic investigation, Tailscale engineers uncovered a subtle but devastating race condition in SQLite’s Write-Ahead Logging (WAL) mode — one that had lurked undetected since 2008. The bug manifested as silent database corruption in Tailscale’s production control plane, despite strict adherence to SQLite’s documented single-writer usage pattern. Their control plane relies on a single Go process to manage a critical SQLite database that coordinates device keys, network state, and policy enforcement across millions of tailnets. Because SQLite is designed for safe concurrent access only when properly configured — and because Tailscale used it exactly as recommended — the corruption was deeply puzzling.</p>
+<p>The breakthrough came after weeks of log analysis, custom instrumentation, and collaboration with the SQLite team. Tailscale built a specialized VFS (Virtual File System) shim to trace low-level WAL operations in real time, revealing that a rare timing collision between a write transaction and a WAL reset could leave the database in an inconsistent state. Crucially, this race did not require multiple writers: it occurred even when only one connection performed writes, because internal checkpointing logic — triggered asynchronously by SQLite itself — could interfere with ongoing transactions.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>SQLite released version 3.51.3 in March 2026 to fix the issue. The patch adds a single atomic check before finalizing a WAL reset: ensuring no active writer has started a transaction since the reset began. This minimal change prevents the race without altering WAL semantics or performance. Tailscale’s diagnosis was validated using formal methods (TLA+) and reproduced in controlled test environments — confirming the bug’s existence across decades of SQLite versions.</p>
+<p>Beyond the technical resolution, the case highlights systemic challenges in maintaining foundational open-source infrastructure. Tailscale funded the development of their debugging VFS shim, illustrating how commercial users can meaningfully support OSS maintenance. They also hold an active support contract with SQLite — a rare but increasingly vital practice for companies depending on mission-critical databases. As one commenter noted, this wasn’t just a bug fix; it was a triumph of disciplined systems debugging, cross-community collaboration, and responsible stewardship of shared infrastructure.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://tailscale.com/blog/sqlite-wal-reset-bug" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://tailscale.com/blog/sqlite-wal-reset-bug" target="_blank" rel="noopener">How Tailscale helped find the SQLite WAL-Reset bug</a><a href="https://antithesis.com/blog/2026/wal-reset-bug/" target="_blank" rel="noopener">Breaking the WAL | Antithesis</a><a href="https://ubuntu.com/blog/hunting-a-16-year-old-sqlite-bug-with-tla-is-dqlite-affected" target="_blank" rel="noopener">Hunting a 16-year-old SQLite bug with TLA+: is dqlite affected? | Ubuntu</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
