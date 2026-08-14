@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Pi agent introduces pragmatic context compaction for long-running workflows - Now AI News</title>
+  <meta name="description" content="Pi agent framework implements a multi-strategy context compaction system—including branching + summarization, selective pruning, and parallel dual-KV-cache management—to sustain lo" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-14-09-pi-agent-introduces-pragmatic-context-compaction-for-long-running-workflows-0370de53" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-14-09-pi-agent-introduces-pragmatic-context-compaction-for-long-running-workflows-0370de53" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-14-09-pi-agent-introduces-pragmatic-context-compaction-for-long-running-workflows-0370de53" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-14-09-pi-agent-introduces-pragmatic-context-compaction-for-long-running-workflows-0370de53" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Pi agent introduces pragmatic context compaction for long-running workflows" />
+  <meta property="og:description" content="Pi agent framework implements a multi-strategy context compaction system—including branching + summarization, selective pruning, and parallel dual-KV-cache management—to sustain lo" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-14-09-pi-agent-introduces-pragmatic-context-compaction-for-long-running-workflows-0370de53" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49289654.svg" />
+  <meta property="article:published_time" content="2026-08-13T17:57:50+00:00" />
+  <meta property="article:modified_time" content="2026-08-14T03:42:44.762132+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Pi agent introduces pragmatic context compaction for long-running workflows" />
+  <meta name="twitter:description" content="Pi agent framework implements a multi-strategy context compaction system—including branching + summarization, selective pruning, and parallel dual-KV-cache management—to sustain lo" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49289654.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-14-09-pi-agent-introduces-pragmatic-context-compaction-for-long-running-workflows-0370de53"}, "headline": "Pi agent introduces pragmatic context compaction for long-running workflows", "description": "Pi agent framework implements a multi-strategy context compaction system—including branching + summarization, selective pruning, and parallel dual-KV-cache management—to sustain lo", "image": ["https://nowainews.com/media/hackernews-story-49289654.svg"], "datePublished": "2026-08-13T17:57:50+00:00", "dateModified": "2026-08-14T03:42:44.762132+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49289654.svg" alt="Pi agent introduces pragmatic context compaction for long-running workflows" />
+    <div class="article-page-tags"><span>#LLM-agents</span> <span>#context-compaction</span> <span>#prompt-engineering</span> <span>#system-design</span> <span>#AI-ops</span></div>
+    <h1>Pi agent introduces pragmatic context compaction for long-running workflows</h1>
+    <p class="article-page-meta">News time: 2026-08-14T03:28:57.429751+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>When an AI agent like Pi runs a multi-hour coding session or complex reasoning chain, it inevitably hits the hard ceiling of its LLM’s context window — often 128K tokens or less. Rather than crash or truncate, Pi triggers <em>compaction</em>: a deliberate, on-the-fly reduction of conversation history that preserves semantic intent while shedding redundant, low-value tokens. As explained in a recent deep-dive post by Earendil, Pi’s compaction isn’t one-size-fits-all. It combines branching + summarization (e.g., isolating tangents into subtrees and condensing them), selective pruning (removing verbose tool outputs or repeated exploratory steps), and — most innovatively — parallel KV-cache management, where two caches operate concurrently: one generating new tokens, the other summarizing prior ones during idle inference time.</p>
+<p>This approach reflects a broader shift in agentic system design: away from brute-force context expansion and toward <em>intentional information hygiene</em>. Practitioners increasingly treat context not as raw memory but as a managed resource — like RAM or disk space — requiring scheduling, eviction policies, and fidelity-aware compression. The Pi framework formalizes this with configurable compaction strategies registered via <code>agent.ContextProvider</code>, enabling developers to plug in domain-specific logic (e.g., preserve all API call inputs but summarize outputs).</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>What makes Pi’s implementation notable is its grounding in real-world constraints. Unlike theoretical proposals, it acknowledges tradeoffs: summarization risks losing subtle user intent; pruning may discard useful breadcrumbs; parallel caching demands extra memory and coordination overhead. The accompanying Hacker News thread — with 45 comments — validates these tensions. Engineers debate whether compaction should be avoided entirely (by staying under 30% context utilization), whether pruning beats summarization for traceability, or whether hybrid approaches like KVFlow-inspired prefetching offer better latency/cost balance.</p>
+<p>Ultimately, Pi’s compaction isn’t just a stopgap — it’s a design pattern for sustainable agency. As agents take on longer, more autonomous tasks — debugging full codebases, managing multi-step deployments, or conducting iterative research — preserving <em>what matters</em> becomes more critical than preserving <em>everything</em>. The goal isn’t infinite context, but infinite <em>relevance</em>.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://earendil.com/posts/compaction-in-pi/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://earendil.com/posts/compaction-in-pi/" target="_blank" rel="noopener">How Compaction Works in Pi | EARENDIL</a><a href="https://deepwiki.com/agentic-dev-io/pi-agent/2.5-compaction-and-context-management" target="_blank" rel="noopener">Compaction and Context Management | agentic-dev-io/pi-agent ...</a><a href="https://arxiv.org/abs/2507.07400" target="_blank" rel="noopener">[2507.07400] KVFlow: Efficient Prefix Caching for ... - arXiv.org Continuum: Efficient and Robust Multi-Turn LLM Agent ... KV Cache Explained: The Complete Guide to KV Cache in LLM ... Continuum: Efficient and Robust Multi-Turn LLM Agent ... Complete Guide to LLM Long-Context Performance and KV Cache ... Reimagining LLM Inference Infrastructure with Memory-Centric ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

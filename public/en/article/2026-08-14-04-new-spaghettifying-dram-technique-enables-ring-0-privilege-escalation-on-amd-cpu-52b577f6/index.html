@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>New &#x27;spaghettifying DRAM&#x27; technique enables ring-0 privilege escalation on AMD CPUs - Now AI News</title>
+  <meta name="description" content="Christopher Domas introduced &#x27;spaghettifying DRAM&#x27;, a novel hardware exploitation technique that manipulates DRAM controller timing and register behavior to achieve ring-0 privileg" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-14-04-new-spaghettifying-dram-technique-enables-ring-0-privilege-escalation-on-amd-cpu-52b577f6" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-14-04-new-spaghettifying-dram-technique-enables-ring-0-privilege-escalation-on-amd-cpu-52b577f6" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-14-04-new-spaghettifying-dram-technique-enables-ring-0-privilege-escalation-on-amd-cpu-52b577f6" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-14-04-new-spaghettifying-dram-technique-enables-ring-0-privilege-escalation-on-amd-cpu-52b577f6" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="New &#x27;spaghettifying DRAM&#x27; technique enables ring-0 privilege escalation on AMD CPUs" />
+  <meta property="og:description" content="Christopher Domas introduced &#x27;spaghettifying DRAM&#x27;, a novel hardware exploitation technique that manipulates DRAM controller timing and register behavior to achieve ring-0 privileg" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-14-04-new-spaghettifying-dram-technique-enables-ring-0-privilege-escalation-on-amd-cpu-52b577f6" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49286341.png" />
+  <meta property="article:published_time" content="2026-08-13T14:17:13+00:00" />
+  <meta property="article:modified_time" content="2026-08-14T03:42:44.762132+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="New &#x27;spaghettifying DRAM&#x27; technique enables ring-0 privilege escalation on AMD CPUs" />
+  <meta name="twitter:description" content="Christopher Domas introduced &#x27;spaghettifying DRAM&#x27;, a novel hardware exploitation technique that manipulates DRAM controller timing and register behavior to achieve ring-0 privileg" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49286341.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-14-04-new-spaghettifying-dram-technique-enables-ring-0-privilege-escalation-on-amd-cpu-52b577f6"}, "headline": "New 'spaghettifying DRAM' technique enables ring-0 privilege escalation on AMD CPUs", "description": "Christopher Domas introduced 'spaghettifying DRAM', a novel hardware exploitation technique that manipulates DRAM controller timing and register behavior to achieve ring-0 privileg", "image": ["https://nowainews.com/media/hackernews-story-49286341.png"], "datePublished": "2026-08-13T14:17:13+00:00", "dateModified": "2026-08-14T03:42:44.762132+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49286341.png" alt="New &#x27;spaghettifying DRAM&#x27; technique enables ring-0 privilege escalation on AMD CPUs" />
+    <div class="article-page-tags"><span>#DRAM</span> <span>#hardware-security</span> <span>#exploitation</span> <span>#memory-forensics</span> <span>#system-security</span></div>
+    <h1>New &#x27;spaghettifying DRAM&#x27; technique enables ring-0 privilege escalation on AMD CPUs</h1>
+    <p class="article-page-meta">News time: 2026-08-14T03:28:57.429642+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A groundbreaking hardware security technique dubbed 'spaghettifying DRAM'—introduced by veteran researcher Christopher Domas—demonstrates how subtle, undocumented behaviors in DRAM controllers can be weaponized to achieve full ring-0 (kernel-level) control on consumer-grade AMD processors. Unlike classic memory attacks such as Row Hammer—which relies on electrical disturbance between adjacent DRAM rows—this method exploits the <em>timing and sequencing</em> of DRAM controller register accesses, effectively turning memory timing parameters into programmable levers for control flow manipulation.</p>
+<p>The core idea is deceptively simple: physical memory addresses are not rigidly enforced at the hardware level. By carefully crafting sequences of memory-mapped I/O (MMIO) writes to DRAM controller registers—particularly those governing refresh intervals, bank activation, and address mapping—the technique induces unpredictable but controllable side effects. One documented example flips a bit in a microcode patch location via <code>xor dword [0xf80c2094], 0x00400000</code>, bypassing traditional privilege checks entirely. This allows direct modification of firmware-resident code, including PSP (Platform Security Processor), SMM (System Management Mode), and even CPU microcode.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The proof-of-concept implementation, named <em>skitter-creek-bath-salts</em>, targets AMD’s Jaguar architecture (2013) and notes partial compatibility with Zen 3—though with different memory controller register base addresses. Crucially, it does <em>not</em> require software vulnerabilities, kernel bugs, or user-mode exploits: it operates purely through precise, low-level hardware interaction during early boot or from ring-0 context. As one commenter observed, this blurs the line between ‘memory access’ and ‘CPU configuration’, revealing how deeply intertwined modern DRAM controllers are with processor trust boundaries.</p>
+<p>What makes this especially consequential is its implications beyond desktops. Consoles like PlayStation and Xbox rely heavily on custom AMD SoCs with tightly locked-down firmware—and yet, if their DRAM controllers expose similar MMIO surfaces, they may be vulnerable to privilege escalation that unlocks everything from hypervisor isolation to secure enclaves. The technique also highlights a broader trend: as memory subsystems grow more complex (e.g., UMC replacing DTC in Zen), their attack surface expands faster than documentation or mitigation efforts can keep up. For systems engineers, it’s a sobering reminder that ‘physical address’ is increasingly a fiction enforced only by software convention—not hardware guarantee.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/xoreaxeaxeax/skitter-creek-bath-salts" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://news.ycombinator.com/item?id=49286341" target="_blank" rel="noopener">Spaghettifying DRAM | Hacker News</a><a href="https://github.com/xoreaxeaxeax/skitter-creek-bath-salts" target="_blank" rel="noopener">GitHub - xoreaxeaxeax/skitter-creek-bath-salts: Unlocking _everything...</a><a href="https://en.wikipedia.org/wiki/Row_hammer" target="_blank" rel="noopener">Row hammer - Wikipedia</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

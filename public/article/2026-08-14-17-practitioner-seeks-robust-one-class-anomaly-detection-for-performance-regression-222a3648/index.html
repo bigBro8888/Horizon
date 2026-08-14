@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>仅10个健康样本下如何用硬件计数器做性能退化检测 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="一名工程师公开求助：仅用10个健康硬件计数器样本进行性能退化检测时，如何设计统计上可靠的单类异常检测流程，包括验证策略、阈值设定和评估指标。 这个问题凸显了机器学习理论与真实系统工程之间的关键断层：在CI/CD流水线中部署异常检测，必须兼顾检测能力与运维可靠性，尤其当硬件计数器是唯一低开销、架构感知的信号来源时。 该工程师对10个健康样本采用留一法交叉验证设" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-08-14-17-practitioner-seeks-robust-one-class-anomaly-detection-for-performance-regression-222a3648" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-14-17-practitioner-seeks-robust-one-class-anomaly-detection-for-performance-regression-222a3648" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-14-17-practitioner-seeks-robust-one-class-anomaly-detection-for-performance-regression-222a3648" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-14-17-practitioner-seeks-robust-one-class-anomaly-detection-for-performance-regression-222a3648" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="仅10个健康样本下如何用硬件计数器做性能退化检测" />
+  <meta property="og:description" content="一名工程师公开求助：仅用10个健康硬件计数器样本进行性能退化检测时，如何设计统计上可靠的单类异常检测流程，包括验证策略、阈值设定和评估指标。 这个问题凸显了机器学习理论与真实系统工程之间的关键断层：在CI/CD流水线中部署异常检测，必须兼顾检测能力与运维可靠性，尤其当硬件计数器是唯一低开销、架构感知的信号来源时。 该工程师对10个健康样本采用留一法交叉验证设" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-08-14-17-practitioner-seeks-robust-one-class-anomaly-detection-for-performance-regression-222a3648" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vngjmv.svg" />
+  <meta property="article:published_time" content="2026-08-13T17:01:27+00:00" />
+  <meta property="article:modified_time" content="2026-08-14T03:42:44.762132+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="仅10个健康样本下如何用硬件计数器做性能退化检测" />
+  <meta name="twitter:description" content="一名工程师公开求助：仅用10个健康硬件计数器样本进行性能退化检测时，如何设计统计上可靠的单类异常检测流程，包括验证策略、阈值设定和评估指标。 这个问题凸显了机器学习理论与真实系统工程之间的关键断层：在CI/CD流水线中部署异常检测，必须兼顾检测能力与运维可靠性，尤其当硬件计数器是唯一低开销、架构感知的信号来源时。 该工程师对10个健康样本采用留一法交叉验证设" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vngjmv.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-08-14-17-practitioner-seeks-robust-one-class-anomaly-detection-for-performance-regression-222a3648"}, "headline": "仅10个健康样本下如何用硬件计数器做性能退化检测", "description": "一名工程师公开求助：仅用10个健康硬件计数器样本进行性能退化检测时，如何设计统计上可靠的单类异常检测流程，包括验证策略、阈值设定和评估指标。 这个问题凸显了机器学习理论与真实系统工程之间的关键断层：在CI/CD流水线中部署异常检测，必须兼顾检测能力与运维可靠性，尤其当硬件计数器是唯一低开销、架构感知的信号来源时。 该工程师对10个健康样本采用留一法交叉验证设", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vngjmv.svg"], "datePublished": "2026-08-13T17:01:27+00:00", "dateModified": "2026-08-14T03:42:44.762132+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vngjmv.svg" alt="仅10个健康样本下如何用硬件计数器做性能退化检测" />
+    <div class="article-page-tags"><span>#anomaly-detection</span> <span>#performance-engineering</span> <span>#machine-learning-ops</span> <span>#systems-monitoring</span> <span>#hardware-counters</span></div>
+    <h1>仅10个健康样本下如何用硬件计数器做性能退化检测</h1>
+    <p class="article-page-meta">新闻时间: 2026-08-14T03:28:57.937634+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一名系统工程师在Reddit机器学习版块发布了一个紧急且技术细节丰富的提问：当仅有10次健康运行的硬件性能计数器数据可用时，如何严谨地应用单类异常检测（one-class anomaly detection）来识别软件性能退化。与常规监督学习不同，该任务不提供任何标注过的异常样本；模型必须仅从稀疏、高维的硬件计数器数据（如L1缓存未命中、分支预测错误或指令退休率）中学习“正常”行为的紧致表示，并在新构建版本或配置中自动标记偏离为潜在退化。</p>
+<p>核心难点在于极小样本下的统计可靠性。仅10个健康样本使得标准的训练/验证/测试划分失去意义：60/20/20划分后验证集可能只剩2–3个样本，远不足以稳健估计阈值敏感性或误报率。作者目前采用留一法（LOO）交叉验证来校准检测阈值，但不确定这是否适用于单类方法（如One-Class SVM或基于自编码器的模型），也不确定未参与训练的退化样本能否直接作为测试集，抑或需要额外采集一组独立的健康数据来评估真实场景中的误报风险。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>评估策略同样复杂。由于目标是二元检测而非连续值预测，作者正确摒弃了MSE、MAE等回归指标，转而关注检出率（召回率）和误报率——这更契合实际运维需求：既要捕获真实退化，又不能因误报淹没CI/CD流水线。但阈值选择仍充满挑战：设得过高会漏掉细微却关键的退化；设得过低则引发大量无效告警。</p>
+<p>这并非纯理论问题。硬件性能计数器开销极低、不依赖操作系统，其信号直接反映CPU微架构行为，因此特别适合在编译器、内核或数据库引擎中实现早期、精准的退化检测。但受限于计数器数量有限及事件复用（多个事件需轮换共享同一计数器），每次采样本身存在噪声且信息不完整。此处的方法论严谨性，正是机器学习实践与系统工程落地之间的关键桥梁：它决定了ML驱动的可观测性能否真正被用于生产级性能持续集成。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vngjmv/urgent_help_detecting_performance_regressions/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://arxiv.org/abs/1802.06360" target="_blank" rel="noopener">Anomaly Detection using One-Class Neural Networks One-Class Anomaly Detection - emergentmind.com Support Vector Machine (SVM) for Anomaly Detection One-Class Classification Algorithms for Imbalanced Datasets Robust Deep One-Class Classification Time Series Anomaly ... Understanding One-Class Support Vector Machines</a><a href="https://en.wikipedia.org/wiki/Hardware_performance_counter" target="_blank" rel="noopener">Hardware performance counter - Wikipedia</a><a href="https://www.intel.com/content/www/us/en/developer/articles/tool/performance-counter-monitor.html" target="_blank" rel="noopener">Intel® Performance Counter Monitor - A Better Way to Measure CPU Utilization</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

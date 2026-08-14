@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Pixel metrics fail to rank world models on real robot video - Now AI News</title>
+  <meta name="description" content="The worldproof tool demonstrates that SSIM and PSNR cannot meaningfully rank world models on real robot video, as even a trivial &#x27;last-frame copy&#x27; baseline achieves near-perfect sc" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-14-06-pixel-metrics-fail-to-rank-world-models-on-real-robot-video-b7128fdb" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-14-06-pixel-metrics-fail-to-rank-world-models-on-real-robot-video-b7128fdb" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-14-06-pixel-metrics-fail-to-rank-world-models-on-real-robot-video-b7128fdb" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-14-06-pixel-metrics-fail-to-rank-world-models-on-real-robot-video-b7128fdb" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Pixel metrics fail to rank world models on real robot video" />
+  <meta property="og:description" content="The worldproof tool demonstrates that SSIM and PSNR cannot meaningfully rank world models on real robot video, as even a trivial &#x27;last-frame copy&#x27; baseline achieves near-perfect sc" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-14-06-pixel-metrics-fail-to-rank-world-models-on-real-robot-video-b7128fdb" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vnliv7.svg" />
+  <meta property="article:published_time" content="2026-08-13T19:58:03+00:00" />
+  <meta property="article:modified_time" content="2026-08-14T03:42:44.762132+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Pixel metrics fail to rank world models on real robot video" />
+  <meta name="twitter:description" content="The worldproof tool demonstrates that SSIM and PSNR cannot meaningfully rank world models on real robot video, as even a trivial &#x27;last-frame copy&#x27; baseline achieves near-perfect sc" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vnliv7.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-14-06-pixel-metrics-fail-to-rank-world-models-on-real-robot-video-b7128fdb"}, "headline": "Pixel metrics fail to rank world models on real robot video", "description": "The worldproof tool demonstrates that SSIM and PSNR cannot meaningfully rank world models on real robot video, as even a trivial 'last-frame copy' baseline achieves near-perfect sc", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vnliv7.svg"], "datePublished": "2026-08-13T19:58:03+00:00", "dateModified": "2026-08-14T03:42:44.762132+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vnliv7.svg" alt="Pixel metrics fail to rank world models on real robot video" />
+    <div class="article-page-tags"><span>#world-models</span> <span>#evaluation-metrics</span> <span>#robotics-vision</span> <span>#SSIM</span> <span>#PSNR</span></div>
+    <h1>Pixel metrics fail to rank world models on real robot video</h1>
+    <p class="article-page-meta">News time: 2026-08-14T03:28:57.937559+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A new open-source diagnostic tool called <em>worldproof</em> has uncovered a critical flaw in how robotic world models are commonly evaluated: standard pixel-level metrics like SSIM and PSNR are nearly useless for ranking models on real-world robot video. The tool—designed to pinpoint <em>where</em> and <em>why</em> world model predictions break down—was used to test a trivial baseline: copying the last observed frame as the prediction for all future steps. On high-frame-rate SO-101 robot arm footage (30fps, 6-step horizon), this naive strategy achieved near-perfect scores: 0.983 SSIM and 53.9 dB PSNR. More alarmingly, its error did not increase with prediction horizon—SSIM values fluctuated between 0.972 and 0.950 across steps 1–6, showing no monotonic degradation. If predicting six steps ahead is no harder than one step, then no model can meaningfully outperform another under this metric.</p>
+<p>The problem isn’t broken metrics—it’s broken evaluation design. When tested on slower-motion DROID manipulation data (15fps, 48-step horizon), the same baseline revealed three distinct regimes: a flat, uninformative plateau at early steps (1–3), a steep, discriminative decline from steps 4–24, and a second flat floor beyond step 28 where predictions become fully decorrelated (SSIM ~0.20). Only within that narrow 8–24 step window do models show separable performance. Crucially, this window depends on the interplay of frame rate and task dynamics—not a universal constant—so it must be measured per dataset, not inherited from prior papers.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Methodologically, the analysis uses rigorous statistical practices: 64 rollouts per configuration, interquartile mean aggregation, and stratified bootstrap confidence intervals (per Agarwal et al., 2021). Metrics are also masked to dynamic regions only, excluding static backgrounds that artificially inflate scores. The study further warns against including step 0 in horizon-averaged metrics—since copying the current frame gives a free, inflated score (e.g., 119.8 dB PSNR at step 0)—which distorts overall rankings.</p>
+<p>This finding challenges foundational assumptions across robotics and embodied AI. World models are increasingly central to sample-efficient robot learning, enabling planning and imagination-based training. But if evaluation fails to distinguish meaningful progress, research risks optimizing for illusory gains. As the author notes, the metric itself passes validation on curated datasets—it’s the <em>application context</em>—real robot video—that strips it of discriminative power. The takeaway is clear: before benchmarking, measure your own usable prediction horizon.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vnliv7/worldproof_diagnosing_where_worldmodel/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://arxiv.org/abs/2605.00080" target="_blank" rel="noopener">World Model for Robot Learning: A Comprehensive Survey World models for robotics - Harvard AI and Robotics Lab [2501.10100] Robotic World Model: A Neural Network Simulator ... Robotics World Modeling World Models for Robotics | Guide | world-models.io From World Models to World Action Models: A Concise Tutorial ... World Model for Robot Learning: A Comprehensive Survey</a><a href="https://arxiv.org/abs/2501.10100" target="_blank" rel="noopener">[2501.10100] Robotic World Model: A Neural Network Simulator ... Robotics World Modeling World Models for Robotics | Guide | world-models.io From World Models to World Action Models: A Concise Tutorial ... World Model for Robot Learning: A Comprehensive Survey</a><a href="https://github.com/TheRobotStudio/SO-ARM100" target="_blank" rel="noopener">GitHub - TheRobotStudio/SO-ARM100: Standard Open Arm 100</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>systemd-journald log entries waste up to 110KB per line on btrfs - Now AI News</title>
+  <meta name="description" content="A GitHub issue (#40262) documents that single systemd-journald log entries consume 49KB+ on ext4 and 110KB+ on btrfs due to structural overhead in its binary journal format. This r" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="systemd-journald log entries waste up to 110KB per line on btrfs" />
+  <meta property="og:description" content="A GitHub issue (#40262) documents that single systemd-journald log entries consume 49KB+ on ext4 and 110KB+ on btrfs due to structural overhead in its binary journal format. This r" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49290215.png" />
+  <meta property="article:published_time" content="2026-08-13T18:41:01+00:00" />
+  <meta property="article:modified_time" content="2026-08-14T03:42:44.762132+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="systemd-journald log entries waste up to 110KB per line on btrfs" />
+  <meta name="twitter:description" content="A GitHub issue (#40262) documents that single systemd-journald log entries consume 49KB+ on ext4 and 110KB+ on btrfs due to structural overhead in its binary journal format. This r" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49290215.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c"}, "headline": "systemd-journald log entries waste up to 110KB per line on btrfs", "description": "A GitHub issue (#40262) documents that single systemd-journald log entries consume 49KB+ on ext4 and 110KB+ on btrfs due to structural overhead in its binary journal format. This r", "image": ["https://nowainews.com/media/hackernews-story-49290215.png"], "datePublished": "2026-08-13T18:41:01+00:00", "dateModified": "2026-08-14T03:42:44.762132+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49290215.png" alt="systemd-journald log entries waste up to 110KB per line on btrfs" />
+    <div class="article-page-tags"><span>#systemd</span> <span>#logging</span> <span>#Linux</span> <span>#performance</span> <span>#filesystem</span></div>
+    <h1>systemd-journald log entries waste up to 110KB per line on btrfs</h1>
+    <p class="article-page-meta">News time: 2026-08-14T03:28:57.429772+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A high-visibility GitHub issue has exposed a startling inefficiency in systemd-journald: a single log entry can consume over 49KB on ext4 and more than 110KB on btrfs filesystems. This isn’t theoretical — users report real-world cases where applications like KDE’s kio file picker or AMDGPU drivers generate thousands of low-signal messages daily, rapidly bloating journal files and exhausting disk space on embedded or resource-constrained systems.</p>
+<p>The root cause lies in journald’s binary journal format, which stores metadata, variable-length fields, and padding in fixed-size objects. Unlike plain text logs — where each line maps roughly 1:1 to its content — journald wraps every message in headers, hashes, object alignment boundaries, and redundant field copies. On copy-on-write filesystems like btrfs, this amplifies overhead further due to internal fragmentation and block allocation patterns.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Critics point out that the problem isn’t just size — it’s lack of control. Filtering is coarse-grained (e.g., by priority only), and there’s no built-in way to rate-limit, truncate, or drop logs from specific units or identifiers. As one commenter notes, when amdgpu misbehaves after suspend/resume, flooding the journal with identical kernel messages, administrators must either disable persistence entirely or route logs externally via rsyslog — undermining journald’s stated purpose as a unified logging layer.</p>
+<p>This issue has reignited long-standing architectural debates. While journald was designed for robustness and structured querying — inspired by git’s append-only model — many argue its indexing and storage trade-offs favor theoretical elegance over operational pragmatism. The community increasingly treats journald not as a primary log store, but as a transient relay: capturing logs briefly before forwarding them to more flexible, filterable, and space-efficient backends like Loki or Elasticsearch.</p>
+<p>Ultimately, the 49KB–110KB anomaly is less about a bug and more about an unaddressed design consequence — one that forces sysadmins to choose between data fidelity and disk sustainability. Until upstream implements field-level compression, selective serialization, or configurable object sizing, workarounds remain the norm.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/systemd/systemd/issues/40262" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://wiki.archlinux.org/title/Systemd/Journal" target="_blank" rel="noopener">systemd/Journal - ArchWiki</a><a href="https://deepwiki.com/systemd/systemd/9.4-journal-and-logging" target="_blank" rel="noopener">Journal and Logging | systemd/systemd | DeepWiki</a><a href="https://www.freedesktop.org/wiki/Software/systemd/journal-files/" target="_blank" rel="noopener">Journal File Format</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

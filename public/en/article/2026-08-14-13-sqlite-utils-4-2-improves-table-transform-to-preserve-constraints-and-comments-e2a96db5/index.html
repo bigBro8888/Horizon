@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>sqlite-utils 4.2 improves table transform to preserve constraints and comments - Now AI News</title>
+  <meta name="description" content="sqlite-utils 4.2 enhances table.transform() to preserve CHECK constraints, UNIQUE constraints, column comments, and other schema metadata during table alterations, and adds new int" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-14-13-sqlite-utils-4-2-improves-table-transform-to-preserve-constraints-and-comments-e2a96db5" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-14-13-sqlite-utils-4-2-improves-table-transform-to-preserve-constraints-and-comments-e2a96db5" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-14-13-sqlite-utils-4-2-improves-table-transform-to-preserve-constraints-and-comments-e2a96db5" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-14-13-sqlite-utils-4-2-improves-table-transform-to-preserve-constraints-and-comments-e2a96db5" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="sqlite-utils 4.2 improves table transform to preserve constraints and comments" />
+  <meta property="og:description" content="sqlite-utils 4.2 enhances table.transform() to preserve CHECK constraints, UNIQUE constraints, column comments, and other schema metadata during table alterations, and adds new int" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-14-13-sqlite-utils-4-2-improves-table-transform-to-preserve-constraints-and-comments-e2a96db5" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--21611efaa3a8bc40.svg" />
+  <meta property="article:published_time" content="2026-08-13T20:11:29+00:00" />
+  <meta property="article:modified_time" content="2026-08-14T03:42:44.762132+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="sqlite-utils 4.2 improves table transform to preserve constraints and comments" />
+  <meta name="twitter:description" content="sqlite-utils 4.2 enhances table.transform() to preserve CHECK constraints, UNIQUE constraints, column comments, and other schema metadata during table alterations, and adds new int" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--21611efaa3a8bc40.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-14-13-sqlite-utils-4-2-improves-table-transform-to-preserve-constraints-and-comments-e2a96db5"}, "headline": "sqlite-utils 4.2 improves table transform to preserve constraints and comments", "description": "sqlite-utils 4.2 enhances table.transform() to preserve CHECK constraints, UNIQUE constraints, column comments, and other schema metadata during table alterations, and adds new int", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--21611efaa3a8bc40.svg"], "datePublished": "2026-08-13T20:11:29+00:00", "dateModified": "2026-08-14T03:42:44.762132+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--21611efaa3a8bc40.svg" alt="sqlite-utils 4.2 improves table transform to preserve constraints and comments" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#Python</span> <span>#database-tools</span> <span>#schema-migration</span> <span>#CLI-tools</span></div>
+    <h1>sqlite-utils 4.2 improves table transform to preserve constraints and comments</h1>
+    <p class="article-page-meta">News time: 2026-08-14T03:28:57.121166+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>sqlite-utils 4.2, released in August 2026, delivers a major upgrade to its <code>table.transform()</code> method—the library’s core mechanism for safely altering SQLite table schemas. Unlike SQLite’s native <code>ALTER TABLE</code>, which supports only limited changes (like renaming columns or adding new ones), <code>table.transform()</code> works by creating a new table with the desired schema, copying data over, and replacing the old table. This approach enables complex transformations such as column type changes, reordering, or dropping columns—but historically, it often lost fine-grained schema elements like CHECK constraints, UNIQUE constraints, and column comments.</p>
+<p>The 4.2 release fixes that gap decisively. Now, when you call <code>transform()</code>, it preserves not just primary keys and indexes, but also check expressions (e.g., <code>age &gt; 0</code>), unique constraints across multiple columns, and even SQL comments attached to columns via <code>COMMENT ON COLUMN</code>. This makes migrations far more reliable for production applications where data integrity rules are defined at the database level—not just in application code.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Equally important are the new introspection APIs introduced in this version. Developers can now programmatically inspect existing CHECK constraints using properties like <code>table.checks</code>, which returns a list of parsed constraint definitions—including the original SQL expression and affected columns. This fills a longstanding gap: prior to 4.2, retrieving CHECK constraints required parsing raw <code>CREATE TABLE</code> DDL output, a fragile and error-prone process.</p>
+<p>The release also reflects strong community involvement, with contributions from five developers across features, tests, and documentation. Notably, the team quickly responded to a critical crash bug discovered shortly after launch—releasing 4.2.1 within days to resolve issue #842. That rapid iteration underscores sqlite-utils’ role as a mature, production-ready tool rather than just a convenience script. For Python developers managing SQLite-backed tools, notebooks, or lightweight apps, this update means safer, more transparent, and more maintainable schema evolution.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Aug/13/sqlite-utils/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://www.sqlitetutorial.net/sqlite-check-constraint/" target="_blank" rel="noopener">An Essential Guide to SQLite CHECK Constraint</a><a href="https://sqlite.org/forum/info/68cfe85bf78e29e0da638e3a8892b1f45b1615f6f567d5b4e52121750724d0a0" target="_blank" rel="noopener">SQLite User Forum: How to obtain check constraints?</a><a href="https://deepwiki.com/simonw/sqlite-utils/4.4-data-conversion-and-transformation" target="_blank" rel="noopener">Data Conversion and Transformation | simonw/sqlite-utils ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

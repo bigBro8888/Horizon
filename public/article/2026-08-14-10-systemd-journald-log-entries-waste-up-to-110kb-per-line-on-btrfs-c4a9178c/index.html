@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>systemd-journald单条日志竟占110KB磁盘空间 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="GitHub议题#40262证实，systemd-journald单条日志因二进制格式固有开销，在ext4上占用超49KB、在btrfs上超110KB。 这暴露了主流Linux发行版默认采用的核心日志子系统存在系统性性能与可用性缺陷，直接影响磁盘占用、日志保留策略及运维可靠性，尤其对资源受限设备危害显著。 btrfs上的高开销源于journald固定大小对象" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="systemd-journald单条日志竟占110KB磁盘空间" />
+  <meta property="og:description" content="GitHub议题#40262证实，systemd-journald单条日志因二进制格式固有开销，在ext4上占用超49KB、在btrfs上超110KB。 这暴露了主流Linux发行版默认采用的核心日志子系统存在系统性性能与可用性缺陷，直接影响磁盘占用、日志保留策略及运维可靠性，尤其对资源受限设备危害显著。 btrfs上的高开销源于journald固定大小对象" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49290215.png" />
+  <meta property="article:published_time" content="2026-08-13T18:41:01+00:00" />
+  <meta property="article:modified_time" content="2026-08-14T03:42:44.762132+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="systemd-journald单条日志竟占110KB磁盘空间" />
+  <meta name="twitter:description" content="GitHub议题#40262证实，systemd-journald单条日志因二进制格式固有开销，在ext4上占用超49KB、在btrfs上超110KB。 这暴露了主流Linux发行版默认采用的核心日志子系统存在系统性性能与可用性缺陷，直接影响磁盘占用、日志保留策略及运维可靠性，尤其对资源受限设备危害显著。 btrfs上的高开销源于journald固定大小对象" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49290215.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-08-14-10-systemd-journald-log-entries-waste-up-to-110kb-per-line-on-btrfs-c4a9178c"}, "headline": "systemd-journald单条日志竟占110KB磁盘空间", "description": "GitHub议题#40262证实，systemd-journald单条日志因二进制格式固有开销，在ext4上占用超49KB、在btrfs上超110KB。 这暴露了主流Linux发行版默认采用的核心日志子系统存在系统性性能与可用性缺陷，直接影响磁盘占用、日志保留策略及运维可靠性，尤其对资源受限设备危害显著。 btrfs上的高开销源于journald固定大小对象", "image": ["https://nowainews.com/media/hackernews-story-49290215.png"], "datePublished": "2026-08-13T18:41:01+00:00", "dateModified": "2026-08-14T03:42:44.762132+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49290215.png" alt="systemd-journald单条日志竟占110KB磁盘空间" />
+    <div class="article-page-tags"><span>#systemd</span> <span>#logging</span> <span>#Linux</span> <span>#performance</span> <span>#filesystem</span></div>
+    <h1>systemd-journald单条日志竟占110KB磁盘空间</h1>
+    <p class="article-page-meta">新闻时间: 2026-08-14T03:28:57.429772+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>一个高关注度的GitHub议题揭露了systemd-journald中一项惊人的低效设计：单条日志在ext4上可占用超49KB空间，在btrfs上甚至超过110KB。这并非理论问题——用户实际报告称，KDE的kio文件选择器或AMDGPU驱动等程序每天会生成数千条低价值日志（例如“刚移除的项目未找到对应节点”），迅速撑爆journal文件，尤其在嵌入式或磁盘受限系统上造成严重压力。</p>
+<p>根本原因在于journald的二进制日志格式：它将每条消息封装在包含元数据、变长字段和填充字节的固定大小对象中。与纯文本日志（一行≈几十到几百字节）不同，journald为每条消息添加头部、哈希校验、对齐边界及冗余字段副本。在btrfs这类写时复制（COW）文件系统上，这种结构进一步加剧空间浪费，引发内部碎片和块分配放大效应。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>批评者指出，问题远不止体积庞大——更在于缺乏控制能力。journald仅支持粗粒度过滤（如按日志级别筛选），无法针对特定服务单元或标识符进行限速、截断或丢弃。有用户举例：AMDGPU驱动在休眠唤醒后异常刷屏内核日志，管理员只能彻底禁用持久化存储，或绕过journald转而使用rsyslog转发——这直接削弱了其作为统一日志层的设计初衷。</p>
+<p>该议题再度激化了关于journald架构的长期争论。尽管其设计借鉴git的追加写模式，强调健壮性与结构化查询能力，但许多运维人员认为，其索引机制与存储开销牺牲了实际可用性。如今社区越来越倾向将journald视为临时中继：短暂捕获日志后，立即转发至Loki、Elasticsearch等更灵活、可过滤、更省空间的后端系统。</p>
+<p>归根结底，49KB–110KB的单行开销并非程序缺陷，而是设计取舍未被正视的后果——它迫使系统管理员在日志完整性与磁盘可持续性之间做艰难权衡。除非上游引入字段级压缩、选择性序列化或可配置对象尺寸等改进，当前各类规避方案仍将是运维常态。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/systemd/systemd/issues/40262" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://wiki.archlinux.org/title/Systemd/Journal" target="_blank" rel="noopener">systemd/Journal - ArchWiki</a><a href="https://deepwiki.com/systemd/systemd/9.4-journal-and-logging" target="_blank" rel="noopener">Journal and Logging | systemd/systemd | DeepWiki</a><a href="https://www.freedesktop.org/wiki/Software/systemd/journal-files/" target="_blank" rel="noopener">Journal File Format</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

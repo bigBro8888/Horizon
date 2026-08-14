@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>ChatGPT图像编辑中发现画布对齐的底层纹理模式 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="研究者在ChatGPT图像编辑输出（包括所谓“全黑”图像）中发现了可复现的、与画布严格对齐的底层纹理模式，并将其归因于迭代编辑机制而非随机噪声。 这些模式揭示了基于扩散模型的迭代式图像编辑中一种此前被忽视的系统性缺陷，影响结果可靠性、可复现性及用户信任，尤其对需多次精细编辑的专业工作流构成挑战。 该伪影在相同分辨率下独立生成的‘全黑’图像间表现出强空间一致性" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-08-14-16-canvas-aligned-low-level-patterns-found-in-chatgpt-image-edits-c9a9c61b" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-14-16-canvas-aligned-low-level-patterns-found-in-chatgpt-image-edits-c9a9c61b" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-14-16-canvas-aligned-low-level-patterns-found-in-chatgpt-image-edits-c9a9c61b" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-14-16-canvas-aligned-low-level-patterns-found-in-chatgpt-image-edits-c9a9c61b" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="ChatGPT图像编辑中发现画布对齐的底层纹理模式" />
+  <meta property="og:description" content="研究者在ChatGPT图像编辑输出（包括所谓“全黑”图像）中发现了可复现的、与画布严格对齐的底层纹理模式，并将其归因于迭代编辑机制而非随机噪声。 这些模式揭示了基于扩散模型的迭代式图像编辑中一种此前被忽视的系统性缺陷，影响结果可靠性、可复现性及用户信任，尤其对需多次精细编辑的专业工作流构成挑战。 该伪影在相同分辨率下独立生成的‘全黑’图像间表现出强空间一致性" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-08-14-16-canvas-aligned-low-level-patterns-found-in-chatgpt-image-edits-c9a9c61b" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vnq08v.svg" />
+  <meta property="article:published_time" content="2026-08-13T22:52:35+00:00" />
+  <meta property="article:modified_time" content="2026-08-14T03:42:44.762132+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ChatGPT图像编辑中发现画布对齐的底层纹理模式" />
+  <meta name="twitter:description" content="研究者在ChatGPT图像编辑输出（包括所谓“全黑”图像）中发现了可复现的、与画布严格对齐的底层纹理模式，并将其归因于迭代编辑机制而非随机噪声。 这些模式揭示了基于扩散模型的迭代式图像编辑中一种此前被忽视的系统性缺陷，影响结果可靠性、可复现性及用户信任，尤其对需多次精细编辑的专业工作流构成挑战。 该伪影在相同分辨率下独立生成的‘全黑’图像间表现出强空间一致性" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vnq08v.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-08-14-16-canvas-aligned-low-level-patterns-found-in-chatgpt-image-edits-c9a9c61b"}, "headline": "ChatGPT图像编辑中发现画布对齐的底层纹理模式", "description": "研究者在ChatGPT图像编辑输出（包括所谓“全黑”图像）中发现了可复现的、与画布严格对齐的底层纹理模式，并将其归因于迭代编辑机制而非随机噪声。 这些模式揭示了基于扩散模型的迭代式图像编辑中一种此前被忽视的系统性缺陷，影响结果可靠性、可复现性及用户信任，尤其对需多次精细编辑的专业工作流构成挑战。 该伪影在相同分辨率下独立生成的‘全黑’图像间表现出强空间一致性", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vnq08v.svg"], "datePublished": "2026-08-13T22:52:35+00:00", "dateModified": "2026-08-14T03:42:44.762132+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vnq08v.svg" alt="ChatGPT图像编辑中发现画布对齐的底层纹理模式" />
+    <div class="article-page-tags"><span>#generative-models</span> <span>#diffusion-models</span> <span>#image-editing</span> <span>#artifacts</span> <span>#reproducibility</span></div>
+    <h1>ChatGPT图像编辑中发现画布对齐的底层纹理模式</h1>
+    <p class="article-page-meta">新闻时间: 2026-08-14T03:28:57.937260+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一位研究者在排查ChatGPT图像生成与编辑中反复出现的视觉异常时，注意到多次编辑后，墙壁、皮肤和纯色背景等平滑区域总会浮现细微的云状或斑驳纹理。起初被当作普通去噪噪声，但该模式表现异常：相同编辑指令有时改善、有时加剧该纹理；将图像整体平移20像素后再编辑，其可见度明显变化；甚至删除最后一步“向左平移20像素”的指令，结果反而更干净。这些现象表明，该纹理并非随机噪声，而是与输出画布的空间坐标严格绑定。</p>
+<p>后续实验进一步证实了这一猜想。当生成多张标称为“全黑”的640×640图像时，像素级分析显示高度可复现性：非零像素掩码的Jaccard重叠率达0.766（若为纯随机噪声，理论期望值仅约0.071）；两张图的交叉相关函数在零延迟处峰值尖锐——说明同一空间结构在不同独立生成中完全对齐。对这些“黑图”施加大尺度高斯模糊（σ=16）后，两者均显现出惊人相似的大范围云状结构，再次印证该信号具有确定性且锚定于画布坐标。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>研究者还观察到编辑过程中的区域差异性：人脸与身体常保持稳定，而背景却持续劣化，暗示模型内部可能采用粗略分割掩码，选择性保留部分内容、重绘其余部分。这种选择性重绘恰能解释为何纹理在不同区域累积程度不一——主要出现在被重生成而非被保留的区域。更重要的是，该纹理随编辑轮次增加而加剧，说明是误差累积效应，而非单次随机扰动。</p>
+<p>作者明确强调，这并非OpenAI水印或SynthID等主动嵌入技术的证据。它更可能源于扩散模型编辑流程的固有机制：如迭代式像素–潜在空间转换、空间对齐约束，或内部坐标系的固定偏置。正如2025年REED-VAE论文所指出，当前扩散编辑模型在连续编辑中因反复跨域转换而快速积累伪影。该发现提醒我们：“原位编辑”并非中立操作——每次编辑都在与模型架构内置的空间框架发生交互，使可复现纹理成为一种系统性特征，而非偶然缺陷。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vnq08v/reproducible_canvasaligned_lowlevel_patterns_in/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://onlinelibrary.wiley.com/doi/10.1111/cgf.70020?af=R" target="_blank" rel="noopener">REED‐VAE: RE‐Encode Decode Training for Iterative Image Editing with Diffusion Models - Almog - 2025 - Computer Graphics Forum - Wiley Online Library</a><a href="https://arxiv.org/abs/2502.11989" target="_blank" rel="noopener">[2502.11989] Characterizing Photorealism and Artifacts in ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
