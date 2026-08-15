@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Developer compiles Doom renderer into 21B-parameter transformer without training - Now AI News</title>
+  <meta name="description" content="A developer compiled Doom&#x27;s deterministic renderer into a fixed-weight 21B-parameter transformer checkpoint using Torchwright — a compiler that analytically maps computation graphs" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-15-03-developer-compiles-doom-renderer-into-21b-parameter-transformer-without-training-c8ec0ec6" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-15-03-developer-compiles-doom-renderer-into-21b-parameter-transformer-without-training-c8ec0ec6" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-15-03-developer-compiles-doom-renderer-into-21b-parameter-transformer-without-training-c8ec0ec6" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-15-03-developer-compiles-doom-renderer-into-21b-parameter-transformer-without-training-c8ec0ec6" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Developer compiles Doom renderer into 21B-parameter transformer without training" />
+  <meta property="og:description" content="A developer compiled Doom&#x27;s deterministic renderer into a fixed-weight 21B-parameter transformer checkpoint using Torchwright — a compiler that analytically maps computation graphs" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-15-03-developer-compiles-doom-renderer-into-21b-parameter-transformer-without-training-c8ec0ec6" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1voazhm.png" />
+  <meta property="article:published_time" content="2026-08-14T15:50:11+00:00" />
+  <meta property="article:modified_time" content="2026-08-15T02:31:42.679934+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Developer compiles Doom renderer into 21B-parameter transformer without training" />
+  <meta name="twitter:description" content="A developer compiled Doom&#x27;s deterministic renderer into a fixed-weight 21B-parameter transformer checkpoint using Torchwright — a compiler that analytically maps computation graphs" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1voazhm.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-15-03-developer-compiles-doom-renderer-into-21b-parameter-transformer-without-training-c8ec0ec6"}, "headline": "Developer compiles Doom renderer into 21B-parameter transformer without training", "description": "A developer compiled Doom's deterministic renderer into a fixed-weight 21B-parameter transformer checkpoint using Torchwright — a compiler that analytically maps computation graphs", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1voazhm.png"], "datePublished": "2026-08-14T15:50:11+00:00", "dateModified": "2026-08-15T02:31:42.679934+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1voazhm.png" alt="Developer compiles Doom renderer into 21B-parameter transformer without training" />
+    <div class="article-page-tags"><span>#transformers</span> <span>#program synthesis</span> <span>#neural compilation</span> <span>#game rendering</span> <span>#Doom</span></div>
+    <h1>Developer compiles Doom renderer into 21B-parameter transformer without training</h1>
+    <p class="article-page-meta">News time: 2026-08-15T02:18:21.768058+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>In a striking demonstration of neural architecture as raw compute substrate, a developer has compiled the classic 1993 game Doom’s deterministic renderer — down to its precise ray-casting logic and texture mapping — directly into the fixed weights of a 21-billion-parameter transformer. Crucially, no gradient-based training was involved. Instead, the project uses a custom compiler called Torchwright that translates high-level computation graphs — written in Python and representing Doom’s rendering pipeline — into analytically derived transformer weights. The resulting model is a standard Hugging Face-compatible checkpoint: it loads with <code>trust_remote_code=False</code>, runs inference via autoregressive token generation, and outputs a sequence of low-level drawing commands (e.g., 'move cursor', 'draw pixel') rather than pixels directly.</p>
+<p>The host program that orchestrates this is just 43 lines of Python: it feeds scene state (player position, angle, level geometry) as a 3,614-token prompt, then decodes 53,747 tokens over ~40 minutes on an NVIDIA B200 GPU. Parsing those tokens mechanically reconstructs the iconic E1M1 frame — pixel-perfect, deterministic, and fully reproducible. This isn’t emulation or approximation; it’s <em>compilation</em>: the same algorithm that ran on a 486 CPU in 1993 now executes inside transformer attention and feed-forward layers, albeit at 35 frames per day instead of 35 frames per second.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The technical foundation rests on treating transformers not as statistical pattern recognizers, but as programmable state machines. Torchwright maps each operation in Doom’s renderer — integer arithmetic, memory indexing, conditional branching — onto transformer submodules using analytical weight construction: attention heads encode control flow, MLPs implement arithmetic, and positional encoding carries iteration state. No learned inductive bias is leveraged; every weight is derived from symbolic constraints. The result challenges a foundational assumption in deep learning: that large language models must be trained to become useful. Here, usefulness emerges from correct compilation — like writing assembly for a neural CPU.</p>
+<p>While impractical for real-time gaming, the experiment opens new conceptual ground. It bridges program synthesis, mechanistic interpretability, and neural compilation — showing that transformers can serve as <em>executable specifications</em>, not just statistical surrogates. As one commenter noted, this reframes the question from 'What can transformers learn?' to 'What can they <em>compute</em> — if we treat them as hardware?' The full write-up, weights, and source code are publicly available, inviting replication and extension to other deterministic algorithms.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1voazhm/i_compiled_dooms_renderer_into_a_21bparameter/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://medium.com/@sean.j.moran/i-built-a-tiny-computer-inside-a-transformer-e3000a0019b3" target="_blank" rel="noopener">I Built a Tiny Computer Inside a Transformer | by Sean Moran | Medium</a><a href="https://groundtruth.day/news/torchwright-compiles-python-to-transformer-weights.html" target="_blank" rel="noopener">torchwright builds working transformer weights from... — Ground Truth</a><a href="https://www.emergentmind.com/topics/neural-compilation" target="_blank" rel="noopener">Neural Compilation : Differentiable Program Optimization</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

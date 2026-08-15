@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>torch-preflight launches as first static linter for PyTorch anti-patterns - Now AI News</title>
+  <meta name="description" content="torch-preflight, a new static linter for PyTorch, was released to detect 13 common training-time anti-patterns (e.g., missing zero_grad, DDP misconfigurations) and estimate VRAM us" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-15-05-torch-preflight-launches-as-first-static-linter-for-pytorch-anti-patterns-1ae03f73" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-15-05-torch-preflight-launches-as-first-static-linter-for-pytorch-anti-patterns-1ae03f73" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-15-05-torch-preflight-launches-as-first-static-linter-for-pytorch-anti-patterns-1ae03f73" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-15-05-torch-preflight-launches-as-first-static-linter-for-pytorch-anti-patterns-1ae03f73" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="torch-preflight launches as first static linter for PyTorch anti-patterns" />
+  <meta property="og:description" content="torch-preflight, a new static linter for PyTorch, was released to detect 13 common training-time anti-patterns (e.g., missing zero_grad, DDP misconfigurations) and estimate VRAM us" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-15-05-torch-preflight-launches-as-first-static-linter-for-pytorch-anti-patterns-1ae03f73" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vo8vv0.png" />
+  <meta property="article:published_time" content="2026-08-14T14:30:56+00:00" />
+  <meta property="article:modified_time" content="2026-08-15T02:31:42.679934+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="torch-preflight launches as first static linter for PyTorch anti-patterns" />
+  <meta name="twitter:description" content="torch-preflight, a new static linter for PyTorch, was released to detect 13 common training-time anti-patterns (e.g., missing zero_grad, DDP misconfigurations) and estimate VRAM us" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vo8vv0.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-15-05-torch-preflight-launches-as-first-static-linter-for-pytorch-anti-patterns-1ae03f73"}, "headline": "torch-preflight launches as first static linter for PyTorch anti-patterns", "description": "torch-preflight, a new static linter for PyTorch, was released to detect 13 common training-time anti-patterns (e.g., missing zero_grad, DDP misconfigurations) and estimate VRAM us", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vo8vv0.png"], "datePublished": "2026-08-14T14:30:56+00:00", "dateModified": "2026-08-15T02:31:42.679934+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vo8vv0.png" alt="torch-preflight launches as first static linter for PyTorch anti-patterns" />
+    <div class="article-page-tags"><span>#PyTorch</span> <span>#static-analysis</span> <span>#ML-ops</span> <span>#GPU-optimization</span> <span>#linter</span></div>
+    <h1>torch-preflight launches as first static linter for PyTorch anti-patterns</h1>
+    <p class="article-page-meta">News time: 2026-08-15T02:18:21.768488+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A new open-source tool called torch-preflight is making waves among PyTorch developers — not by speeding up training or adding new layers, but by preventing costly mistakes before a single line of code runs. Built as a static linter, it scans Python source files without importing or executing them, meaning no GPU, no PyTorch installation, and zero runtime overhead. Its core mission is to catch subtle but widespread coding errors that silently inflate GPU memory usage, cause training crashes, or lead to incorrect gradients — problems that often waste hours or even days of compute time.</p>
+<p>The tool currently enforces 13 rules targeting PyTorch-specific pitfalls. These include forgetting <code>optimizer.zero_grad()</code> inside training loops (causing gradient accumulation across iterations), appending un-detached loss tensors to lists (which retains the entire autograd graph), misusing gradient accumulation without scaling the loss, and configuring DistributedDataParallel (DDP) without a <code>DistributedSampler</code> — a classic mistake where all processes train on identical data batches instead of sharded subsets. Each detection comes with actionable feedback, not just warnings.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Beyond bug detection, torch-preflight includes an experimental VRAM estimator. Given a training script and target GPU model (e.g., T4, A100), it predicts peak memory consumption and suggests concrete code changes — like reducing batch size or disabling gradient checkpointing — along with the GiB saved per change. The author reports estimates within 4% of measured peaks across four models on a T4, though notes this is early validation.</p>
+<p>Unlike general-purpose Python linters or even prior PyTorch-focused tools like torchfix (which focuses on API deprecations and basic device mismatches) or torchlint (a minimal device/size checker), torch-preflight uniquely targets <em>training-loop logic</em> and <em>distributed setup correctness</em>. It fills a critical gap: while PyTorch’s flexibility empowers researchers, it also enables silent failures — bugs that don’t crash immediately but corrupt results or exhaust memory after hundreds of steps. As one developer put it, ‘My work went into dump because of some mistake I made in the code’ — a sentiment many ML engineers recognize all too well.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vo8vv0/a_linter_for_pytorch_torchpreflight_p/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/pytorch-labs/torchfix" target="_blank" rel="noopener">GitHub - meta-pytorch/torchfix: TorchFix - a linter for PyTorch-using code with autofix support · GitHub</a><a href="https://github.com/esqu1/torchlint" target="_blank" rel="noopener">GitHub - esqu1/torchlint: A basic static analyzer and linter for PyTorch device and size checking.</a><a href="https://heytensor.com/tools/" target="_blank" rel="noopener">PyTorch Tools — Shape Calculators, Error Debuggers... | HeyTensor</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
