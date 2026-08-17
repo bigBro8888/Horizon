@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>SSOG-Attention replaces quadratic attention with separable Gaussians - Now AI News</title>
+  <meta name="description" content="Researchers introduced SSOG-Attention, a novel sub-quadratic attention mechanism that replaces SDPA’s O(N²·d) dot-product computation with a sum of separable Gaussians, achieving O" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-17-02-ssog-attention-replaces-quadratic-attention-with-separable-gaussians-ccd99959" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-17-02-ssog-attention-replaces-quadratic-attention-with-separable-gaussians-ccd99959" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-17-02-ssog-attention-replaces-quadratic-attention-with-separable-gaussians-ccd99959" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-17-02-ssog-attention-replaces-quadratic-attention-with-separable-gaussians-ccd99959" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="SSOG-Attention replaces quadratic attention with separable Gaussians" />
+  <meta property="og:description" content="Researchers introduced SSOG-Attention, a novel sub-quadratic attention mechanism that replaces SDPA’s O(N²·d) dot-product computation with a sum of separable Gaussians, achieving O" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-17-02-ssog-attention-replaces-quadratic-attention-with-separable-gaussians-ccd99959" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vpt6ay.png" />
+  <meta property="article:published_time" content="2026-08-16T10:06:07+00:00" />
+  <meta property="article:modified_time" content="2026-08-17T02:44:42.248328+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SSOG-Attention replaces quadratic attention with separable Gaussians" />
+  <meta name="twitter:description" content="Researchers introduced SSOG-Attention, a novel sub-quadratic attention mechanism that replaces SDPA’s O(N²·d) dot-product computation with a sum of separable Gaussians, achieving O" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vpt6ay.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-17-02-ssog-attention-replaces-quadratic-attention-with-separable-gaussians-ccd99959"}, "headline": "SSOG-Attention replaces quadratic attention with separable Gaussians", "description": "Researchers introduced SSOG-Attention, a novel sub-quadratic attention mechanism that replaces SDPA’s O(N²·d) dot-product computation with a sum of separable Gaussians, achieving O", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vpt6ay.png"], "datePublished": "2026-08-16T10:06:07+00:00", "dateModified": "2026-08-17T02:44:42.248328+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vpt6ay.png" alt="SSOG-Attention replaces quadratic attention with separable Gaussians" />
+    <div class="article-page-tags"><span>#attention-mechanism</span> <span>#efficient-transformers</span> <span>#scalable-ml</span> <span>#computer-vision</span> <span>#neural-architecture</span></div>
+    <h1>SSOG-Attention replaces quadratic attention with separable Gaussians</h1>
+    <p class="article-page-meta">News time: 2026-08-17T02:33:19.149402+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A new attention mechanism called SSOG-Attention offers a compelling alternative to the standard scaled dot-product attention (SDPA) used in transformers. Instead of computing pairwise similarity scores between all query and key tokens — an operation that scales quadratically as O(N²·d) — SSOG models each attention head as a small set of learned Gaussian 'atoms' placed over relative positions. These atoms are <em>separable</em>, meaning their 2D spatial structure decomposes into two 1D filters — one for rows, one for columns — enabling efficient convolution-like computation. Crucially, the query token doesn’t compute dot products; it only applies tiny, bounded geometric nudges to steer the pre-learned Gaussian field. This eliminates the N×N attention matrix entirely.</p>
+<p>The result is a theoretical complexity of O(N·√N·d), significantly better than SDPA’s O(N²·d) and competitive with other linear or sub-quadratic methods — but with a distinct geometric intuition. In practice, SSOG-Attention shows faster convergence and stronger generalization on small-data benchmarks like CIFAR-100, while matching SDPA’s final accuracy on large-scale ImageNet-1K. It also scales more gracefully in memory and speed as sequence length grows, making it especially promising for vision transformers (ViTs) processing high-resolution images.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>What sets SSOG apart from sparse or low-rank approximations is its foundation in continuous geometry rather than discrete sparsity or matrix factorization. Each head learns a compact, interpretable spatial prior — a handful of smooth, localized Gaussian bumps — which content then subtly repositions. This design avoids the instability sometimes seen in random-feature or kernel-based linear attention, and sidesteps the need for careful masking or top-k selection. The authors open-sourced both the implementation and a detailed blog post with ablation studies, including comparisons to Performer, Linformer, and FlashAttention variants.</p>
+<p>While not yet tested on language modeling tasks, the architecture’s strong ViT results suggest broader applicability. Its reliance on relative position and local steering — rather than global token interactions — raises interesting questions about long-range dependency capture. Still, for many real-world vision applications where data efficiency and inference speed matter, SSOG-Attention presents a principled, performant, and surprisingly simple upgrade path from standard attention.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vpt6ay/ssogattention_sum_of_separable_gaussians_as_a/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/4rtemi5/ssog/blob/main/README.md" target="_blank" rel="noopener">ssog/README.md at main · 4rtemi5/ssog · GitHub</a><a href="https://x.com/AllAboutJoeX/status/2088933013635596613" target="_blank" rel="noopener">Attention needs another path. SSOG-Attention proposes a sum ...</a><a href="https://www.linkedin.com/posts/rpisoni_a-few-gaussians-is-all-you-need-ssog-attention-activity-7494799597622525952-mgd2" target="_blank" rel="noopener">A Few Gaussians Is All You Need: SSOG-Attention That Steers ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

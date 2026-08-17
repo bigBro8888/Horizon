@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Linear attention fails long-range DNA recall at million-token scale - Now AI News</title>
+  <meta name="description" content="A researcher empirically demonstrates severe long-range recall failure (~25% accuracy) in linear attention models—including HyenaDNA—on million-token DNA sequence benchmarks, confi" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-17-06-linear-attention-fails-long-range-dna-recall-at-million-token-scale-77054ef2" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-17-06-linear-attention-fails-long-range-dna-recall-at-million-token-scale-77054ef2" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-17-06-linear-attention-fails-long-range-dna-recall-at-million-token-scale-77054ef2" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-17-06-linear-attention-fails-long-range-dna-recall-at-million-token-scale-77054ef2" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Linear attention fails long-range DNA recall at million-token scale" />
+  <meta property="og:description" content="A researcher empirically demonstrates severe long-range recall failure (~25% accuracy) in linear attention models—including HyenaDNA—on million-token DNA sequence benchmarks, confi" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-17-06-linear-attention-fails-long-range-dna-recall-at-million-token-scale-77054ef2" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vpqwdc.svg" />
+  <meta property="article:published_time" content="2026-08-16T07:47:09+00:00" />
+  <meta property="article:modified_time" content="2026-08-17T02:44:42.248328+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Linear attention fails long-range DNA recall at million-token scale" />
+  <meta name="twitter:description" content="A researcher empirically demonstrates severe long-range recall failure (~25% accuracy) in linear attention models—including HyenaDNA—on million-token DNA sequence benchmarks, confi" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vpqwdc.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-17-06-linear-attention-fails-long-range-dna-recall-at-million-token-scale-77054ef2"}, "headline": "Linear attention fails long-range DNA recall at million-token scale", "description": "A researcher empirically demonstrates severe long-range recall failure (~25% accuracy) in linear attention models—including HyenaDNA—on million-token DNA sequence benchmarks, confi", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vpqwdc.svg"], "datePublished": "2026-08-16T07:47:09+00:00", "dateModified": "2026-08-17T02:44:42.248328+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vpqwdc.svg" alt="Linear attention fails long-range DNA recall at million-token scale" />
+    <div class="article-page-tags"><span>#linear-attention</span> <span>#long-context</span> <span>#bioinformatics</span> <span>#transformer-optimization</span> <span>#sequence-modeling</span></div>
+    <h1>Linear attention fails long-range DNA recall at million-token scale</h1>
+    <p class="article-page-meta">News time: 2026-08-17T02:33:19.149564+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A researcher working on DNA sequence modeling has uncovered a critical limitation in linear attention models: their ability to recall information degrades sharply as context length increases—dropping to ~25% accuracy on Needle-in-a-Haystack-style tests for sequences up to 1 million tokens. Since DNA sequences routinely exceed hundreds of thousands of nucleotides (e.g., human chromosome 1 is ~249M bases), efficient attention mechanisms like linear attention are essential to avoid the O(n²) memory and compute cost of standard softmax attention. Yet despite their scalability, linear attention models—including the state-of-the-art HyenaDNA—struggle to reliably retrieve distant tokens, performing no better than random chance (25% for a 4-token vocabulary: A/C/G/T).</p>
+<p>The issue isn’t isolated to one implementation. The researcher tested their own linear attention model and found recall plummeting from ~55% at 16K tokens to ~25% at million-token lengths. Crucially, they replicated the failure on HyenaDNA—the flagship genomic foundation model explicitly designed for million-token contexts—where performance also stagnated at 25–27%. This cross-model consistency suggests the problem lies deeper than engineering choices: it likely stems from how linear attention compresses sequence history into fixed-size state vectors, which may inherently discard or dilute long-range dependencies.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Existing mitigation strategies—external memory modules, sliding windows, hybrid softmax-linear layers—either reintroduce quadratic costs or fail to scale cleanly to genomic lengths. Even architectural tweaks to the linear attention mechanism yielded only marginal gains (up to ~27%), confirming the severity of the bottleneck. The researcher emphasizes that solutions must preserve linear scaling <em>without</em> resorting to expensive attention or large auxiliary memory—requirements that rule out many current workarounds.</p>
+<p>This isn’t just a bioinformatics curiosity. As LLMs push toward million-token contexts for code, legal documents, and scientific literature, the DNA domain serves as a rigorous stress test: its uniform token distribution, lack of subword structure, and strict positional sensitivity expose weaknesses masked in natural language. Solving long-range recall in linear attention could unlock truly scalable sequence modeling across domains—provided the root cause isn’t fundamental to the linearization paradigm itself.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vpqwdc/how_can_we_solve_longrange_recall_in_linear/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://www.emergentmind.com/topics/linear-attention-mechanism" target="_blank" rel="noopener">Linear Attention Mechanism</a><a href="https://github.com/HazyResearch/hyena-dna" target="_blank" rel="noopener">GitHub - HazyResearch/hyena-dna: Official implementation for ... HyenaDNA: Long-Range Genomic Sequence Modeling at Single ... [2306.15794] HyenaDNA: Long-Range Genomic Sequence Modeling ... HazyResearch/hyena-dna | DeepWiki HyenaDNA: learning from DNA with 1 Million token context Hyena Models - DNALLM Documentation</a><a href="https://arxiv.org/pdf/2306.15794" target="_blank" rel="noopener">HyenaDNA: Long-Range Genomic Sequence Modeling at Single ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
