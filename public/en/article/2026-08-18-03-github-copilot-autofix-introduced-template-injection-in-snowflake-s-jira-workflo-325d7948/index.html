@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>GitHub Copilot autofix introduced template injection in Snowflake&#x27;s Jira workflow - Now AI News</title>
+  <meta name="description" content="A Wiz security researcher exploited a template injection vulnerability in Snowflake&#x27;s internal GitHub Actions workflow (`jira_issue.yml`) — introduced via GitHub Copilot&#x27;s autofix " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-18-03-github-copilot-autofix-introduced-template-injection-in-snowflake-s-jira-workflo-325d7948" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-18-03-github-copilot-autofix-introduced-template-injection-in-snowflake-s-jira-workflo-325d7948" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-18-03-github-copilot-autofix-introduced-template-injection-in-snowflake-s-jira-workflo-325d7948" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-18-03-github-copilot-autofix-introduced-template-injection-in-snowflake-s-jira-workflo-325d7948" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="GitHub Copilot autofix introduced template injection in Snowflake&#x27;s Jira workflow" />
+  <meta property="og:description" content="A Wiz security researcher exploited a template injection vulnerability in Snowflake&#x27;s internal GitHub Actions workflow (`jira_issue.yml`) — introduced via GitHub Copilot&#x27;s autofix " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-18-03-github-copilot-autofix-introduced-template-injection-in-snowflake-s-jira-workflo-325d7948" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49331423.webp" />
+  <meta property="article:published_time" content="2026-08-17T14:18:38+00:00" />
+  <meta property="article:modified_time" content="2026-08-18T02:32:55.480774+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GitHub Copilot autofix introduced template injection in Snowflake&#x27;s Jira workflow" />
+  <meta name="twitter:description" content="A Wiz security researcher exploited a template injection vulnerability in Snowflake&#x27;s internal GitHub Actions workflow (`jira_issue.yml`) — introduced via GitHub Copilot&#x27;s autofix " />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49331423.webp" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-18-03-github-copilot-autofix-introduced-template-injection-in-snowflake-s-jira-workflo-325d7948"}, "headline": "GitHub Copilot autofix introduced template injection in Snowflake's Jira workflow", "description": "A Wiz security researcher exploited a template injection vulnerability in Snowflake's internal GitHub Actions workflow (`jira_issue.yml`) — introduced via GitHub Copilot's autofix ", "image": ["https://nowainews.com/media/hackernews-story-49331423.webp"], "datePublished": "2026-08-17T14:18:38+00:00", "dateModified": "2026-08-18T02:32:55.480774+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49331423.webp" alt="GitHub Copilot autofix introduced template injection in Snowflake&#x27;s Jira workflow" />
+    <div class="article-page-tags"><span>#security</span> <span>#github-actions</span> <span>#ai-safety</span> <span>#ci-cd</span> <span>#yaml</span></div>
+    <h1>GitHub Copilot autofix introduced template injection in Snowflake&#x27;s Jira workflow</h1>
+    <p class="article-page-meta">News time: 2026-08-18T02:20:11.644376+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A security researcher from Wiz discovered that an AI-assisted GitHub Actions workflow used by Snowflake contained a critical template injection vulnerability — allowing unauthorized access to its internal Atlassian Jira instance. The flaw appeared in a YAML file named <code>jira_issue.yml</code>, where unescaped shell command interpolation inside a <code>run:</code> block enabled arbitrary code execution during CI/CD execution. Crucially, the vulnerable code was introduced via GitHub Copilot’s ‘autofix’ suggestion — not written manually — highlighting how AI coding assistants can propagate subtle but dangerous patterns when developers lack deep familiarity with YAML and shell quoting rules.</p>
+<p>The issue stemmed from a seemingly innocuous line: <code>TITLE=$(echo '...')</code>, where user-controlled input (e.g., a pull request title) was inserted directly into a bash command without escaping special characters like <code>$()</code>, backticks, or semicolons. When executed in the GitHub Actions runner, this allowed attackers to inject arbitrary shell commands — effectively turning the workflow into a remote execution vector. Although the affected workflow was internal and not publicly exposed, it ran with elevated permissions tied to Snowflake’s Jira integration, enabling the researcher to create, read, and modify Jira issues.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>This incident underscores a growing tension in modern DevOps: speed versus safety. Teams increasingly rely on AI tools to accelerate CI/CD pipeline development, yet many lack guardrails like static analysis for GitHub Actions. As one commenter noted, using <code>zizmor</code> — an open-source linter specifically designed to detect template injection in Actions workflows — would have flagged the issue before merge. Others pointed out deeper architectural concerns: overreliance on deprecated Atlassian actions, inconsistent use of API authentication, and insufficient review of AI-generated diffs.</p>
+<p>What makes this case especially instructive is that the vulnerability wasn’t due to Copilot hallucinating entirely new logic — rather, it suggested a common but unsafe pattern familiar to many developers working under time pressure. It reflects a broader challenge: AI tools amplify existing engineering habits — including blind spots around quoting, escaping, and context-aware sanitization. Without updated tooling, training, and process discipline, AI-assisted development risks scaling vulnerabilities faster than defenses can evolve.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.wiz.io/blog/red-agent-snowflake-copilot-cicd-bug" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.blog/security/vulnerability-research/how-to-catch-github-actions-workflow-injections-before-attackers-do/" target="_blank" rel="noopener">How to catch GitHub Actions workflow injections before ...</a><a href="https://docs.github.com/en/actions/concepts/security/script-injections" target="_blank" rel="noopener">Script injections - GitHub Docs</a><a href="https://www.wiz.io/blog/github-actions-security-guide" target="_blank" rel="noopener">Hardening GitHub Actions: Lessons from Recent Attacks | Wiz Blog</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
