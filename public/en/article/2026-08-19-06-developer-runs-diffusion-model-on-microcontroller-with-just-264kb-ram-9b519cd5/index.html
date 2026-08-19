@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Developer runs diffusion model on microcontroller with just 264KB RAM - Now AI News</title>
+  <meta name="description" content="A developer trained a diffusion model for 32×32 image generation and deployed it entirely on the Shrike Lite microcontroller (264KB SRAM), finding that FPGA-based INT8 acceleration" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-19-06-developer-runs-diffusion-model-on-microcontroller-with-just-264kb-ram-9b519cd5" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-19-06-developer-runs-diffusion-model-on-microcontroller-with-just-264kb-ram-9b519cd5" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-19-06-developer-runs-diffusion-model-on-microcontroller-with-just-264kb-ram-9b519cd5" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-19-06-developer-runs-diffusion-model-on-microcontroller-with-just-264kb-ram-9b519cd5" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Developer runs diffusion model on microcontroller with just 264KB RAM" />
+  <meta property="og:description" content="A developer trained a diffusion model for 32×32 image generation and deployed it entirely on the Shrike Lite microcontroller (264KB SRAM), finding that FPGA-based INT8 acceleration" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-19-06-developer-runs-diffusion-model-on-microcontroller-with-just-264kb-ram-9b519cd5" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vrk7t5.png" />
+  <meta property="article:published_time" content="2026-08-18T09:26:21+00:00" />
+  <meta property="article:modified_time" content="2026-08-19T02:31:24.481310+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Developer runs diffusion model on microcontroller with just 264KB RAM" />
+  <meta name="twitter:description" content="A developer trained a diffusion model for 32×32 image generation and deployed it entirely on the Shrike Lite microcontroller (264KB SRAM), finding that FPGA-based INT8 acceleration" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vrk7t5.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-19-06-developer-runs-diffusion-model-on-microcontroller-with-just-264kb-ram-9b519cd5"}, "headline": "Developer runs diffusion model on microcontroller with just 264KB RAM", "description": "A developer trained a diffusion model for 32×32 image generation and deployed it entirely on the Shrike Lite microcontroller (264KB SRAM), finding that FPGA-based INT8 acceleration", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vrk7t5.png"], "datePublished": "2026-08-18T09:26:21+00:00", "dateModified": "2026-08-19T02:31:24.481310+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vrk7t5.png" alt="Developer runs diffusion model on microcontroller with just 264KB RAM" />
+    <div class="article-page-tags"><span>#edge-ai</span> <span>#diffusion-models</span> <span>#quantization</span> <span>#embedded-ml</span> <span>#fpga-acceleration</span></div>
+    <h1>Developer runs diffusion model on microcontroller with just 264KB RAM</h1>
+    <p class="article-page-meta">News time: 2026-08-19T02:23:11.509806+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A hobbyist developer has successfully trained and deployed a diffusion model capable of generating 32×32 pixel images on the Shrike Lite — a low-cost, open-source microcontroller board featuring only 264KB of SRAM. What makes this project remarkable isn’t just the model’s tiny footprint, but the empirical lesson it delivers about hardware acceleration trade-offs at the extreme edge: despite adding two parallel INT8 multiply–accumulate (MAC) engines on the onboard FPGA to speed up inference, the system performed <em>slower</em> than the MCU-only version.</p>
+<p>The Shrike Lite combines an RP2040 microcontroller — familiar from Raspberry Pi Pico boards — with a small 1120-LUT FPGA, making it ideal for embedded ML experiments that demand both programmability and custom logic. The developer trained a lightweight diffusion architecture from scratch, heavily quantized to INT8 and optimized for memory locality. Due to tight SRAM constraints, every tensor had to be carefully staged, reused, or recomputed — eliminating standard caching strategies used in larger systems.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>When the FPGA accelerators were enabled, throughput expectations were high: each MAC engine used 16-bit accumulation and was pipelined for efficient fixed-point arithmetic. But real-world performance revealed a bottleneck not in computation, but in data movement. Frequent reads and writes between the MCU’s SRAM and the FPGA’s local registers created severe I/O contention — slowing down the overall pipeline. As a result, inference took ~220 seconds per image with FPGA acceleration versus just ~70 seconds using the RP2040 alone.</p>
+<p>The generated images reflect the harsh realities of ultra-constrained deployment: many appear noisy or distorted due to aggressive quantization and limited model capacity. Yet some outputs show coherent structure — proof that meaningful generative behavior can survive extreme compression and hardware limitation. This isn’t production-ready AI, but it’s a valuable stress test for embedded ML toolchains, compiler optimizations, and co-design intuition. It reminds engineers that faster hardware blocks don’t always yield faster systems — especially when memory bandwidth and interface latency dominate the critical path.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vrk7t5/trained_an_diffusion_model_that_runs_on_264kb_of/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://d25yug97gus487.cloudfront.net/latest/boards/vicharak/shrike_lite/doc/index.html" target="_blank" rel="noopener">Shrike - lite — Zephyr Project Documentation</a><a href="https://github.com/vicharak-in/shrike-lite" target="_blank" rel="noopener">GitHub - vicharak-in/ shrike - lite : Low cost microcontroller + FPGA...</a><a href="https://www.researchgate.net/publication/404926885_An_FPGA-based_INT8_MobileNetV2_Accelerator_Integrated_with_a_RISC-V_SoC_for_Real-Time_Semiconductor_Wafer_Defect_Detection" target="_blank" rel="noopener">(PDF) An FPGA-based INT8 MobileNetV2 Accelerator Integrated with a RISC-V SoC for Real-Time Semiconductor Wafer Defect Detection</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
