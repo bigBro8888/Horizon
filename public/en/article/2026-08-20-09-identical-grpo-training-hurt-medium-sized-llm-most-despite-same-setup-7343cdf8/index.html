@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Identical GRPO training hurt medium-sized LLM most despite same setup - Now AI News</title>
+  <meta name="description" content="Applying identical GRPO post-training to three from-scratch LLMs (353M, 316M, 672M) caused non-monotonic performance degradation—most severe for the medium-sized 316M model—despite" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-20-09-identical-grpo-training-hurt-medium-sized-llm-most-despite-same-setup-7343cdf8" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-20-09-identical-grpo-training-hurt-medium-sized-llm-most-despite-same-setup-7343cdf8" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-20-09-identical-grpo-training-hurt-medium-sized-llm-most-despite-same-setup-7343cdf8" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-20-09-identical-grpo-training-hurt-medium-sized-llm-most-despite-same-setup-7343cdf8" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Identical GRPO training hurt medium-sized LLM most despite same setup" />
+  <meta property="og:description" content="Applying identical GRPO post-training to three from-scratch LLMs (353M, 316M, 672M) caused non-monotonic performance degradation—most severe for the medium-sized 316M model—despite" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-20-09-identical-grpo-training-hurt-medium-sized-llm-most-despite-same-setup-7343cdf8" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vszsit.svg" />
+  <meta property="article:published_time" content="2026-08-19T21:30:26+00:00" />
+  <meta property="article:modified_time" content="2026-08-20T02:35:42.156722+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Identical GRPO training hurt medium-sized LLM most despite same setup" />
+  <meta name="twitter:description" content="Applying identical GRPO post-training to three from-scratch LLMs (353M, 316M, 672M) caused non-monotonic performance degradation—most severe for the medium-sized 316M model—despite" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vszsit.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-20-09-identical-grpo-training-hurt-medium-sized-llm-most-despite-same-setup-7343cdf8"}, "headline": "Identical GRPO training hurt medium-sized LLM most despite same setup", "description": "Applying identical GRPO post-training to three from-scratch LLMs (353M, 316M, 672M) caused non-monotonic performance degradation—most severe for the medium-sized 316M model—despite", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vszsit.svg"], "datePublished": "2026-08-19T21:30:26+00:00", "dateModified": "2026-08-20T02:35:42.156722+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vszsit.svg" alt="Identical GRPO training hurt medium-sized LLM most despite same setup" />
+    <div class="article-page-tags"><span>#RLHF</span> <span>#LLM-scaling</span> <span>#GRPO</span> <span>#alignment-robustness</span> <span>#empirical-ml</span></div>
+    <h1>Identical GRPO training hurt medium-sized LLM most despite same setup</h1>
+    <p class="article-page-meta">News time: 2026-08-20T02:21:37.165049+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A researcher trained three custom LLMs from scratch—353M (V1), 316M (V2), and 672M (V3)—using identical pretraining data (FineWeb-Edu, plus code/math for V3), architecture tweaks, and a synthetic arithmetic curriculum. All models then underwent identical supervised fine-tuning (SFT) followed by Group Relative Policy Optimization (GRPO), a PPO variant that replaces the value network with group-averaged rewards. Surprisingly, GRPO degraded performance across the board on WikiText perplexity: V1 barely changed (+0.2%), V2 collapsed (+52%), and V3 declined modestly (+5%). Downstream tasks like ARC-Easy and GSM8K mirrored this non-monotonic pattern—V3 lost ~6 points on ARC-Easy, while GSM8K remained near zero for all three.</p>
+<p>The experimental design was unusually clean: same reward function (checking only for a correct final number, no length penalty), same KL coefficient (0.02), frozen SFT policy as reference, and k3 reward estimation. Yet outcomes diverged sharply—not by scale alone, but in ways that defy simple scaling intuition. V2, the <em>smallest</em> in parameter count but using Differential Attention + GQA, suffered worst; V3, largest and using Exclusive Self Attention (XSA) + GQA, fared best. This suggests architectural differences—not just size—may dominate GRPO’s stability.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Several confounds complicate interpretation. First, GRPO was trained on bare solver templates, while SFT used chat formatting—so evaluating GRPO outputs with standard benchmarks may measure format mismatch, not capability loss. Second, the sequential arithmetic curriculum lacked re-evaluation of earlier stages, raising the possibility of catastrophic forgetting rather than general degradation. Third, no explicit reward penalty discouraged over-generation, leading models to output excessively long solutions without stopping—a known failure mode when reward shaping ignores token efficiency.</p>
+<p>Still, the core finding stands: GRPO’s behavior is neither reliably beneficial nor predictably harmful across models—even under tightly controlled conditions. The author released all nine checkpoints (base/SFT/GRPO ×3) on Hugging Face and built an interactive Space to compare outputs side-by-side. Their custom GQA-aware KV cache also delivered strong inference speedups (up to 10.1×), confirming engineering rigor. Ultimately, this work highlights how alignment techniques can interact unexpectedly with model internals—urging caution before treating RLHF variants like GRPO as plug-and-play upgrades.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vszsit/same_grpo_recipe_on_three_fromscratch_llms/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://www.reinforcement-learning.com/kb/grpo" target="_blank" rel="noopener">GRPO: Group Relative Policy Optimization</a><a href="https://www.datacamp.com/blog/what-is-grpo-group-relative-policy-optimization" target="_blank" rel="noopener">What is GRPO? Group Relative Policy Optimization Explained</a><a href="https://arxiv.org/abs/2603.09078" target="_blank" rel="noopener">[2603.09078] Exclusive Self Attention</a><a href="https://www.emergentmind.com/topics/differential-attention-mechanism" target="_blank" rel="noopener">Differential Attention Mechanism</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

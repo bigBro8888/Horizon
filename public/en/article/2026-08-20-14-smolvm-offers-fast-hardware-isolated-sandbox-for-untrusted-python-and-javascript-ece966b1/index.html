@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>smolvm offers fast hardware-isolated sandbox for untrusted Python and JavaScript - Now AI News</title>
+  <meta name="description" content="Simon Willison validated smolvm’s viability as a hardware-isolated sandbox for untrusted Python and JavaScript by successfully running resource-limited tests on GitHub Actions runn" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-20-14-smolvm-offers-fast-hardware-isolated-sandbox-for-untrusted-python-and-javascript-ece966b1" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-20-14-smolvm-offers-fast-hardware-isolated-sandbox-for-untrusted-python-and-javascript-ece966b1" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-20-14-smolvm-offers-fast-hardware-isolated-sandbox-for-untrusted-python-and-javascript-ece966b1" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-20-14-smolvm-offers-fast-hardware-isolated-sandbox-for-untrusted-python-and-javascript-ece966b1" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="smolvm offers fast hardware-isolated sandbox for untrusted Python and JavaScript" />
+  <meta property="og:description" content="Simon Willison validated smolvm’s viability as a hardware-isolated sandbox for untrusted Python and JavaScript by successfully running resource-limited tests on GitHub Actions runn" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-20-14-smolvm-offers-fast-hardware-isolated-sandbox-for-untrusted-python-and-javascript-ece966b1" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--606747c020460cc9.svg" />
+  <meta property="article:published_time" content="2026-08-19T23:16:00+00:00" />
+  <meta property="article:modified_time" content="2026-08-20T02:35:42.156722+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="smolvm offers fast hardware-isolated sandbox for untrusted Python and JavaScript" />
+  <meta name="twitter:description" content="Simon Willison validated smolvm’s viability as a hardware-isolated sandbox for untrusted Python and JavaScript by successfully running resource-limited tests on GitHub Actions runn" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--606747c020460cc9.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-20-14-smolvm-offers-fast-hardware-isolated-sandbox-for-untrusted-python-and-javascript-ece966b1"}, "headline": "smolvm offers fast hardware-isolated sandbox for untrusted Python and JavaScript", "description": "Simon Willison validated smolvm’s viability as a hardware-isolated sandbox for untrusted Python and JavaScript by successfully running resource-limited tests on GitHub Actions runn", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--606747c020460cc9.svg"], "datePublished": "2026-08-19T23:16:00+00:00", "dateModified": "2026-08-20T02:35:42.156722+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--606747c020460cc9.svg" alt="smolvm offers fast hardware-isolated sandbox for untrusted Python and JavaScript" />
+    <div class="article-page-tags"><span>#sandboxing</span> <span>#security</span> <span>#webassembly</span> <span>#python</span> <span>#javascript</span></div>
+    <h1>smolvm offers fast hardware-isolated sandbox for untrusted Python and JavaScript</h1>
+    <p class="article-page-meta">News time: 2026-08-20T02:21:36.402100+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>Simon Willison recently published a hands-on research report exploring smolvm — a portable, lightweight virtual machine designed specifically for secure, resource-constrained execution of untrusted code. His goal was practical: evaluate whether smolvm could serve as a production-ready sandbox for user-provided data transformation scripts written in Python or JavaScript. Such a capability is increasingly vital for platforms that accept arbitrary code — from AI-powered workflow tools to no-code data processors — where safety hinges on strict CPU time limits, memory caps, zero network access, and tightly controlled filesystem permissions.</p>
+<p>Willison’s investigation began inside Claude Code for web, an LLM-powered coding environment. But he quickly hit a hard technical wall: the underlying Firecracker VM lacks nested virtualization support (no /dev/kvm, no vmx/svm CPU flags), making it impossible to run smolvm — which relies on hardware-assisted virtualization for isolation. Rather than abandoning the test, Willison’s AI assistant, Claude Fable 5, devised ‘Plan B’: shift the evaluation to GitHub Actions Ubuntu runners, which <em>do</em> expose /dev/kvm. There, smolvm was installed and rigorously tested using custom shell scripts — validating its ability to boot rapidly, enforce resource limits, and isolate untrusted workloads.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>According to public documentation and benchmarks, smolvm boots in ~125ms and adds only ~5MB memory overhead — performance metrics that rival AWS Lambda’s internal micro-VM infrastructure. It supports Firecracker, QEMU, and libkrun under a unified API, and unlike traditional hypervisors, it ships as a single, daemonless binary. Crucially, it delivers true hardware isolation — not just process-level sandboxing — meaning malicious or buggy code cannot escape its VM boundary, even if it attempts infinite loops or memory exhaustion.</p>
+<p>The broader context is clear: existing WebAssembly-based sandboxes (e.g., WAMR + Zephyr) offer strong memory isolation but lack full language runtime compatibility — especially for Python’s C extensions or Node.js native modules. smolvm bridges that gap by running real OS environments (Linux guests) with full language support, while retaining micro-VM efficiency. For developers building safe code-execution services — like E2B, Vercel Sandbox, or custom AI agent runtimes — smolvm represents a compelling middle ground between heavyweight VMs and insufficiently isolated containers or Wasm runtimes.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Aug/19/smolmachines-untrusted-sandbox/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/smol-machines/smolvm" target="_blank" rel="noopener">GitHub - smol-machines/smolvm: Portable, lightweight, self-contained virtual machine. · GitHub</a><a href="https://github.com/CelestoAI/SmolVM" target="_blank" rel="noopener">GitHub - CelestoAI/SmolVM: Open-source AI sandbox infrastructure with unified API for VMMs -- Firecracker, QEMU and libkrun. · GitHub</a><a href="https://note.com/snake_dragon/n/n1a2666024bf3?hl=en" target="_blank" rel="noopener">A Complete Guide to smolVM: A Technical Deep Dive into the Next-Generation Micro-VM That Boots in Under 200ms｜スネドラ</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
