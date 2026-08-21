@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>GitHub’s August 17 outage traced to VS Code retry bug and AI-driven traffic surge - Now AI News</title>
+  <meta name="description" content="GitHub published a detailed post-mortem of its August 17, 2023 outage, identifying a latent VS Code retry bug that amplified traffic 10× and exposed systemic weaknesses in client-s" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-21-05-github-s-august-17-outage-traced-to-vs-code-retry-bug-and-ai-driven-traffic-surg-ed67c138" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-21-05-github-s-august-17-outage-traced-to-vs-code-retry-bug-and-ai-driven-traffic-surg-ed67c138" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-21-05-github-s-august-17-outage-traced-to-vs-code-retry-bug-and-ai-driven-traffic-surg-ed67c138" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-21-05-github-s-august-17-outage-traced-to-vs-code-retry-bug-and-ai-driven-traffic-surg-ed67c138" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="GitHub’s August 17 outage traced to VS Code retry bug and AI-driven traffic surge" />
+  <meta property="og:description" content="GitHub published a detailed post-mortem of its August 17, 2023 outage, identifying a latent VS Code retry bug that amplified traffic 10× and exposed systemic weaknesses in client-s" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-21-05-github-s-august-17-outage-traced-to-vs-code-retry-bug-and-ai-driven-traffic-surg-ed67c138" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49378957.png" />
+  <meta property="article:published_time" content="2026-08-20T19:22:24+00:00" />
+  <meta property="article:modified_time" content="2026-08-21T02:50:37.128899+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GitHub’s August 17 outage traced to VS Code retry bug and AI-driven traffic surge" />
+  <meta name="twitter:description" content="GitHub published a detailed post-mortem of its August 17, 2023 outage, identifying a latent VS Code retry bug that amplified traffic 10× and exposed systemic weaknesses in client-s" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49378957.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-21-05-github-s-august-17-outage-traced-to-vs-code-retry-bug-and-ai-driven-traffic-surg-ed67c138"}, "headline": "GitHub’s August 17 outage traced to VS Code retry bug and AI-driven traffic surge", "description": "GitHub published a detailed post-mortem of its August 17, 2023 outage, identifying a latent VS Code retry bug that amplified traffic 10× and exposed systemic weaknesses in client-s", "image": ["https://nowainews.com/media/hackernews-story-49378957.png"], "datePublished": "2026-08-20T19:22:24+00:00", "dateModified": "2026-08-21T02:50:37.128899+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49378957.png" alt="GitHub’s August 17 outage traced to VS Code retry bug and AI-driven traffic surge" />
+    <div class="article-page-tags"><span>#infrastructure</span> <span>#post-mortem</span> <span>#AI-scaling</span> <span>#retry-logic</span> <span>#developer-platform</span></div>
+    <h1>GitHub’s August 17 outage traced to VS Code retry bug and AI-driven traffic surge</h1>
+    <p class="article-page-meta">News time: 2026-08-21T02:36:17.709902+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>On August 17, GitHub suffered a nearly eight-hour global outage that disrupted core services including the API, Actions, Webhooks, and Copilot Token Service. What began as a capacity issue in a U.S. data center rapidly escalated—not from infrastructure failure alone, but from a cascade of interdependent failures. A delayed response from a single internal endpoint triggered a previously unknown retry behavior in Visual Studio Code: when the Copilot Token Service slowed, VS Code clients didn’t fail gracefully—they retried aggressively and repeatedly, amplifying traffic by roughly 10×. This retry storm overwhelmed already strained systems, delaying recovery and turning a localized slowdown into a platform-wide incident.</p>
+<p>The root cause analysis revealed two critical systemic issues. First, client-side retry logic—especially in widely deployed tools like VS Code—lacked exponential backoff, jitter, or circuit-breaking safeguards. Second, the underlying pressure came from unprecedented growth: since April, monthly commits surged from 1.4 billion to 2.9 billion—a 100% increase in just four months. Much of this load stems from AI tooling, particularly GitHub Copilot integrations that generate high-frequency, low-latency token requests during coding sessions.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>GitHub’s post-mortem doesn’t shy away from hard truths. It acknowledges that its infrastructure scaling—including autoscaling misconfigurations and insufficient observability into client behavior—failed to keep pace with usage patterns reshaped by AI. The company has since introduced rate-limiting on token endpoints, added client telemetry for retry patterns, and begun collaborating with Microsoft to patch the VS Code retry logic. But engineers and platform observers note a deeper tension: rapid, AI-fueled growth isn’t matched by proportional monetization, raising sustainability questions about free-tier services under extreme load.</p>
+<p>This incident serves as a canonical case study in modern platform engineering. It underscores how client behavior—not just server capacity—can become the dominant failure vector. As developer tools increasingly embed AI assistants, the industry must rethink assumptions about resilience: retries are no longer just a backend concern, but a distributed systems contract between client, IDE, and cloud service. For teams building on GitHub—or any platform where AI agents drive traffic—the lesson is clear: graceful degradation and thoughtful retry policies are now non-negotiable infrastructure requirements.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.blog/news-insights/company-news/the-august-17-outage-and-the-work-ahead/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://www.techzine.eu/news/devops/143731/github-outage-escalates-due-to-a-bug-in-vs-code/" target="_blank" rel="noopener">GitHub outage escalates due to a bug in VS Code - Techzine Global</a><a href="https://www.computing.co.uk/news/2026/security/github-outage-exposes-flaws-in-autoscaling-and-retry-systems" target="_blank" rel="noopener">GitHub outage exposes flaws in autoscaling and retry systems</a><a href="https://sre.google/sre-book/addressing-cascading-failures/" target="_blank" rel="noopener">Google SRE - Cascading Failures: Reducing System Outage</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

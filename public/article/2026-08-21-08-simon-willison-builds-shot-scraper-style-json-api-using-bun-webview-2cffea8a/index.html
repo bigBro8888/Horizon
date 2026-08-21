@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Simon Willison 用 Bun.WebView 实现类似 shot-scraper 的 JSON API - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Simon Willison 基于 Bun 1.4 新稳定的 Bun.WebView API，构建并发布了可运行的 shot-scraper 风格 JSON API，首次实现浏览器自动化能力原生集成进 Bun 服务。 这展示了 Bun.WebView 的首个实用且面向生产的应用场景：让开发者无需外部工具或编排即可，在轻量、高性能的 JavaScript 后端" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-08-21-08-simon-willison-builds-shot-scraper-style-json-api-using-bun-webview-2cffea8a" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-21-08-simon-willison-builds-shot-scraper-style-json-api-using-bun-webview-2cffea8a" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-21-08-simon-willison-builds-shot-scraper-style-json-api-using-bun-webview-2cffea8a" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-21-08-simon-willison-builds-shot-scraper-style-json-api-using-bun-webview-2cffea8a" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="Simon Willison 用 Bun.WebView 实现类似 shot-scraper 的 JSON API" />
+  <meta property="og:description" content="Simon Willison 基于 Bun 1.4 新稳定的 Bun.WebView API，构建并发布了可运行的 shot-scraper 风格 JSON API，首次实现浏览器自动化能力原生集成进 Bun 服务。 这展示了 Bun.WebView 的首个实用且面向生产的应用场景：让开发者无需外部工具或编排即可，在轻量、高性能的 JavaScript 后端" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-08-21-08-simon-willison-builds-shot-scraper-style-json-api-using-bun-webview-2cffea8a" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--2da3f824e886c5fc.svg" />
+  <meta property="article:published_time" content="2026-08-20T15:37:00+00:00" />
+  <meta property="article:modified_time" content="2026-08-21T02:50:37.128899+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Simon Willison 用 Bun.WebView 实现类似 shot-scraper 的 JSON API" />
+  <meta name="twitter:description" content="Simon Willison 基于 Bun 1.4 新稳定的 Bun.WebView API，构建并发布了可运行的 shot-scraper 风格 JSON API，首次实现浏览器自动化能力原生集成进 Bun 服务。 这展示了 Bun.WebView 的首个实用且面向生产的应用场景：让开发者无需外部工具或编排即可，在轻量、高性能的 JavaScript 后端" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--2da3f824e886c5fc.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-08-21-08-simon-willison-builds-shot-scraper-style-json-api-using-bun-webview-2cffea8a"}, "headline": "Simon Willison 用 Bun.WebView 实现类似 shot-scraper 的 JSON API", "description": "Simon Willison 基于 Bun 1.4 新稳定的 Bun.WebView API，构建并发布了可运行的 shot-scraper 风格 JSON API，首次实现浏览器自动化能力原生集成进 Bun 服务。 这展示了 Bun.WebView 的首个实用且面向生产的应用场景：让开发者无需外部工具或编排即可，在轻量、高性能的 JavaScript 后端", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--2da3f824e886c5fc.svg"], "datePublished": "2026-08-20T15:37:00+00:00", "dateModified": "2026-08-21T02:50:37.128899+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--2da3f824e886c5fc.svg" alt="Simon Willison 用 Bun.WebView 实现类似 shot-scraper 的 JSON API" />
+    <div class="article-page-tags"><span>#Bun</span> <span>#WebView</span> <span>#Web Scraping</span> <span>#API Design</span> <span>#JavaScript Runtime</span></div>
+    <h1>Simon Willison 用 Bun.WebView 实现类似 shot-scraper 的 JSON API</h1>
+    <p class="article-page-meta">新闻时间: 2026-08-21T02:36:16.449288+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>Simon Willison 发布了一个可运行的原型：一个轻量级 Web JSON API，能加载网页并在浏览器环境中执行任意 JavaScript — 全部基于 Bun 1.4 新稳定发布的 <code>Bun.WebView</code> API。该项目托管于他的研究仓库中，功能上直接复刻了他广受欢迎的命令行工具 <code>shot-scraper</code> — 后者传统上通过无头浏览器截屏或执行 JS 提取数据 — 但这次被重构为具备清晰 JSON 输入/输出的 HTTP 服务。</p>
+<p>这不仅是个概念验证：Willison 在真实场景下部署并压力测试了该服务，使用 Linux 的 cgroups 工具精确测量内存占用。结果显示，当驱动完整 Chromium 实例渲染和交互复杂现代网页时，服务内存消耗稳定在 192 MB 至 256 MB 之间 — 这一数据为开发者评估 <code>Bun.WebView</code> 的生产可用性提供了关键参考。值得一提的是，他借助 Claude Code 辅助生成了初始 TypeScript 实现，印证了 AI 编程正加速推动对新型运行时特性的探索。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Bun 1.4 的发布是一次重要里程碑：这是 Bun 从 Zig 重写为 Rust 后首个稳定版本 — 尽管官方更新日志淡化了这一转变，但 Willison 此前已详细报道过此事。虽然更新日志强调了超 2900 个缺陷修复及显著性能提升（Linux 下空闲 CPU 降低 5 倍、内存减少最多 35%、启动快 50%），但 <code>Bun.WebView</code> 无疑是其中最具变革性的新 API。它提供原生跨平台浏览器自动化能力：macOS 使用系统 WKWebView，Linux 和 Windows 则通过 Chrome DevTools 协议控制本地 Chromium — 无需安装额外依赖或 Docker 层。</p>
+<p>与依赖 Puppeteer 或 Playwright 的传统爬虫工具不同，这种 Bun 原生方案消除了进程启动开销，大幅简化部署。开发者现在可将浏览器自动化能力直接嵌入 Bun 服务器 — 特别适合动态渲染、客户端 JS 执行或实时 DOM 分析等场景。Willison 的 API 设计直面实际约束：接收 URL 和可选 JS 代码，以 JSON 返回序列化的 DOM 状态或脚本结果，并避免持久化会话以确保内存可控 — 这使其在 Serverless 或容器化环境中尤为实用。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Aug/20/bun-webview-json-api/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://shot-scraper.datasette.io/" target="_blank" rel="noopener">shot - scraper</a><a href="https://bun.com/docs/runtime/webview" target="_blank" rel="noopener">WebView - Bun</a><a href="https://bunjs.run/bun-webview-headless-browser" target="_blank" rel="noopener">Bun . WebView : Zero-Dependency Headless Browser Automation</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

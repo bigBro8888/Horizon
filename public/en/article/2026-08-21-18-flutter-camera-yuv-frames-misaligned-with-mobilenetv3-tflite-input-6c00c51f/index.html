@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Flutter camera YUV frames misaligned with MobileNetV3 TFLite input - Now AI News</title>
+  <meta name="description" content="A Flutter developer reports significant accuracy degradation when feeding camera-captured YUV frames—converted to RGB and resized to 224×224—into a MobileNetV3 TFLite model, due to" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-21-18-flutter-camera-yuv-frames-misaligned-with-mobilenetv3-tflite-input-6c00c51f" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-21-18-flutter-camera-yuv-frames-misaligned-with-mobilenetv3-tflite-input-6c00c51f" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-21-18-flutter-camera-yuv-frames-misaligned-with-mobilenetv3-tflite-input-6c00c51f" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-21-18-flutter-camera-yuv-frames-misaligned-with-mobilenetv3-tflite-input-6c00c51f" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Flutter camera YUV frames misaligned with MobileNetV3 TFLite input" />
+  <meta property="og:description" content="A Flutter developer reports significant accuracy degradation when feeding camera-captured YUV frames—converted to RGB and resized to 224×224—into a MobileNetV3 TFLite model, due to" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-21-18-flutter-camera-yuv-frames-misaligned-with-mobilenetv3-tflite-input-6c00c51f" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vth6d9.svg" />
+  <meta property="article:published_time" content="2026-08-20T11:45:15+00:00" />
+  <meta property="article:modified_time" content="2026-08-21T02:50:37.128899+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Flutter camera YUV frames misaligned with MobileNetV3 TFLite input" />
+  <meta name="twitter:description" content="A Flutter developer reports significant accuracy degradation when feeding camera-captured YUV frames—converted to RGB and resized to 224×224—into a MobileNetV3 TFLite model, due to" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vth6d9.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-21-18-flutter-camera-yuv-frames-misaligned-with-mobilenetv3-tflite-input-6c00c51f"}, "headline": "Flutter camera YUV frames misaligned with MobileNetV3 TFLite input", "description": "A Flutter developer reports significant accuracy degradation when feeding camera-captured YUV frames—converted to RGB and resized to 224×224—into a MobileNetV3 TFLite model, due to", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vth6d9.svg"], "datePublished": "2026-08-20T11:45:15+00:00", "dateModified": "2026-08-21T02:50:37.128899+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vth6d9.svg" alt="Flutter camera YUV frames misaligned with MobileNetV3 TFLite input" />
+    <div class="article-page-tags"><span>#Flutter</span> <span>#TFLite</span> <span>#MobileNetV3</span> <span>#Camera Preprocessing</span> <span>#Edge AI</span></div>
+    <h1>Flutter camera YUV frames misaligned with MobileNetV3 TFLite input</h1>
+    <p class="article-page-meta">News time: 2026-08-21T02:36:17.215169+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A Flutter developer building an on-device image classifier has hit a common but subtle roadblock: their MobileNetV3-based TFLite model delivers accurate predictions in Python testing but fails badly in production. The issue traces to how raw camera frames—delivered in YUV420 format by Flutter’s <code>camera</code> package—are converted, resized, and normalized before inference. Their current pipeline converts YUV to RGB pixel-by-pixel using textbook YUV-to-RGB coefficients, resizes the result to 224×224 via bilinear interpolation, then packs pixels into a nested list of doubles. Yet accuracy drops sharply—suggesting a mismatch between preprocessing in Flutter and the exact expectations baked into the trained model.</p>
+<p>This isn’t just about resolution. MobileNetV3 models—especially those exported from TensorFlow or PyTorch—expect inputs that follow strict conventions: specific RGB channel ordering (not BGR), precise float32 normalization (e.g., <code>(pixel - 127.5) / 127.5</code> or <code>pixel / 255.0</code>), and often quantization-aware scaling if the TFLite model is int8. The posted code performs no normalization at all—it feeds raw 0–255 RGB values directly into the tensor. Worse, the YUV conversion assumes standard YUV420 planar layout, but Android and iOS camera streams may differ in stride alignment, chroma subsampling interpretation (e.g., NV21 vs. I420), or byte order—leading to subtle color shifts invisible to the eye but catastrophic for CNNs.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Further, the <code>image</code> package’s <code>copyResize</code> operates on full-color RGB images, but many production-grade mobile ML pipelines avoid full CPU-side RGB conversion entirely. Instead, they use optimized native YUV-to-RGB lookup tables, GPU-accelerated shaders, or even delegate resizing <em>before</em> color conversion to reduce memory copies. Packages like <code>anpr_scanner_flutter</code> demonstrate this—offloading YUV processing to isolates and applying LUT-based conversion for speed and fidelity.</p>
+<p>The core lesson extends beyond this one case: deploying TFLite on Flutter demands end-to-end preprocessing parity—not just shape matching. Developers must replicate <em>exactly</em> the preprocessing used during training: same resize algorithm (bilinear vs. bicubic), same padding/cropping strategy (center vs. random crop), same mean/std or min/max scaling, and same quantization scheme. Without that, even a perfectly converted model becomes unreliable. For Flutter teams, this means treating preprocessing as part of the model contract—not an afterthought.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vth6d9/resizing_images_from_flutter_camera_stream_for/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://stackoverflow.com/questions/66911238/can-i-make-stream-with-flutter-camera-package" target="_blank" rel="noopener">Can i make stream with flutter camera package? - Stack Overflow</a><a href="https://github.com/theamorn/flutter-stream-image" target="_blank" rel="noopener">GitHub - theamorn/ flutter - stream -image · GitHub</a><a href="https://pub.dev/packages/anpr_scanner_flutter" target="_blank" rel="noopener">anpr_scanner_ flutter | Flutter package</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
