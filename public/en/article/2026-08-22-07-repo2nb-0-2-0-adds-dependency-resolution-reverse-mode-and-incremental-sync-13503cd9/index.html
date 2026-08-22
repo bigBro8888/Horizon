@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>repo2nb 0.2.0 adds dependency resolution reverse mode and incremental sync - Now AI News</title>
+  <meta name="description" content="repo2nb 0.2.0 introduces intelligent dependency resolution with Poetry/uv/requirements.txt/AST fallbacks, reversible notebook-to-repo reconstruction via embedded path/hash metadata" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-22-07-repo2nb-0-2-0-adds-dependency-resolution-reverse-mode-and-incremental-sync-13503cd9" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-22-07-repo2nb-0-2-0-adds-dependency-resolution-reverse-mode-and-incremental-sync-13503cd9" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-22-07-repo2nb-0-2-0-adds-dependency-resolution-reverse-mode-and-incremental-sync-13503cd9" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-22-07-repo2nb-0-2-0-adds-dependency-resolution-reverse-mode-and-incremental-sync-13503cd9" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="repo2nb 0.2.0 adds dependency resolution reverse mode and incremental sync" />
+  <meta property="og:description" content="repo2nb 0.2.0 introduces intelligent dependency resolution with Poetry/uv/requirements.txt/AST fallbacks, reversible notebook-to-repo reconstruction via embedded path/hash metadata" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-22-07-repo2nb-0-2-0-adds-dependency-resolution-reverse-mode-and-incremental-sync-13503cd9" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vuni29.svg" />
+  <meta property="article:published_time" content="2026-08-21T17:53:36+00:00" />
+  <meta property="article:modified_time" content="2026-08-22T02:36:46.699995+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="repo2nb 0.2.0 adds dependency resolution reverse mode and incremental sync" />
+  <meta name="twitter:description" content="repo2nb 0.2.0 introduces intelligent dependency resolution with Poetry/uv/requirements.txt/AST fallbacks, reversible notebook-to-repo reconstruction via embedded path/hash metadata" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1vuni29.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-22-07-repo2nb-0-2-0-adds-dependency-resolution-reverse-mode-and-incremental-sync-13503cd9"}, "headline": "repo2nb 0.2.0 adds dependency resolution reverse mode and incremental sync", "description": "repo2nb 0.2.0 introduces intelligent dependency resolution with Poetry/uv/requirements.txt/AST fallbacks, reversible notebook-to-repo reconstruction via embedded path/hash metadata", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1vuni29.svg"], "datePublished": "2026-08-21T17:53:36+00:00", "dateModified": "2026-08-22T02:36:46.699995+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1vuni29.svg" alt="repo2nb 0.2.0 adds dependency resolution reverse mode and incremental sync" />
+    <div class="article-page-tags"><span>#CLI</span> <span>#reproducibility</span> <span>#Jupyter</span> <span>#DevOps</span> <span>#ML-Tooling</span></div>
+    <h1>repo2nb 0.2.0 adds dependency resolution reverse mode and incremental sync</h1>
+    <p class="article-page-meta">News time: 2026-08-22T02:20:09.072287+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>repo2nb 0.2.0 is a major update to an open-source command-line tool designed to bridge the gap between GitHub repositories and interactive notebook environments like Kaggle and Google Colab. Instead of manually copying code, installing dependencies, and restructuring files—often a tedious and error-prone process when reproducing someone else’s ML research or tutorial—the tool now automates the entire conversion pipeline. It walks the repository’s file tree, intelligently resolves dependencies using multiple fallback strategies, and generates a fully runnable notebook with properly ordered cells, including setup instructions and executable code.</p>
+<p>What sets version 0.2.0 apart are three novel capabilities: smart dependency resolution, reverse-mode reconstruction, and one-way incremental syncing. The dependency resolver tries Poetry’s export first, then uv (a fast Python package installer and resolver), then requirements.txt, and finally falls back to static AST-based import scanning if no lock or manifest file exists. Crucially, all paths produce the same output: a plain %pip install cell—meaning Poetry or uv are only needed during notebook generation, not at runtime on Kaggle or Colab. This keeps notebooks portable and environment-agnostic.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The new reverse mode (<code>repo2nb reverse &lt;notebook&gt;</code>) lets users reconstruct the original source repository from a generated notebook. Every cell embeds metadata—including its original file path and content hash—so repo2nb can faithfully restore directory structure and contents. Safety checks prevent accidental overwrites: it refuses to write into non-empty directories unless <code>--force</code> is explicitly used. Meanwhile, incremental sync (<code>repo2nb sync &lt;repo&gt;</code>) enables lightweight updates: newly added files become new cells, modified files update in place, and deleted files vanish from the notebook—all previewable with <code>--dry-run</code>.</p>
+<p>A Colab-specific target has also been added, complete with its own authentication cell using <code>google.colab.userdata.get</code>, decoupling it from Kaggle’s secrets flow. Installation remains simple: <code>pip install repo2nb</code>. The project is hosted on GitHub and welcomes feedback—especially on whether the current dependency fallback order matches real-world usage patterns across diverse Python projects.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1vuni29/repo2nb_020_convert_a_github_repo_into_a/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://python-poetry.org/docs/cli/" target="_blank" rel="noopener">Commands | Documentation | Poetry - Python dependency...</a><a href="https://github.com/python-poetry/poetry-plugin-export" target="_blank" rel="noopener">GitHub - python- poetry / poetry -plugin- export : Poetry plugin to export ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

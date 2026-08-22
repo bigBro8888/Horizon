@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>LLM CLI tool fixes broken fresh installs by pinning OpenAI &lt;3 - Now AI News</title>
+  <meta name="description" content="LLM v0.32.1 pins openai&lt;3 to restore fresh installs broken by OpenAI Python library dropping httpx support; v0.33 will migrate to httpx2. This patch restores immediate usability fo" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-22-12-llm-cli-tool-fixes-broken-fresh-installs-by-pinning-openai-3-29110aff" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-22-12-llm-cli-tool-fixes-broken-fresh-installs-by-pinning-openai-3-29110aff" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-22-12-llm-cli-tool-fixes-broken-fresh-installs-by-pinning-openai-3-29110aff" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-22-12-llm-cli-tool-fixes-broken-fresh-installs-by-pinning-openai-3-29110aff" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="LLM CLI tool fixes broken fresh installs by pinning OpenAI &lt;3" />
+  <meta property="og:description" content="LLM v0.32.1 pins openai&lt;3 to restore fresh installs broken by OpenAI Python library dropping httpx support; v0.33 will migrate to httpx2. This patch restores immediate usability fo" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-22-12-llm-cli-tool-fixes-broken-fresh-installs-by-pinning-openai-3-29110aff" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--cf6af109a0ee1fd2.svg" />
+  <meta property="article:published_time" content="2026-08-21T17:16:13+00:00" />
+  <meta property="article:modified_time" content="2026-08-22T02:36:46.699995+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="LLM CLI tool fixes broken fresh installs by pinning OpenAI &lt;3" />
+  <meta name="twitter:description" content="LLM v0.32.1 pins openai&lt;3 to restore fresh installs broken by OpenAI Python library dropping httpx support; v0.33 will migrate to httpx2. This patch restores immediate usability fo" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--cf6af109a0ee1fd2.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-22-12-llm-cli-tool-fixes-broken-fresh-installs-by-pinning-openai-3-29110aff"}, "headline": "LLM CLI tool fixes broken fresh installs by pinning OpenAI <3", "description": "LLM v0.32.1 pins openai<3 to restore fresh installs broken by OpenAI Python library dropping httpx support; v0.33 will migrate to httpx2. This patch restores immediate usability fo", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--cf6af109a0ee1fd2.svg"], "datePublished": "2026-08-21T17:16:13+00:00", "dateModified": "2026-08-22T02:36:46.699995+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--cf6af109a0ee1fd2.svg" alt="LLM CLI tool fixes broken fresh installs by pinning OpenAI &lt;3" />
+    <div class="article-page-tags"><span>#llm</span> <span>#openai</span> <span>#httpx</span> <span>#dependency-management</span> <span>#cli</span></div>
+    <h1>LLM CLI tool fixes broken fresh installs by pinning OpenAI &lt;3</h1>
+    <p class="article-page-meta">News time: 2026-08-22T02:20:08.251209+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>The LLM command-line tool — a popular open-source utility for interacting with large language models directly from the terminal — has released version 0.32.1 to resolve an urgent dependency breakage. Users attempting fresh installations over the past few days found the tool failing to start or configure properly. The root cause was traced to the official OpenAI Python library’s recent v3.0 release, which dropped support for the <code>httpx</code> HTTP client entirely. Since LLM had relied on <code>httpx</code> <em>indirectly</em> — via transitive dependencies pulled in by older versions of <code>openai</code> — the removal left LLM without a working HTTP client, breaking core functionality like API calls to OpenAI and compatible endpoints.</p>
+<p>This patch is intentionally minimal and pragmatic: instead of rewriting integration logic immediately, the maintainers pinned the <code>openai</code> dependency to <code>&lt;3</code>, ensuring compatibility with the last version that still bundled <code>httpx</code>. It’s a classic stopgap — fast, low-risk, and effective for users right now. Meanwhile, the team has already prepared the next step: version 0.33, scheduled for imminent release, will migrate LLM’s HTTP layer to <code>httpx2</code>, the newly stewardship-led successor to <code>httpx</code> maintained by Pydantic Services.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p><code>httpx2</code> isn’t just a rename — it’s a modernized, actively developed HTTP client built for Python 3.10+, with improved async ergonomics, stricter type safety (leveraging Pydantic’s validation), and better observability. Its adoption signals LLM’s commitment to sustainable, forward-looking infrastructure — especially important as more local and open-weight models rely on custom or self-hosted OpenAI-compatible APIs. Unlike many CLI tools that treat dependencies as black boxes, LLM’s transparent handling of this breakage reflects strong maintenance discipline.</p>
+<p>For developers and power users who depend on LLM for scripting, automation, or local AI workflows (e.g., with Ollama or LM Studio), this fix restores reliability overnight. It also serves as a quiet reminder of how fragile the modern Python ecosystem can be when critical libraries drop backward compatibility without clear deprecation paths — and how vital it is for downstream tools to own their HTTP stack rather than inherit it indirectly.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Aug/21/llm/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/pydantic/httpx2" target="_blank" rel="noopener">GitHub - pydantic/httpx2: A next generation HTTP client for Python. 🦋</a><a href="https://manueltgomes.com/python/pydantic-httpx2-whats-new-and-how-to-take-proper-advantage-of-it/" target="_blank" rel="noopener">Pydantic &amp; HTTPX2: What&#x27;s New and How to Use It</a><a href="https://github.com/simonw/LLM" target="_blank" rel="noopener">GitHub - simonw/llm: Access large language models from the command-line · GitHub</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
