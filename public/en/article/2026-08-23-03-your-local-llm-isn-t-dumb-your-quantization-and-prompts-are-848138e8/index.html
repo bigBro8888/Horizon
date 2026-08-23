@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Your local LLM isn’t dumb — your quantization and prompts are - Now AI News</title>
+  <meta name="description" content="A widely discussed technical post identifies aggressive quantization (especially of the KV cache) and poor system prompt handling as primary causes of degraded perceived intelligen" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-23-03-your-local-llm-isn-t-dumb-your-quantization-and-prompts-are-848138e8" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-23-03-your-local-llm-isn-t-dumb-your-quantization-and-prompts-are-848138e8" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-23-03-your-local-llm-isn-t-dumb-your-quantization-and-prompts-are-848138e8" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-23-03-your-local-llm-isn-t-dumb-your-quantization-and-prompts-are-848138e8" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Your local LLM isn’t dumb — your quantization and prompts are" />
+  <meta property="og:description" content="A widely discussed technical post identifies aggressive quantization (especially of the KV cache) and poor system prompt handling as primary causes of degraded perceived intelligen" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-23-03-your-local-llm-isn-t-dumb-your-quantization-and-prompts-are-848138e8" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49402232.png" />
+  <meta property="article:published_time" content="2026-08-22T18:14:16+00:00" />
+  <meta property="article:modified_time" content="2026-08-23T02:47:28.457336+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Your local LLM isn’t dumb — your quantization and prompts are" />
+  <meta name="twitter:description" content="A widely discussed technical post identifies aggressive quantization (especially of the KV cache) and poor system prompt handling as primary causes of degraded perceived intelligen" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49402232.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-23-03-your-local-llm-isn-t-dumb-your-quantization-and-prompts-are-848138e8"}, "headline": "Your local LLM isn’t dumb — your quantization and prompts are", "description": "A widely discussed technical post identifies aggressive quantization (especially of the KV cache) and poor system prompt handling as primary causes of degraded perceived intelligen", "image": ["https://nowainews.com/media/hackernews-story-49402232.png"], "datePublished": "2026-08-22T18:14:16+00:00", "dateModified": "2026-08-23T02:47:28.457336+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49402232.png" alt="Your local LLM isn’t dumb — your quantization and prompts are" />
+    <div class="article-page-tags"><span>#LLM optimization</span> <span>#model quantization</span> <span>#local LLM</span> <span>#KV cache</span> <span>#system prompts</span></div>
+    <h1>Your local LLM isn’t dumb — your quantization and prompts are</h1>
+    <p class="article-page-meta">News time: 2026-08-23T02:36:19.705024+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Many users running large language models locally on consumer hardware report that their LLMs feel surprisingly unimpressive — sluggish, illogical, or outright confused — even when using state-of-the-art open models like Qwen3.8 27B. A deep dive on Level1Techs reveals this isn’t a flaw in the model itself, but rather the cumulative effect of common deployment shortcuts: aggressive weight quantization, poorly preserved key-value (KV) caches, and haphazard system prompt handling.</p>
+<p>Quantization — reducing model weights from 16-bit floats to lower-precision formats like 4-bit integers — is essential for fitting massive models into consumer GPUs or MacBooks. But not all quantization is equal. As practitioners point out, compressing the KV cache (the memory storing past attention states) often degrades reasoning more than compressing weights alone. Similarly, choosing overly aggressive quantization schemes like Q4_K_P may slash file size and memory use, but at steep costs to coherence, instruction-following fidelity, and long-context consistency.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The post also highlights how default system prompts in popular inference runners — such as those bundled with Ollama or llama.cpp — frequently override or truncate user instructions, silently undermining task execution. One commenter notes that Qwen3.8, when run uncensored and with full context management, solved CTF reverse-engineering challenges that commercial models like Codex refused to even attempt. Others stress that slower but higher-fidelity setups — like Q8-weight + FP16 KV cache — yield dramatically more trustworthy outputs, especially for logic-heavy or multi-step tasks.</p>
+<p>Real-world benchmarks cited in the thread reinforce this: a 4-bit Qwen3.8 27B matched Gemini 3.7 Flash in internal evaluations, while an RTX 5090 with optimized inference backend achieved over 800 tokens per second in batched generation. Yet these gains vanish if context window handling is sloppy or KV compression introduces drift. Ultimately, the takeaway is pragmatic: intelligence isn’t just in the model weights — it’s distributed across the entire inference stack, from quantization strategy to prompt scaffolding.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://forum.level1techs.com/t/why-your-local-llm-feels-dumber-than-it-is/253917" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://symbl.ai/developers/blog/a-guide-to-quantization-in-llms/" target="_blank" rel="noopener">A Guide to Quantization in LLMs | Symbl.ai</a><a href="https://arxiv.org/html/2603.20397v1" target="_blank" rel="noopener">KV Cache Optimization Strategies for Scalableand Efficient LLM Inference</a><a href="https://magazine.sebastianraschka.com/p/coding-the-kv-cache-in-llms" target="_blank" rel="noopener">Understanding and Coding the KV Cache in LLMs from Scratch</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
