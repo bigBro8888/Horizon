@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Linux now lets you run SQLite files as native executables - Now AI News</title>
+  <meta name="description" content="Farid Zakaria introduced SELF, a format that embeds ELF executable components into SQLite database tables by setting the SQLite application_id field to &#x27;SELF&#x27; and using binfmt_misc" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-25-04-linux-now-lets-you-run-sqlite-files-as-native-executables-4baae5bf" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-25-04-linux-now-lets-you-run-sqlite-files-as-native-executables-4baae5bf" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-25-04-linux-now-lets-you-run-sqlite-files-as-native-executables-4baae5bf" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-25-04-linux-now-lets-you-run-sqlite-files-as-native-executables-4baae5bf" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Linux now lets you run SQLite files as native executables" />
+  <meta property="og:description" content="Farid Zakaria introduced SELF, a format that embeds ELF executable components into SQLite database tables by setting the SQLite application_id field to &#x27;SELF&#x27; and using binfmt_misc" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-25-04-linux-now-lets-you-run-sqlite-files-as-native-executables-4baae5bf" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--8ccf6a718866a13d.svg" />
+  <meta property="article:published_time" content="2026-08-24T11:38:15+00:00" />
+  <meta property="article:modified_time" content="2026-08-25T02:37:14.930969+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Linux now lets you run SQLite files as native executables" />
+  <meta name="twitter:description" content="Farid Zakaria introduced SELF, a format that embeds ELF executable components into SQLite database tables by setting the SQLite application_id field to &#x27;SELF&#x27; and using binfmt_misc" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--8ccf6a718866a13d.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-25-04-linux-now-lets-you-run-sqlite-files-as-native-executables-4baae5bf"}, "headline": "Linux now lets you run SQLite files as native executables", "description": "Farid Zakaria introduced SELF, a format that embeds ELF executable components into SQLite database tables by setting the SQLite application_id field to 'SELF' and using binfmt_misc", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--8ccf6a718866a13d.svg"], "datePublished": "2026-08-24T11:38:15+00:00", "dateModified": "2026-08-25T02:37:14.930969+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--8ccf6a718866a13d.svg" alt="Linux now lets you run SQLite files as native executables" />
+    <div class="article-page-tags"><span>#SQLite</span> <span>#ELF</span> <span>#Linux</span> <span>#binfmt_misc</span> <span>#systems-programming</span></div>
+    <h1>Linux now lets you run SQLite files as native executables</h1>
+    <p class="article-page-meta">News time: 2026-08-25T02:22:44.623944+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>A new systems-level technique transforms ordinary SQLite database files into fully functional Linux executables — without changing how they’re stored, distributed, or inspected. Farid Zakaria’s project, SELF (Structured Executable &amp; Linkable Format), repurposes SQLite’s built-in application_id field — a 4-byte identifier located at byte offset 68 in every SQLite file — to signal that the file isn’t just data, but a self-contained program. By setting that field to the ASCII bytes 'SELF', the file declares itself as an executable format compatible with a custom loader.</p>
+<p>The core idea is structural: instead of embedding raw ELF bytes inside a SQLite blob, SELF maps each critical part of the ELF specification — such as program headers, section headers, symbol tables, and even the actual machine code — into dedicated, schema-defined SQLite tables. The provided schema (self.sql) enforces strict layout and typing, turning the database into a structured, queryable representation of an executable. This makes the binary introspectable with standard SQL tools: you can SELECT * FROM sections or JOIN symbols ON st_shndx to inspect relocation targets — all without parsing binary formats manually.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Execution relies on a tiny C-based interpreter called self-exec, which reads the SQLite file, reconstructs the in-memory ELF image from its tables, and invokes the kernel’s execve() system call — effectively bootstrapping the program like any native binary. To make this seamless, binfmt_misc — a long-standing Linux kernel feature for registering custom binary interpreters — is configured to recognize the 'SELF' magic and delegate execution to self-exec automatically. Once registered, users can chmod +x a .db file and ./program.db just works.</p>
+<p>This isn’t mere packaging sugar. It opens doors to verifiable software distribution: metadata, build provenance, signatures, and debug info can live alongside code in the same ACID-transactional container. Tools like sqlite3 can inspect or even patch binaries; package managers could validate integrity via SQL queries; and static analysis engines could scan for vulnerabilities using joins across symbol and string tables. While performance overhead is minimal (the loader runs once, before transfer to kernel space), the real win is composability — merging decades-old Unix philosophies (do one thing well, text is universal) with modern portability needs.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Aug/24/your-executable-is-a-sqlite-database/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://stackoverflow.com/questions/35557487/where-can-i-register-a-sqlite-application-id" target="_blank" rel="noopener">registration - Where can I register a sqlite application ID? - Stack Overflow</a><a href="https://en.wikipedia.org/wiki/Binfmt_misc" target="_blank" rel="noopener">binfmt _ misc - Wikipedia</a><a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format" target="_blank" rel="noopener">Executable and Linkable Format - Wikipedia</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

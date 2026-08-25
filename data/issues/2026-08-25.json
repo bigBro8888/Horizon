@@ -1,0 +1,938 @@
+{
+  "date": "2026-08-25",
+  "generated_at": "2026-08-25T02:37:14.930969+00:00",
+  "total_fetched": 26,
+  "count": 18,
+  "articles": [
+    {
+      "id": "hackernews:story:49421158",
+      "slug": "2026-08-25-01-ms-paint-and-photos-embed-invisible-guid-watermarks-in-all-locally-edited-images-1acb4e18",
+      "path": "/article/2026-08-25-01-ms-paint-and-photos-embed-invisible-guid-watermarks-in-all-locally-edited-images-1acb4e18",
+      "rank": 1,
+      "score": 9.0,
+      "source": "hackernews",
+      "author": "ComputerGuru",
+      "url": "https://xusheng.dev/posts/reversing/mspaint_invisible_watermark/main/",
+      "published_at": "2026-08-24T15:28:04+00:00",
+      "fetched_at": "2026-08-25T02:22:44.911583+00:00",
+      "tags": [
+        "privacy",
+        "digital-watermarking",
+        "windows",
+        "ai-ethics",
+        "surveillance"
+      ],
+      "image_path": "media/hackernews-story-49421158.jpg",
+      "title": {
+        "zh": "画图和照片应用悄悄为本地编辑图片添加不可见GUID水印",
+        "en": "MS Paint and Photos embed invisible GUID watermarks in all locally edited images"
+      },
+      "summary": {
+        "zh": "微软画图和照片应用现在会对所有本地生成或AI编辑的图片嵌入不可见、不可关闭的GUID水印，即使使用本地AI模型，也会在提示词审核阶段连接微软远程服务器并把GUID写入C2PA清单。 此举损害用户隐私与匿名权，使用户可能通过法律传票被识别；影响数以百万计默认信任这些应用为中立、离线优先工具的普通Windows用户；也为消费级软件中隐蔽追踪设下危险先例。 该GUID嵌入C2PA清单中，由微软服务器在提示词审核环节发放，而非AI生成环节；即使禁用Copilot或使用本地AI模型，水印依然存在；目前无法在不删除全部元数据或损坏文件的前提下移除。",
+        "en": "Microsoft Paint and Photos now embed invisible, non-disablable GUID watermarks into all locally generated or AI-edited images—even when using local models—by contacting a remote Microsoft server during prompt moderation and writing the GUID into the C2PA manifest. This undermines user privacy and anonymity by enabling potential identification via legal subpoenas, affects millions of everyday Windows users who assume these apps are neutral and offline-first, and sets a concerning precedent for covert tracking in consumer software. The GUID is embedded in the C2PA manifest, issued by a Microsoft server during prompt moderation—not during AI generation—and persists even when Copilot is disabled or local AI models are used; it cannot be removed without stripping metadata or corrupting the file."
+      },
+      "body": {
+        "zh": "徐晟（Xusheng Li）近期的一项技术分析发现，微软画图（MS Paint）和照片（Photos）这两款广为人知、看似简单的Windows内置应用，正在用户本地创建或编辑的图片中悄悄嵌入不可见且无法移除的全局唯一标识符（GUID）。这种行为甚至发生在完全不调用云端AI服务的情况下：例如，当用户使用本地运行的AI模型删除背景或增强图像时，应用仍会将编辑提示词发送至微软服务器进行内容审核，接收一个由服务器生成的唯一GUID，并将其写入图片元数据中作为不可见水印。\n\n该水印肉眼不可见，且在系统设置中没有任何开关可供关闭。它被存放在C2PA（内容溯源与真实性联盟）标准定义的数字签名结构中——这是一种用于记录图像来源的技术规范，但与常规C2PA用途（如验证AI生成内容）不同，此处嵌入的是与用户微软账户关联的服务端分配标识符，全程未告知用户，也未获得任何授权。关键在于，这个GUID理论上可通过法律程序（如传票）追溯到用户的真实身份信息。\n\n这一行为颠覆了人们对画图应用作为轻量级、离线优先工具的长期认知。不同于创作者主动添加的可见水印，该机制完全后台静默运行：无弹窗提示、无启用选项、无官方说明。即使用户已禁用Copilot、关闭所有云功能，或坚持使用纯本地AI模型，也无法规避，因为水印逻辑已深度集成进应用的核心编辑流程。该发现源于逆向工程而非官方文档，凸显其高度隐蔽性。\n\n隐私倡导者与开发者对此表示严重关切：它不仅削弱网络匿名性，还可能使普通用户面临被批量识别的风险。正如一位评论者指出，只要一张网络迷因（meme）被他人举报侵权，版权方就可向微软发出传票，仅凭图片中的水印便可能获取用户真实姓名、住址、邮箱及电话号码。尽管微软此前曾撤回过类似过度设计（如在Azure DevOps提交记录中错误添加Copilot标签），但此次GUID水印机制目前仍持续存在且难以绕过。截至目前，尚无已知方法可在不破坏图像完整性或清空全部元数据的前提下禁用或清除该水印。",
+        "en": "A recent technical investigation by Xusheng Li has revealed that Microsoft Paint and Microsoft Photos—two long-standing, seemingly simple Windows applications—are silently embedding invisible, non-removable GUIDs into images users create or edit locally. This occurs even when no cloud AI services are involved: for example, when using a local AI model to remove a background or enhance a photo, the app still contacts a Microsoft server to moderate the prompt, receives a unique GUID in response, and writes it into the image’s metadata as an invisible watermark.\n\nThe watermark is not visible to the eye and cannot be toggled off in settings. It resides in the C2PA (Coalition for Content Provenance and Authenticity) manifest—a standardized structure used to record image provenance—but unlike typical C2PA use cases (e.g., verifying AI-generated content), this implementation embeds a server-issued identifier without user knowledge or consent. Crucially, the GUID is tied to the user’s Microsoft account infrastructure, meaning it could, in theory, be linked back to personal information if subpoenaed.\n\nThis behavior contradicts longstanding expectations of MS Paint as a lightweight, offline-first tool. Unlike visible watermarks added intentionally by creators, this one operates entirely in the background—no dialog, no opt-in, no documentation. Even users who disable Copilot, avoid cloud features, or run fully local AI models are affected, because the watermarking logic is baked into the apps’ core editing flow. The discovery was made through reverse engineering, not official documentation, underscoring how opaque the mechanism is.\n\nPrivacy advocates and developers have raised alarms about the implications: from eroding digital anonymity to enabling mass identification via legal requests. As one commenter noted, a copyright claimant could serve Microsoft with a subpoena and potentially obtain the user’s full name, address, email, and phone number—simply based on a meme shared online. While Microsoft has previously rolled back similar overreaches (e.g., auto-stamping Copilot labels on Azure DevOps commits), this GUID watermarking appears persistent and deeply integrated. For now, there is no known way to disable or strip it without damaging image integrity or losing metadata entirely."
+      },
+      "background": {
+        "zh": "C2PA是由多家行业组织共同制定的开放标准，旨在通过密码学手段验证数字媒体的来源与编辑历史。GUID（全局唯一标识符）是Windows中常用的128位标识值，用于唯一标记对象、账户或会话。微软画图自1985年起即作为Windows系统内置工具，传统定位是无需联网的基础位图编辑器。",
+        "en": "C2PA is an open standard developed by industry groups to cryptographically attest the origin and editing history of digital media. GUIDs (Globally Unique Identifiers) are 128-bit values commonly used in Windows to uniquely identify objects, accounts, or sessions. MS Paint has been a bundled Windows utility since 1985, historically designed for basic raster graphics editing without network dependencies."
+      },
+      "discussion": {
+        "zh": "评论者普遍谴责该机制缺乏透明度与用户同意，多人强调‘AI相关’只是干扰项，真正问题是隐蔽的身份识别。部分用户联想到微软此前在Azure DevOps中错误自动添加Copilot标签等事件，认为此类问题反映的是系统性设计缺陷，而非偶然失误。",
+        "en": "Commenters widely condemn the lack of transparency and consent, with many stressing that the AI framing is misleading—the real issue is covert identification. Some draw parallels to past Microsoft missteps like the Azure DevOps Copilot stamping incident, warning that such patterns reflect systemic design flaws rather than isolated bugs."
+      },
+      "sources": [
+        {
+          "url": "https://xusheng.dev/posts/reversing/mspaint_invisible_watermark/main/",
+          "title": "Microsoft Paint and Photos Embed Server-Issued GUIDs as Invisible Watermarks in Locally-Generated Images :: Xusheng Li"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49424606",
+      "slug": "2026-08-25-02-global-ocean-temperatures-hit-highest-level-ever-recorded-19d9a0a8",
+      "path": "/article/2026-08-25-02-global-ocean-temperatures-hit-highest-level-ever-recorded-19d9a0a8",
+      "rank": 2,
+      "score": 9.0,
+      "source": "hackernews",
+      "author": "tcp_handshaker",
+      "url": "https://www.bbc.com/news/articles/c62m4gpnp78o",
+      "published_at": "2026-08-24T19:19:08+00:00",
+      "fetched_at": "2026-08-25T02:22:44.911765+00:00",
+      "tags": [
+        "climate-change",
+        "oceanography",
+        "global-warming",
+        "environmental-policy",
+        "climate-science"
+      ],
+      "image_path": "media/hackernews-story-49424606.jpg",
+      "title": {
+        "zh": "全球海洋温度达有记录以来最高值",
+        "en": "Global ocean temperatures hit highest level ever recorded"
+      },
+      "summary": {
+        "zh": "2024年初，全球海洋表面温度达到有记录以来的最高值，超过了2023年创下的前纪录。 海洋热含量是地球能量失衡最可靠的指标，此次破纪录表明气候紊乱正在加速，将对全球天气模式、生态系统、粮食安全和沿海社区产生连锁冲击。 该纪录出现在强厄尔尼诺年份，但根本驱动力是人为导致的长期变暖而非单纯自然波动；海洋吸收了温室气体所致90%以上的多余热量；2023年全球化石能源仍占一次能源供应的81.1%。",
+        "en": "Global ocean surface temperatures reached the highest level ever recorded in early 2024, surpassing the previous record set in 2023. Ocean heat content is the most reliable indicator of Earth’s energy imbalance, and this record signals accelerating climate disruption with cascading impacts on weather, ecosystems, food security, and coastal communities worldwide. The record occurred during a strong El Niño year but reflects underlying anthropogenic warming, not just natural variability; oceans absorb over 90% of excess heat from greenhouse gases, and global fossil fuels still supplied 81.1% of primary energy in 2023."
+      },
+      "body": {
+        "zh": "全球海洋表面平均温度刚刚刷新了有可靠观测记录以来的最高值——这一严峻里程碑凸显地球气候系统正以前所未有的速度失稳。这并非短期波动：科学家确认该纪录是在2024年初连续数月内达成的，由长期变暖趋势与加剧的厄尔尼诺事件共同推动。与大气温度日际波动明显不同，海洋热含量累积了数十年的过剩热量，因此成为衡量全球尺度气候变化最稳健的指标之一。\n\n海洋吸收了温室气体所捕获的90%以上多余热量，充当着地球主要的“热缓冲器”。但这个缓冲器正逼近临界点：海水升温降低氧气溶解度、扰乱海洋食物网、加速珊瑚白化，并助长更强更湿的热带气旋。其影响远超生态范畴——渔业崩溃、海岸洪涝和季风增强正威胁数十个国家的粮食安全与基础设施，尤其重创低洼岛国及热带发展中国家。\n\n令这一纪录尤为警醒的是其背景：它紧随连续三年破纪录的海洋高温之后——2023年已是史上最高，而2024年在尚未进入典型夏季升温高峰时就已进一步超越。科学家强调，这种加速无法仅用自然变率解释，人类活动导致的温室气体排放是主导因素。与此同时，全球化石能源使用仍居高不下：2023年仍占一次能源供应的81.1%，自2000年以来仅微降0.3个百分点。\n\n公众评论反映出日益提升的科学认知与深切挫败感。网友援引安东·佩特罗夫（Anton Petrov）等权威科普者内容，并指出政策失效——从美国扩大油气开采许可，到对风电等可再生能源的打压。还有人反思看似微小的升温（全球平均仅升高1–2°C）如何引发生存危机：海冰消融降低地表反照率，暴露出深色海水吸收更多热量，形成自我强化的正反馈循环。信号明确：海洋变暖不是遥远预警，而是正在重塑地球的当下现实。",
+        "en": "The world’s oceans have just registered their highest average surface temperature since reliable measurements began — a stark milestone underscoring how rapidly Earth’s climate system is destabilizing. This isn’t a temporary spike: scientists confirm the record was set over multiple consecutive months in early 2024, driven by a confluence of long-term warming and an intensifying El Niño event. Unlike atmospheric temperatures, which fluctuate more visibly day to day, ocean heat content integrates decades of excess energy — making it one of the most robust indicators of planetary-scale climate change.\n\nOceans absorb over 90% of the excess heat trapped by greenhouse gases, acting as Earth’s primary thermal buffer. But that buffer is now nearing critical thresholds. Warmer waters reduce oxygen solubility, disrupt marine food webs, accelerate coral bleaching, and fuel stronger, wetter tropical storms. The implications extend far beyond ecology: fisheries collapse, coastal flooding, and intensified monsoons threaten food security and infrastructure across dozens of nations — especially in low-lying island states and tropical developing regions.\n\nWhat makes this record especially alarming is its context. It follows three consecutive years of unprecedented ocean heat — 2023 was already the warmest on record, and 2024 has surpassed it further, even before the typical peak summer heating period. Scientists emphasize that this acceleration cannot be explained by natural variability alone; human-caused greenhouse gas emissions are the dominant driver. Meanwhile, global fossil fuel use remains stubbornly high — still supplying over 81% of primary energy in 2023, with only marginal decline since 2000.\n\nPublic reaction reflects growing scientific literacy and frustration. Commenters cite authoritative science communicators like Anton Petrov and point to policy failures — from U.S. expansions in oil and gas leasing to underfunded renewable transitions. Others reflect on how deceptively small temperature changes (just 1–2°C globally) cascade into existential risks: melting ice reduces albedo, exposing darker ocean surfaces that absorb more heat in a self-reinforcing loop. The message is clear: ocean warming isn’t a distant warning — it’s the present reality reshaping our planet."
+      },
+      "background": {
+        "zh": "海洋温度记录依赖卫星遥感、船舶观测和自主浮标（如Argo浮标）等数据，自1970年代起逐步积累，2000年代初实现全球稳定覆盖。“最高纪录”指全球主要洋盆平均海表温度（SST）的最高均值，而非局部异常。",
+        "en": "Ocean temperature records rely on satellite data, ship-based measurements, and autonomous floats (like Argo buoys) dating back to the 1970s, with robust global coverage since the early 2000s. 'Record high' refers to the highest average sea surface temperature (SST) across all major ocean basins, not a localized anomaly."
+      },
+      "discussion": {
+        "zh": "读者展现出较高的科学素养与忧患意识，引用安东·佩特罗夫等专家的科普视频，批评政府不作为及化石能源扩张，并解释海冰消融导致反照率下降等正反馈机制；多人强调，看似微小的升温会带来远超比例的生态与社会后果。",
+        "en": "Readers expressed scientific awareness and concern, citing educational videos by experts like Anton Petrov, criticizing government inaction and fossil fuel expansion, and explaining feedback loops such as reduced albedo from ice loss. Several emphasized that small temperature rises carry disproportionate ecological and societal consequences."
+      },
+      "sources": []
+    },
+    {
+      "id": "hackernews:story:49418255",
+      "slug": "2026-08-25-03-sel4-s-full-formal-security-proof-now-complete-for-aarch64-db0b8b50",
+      "path": "/article/2026-08-25-03-sel4-s-full-formal-security-proof-now-complete-for-aarch64-db0b8b50",
+      "rank": 3,
+      "score": 9.0,
+      "source": "hackernews",
+      "author": "snvzz",
+      "url": "https://proofcraft.systems/news-2026/#2026-08-21",
+      "published_at": "2026-08-24T11:32:51+00:00",
+      "fetched_at": "2026-08-25T02:22:44.911782+00:00",
+      "tags": [
+        "formal-methods",
+        "operating-systems",
+        "security",
+        "embedded-systems",
+        "verification"
+      ],
+      "image_path": "media/hackernews-story-49418255.png",
+      "title": {
+        "zh": "seL4微内核在AArch64架构上完成全栈形式化安全证明",
+        "en": "seL4’s full formal security proof now complete for AArch64"
+      },
+      "summary": {
+        "zh": "2026年8月21日，Proofcraft宣布seL4微内核在AArch64架构上的端到端形式化安全证明已全部完成，覆盖完整内核二进制及其对ARMv8-A规范的符合性。 此举将目前公开可用的最强软件可信保障延伸至汽车、航空航天及嵌入式安全领域广泛采用的主流64位ARM平台，使传统测试与人工审计难以覆盖的高保障系统成为可能。 该证明基于单核运行假设，不包含混合关键性调度与硬件级旁路通道（如计时攻击）；其验证范围涵盖功能正确性、组件隔离性及基于能力的访问控制，依据为ARMv8-A指令集架构模型。",
+        "en": "On August 21, 2026, Proofcraft announced the completion of seL4’s end-to-end formal security proof for the AArch64 architecture, covering the full kernel binary and its adherence to ARMv8-A specifications. This extends the strongest publicly available software assurance to the dominant 64-bit ARM platform used in automotive, aerospace, and embedded security applications — enabling high-assurance systems where traditional testing and auditing fall short. The proof assumes unicore operation and excludes mixed-criticality scheduling and hardware-level side channels (e.g., timing attacks); it verifies functional correctness, isolation, and capability-based access control against the ARMv8-A ISA model."
+      },
+      "body": {
+        "zh": "seL4微内核——全球首个具备机器可验证、端到端形式化功能正确性与安全性证明的操作系统内核——现已在AArch64架构上完成同等严格的形式化验证。Proofcraft公司于2026年8月21日宣布这一进展，意味着seL4针对64位ARM处理器的全部实现代码，均通过数学方式被证实严格符合其高层安全规范：不会发生缓冲区溢出、提权或控制流导致的信息泄露（前提是硬件行为与建模一致）。\n\n这并非简单移植。不同于早期仅覆盖x86-64或简化模型的证明，AArch64版本的证明涵盖完整内核二进制，包括底层寄存器操作、内存管理单元（MMU）配置和异常处理机制，并全部依据ARMv8-A架构规范进行验证。尤为关键的是，它还证明了seL4核心安全不变量的保持能力，例如互不信任组件间的强隔离性，以及基于能力（capability）的访问控制完整性。\n\n但该成果存在明确边界。正如官方公告及社区评论所指出，当前证明仅适用于单核（unicore）配置，且未覆盖混合关键性系统（MCS），即尚未提供安全关键任务与非关键任务共享同一硬件时所需的调度保障。旁路攻击漏洞（如跨特权边界的计时差异）也不在本次证明范围内，因其依赖物理硬件行为，而现有抽象指令集模型并未建模此类细节。\n\n对于容错成本极高的领域——如智能汽车域控制器、国防系统可信启动环境或适航认证的航电平台——这一证明显著提升了系统可信等级。开发者得以在seL4之上构建应用，并确信其基础内核本身不会破坏机密性或完整性，从而将信任基础从人工代码审查转向数学推导。然而，实际落地仍取决于生态成熟度：稳定驱动支持、与Linux共存方案及应用部署工具链，仍是seL4社区与Proofcraft等商业伙伴当前重点推进的方向。",
+        "en": "The seL4 microkernel — the world’s first operating-system kernel with a machine-checked, end-to-end formal proof of functional correctness and security — has now achieved the same rigorous verification on the AArch64 architecture. Announced by Proofcraft on August 21, 2026, this milestone means every line of seL4’s implementation for 64-bit ARM processors is mathematically guaranteed to behave exactly as its high-level security specification dictates: no buffer overflows, no privilege escalations, no information leaks via control flow — assuming the hardware behaves as modeled.\n\nThis isn’t just an incremental port. Unlike earlier proofs limited to x86-64 or simplified models, the AArch64 proof covers the full kernel binary, including low-level register manipulation, memory management unit (MMU) configuration, and exception handling — all verified against the ARMv8-A architecture specification. Crucially, it also proves preservation of seL4’s core security invariants, such as isolation between mutually distrustful components and integrity of capability-based access control.\n\nStill, the achievement comes with important boundaries. As noted in the official announcement and echoed by commenters, the current proof assumes a unicore (single-CPU-core) configuration and excludes mixed-criticality systems (MCS) — meaning it does not yet cover scheduling guarantees needed when safety-critical and non-critical tasks share the same hardware. Side-channel vulnerabilities — like timing variations exploitable across privilege boundaries — are also outside the scope of the current proof, since they depend on physical hardware behavior not captured in the abstract instruction-set model.\n\nFor industries where failure is not an option — automotive infotainment and domain controllers, secure bootloaders in defense systems, or certified avionics platforms — this proof dramatically raises the assurance bar. It enables developers to build on seL4 with confidence that the foundation itself cannot violate confidentiality or integrity, shifting the burden of trust from ad-hoc code reviews to mathematical derivation. Yet real-world adoption still hinges on ecosystem maturity: robust drivers, Linux coexistence strategies, and tooling for application deployment remain active challenges — ones the seL4 community and commercial partners like Proofcraft are now prioritizing."
+      },
+      "background": {
+        "zh": "seL4是由NICTA（现为Data61）自2006年起从零设计的第三代L4系列微内核，专为高保障系统中的可证明安全性与可靠性而构建。AArch64是ARM架构的64位执行态，广泛应用于移动设备、服务器及嵌入式系统。端到端形式化证明指从高层规格说明到编译后二进制的每一步，均使用Isabelle/HOL等证明助手完成数学验证。",
+        "en": "seL4 is a third-generation L4-family microkernel developed from scratch by NICTA (now Data61) starting in 2006, designed for provable security and reliability in high-assurance systems. AArch64 is the 64-bit execution state of the ARM architecture, widely used in mobile, server, and embedded devices. End-to-end formal proof means every step — from high-level specification to compiled binary — is mathematically verified using proof assistants like Isabelle/HOL."
+      },
+      "discussion": {
+        "zh": "社区评论者提出了细致关切：质疑旁路攻击是否会削弱该证明的实际有效性，询问真实部署案例（如GenodeOS、LionsOS及中国车企应用），并呼吁加强与Linux的协同及对混合关键性系统的支持。",
+        "en": "Commenters raised nuanced concerns: skepticism about side-channel vulnerabilities undermining the proof’s practical relevance, questions about real-world deployments (e.g., GenodeOS, LionsOS, Chinese automotive use), and calls for better Linux integration and mixed-criticality support."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/SeL4",
+          "title": "seL4 - Wikipedia"
+        },
+        {
+          "url": "https://docs.kernel.org/arch/arm64/index.html",
+          "title": "ARM 64 Architecture — The Linux Kernel documentation"
+        },
+        {
+          "url": "https://cccblog.org/2018/06/13/the-surprising-security-benefits-of-end-to-end-formal-proofs/",
+          "title": "The Surprising Security Benefits of End-to-End Formal Proofs » CCC Blog"
+        }
+      ]
+    },
+    {
+      "id": "rss:simonwillison.net_atom_everything_:8ccf6a718866a13d",
+      "slug": "2026-08-25-04-linux-now-lets-you-run-sqlite-files-as-native-executables-4baae5bf",
+      "path": "/article/2026-08-25-04-linux-now-lets-you-run-sqlite-files-as-native-executables-4baae5bf",
+      "rank": 4,
+      "score": 9.0,
+      "source": "rss",
+      "author": "Simon Willison",
+      "url": "https://simonwillison.net/2026/Aug/24/your-executable-is-a-sqlite-database/",
+      "published_at": "2026-08-24T11:38:15+00:00",
+      "fetched_at": "2026-08-25T02:22:44.623944+00:00",
+      "tags": [
+        "SQLite",
+        "ELF",
+        "Linux",
+        "binfmt_misc",
+        "systems-programming"
+      ],
+      "image_path": "media/rss-simonwillison-net-atom-everything--8ccf6a718866a13d.svg",
+      "title": {
+        "zh": "Linux可直接运行SQLite数据库文件为可执行程序",
+        "en": "Linux now lets you run SQLite files as native executables"
+      },
+      "summary": {
+        "zh": "Farid Zakaria 提出 SELF 格式：通过将 SQLite 文件的 application_id 字段设为 'SELF'，把 ELF 可执行组件存入 SQLite 表中，并借助 binfmt_misc 注册自定义 C 解释器 self-exec，在 Linux 上直接加载并运行。 它重新定义了可执行文件的打包方式，使二进制程序能被标准数据库工具检查、版本控制和修改，为软件可信验证、可重现构建及跨平台工具链开辟新路径，且完全兼容 POSIX。 application_id 必须精确写入文件第 68 字节；self-exec 解释器仅约 200 行可移植 C 代码；binfmt_misc 注册需 root 权限，重启后失效，除非通过初始化脚本或 NixOS 模块持久化。",
+        "en": "Farid Zakaria introduced SELF, a format that embeds ELF executable components into SQLite database tables by setting the SQLite application_id field to 'SELF' and using binfmt_misc to register a custom C loader (self-exec) that extracts and executes them on Linux. It redefines executable packaging by making binaries introspectable, versionable, and modifiable with standard database tools — enabling new approaches to software verification, reproducible builds, and cross-platform tooling without breaking POSIX compatibility. The application_id must be written at byte offset 68; the self-exec loader is ~200 lines of portable C; binfmt_misc registration requires root access and persists only until reboot unless configured in init scripts or NixOS modules."
+      },
+      "body": {
+        "zh": "一项新的系统级技术让普通的 SQLite 数据库文件摇身一变，成为功能完整的 Linux 可执行程序——无需改变其存储方式、分发流程或检查方法。Farid Zakaria 提出的 SELF（Structured Executable & Linkable Format，结构化可执行与可链接格式）项目，巧妙复用了 SQLite 文件格式中预留的 application_id 字段：这个 4 字节标识符位于文件第 68 字节处，原本用于帮助工具识别应用专属数据库类型；现在它被设为 ASCII 字符 'SELF'，向系统宣告：“我不仅是数据，更是一个自包含的程序”。\n\n其核心思想是结构化映射：不是简单地把原始 ELF 二进制块塞进一个 BLOB 字段，而是将 ELF 规范中的关键组成部分——如程序头、节头、符号表，甚至机器指令本身——一一对应到预定义的 SQLite 表中。官方提供的 schema（self.sql）强制约束字段名、类型和关系，使整个数据库变成一个结构清晰、支持标准 SQL 查询的可执行体。你可以用 sqlite3 直接运行 SELECT * FROM sections 或 JOIN symbols ON st_shndx 查看重定位目标，完全绕过繁琐的手动二进制解析。\n\n执行过程依赖一个轻量级 C 编写的解释器 self-exec：它读取 SQLite 文件，从各张表中重建内存中的 ELF 映像，再调用内核 execve() 系统调用启动程序，行为与原生二进制无异。为实现无缝体验，项目利用 Linux 内核久已存在的 binfmt_misc 机制——该机制允许注册任意二进制格式的解释器——配置内核识别 'SELF' 魔数，并自动将执行请求转发给 self-exec。注册完成后，用户只需 chmod +x program.db，然后 ./program.db 即可运行。\n\n这远不止是花哨的打包技巧。它为可验证软件分发打开新路径：构建溯源信息、数字签名、调试符号等元数据，均可与代码共存于同一个支持 ACID 事务的容器中。sqlite3 工具能直接检查甚至修补二进制；包管理器可用 SQL 查询验证完整性；静态分析引擎可通过跨表 JOIN（如符号表与字符串表）扫描漏洞。虽然加载阶段有极小开销（仅一次解析），但真正价值在于组合性——将 Unix 经典哲学（单一职责、文本通用）与现代可移植性需求完美融合。",
+        "en": "A new systems-level technique transforms ordinary SQLite database files into fully functional Linux executables — without changing how they’re stored, distributed, or inspected. Farid Zakaria’s project, SELF (Structured Executable & Linkable Format), repurposes SQLite’s built-in application_id field — a 4-byte identifier located at byte offset 68 in every SQLite file — to signal that the file isn’t just data, but a self-contained program. By setting that field to the ASCII bytes 'SELF', the file declares itself as an executable format compatible with a custom loader.\n\nThe core idea is structural: instead of embedding raw ELF bytes inside a SQLite blob, SELF maps each critical part of the ELF specification — such as program headers, section headers, symbol tables, and even the actual machine code — into dedicated, schema-defined SQLite tables. The provided schema (self.sql) enforces strict layout and typing, turning the database into a structured, queryable representation of an executable. This makes the binary introspectable with standard SQL tools: you can SELECT * FROM sections or JOIN symbols ON st_shndx to inspect relocation targets — all without parsing binary formats manually.\n\nExecution relies on a tiny C-based interpreter called self-exec, which reads the SQLite file, reconstructs the in-memory ELF image from its tables, and invokes the kernel’s execve() system call — effectively bootstrapping the program like any native binary. To make this seamless, binfmt_misc — a long-standing Linux kernel feature for registering custom binary interpreters — is configured to recognize the 'SELF' magic and delegate execution to self-exec automatically. Once registered, users can chmod +x a .db file and ./program.db just works.\n\nThis isn’t mere packaging sugar. It opens doors to verifiable software distribution: metadata, build provenance, signatures, and debug info can live alongside code in the same ACID-transactional container. Tools like sqlite3 can inspect or even patch binaries; package managers could validate integrity via SQL queries; and static analysis engines could scan for vulnerabilities using joins across symbol and string tables. While performance overhead is minimal (the loader runs once, before transfer to kernel space), the real win is composability — merging decades-old Unix philosophies (do one thing well, text is universal) with modern portability needs."
+      },
+      "background": {
+        "zh": "SQLite 数据库文件在第 68 字节处预留了一个 4 字节的 'application_id' 字段，供 file(1) 等工具识别专有文件类型。ELF 是 Linux 系统上可执行文件与共享库的标准二进制格式。binfmt_misc 是 Linux 内核子系统，允许用户空间程序作为任意二进制格式的解释器——例如配合 QEMU 在 x86 主机上运行 ARM 二进制程序。",
+        "en": "SQLite databases include a 4-byte 'application_id' field at offset 68 to help utilities identify custom file types. ELF is the standard binary format for executables and shared libraries on Linux. binfmt_misc is a Linux kernel subsystem that allows user-space programs to act as interpreters for arbitrary binary formats — commonly used for running binaries from other architectures (e.g., ARM on x86) via QEMU."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://stackoverflow.com/questions/35557487/where-can-i-register-a-sqlite-application-id",
+          "title": "registration - Where can I register a sqlite application ID? - Stack Overflow"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Binfmt_misc",
+          "title": "binfmt _ misc - Wikipedia"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Executable_and_Linkable_Format",
+          "title": "Executable and Linkable Format - Wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1vx94er",
+      "slug": "2026-08-25-05-unbounded-labs-releases-bart-a-2-82b-parameter-llm-trained-only-on-pre-1931-engl-f2e1f340",
+      "path": "/article/2026-08-25-05-unbounded-labs-releases-bart-a-2-82b-parameter-llm-trained-only-on-pre-1931-engl-f2e1f340",
+      "rank": 5,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/soggydoggy8",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1vx94er/bart_a_vintage_llm_r/",
+      "published_at": "2026-08-24T17:20:03+00:00",
+      "fetched_at": "2026-08-25T02:22:45.061339+00:00",
+      "tags": [
+        "LLM",
+        "historical-AI",
+        "reasoning",
+        "open-science",
+        "model-evaluation"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1vx94er.svg",
+      "title": {
+        "zh": "Unbounded Labs发布Bart模型：仅用1931年前英文文本训练的28亿参数大模型",
+        "en": "Unbounded Labs releases Bart, a 2.82B-parameter LLM trained only on pre-1931 English text"
+      },
+      "summary": {
+        "zh": "Unbounded Labs发布了Bart模型：一个仅用1931年前201亿英文token训练的28.2亿参数开源大模型，并同步推出Vintage CORE评测套件、清洗后的230亿token古籍语料，以及41.6万条人工标注的监督微调问答对，全部开源。 Bart推动了认知型人工智能研究，为历史推理、时间锚定及大模型中‘新颖性’起源等课题提供了受控实验环境，成为少有的透明、可复现的基础性研究平台，有助于厘清语言模型究竟‘理解’了什么。 Bart在单块H100上训练5天，全程保持60%模型浮点利用率；其Vintage CORE基准测试在同规模下优于GPT-1900；训练数据经过严格的时间泄露防控与OCR噪声过滤，所有消融实验均公开披露。",
+        "en": "Unbounded Labs released Bart, a 2.82B-parameter open-weight LLM trained exclusively on 20.1B tokens of English text published before 1931, alongside the Vintage CORE benchmark suite, a cleaned 23B-token vintage corpus, and 416k graded SFT examples — all fully open-sourced. Bart advances epistemic AI research by enabling controlled studies of historical reasoning, temporal grounding, and the origins of novelty in LLMs — offering a rare, transparent, and reproducible testbed for foundational questions about what language models truly 'understand'. Bart achieved 60% MFU during 5-day H100 training; its Vintage CORE benchmark outperforms GPT-1900 at comparable scale; training data underwent strict temporal leakage mitigation and OCR noise filtering, with ablations publicly documented."
+      },
+      "body": {
+        "zh": "Unbounded Labs正式发布了Bart——一款并非为实用而生、专为科学探索打造的大语言模型。该模型拥有28.2亿参数，完全从零开始，仅使用1931年以前出版的201亿英文token进行训练。与依赖现代网络语料的标准大模型不同，Bart彻底排除了20世纪以后出现的所有知识、事件、技术乃至文化参照。团队构建它的核心目标，是检验人工智能领域一个根本性问题：当完全不接触现代科学或概念时，统计型语言模型是否仍能生成在历史语境中合理且原创的思想——例如爱因斯坦或居里夫人当年提出的那种？\n\n为实现这一目标，Unbounded Labs系统性地清洗并重构了迄今规模最大的古籍语料之一：哈佛大学机构藏书（Harvard’s Institutional Books）语料库，将其从原始2420亿token精炼为230亿高质量可用token。他们还首创了Vintage CORE——首个专为“复古大模型”设计的评测套件，包含20项任务，覆盖历史推理、反事实推断与时间锚定等维度。由于现有评估框架完全不适用，团队从零开发了全部基础设施：训练代码、监督微调数据集（含41.6万条严格基于1930年代前文献标注的问答对），甚至仅使用19世纪百科全书与礼仪手册等时代相符材料构建的后训练流程。\n\n整个项目仅用一块H100 GPU运行五天完成，全程保持60%的模型浮点利用率——在如此受限条件下极为罕见。团队公开记录了所有失败尝试、消融实验与设计取舍，包括OCR识别噪声如何将训练效率拉低至人工转录文本的30%，以及为何部分看似符合年代的文本因“时间泄露”（temporal leakage）被剔除。所有模型权重、数据集与代码均以宽松许可证开源。尤为关键的是，Bart并非面向应用的产品，而是一个研究型工具，旨在探明大模型的认知边界：当剥离所有现代语境后，纯粹的模式识别究竟能涌现出什么？\n\n超越技术本身，Bart体现了一种深刻的哲学立场——呼应理查德·费曼的名言：“我不能创造的东西，我就不真正理解。”通过将模型的知识边界牢牢锚定在1931年之前，团队试图更深入地理解大模型如何内化时间、因果与创新。这支团队自筹807美元完成全部工作，在AI领域堪称微小投入；但正因其对领域知识的精准把握、数据工程的极致严谨，反而催生了远超算力规模的科学价值。正如他们所言：这仅仅是个开始——Bart是通往更大规模复古模型的第一步，后续计划已在推进GPT-3级别能力、但知识截止于1930年的模型。",
+        "en": "Unbounded Labs has launched Bart — a purpose-built large language model designed not for utility, but for inquiry. With 2.82 billion parameters, Bart was trained from scratch on 20.1 billion tokens of English text published before 1931. Unlike standard LLMs trained on vast, modern web corpora, Bart’s training data excludes all knowledge, events, technologies, and cultural references that emerged after the early 20th century. The team built it to test a foundational question in AI: can statistical language models generate historically plausible original ideas — like those of Einstein or Curie — without exposure to modern science or concepts?\n\nTo make Bart possible, Unbounded Labs curated and cleaned one of the largest vintage text collections ever assembled: Harvard’s Institutional Books corpus, reducing it from 242 billion to 23 billion usable tokens. They also created Vintage CORE — the first benchmark suite tailored for vintage LLMs — comprising 20 distinct tasks spanning historical reasoning, counterfactual inference, and temporal grounding. Because no existing evaluation framework applied, they built everything from scratch: training code, SFT datasets (416,000 graded Q&A pairs grounded in pre-1930s sources), and even post-training pipelines using only period-appropriate materials like 19th-century encyclopedias and etiquette manuals.\n\nThe project was run entirely on a single H100 GPU over five days, achieving 60% model flops utilization — unusually high for such a constrained setup. The team openly documented every failure, ablation, and design choice, including how OCR noise degraded training efficiency and why certain pre-1931 texts had to be excluded due to temporal leakage. All weights, datasets, and code are open-sourced under permissive licenses. Crucially, Bart is not positioned as a production tool — it’s a research artifact meant to probe the epistemic boundaries of LLMs: what can emerge from pattern recognition alone, when stripped of modern context?\n\nBeyond technical execution, Bart reflects a philosophical stance rooted in Richard Feynman’s dictum: *“What I cannot create, I do not understand.”* By building an LLM anchored in a fixed historical horizon, the team sought deeper insight into how language models internalize time, causality, and novelty. Their $807 self-funded effort — modest by AI standards — underscores how domain-specific curation and methodological rigor can yield outsized scientific value, even without massive compute. As they note, this is just the beginning: Bart is a stepping stone toward larger vintage models, including plans for GPT-3–scale capabilities frozen in 1930."
+      },
+      "background": {
+        "zh": "复古大模型（vintage LLM）指训练语料截止于某一固定历史时间点的语言模型，主要用于研究历史推理、规避现代评测污染或模拟反事实认知。这类模型需严格筛选语料以排除时代错置内容，并开发新型评测方法，因为标准基准普遍预设现代知识。近期如Talkie-1930（130亿参数，2026年4月发布）等项目，表明该方向正获得学界广泛关注。",
+        "en": "Vintage LLMs are language models trained on text up to a fixed historical cutoff date — typically to study historical reasoning, avoid modern benchmark contamination, or simulate counterfactual cognition. They require careful corpus curation to exclude anachronistic content, and novel evaluation methods since standard benchmarks assume modern knowledge. Recent efforts like Talkie-1930 (13B, April 2026) show growing academic interest in this subfield."
+      },
+      "discussion": {
+        "zh": "Reddit社区讨论深入探讨了时间锚定的有效性，部分用户质疑在缺乏现代参照系的情况下是否真能衡量‘原创性’，同时普遍盛赞该项目极致的透明度与教学级清晰的实践呈现。",
+        "en": "Reddit discussion features nuanced technical debate on temporal grounding validity, skepticism about whether ‘originality’ can be meaningfully measured without modern reference points, and praise for the project’s radical transparency and pedagogical clarity."
+      },
+      "sources": [
+        {
+          "url": "https://owainevans.github.io/talk-transcript.html",
+          "title": "Vintage Large Language Models"
+        },
+        {
+          "url": "https://www.marktechpost.com/2026/04/27/meet-talkie-1930-a-13b-open-weight-llm-trained-on-pre-1931-english-text-for-historical-reasoning-and-generalization-research/",
+          "title": "Meet Talkie-1930: A 13B Open-Weight LLM Trained on Pre-1931 English Text for Historical Reasoning and Generalization Research - MarkTechPost"
+        },
+        {
+          "url": "https://franklineh.com/news/PYXkjVMIppjV4T23OAml",
+          "title": "Talkie-1930: A Vintage 13B LLM Trained on Pre-1931 Text"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1vxcc1h",
+      "slug": "2026-08-25-06-ai-now-generates-3d-objects-as-programmable-spatial-software-8adfca39",
+      "path": "/article/2026-08-25-06-ai-now-generates-3d-objects-as-programmable-spatial-software-8adfca39",
+      "rank": 6,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/mhb_11",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1vxcc1h/r_using_ai_as_a_spatial_software_generator_to/",
+      "published_at": "2026-08-24T19:10:39+00:00",
+      "fetched_at": "2026-08-25T02:22:45.061473+00:00",
+      "tags": [
+        "3D Generation",
+        "LLMs",
+        "Spatial Programming",
+        "Procedural Graphics",
+        "AI for Graphics"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1vxcc1h.svg",
+      "title": {
+        "zh": "AI生成的3D物体首次成为可编程的空间软件",
+        "en": "AI now generates 3D objects as programmable spatial software"
+      },
+      "summary": {
+        "zh": "该论文提出全新范式：大语言模型生成的3D物体本质上是分层、可执行的“空间软件”，而非静态网格，天生支持关节运动、动画逻辑与环境自适应渲染。 它将3D生成从资产制作升级为软件创作，带来实时自适应能力、大幅简化开发流程，并为边缘AI、仿真系统及交互式XR应用开辟新路径。 物体以结构化代码形式生成，含分层部件定义与运行时策略（如移动端与桌面端差异化渲染）；当前在复杂有机形态上表现较弱，但优先保障可编程性与可组合性而非视觉保真度。",
+        "en": "The paper introduces a new paradigm where LLMs generate 3D objects as hierarchical, executable 'spatial software'—not static meshes—with built-in articulation, animation logic, and environment-aware rendering policies. It shifts 3D generation from asset production to software authoring, enabling real-time adaptability, reduced pipeline friction, and new possibilities for edge-AI, simulation, and interactive XR applications. Objects are generated as structured code with hierarchical part definitions and runtime policies (e.g., mobile vs. desktop rendering); they currently underperform on complex organic shapes but prioritize programmability and composability over visual fidelity."
+      },
+      "body": {
+        "zh": "一项新研究范式彻底重构了AI生成的3D内容——它不再输出静态网格，而是生成一种名为“空间软件”的可执行代码：这种代码在创建之初就内建了几何结构、关节逻辑、动画行为和环境感知能力。该成果由论文合著者在Reddit上发布，并通过官网nova3d.xyz提供实时演示：页面中的3D物体能自然弯曲、旋转、随设备性能自适应调整，无需手动绑定或后期处理。每个物体均由逻辑部件（如铰链、插槽、父子层级）构成，可实时响应硬件差异——同一模型在手机浏览器中精简渲染，在高端游戏引擎中则自动启用复杂物理与形变。\n\n这一方法与Luma、Spline、Kaedim等主流AI 3D生成工具截然不同。后者输出的是单一三角面片网格，本质是“数字雕塑”，需额外进行绑定、蒙皮、多级细节（LOD）管理和交互开发。而空间软件物体将这些能力原生集成。其底层是大型语言模型被引导去编写结构化、具备拓扑意识的空间程序，而非简单描述形状——使用领域专用抽象概念（如“可动骨架”“自适应渲染策略”）。这类似于面向对象编程向三维空间的延伸：类不仅定义数据与方法，更定义空间关系与物理可操作性。\n\n当然存在权衡：当前实现尚难媲美扩散模型在高度有机形态（如飘动发丝、褶皱布料）上的表现力。但作者认为这只是暂时差距——随着大模型在空间推理与多模态代码生成能力上的提升，这一短板将逐步消失。更深远的意义在于长期愿景：将3D创作本身视为“编程”，设计师通过编写或提示空间逻辑来构建世界，而非逐点雕刻顶点。这打通了生成式AI、实时图形与边缘计算，为AR/VR、工业仿真与产品设计提供轻量、自适应的资产体系。\n\nnova3d.xyz上的实时演示直观呈现了这一理念：旋转的机械臂会根据设备算力动态调整关节活动范围；模块化家具在缩放时自动切换LOD层级；人物面部表情随分辨率变化而保持拓扑完整。项目开源代码已托管至GitHub。若该范式被广泛采纳，Unity、Unreal等引擎或将不再以静态文件方式导入AI内容，而是直接加载具备内置API的可执行模块。",
+        "en": "A new research paradigm reimagines AI-generated 3D content—not as static meshes, but as *spatial software*: executable, hierarchical code that encodes geometry, articulation, animation logic, and environment-aware behavior from the moment of creation. The work, introduced by a co-author on Reddit and demonstrated live at nova3d.xyz, shows 3D objects that naturally bend, rotate, and adapt—no manual rigging or post-processing required. Each object is built from logical parts (e.g., hinges, sockets, parent-child hierarchies), enabling real-time responsiveness to hardware constraints: the same object renders simply on a mobile browser yet unlocks rich physics and deformation in a high-end game engine.\n\nThis approach diverges sharply from mainstream AI 3D generators like Luma, Spline, or Kaedim, which output monolithic triangle meshes—essentially inert digital sculptures. Those require separate steps for rigging, skinning, LOD management, and interactivity. In contrast, spatial software objects embed those capabilities natively. Under the hood, large language models are guided—not to describe shapes, but to write structured, topologically aware spatial programs using domain-specific abstractions (e.g., 'articulated armature', 'adaptive render policy'). The result resembles object-oriented programming extended into 3D space: classes define not just data and methods, but spatial relationships and physical affordances.\n\nThe trade-off is clear: current implementations lag in rendering highly organic, free-form surfaces (e.g., flowing hair, wrinkled fabric) compared to diffusion-based mesh generators. But the authors argue this is a temporary gap—one that will narrow as LLMs improve at spatial reasoning and multimodal code generation. What’s more compelling is the long-term vision: treating 3D authoring as *coding*, where designers write or prompt spatial logic instead of sculpting vertices. This bridges generative AI, real-time graphics, and edge deployment—enabling lightweight, adaptive assets for AR/VR, simulation, and industrial design.\n\nLive demos at nova3d.xyz illustrate the concept concretely: rotating robotic arms adjust joint limits based on device capability; modular furniture reconfigures its LOD tree when zoomed; a character’s facial expression changes resolution dynamically without breaking topology. A public GitHub repository supports further exploration. If successful, this could shift how engines like Unity and Unreal ingest AI content—not as static imports, but as executable modules with built-in APIs."
+      },
+      "background": {
+        "zh": "传统3D生成输出固定三角网格，需人工绑定与跨平台优化。空间编程是一种新兴范式，将物理或虚拟空间作为代码中的一等抽象，使程序可直接推理位置、拓扑与交互关系。近期arXiv:2503.15812提出的“对象-空间编程”（OSP）进一步将面向对象原则扩展至空间关系与拓扑约束。",
+        "en": "Traditional 3D generation produces fixed triangle meshes that require manual rigging and optimization for different platforms. Spatial programming is an emerging paradigm that treats physical or virtual space as a first-class abstraction in code—enabling programs to reason about location, topology, and interaction directly. Object-Spatial Programming (OSP), recently formalized in arXiv:2503.15812, extends object-oriented principles to include spatial relationships and topological constraints."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2503.15812",
+          "title": "[2503.15812] Object-Spatial Programming"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1vx11hz",
+      "slug": "2026-08-25-07-new-ccpl-framework-fixes-causal-misattribution-in-delayed-constrained-rl-c2773bb8",
+      "path": "/article/2026-08-25-07-new-ccpl-framework-fixes-causal-misattribution-in-delayed-constrained-rl-c2773bb8",
+      "rank": 7,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/No_Cauliflower7923",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1vx11hz/delaycorrected_bellman_operator_causal/",
+      "published_at": "2026-08-24T12:11:34+00:00",
+      "fetched_at": "2026-08-25T02:22:45.061634+00:00",
+      "tags": [
+        "reinforcement-learning",
+        "causal-inference",
+        "safe-rl",
+        "bellman-equation",
+        "delayed-rewards"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1vx11hz.svg",
+      "title": {
+        "zh": "CCPL框架解决延迟约束强化学习中的因果归因错误",
+        "en": "New CCPL framework fixes causal misattribution in delayed constrained RL"
+      },
+      "summary": {
+        "zh": "研究人员提出了CCPL框架，包含一种在未知随机延迟下仍具收缩性证明的延迟校正贝尔曼算子，以及一个基于结构因果模型干预标签进行动作级因果归因的干预性后果网络（ICN）。 这填补了安全强化学习的一项根本性空白：若无法在延迟条件下进行因果归因，智能体将因惩罚错误动作而习得不安全策略，给机器人、医疗和基础设施控制等实际部署带来风险。 延迟校正贝尔曼算子采用状态相关乘子λ(s)，在随机延迟下仍保持收缩性；干预性后果网络（ICN）需基于已知结构因果模型（SCM）生成的干预标签进行预训练，因此当前仅适用于SCM可获取的场景。",
+        "en": "Researchers introduced CCPL—a constrained RL framework featuring a delay-corrected Bellman operator with a contraction proof under unknown stochastic delay, and an Interventional Consequence Net (ICN) for causal action-level attribution using SCM-derived interventional labels. This addresses a fundamental gap in safe RL: without causal attribution under delay, agents learn unsafe policies by blaming wrong actions, risking real-world deployment failures in robotics, healthcare, and infrastructure control. The delay-corrected Bellman operator uses a state-conditioned multiplier λ(s) and maintains contraction under stochastic delay; the ICN requires pretraining on interventional labels from a known structural causal model (SCM), limiting current applicability to settings where the SCM is accessible."
+      },
+      "body": {
+        "zh": "在真实世界的机器人控制、自动驾驶或工业自动化中，安全关键约束（例如避免碰撞或保持温度上限）往往在不可预测的延迟后才显现。标准的约束强化学习（RL）假设违规行为会立即发生在责任动作之后，因此默认惩罚最近的动作。这导致了*因果归因错误*：惩罚一个无辜的动作——它只是恰好出现在违规观测之前，而非真正引发违规的动作。一种名为因果后果惩罚学习（CCPL）的新框架直接应对这一缺陷。\n\nCCPL提出两项核心创新。第一，它用*延迟校正贝尔曼算子*替代标准贝尔曼算子，该算子通过状态相关乘子λ(s)自适应调整有效折扣因子，而λ(s)由后果延迟的统计分布学习得到。尤为关键的是，作者证明：即使延迟分布未知且随机，该算子仍保持收缩映射性质，从而确保值迭代稳定、收敛有理论保障。第二，CCPL采用*干预性后果网络*（ICN），这是一种基于环境结构因果模型（SCM）生成的干预标签预训练的神经网络。与依赖时间邻近性的启发式方法不同，ICN估算每个动作对将来约束违规的*边际因果贡献*，实现精准、因果可信的惩罚分配。\n\n这项工作以理论严谨性见长：它不仅提供算法，更给出在现实延迟不确定性下的形式化收缩性证明。但作者也坦诚指出局限：当前ICN需访问真实SCM以生成预训练标签，因此尚无法直接应用于黑盒环境（即因果结构未知或不可建模的场景）。这使得CCPL特别适用于已知物理机制的仿真基准（如具身机器人模拟），或可由领域专家合理指定SCM的实际系统。\n\n除技术新颖性外，CCPL弥合了两个长期分离的研究社区：关注鲁棒约束处理的安全RL实践者，以及聚焦干预下反事实推理的因果推断研究者。其对延迟引发混淆问题的显式建模，为构建更安全、更可解释的策略开辟了新路径——不仅限于仿真，更面向那些延迟后果是常态而非例外的真实系统。",
+        "en": "In real-world robotic control, autonomous driving, or industrial automation, safety-critical constraints—like avoiding collisions or staying within thermal limits—often manifest only after unpredictable delays. Standard constrained reinforcement learning (RL) assumes violations happen immediately after the responsible action, so it penalizes the most recent action by default. This leads to *causal misattribution*: punishing an innocent action that merely happened to precede the observed violation. A new framework called Causal Consequence-Penalized Learning (CCPL) directly tackles this flaw.\n\nCCPL introduces two core innovations. First, it replaces the standard Bellman operator with a *delay-corrected Bellman operator*, which adapts its effective discount factor using a state-dependent multiplier λ(s) learned from the statistical distribution of consequence delays. Crucially, the authors prove this operator remains a contraction mapping—even when the delay distribution is unknown and stochastic—ensuring stable value iteration and convergence guarantees. Second, CCPL uses an *Interventional Consequence Net* (ICN), a neural network pretrained on interventional labels generated from the environment’s structural causal model (SCM). Unlike temporal heuristics, the ICN estimates each action’s *marginal causal contribution* to a future constraint violation—enabling precise, causally grounded penalty assignment.\n\nThe work stands out for its theoretical rigor: it delivers not just an algorithm but a formal contraction proof under realistic delay uncertainty. Yet the authors are transparent about limitations. The ICN currently requires access to the true SCM to generate pretraining labels—meaning it cannot yet be applied out-of-the-box to black-box environments where the causal structure is unknown or unmodelable. This makes CCPL especially suitable for benchmark domains (e.g., simulated robotics with known physics) or settings where domain experts can specify plausible SCMs.\n\nBeyond technical novelty, CCPL bridges two historically separate communities: safe RL practitioners who need robust constraint handling, and causal inference researchers focused on counterfactual reasoning under interventions. Its explicit treatment of delay-induced confounding opens a path toward safer, more interpretable policies—not just in simulation, but in systems where delayed consequences are the norm, not the exception."
+      },
+      "background": {
+        "zh": "在强化学习中，贝尔曼算子形式化了策略或最优动作选择下价值函数的更新方式，其收缩性保证了值迭代等算法的收敛性。结构因果模型（SCM）以有向无环图和函数方程编码因果关系，支持严格的反事实与干预推理。约束强化学习在训练中加入安全性要求（例如‘电压不得超过阈值’），通常通过拉格朗日法或奖励塑形等方式实施。",
+        "en": "In reinforcement learning, the Bellman operator formalizes how value functions update under a policy or optimal action selection—and its contraction property guarantees convergence of algorithms like value iteration. Structural causal models (SCMs) encode cause-effect relationships as directed acyclic graphs with functional equations, enabling rigorous counterfactual and interventional reasoning. Constrained RL adds safety requirements (e.g., 'never exceed voltage limit') as hard or soft constraints during training, typically enforced via Lagrangian methods or reward shaping."
+      },
+      "discussion": {
+        "zh": "Reddit热门评论深入探讨了各项假设：质疑在缺乏完整SCM知识时因果效应是否可识别，辩论ICN能否仅从观测数据端到端学习，以及在安全关键系统中如何权衡可解释性与实际可部署性。",
+        "en": "Top Reddit comments engage deeply with assumptions—questioning identifiability of causal effects without full SCM knowledge, debating whether end-to-end learning of ICN from observational data is feasible, and exploring trade-offs between interpretability and practical deployability in safety-critical systems."
+      },
+      "sources": [
+        {
+          "url": "https://pypi.org/project/ccpl-rl/",
+          "title": "Causal Consequence -Penalized Learning for delayed constrained..."
+        },
+        {
+          "url": "https://web.stanford.edu/class/cme241/lecture_slides/BellmanOperators.pdf",
+          "title": "Understanding (Exact) Dynamic Programming through Bellman ..."
+        },
+        {
+          "url": "https://ai.stackexchange.com/questions/11057/what-is-the-bellman-operator-in-reinforcement-learning",
+          "title": "terminology - What is the Bellman operator in reinforcement learning?"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49426564",
+      "slug": "2026-08-25-08-apple-keeps-hide-my-email-addresses-on-icloud-com-for-better-inbox-delivery-9ff02ac9",
+      "path": "/article/2026-08-25-08-apple-keeps-hide-my-email-addresses-on-icloud-com-for-better-inbox-delivery-9ff02ac9",
+      "rank": 8,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "K7PJP",
+      "url": "https://developer.apple.com/news/?id=1ptvdtcm",
+      "published_at": "2026-08-24T22:13:40+00:00",
+      "fetched_at": "2026-08-25T02:22:44.911515+00:00",
+      "tags": [
+        "privacy",
+        "email-infrastructure",
+        "apple",
+        "security",
+        "product-design"
+      ],
+      "image_path": "media/hackernews-story-49426564.jpg",
+      "title": {
+        "zh": "苹果坚持用icloud.com域名承载隐藏邮箱地址",
+        "en": "Apple keeps Hide My Email addresses on icloud.com for better inbox delivery"
+      },
+      "summary": {
+        "zh": "苹果确认，iCloud+「隐藏邮箱」地址将继续使用 icloud.com 主域名，而非独立子域名或外部域名，以提升邮件送达率并抵御自动化识别。 该决定大幅提升了受隐私保护邮件的收件箱抵达率，并树立了行业罕见的先例：利用域名级信誉，使匿名中继邮箱在大规模使用中真正可靠。 该选择以功能性隐私为先，让隐藏邮箱地址与数十亿现有 iCloud 用户邮箱共享同一域名信誉，既规避反欺诈系统的指纹识别，也放弃域名灵活性。",
+        "en": "Apple confirmed that iCloud+ Hide My Email addresses will remain on the icloud.com domain — not a separate subdomain or external domain — to improve email deliverability and resist automated detection. This decision significantly improves inbox placement for privacy-protected emails and sets a rare industry precedent where domain-level reputation is leveraged to make anonymous relays functionally reliable at scale. The choice prioritizes functional privacy over domain flexibility, aligning Hide My Email addresses with billions of existing iCloud user addresses to share domain reputation and evade fingerprinting by fraud detection systems."
+      },
+      "body": {
+        "zh": "苹果已确认，iCloud+ 的「隐藏邮箱」功能将继续使用 `@icloud.com` 域名，而非独立子域名（如 `@hide.icloud.com`）或第三方域名。这一决定发布于苹果开发者新闻页面，其背后是电子邮件基础设施的实际约束：Gmail、Outlook 等主流邮箱服务商越来越依赖域名级别的发信信誉来识别垃圾邮件并优先投递可信邮件。将隐藏邮箱地址与普通 iCloud 用户邮箱统一部署在同一个 `icloud.com` 域名下，可让这些中继邮件直接共享该域名长期积累的高信誉值，从而显著提升收件箱抵达率，大幅减少被误判为垃圾邮件的情况。\n\n这并非权宜之计，而是一项经过权衡的隐私工程决策。若采用专属域名或子域名，隐藏邮箱地址极易被自动化系统识别：注册风控工具、反欺诈平台，甚至简单的正则匹配算法，都能迅速将其标记为临时邮箱或中继地址。正如一位评论者指出，Fastmail 是少数几家采取相同策略的厂商之一——将私有别名直接嵌入主域名（`@fastmail.com`）。这种做法的稀缺性恰恰说明，在匿名性、可用性与收件箱抵达率之间取得平衡，技术难度极高。\n\n也有用户担忧厂商锁定问题：由于地址绑定 `icloud.com`，无法导出或在苹果生态外复用。但苹果的选择体现了对“功能性隐私”的重视——即隐私必须在现实中真正起效，而非仅停留在理论层面。一个被电商结账页拒绝、或被静默过滤进垃圾箱的隐藏邮箱，完全丧失了存在意义。送达率不是附加效果，而是该功能得以实用的根本前提。\n\n这一决定也折射出苹果整体平台策略的特点：以基础设施控制力支撑隐私功能落地。不同于去中心化方案或开放协议，苹果凭借自身规模与域名权威，直接解决现实中的邮件难题——从防指纹追踪到发信信誉管理——无需用户理解 SPF、DKIM 或 DMARC 等技术细节。对数百万依赖隐藏邮箱管理订阅、登录和敏感注册的用户而言，这项看似低调的底层选择，正默默守护着日常使用的可靠性。",
+        "en": "Apple has confirmed that iCloud+ Hide My Email addresses will continue to use the `@icloud.com` domain — not a dedicated subdomain like `@hide.icloud.com` or a third-party domain. This decision, announced via Apple’s developer news site, is rooted in email infrastructure realities: major mailbox providers (like Gmail and Outlook) increasingly rely on domain-level reputation signals to filter spam and prioritize legitimate messages. By blending Hide My Email addresses with regular iCloud user addresses on the same domain, Apple ensures these relayed emails inherit the domain’s strong sender reputation — dramatically improving deliverability and reducing false positives in spam filters.\n\nThis isn’t just about convenience — it’s a deliberate privacy engineering trade-off. Using a distinct domain or subdomain would make Hide My Email addresses easily identifiable by automated systems: bulk sign-up detectors, fraud prevention tools, and even simple pattern-matching algorithms could flag them as disposable or relayed. As one commenter noted, Fastmail is among the few other providers taking the same approach — embedding private aliases directly into its primary domain (`@fastmail.com`). That rarity underscores how technically difficult it is to balance anonymity, usability, and inbox placement.\n\nCritics have raised concerns about vendor lock-in: because the addresses are tied to `icloud.com`, users can’t export or reuse them outside Apple’s ecosystem. Yet Apple’s choice reflects a prioritization of functional privacy — meaning privacy that *works in practice*, not just in theory. A hidden email address blocked by a retailer’s checkout form or silently filtered into spam defeats its purpose. Deliverability isn’t a side effect; it’s foundational to the feature’s utility.\n\nThe decision also highlights Apple’s broader platform strategy: tightly integrating privacy features with infrastructure control. Unlike decentralized alternatives or open protocols, Apple leverages its scale and domain authority to solve real-world email problems — from anti-fingerprinting to reputation management — without requiring users to understand SPF, DKIM, or DMARC. For millions relying on Hide My Email to manage subscriptions, logins, and sensitive sign-ups, this quiet infrastructure choice quietly preserves the feature’s daily usefulness."
+      },
+      "background": {
+        "zh": "「隐藏邮箱」是 iCloud+ 的一项功能，允许用户生成唯一随机邮箱地址，将收到的邮件自动转发至真实收件箱，从而避免个人邮箱暴露。它依赖邮件中继架构，且必须避免被收件方邮件服务器标记为垃圾邮件或临时邮箱。域名信誉由长期稳定的发信量和低投诉率累积而成，是影响邮件能否成功抵达收件箱的关键因素。",
+        "en": "Hide My Email is an iCloud+ feature that lets users generate unique, random email addresses to forward messages to their real inbox — protecting their personal address from exposure. It relies on email forwarding infrastructure and must avoid being flagged as spam or disposable by recipient mail servers. Domain reputation, built through consistent sending volume and low complaint rates, is a key factor in email deliverability."
+      },
+      "discussion": {
+        "zh": "多数评论者支持该决定，援引送达率提升及 Fastmail 的类似实践；部分人虽承认存在厂商锁定问题，但仍认为这是保障实效性的必要妥协；另有用户表示想了解这一域名选择背后的技术原理。",
+        "en": "Commenters largely support the decision, citing improved deliverability and Fastmail’s similar approach; some acknowledge vendor lock-in but accept it as necessary for efficacy, while others express curiosity about the technical rationale behind the domain choice."
+      },
+      "sources": [
+        {
+          "url": "https://support.apple.com/guide/icloud/set-up-hide-my-email-mm9d9012c9e8/icloud",
+          "title": "Set up and use Hide My Email in iCloud+ on all your devices - Apple Support"
+        },
+        {
+          "url": "https://www.zoho.com/campaigns/email-deliverability.html",
+          "title": "Email Deliverability : Reach the Inbox | Zoho Campaigns"
+        },
+        {
+          "url": "https://tempmaildetector.com/",
+          "title": "Email Validation API - Temp Mail Detector"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49426466",
+      "slug": "2026-08-25-09-bartosz-ciechanowski-releases-moon-an-interactive-lunar-science-essay-1c4b2b9e",
+      "path": "/article/2026-08-25-09-bartosz-ciechanowski-releases-moon-an-interactive-lunar-science-essay-1c4b2b9e",
+      "rank": 9,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "simonebrunozzi",
+      "url": "https://ciechanow.ski/moon/",
+      "published_at": "2026-08-24T22:06:02+00:00",
+      "fetched_at": "2026-08-25T02:22:44.911604+00:00",
+      "tags": [
+        "interactive-web",
+        "science-communication",
+        "web-development",
+        "AI-assisted-development",
+        "technical-writing"
+      ],
+      "image_path": "media/hackernews-story-49426466.png",
+      "title": {
+        "zh": "巴托什·恰汉诺夫斯基发布交互式月球科学长文《月球》",
+        "en": "Bartosz Ciechanowski releases Moon: an interactive lunar science essay"
+      },
+      "summary": {
+        "zh": "巴托什·恰汉诺夫斯基发布了开放访问的交互式网络长文《月球（2024）》，通过实时物理模拟、定制化可视化与直观界面控件系统讲解月球科学，全部代码自主编写、零外部依赖部署。 它重新定义了在线科学教育的标杆，证明复杂技术主题可通过精心设计的交互（而非游戏化）变得易懂且引人入胜，并为作者主导、AI增强的网页出版树立了新标准。 全文纯客户端运行，不依赖第三方库或分析脚本，图形渲染基于手写WebGL与Canvas；作者仅将AI用于代码原型与文本初稿，最终内容完全由人工创作与审核。",
+        "en": "Bartosz Ciechanowski released 'Moon (2024)', an open-access, fully interactive web essay explaining lunar science through real-time physics simulations, custom visualizations, and intuitive UI controls—all built and deployed without external dependencies. It redefines expectations for online science education by proving that deeply technical topics can be made accessible and engaging through thoughtful interactivity—not gamification—and sets a new benchmark for author-driven, AI-augmented web publishing. The essay runs entirely client-side in modern browsers, uses no third-party libraries or analytics, and relies on hand-coded WebGL and Canvas rendering; Ciechanowski used AI tools only for prototyping code and drafting text—not for final content generation."
+      },
+      "body": {
+        "zh": "巴托什·恰汉诺夫斯基（Bartosz Ciechanowski）最新作品《月球（2024）》并非普通科普文章，而是一套原生运行于浏览器中的沉浸式科学体验。该作品托管于 ciechanow.ski/moon/，通过实时物理模拟、可拖拽的天体模型和分层可视化图表，深入浅出地阐释月球的起源、绕地轨道机制以及月相成因。读者不只是阅读‘潮汐锁定’或‘轨道共振’的概念——而是亲手调节滑块、旋转虚拟视角、实时观察引力场变化，在交互中真正理解其原理。每张图表都会响应操作，每个动画都承载教学意图。这不是单向接收信息，而是由网页本身引导的主动探索。\n\n恰汉诺夫斯基长期深耕技术叙事领域：他此前关于光学、相对论与行星运动的交互长文，早已重新定义了清晰性与互动性的行业标准。《月球》在此基础上更进一步，将叙事逻辑、数学表达与界面设计无缝融合。整页完全在客户端运行，无需登录、无追踪脚本，且在笔记本电脑与平板设备上均流畅可用。其设计摒弃浮夸装饰：所有UI元素皆服务于教学目的——标签仅在必要时出现，控制组件精简却精准，动效服务于理解而非炫技。\n\n《月球》尤为应时之处，在于它低调而务实的AI辅助开发实践——不是噱头，而是工作流的一部分。尽管全部文字撰写与交互设计均由作者独立完成，但他曾公开表示，在早期迭代中会借助大语言模型快速生成JavaScript代码片段、绘制SVG路径草稿，或润色解释性语句。这折射出一种趋势：AI正成为技术写作者的常规工具，如同代码检查器或版本控制系统——它不取代作者，而是加速打磨过程。\n\n教育工作者、开发者与科研人员反响热烈。有评论者指出，虚拟行星视角让月球天平动现象一目了然；也有读者深入探讨更本质的问题：为自学而模仿恰汉诺夫斯基的行文与交互风格是否合乎伦理？这类深度交互长文是否需要目录结构——还是线性滚动式阅读更能保障专注力？这些讨论并非吹毛求疵，而是标志着一个新兴内容范式正在走向成熟：形式、功能与哲学思考，如今被同等严肃地审视。",
+        "en": "Bartosz Ciechanowski’s latest work, *Moon (2024)*, is not just another explainer—it’s a meticulously crafted, browser-native science experience. Hosted at ciechanow.ski/moon/, the essay uses real-time physics simulations, draggable celestial bodies, and layered visual explanations to demystify how the Moon formed, orbits Earth, and displays its phases. Readers don’t just read about tidal locking or orbital resonance—they *feel* them by adjusting sliders, rotating virtual viewpoints, and watching gravitational forces update live. Every diagram responds; every animation teaches. This isn’t passive consumption—it’s guided discovery built into the web itself.\n\nCiechanowski has long been a pioneer in technical storytelling—his earlier essays on optics, relativity, and planetary motion set new standards for clarity and interactivity. *Moon* extends that legacy with even tighter integration of narrative, math, and interface. The page loads entirely client-side, requires no sign-in or tracking, and runs smoothly on laptops and tablets alike. Its design avoids decorative flourishes: every UI element serves pedagogy—labels appear only when relevant, controls are minimal but precise, and transitions are purposeful, not performative.\n\nWhat makes *Moon* especially timely is its quiet embrace of AI-assisted development—not as a gimmick, but as a pragmatic tool. While Ciechanowski writes all prose and designs all interactions himself, he’s spoken openly about using LLMs to prototype JavaScript snippets, generate placeholder SVG paths, or draft explanatory phrasing during early iteration. This reflects a broader shift: AI is becoming part of the technical writer’s toolkit, like linters or version control—not replacing authorship, but accelerating refinement.\n\nThe response from educators, developers, and scientists has been enthusiastic. Commenters praise how the virtual planet view clarifies lunar libration, while others reflect on deeper questions: Is imitating Ciechanowski’s signature style for personal learning ethically sound? Should such essays include a table of contents—or does linear, scroll-driven progression better serve deep focus? These aren’t nitpicks; they’re signs of a maturing genre where form, function, and philosophy are now debated with equal rigor."
+      },
+      "background": {
+        "zh": "巴托什·恰汉诺夫斯基是波兰工程师、教育者与交互媒体设计师，以自主发布的技术长文著称——这些作品融合严谨科学、优雅视觉与定制化网页交互。他此前的《光学》《相对论》《轨道》等作品，深刻影响了一代科学传播者与网页开发者，推动业界寻求静态PDF或纯视频之外的新型知识载体。",
+        "en": "Bartosz Ciechanowski is a Polish engineer, educator, and interactive media designer known for self-published technical essays that combine rigorous science, elegant visuals, and bespoke web interactivity. His prior works—including 'Optics', 'Relativity', and 'Orbits'—have influenced a generation of science communicators and web developers seeking alternatives to static PDFs or video-only explanations."
+      },
+      "discussion": {
+        "zh": "读者就‘为自学模仿作者风格是否越界’展开伦理讨论，质疑如‘未设目录’等编辑选择，并盛赞该作品推动‘深度交互+AI辅助’的网页开发模式成为科学教育新范式。",
+        "en": "Readers debated ethical boundaries of stylistic imitation for learning, questioned editorial choices like the absence of a table of contents, and praised the essay’s role in normalizing deeply interactive, AI-assisted web development as a pedagogical standard."
+      },
+      "sources": [
+        {
+          "url": "https://ciechanow.ski/moon/",
+          "title": "Moon – Bartosz Ciechanowski"
+        },
+        {
+          "url": "https://flowingdata.com/2025/01/10/phases-of-the-moon-visually-explained/",
+          "title": "Phases of the Moon, visually explained – FlowingData"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49422784",
+      "slug": "2026-08-25-10-san-francisco-recreated-as-a-playable-3d-browser-game-using-apple-maps-data-b493e634",
+      "path": "/article/2026-08-25-10-san-francisco-recreated-as-a-playable-3d-browser-game-using-apple-maps-data-b493e634",
+      "rank": 10,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "centrosphere",
+      "url": "https://sf.thijs.gg/",
+      "published_at": "2026-08-24T17:05:38+00:00",
+      "fetched_at": "2026-08-25T02:22:44.911629+00:00",
+      "tags": [
+        "webgl",
+        "3d-mapping",
+        "apple-maps",
+        "urban-simulation",
+        "reverse-engineering"
+      ],
+      "image_path": "media/hackernews-story-49422784.webp",
+      "title": {
+        "zh": "旧金山全城变成可游玩的3D网页游戏",
+        "en": "San Francisco recreated as a playable 3D browser game using Apple Maps data"
+      },
+      "summary": {
+        "zh": "一个基于浏览器的交互式旧金山3D城市模拟已在 sf.thijs.gg 上线，使用逆向工程获取的苹果地图 Flyover 数据，并通过 WebGL 实现实时渲染。 它展示了如何在符合伦理的前提下，将专有地图数据重新用于开放、创意和社区驱动的城市模拟，打通测绘、游戏与公民参与之间的隔阂，且无需原生应用或中心化平台。 项目调用苹果地图的 HEIF 编码纹理瓦片与经身份验证 URL 提供的3D几何数据；全程纯前端运行，无后端依赖；目前暂无街道名称、兴趣点（POI）元数据或动态对象，但已支持载具物理引擎与金币收集等轻度游戏化机制。",
+        "en": "A fully browser-based, interactive 3D recreation of San Francisco has been released at sf.thijs.gg, built using reverse-engineered Apple Maps Flyover data and rendered in real time with WebGL. It demonstrates how proprietary map data can be ethically repurposed for open, creative, and community-driven urban simulations—bridging cartography, gaming, and civic engagement without requiring native apps or centralized platforms. The project uses Apple Maps’ HEIF-encoded texture tiles and 3D geometry served via authenticated URLs; it runs entirely client-side with no backend, and currently lacks street labels, POI metadata, or dynamic objects—but supports vehicle physics and coin collection as light gamification."
+      },
+      "body": {
+        "zh": "不用坐飞机，也不用乘渡轮——只需打开浏览器，你就能‘走进’旧金山。一个名为 sf.thijs.gg 的新开放项目，利用逆向工程获取的苹果地图（Apple Maps）Flyover 数据，在网页中实时渲染出整座城市的三维模型。用户可用键盘和鼠标自由移动：开车穿行街道、步行探索小巷、俯瞰山丘，甚至收集漂浮的金币。体验令人恍如身临其境——尤其对老居民而言——因为建筑轮廓、地形高程、道路网络和表面纹理都高度还原，全部源自苹果高质量的卫星与3D地图瓦片。\n\n这并非静态模型或预渲染动画。它完全基于 WebGL 和原生 JavaScript 构建，纯客户端运行，无需插件或安装。项目沿用了 retroplasma 团队开创的技术路径：该团队早在2019年就成功破解了苹果加密的 Flyover 瓦片传输协议。与早期需本地工具或桌面应用的实验不同，本项目按需流式加载几何体与纹理——仅加载视野内内容——因此即使在中端笔记本上也响应迅速。\n\n技术雄心与情感共鸣并存。一位在旧金山生活近二十年的评论者称，漫步于自己儿时的后院和常去的网球场时‘情绪涌动’‘感觉怪异又真实’——印证了该模拟对真实地理空间的高度还原。其他人则提出实用改进：比如开关显示街名或地标名称、输入地址直接传送、或融合谷歌街景图像以增强细节。还有人畅想更宏大的用途：构建大型多人在线世界（MMO）、遥控车竞速赛道，甚至为《GTA》类引擎开发城市建模流水线——用图像到图像模型从低分辨率街景中重建消防栓、路灯、交通灯和树木。\n\n尤为难得的是它的易用性：无需安装App、不依赖VR设备、不用注册账号——只要一台现代浏览器，即可开启探索。虽然当前尚无语义标注（如‘金门大桥’字样）或动态元素（如行驶车辆、天气变化），但其底层架构稳健且易于扩展。正如一位开发者所言，它不只是个演示——而是城市级实时3D网页地图未来形态的一个可行原型：开放、交互、且充满个人温度。",
+        "en": "Step into San Francisco—not through a flight or a ferry, but directly in your browser. A new open project, accessible at sf.thijs.gg, renders the entire city in real-time 3D using reverse-engineered Apple Maps Flyover data. Users navigate with keyboard and mouse like in a classic video game: drive cars, walk streets, fly over hills, and even collect floating coins. The experience feels uncannily familiar—especially to longtime residents—thanks to accurate building footprints, terrain elevation, road networks, and textured surfaces pulled from Apple’s high-fidelity satellite and 3D map tiles.\n\nThis isn’t a static model or a pre-rendered animation. Built entirely with WebGL and vanilla JavaScript, it runs client-side without plugins or downloads. It leverages techniques pioneered by the retroplasma project, which first cracked Apple’s encrypted Flyover tile delivery system in 2019. Unlike earlier experiments that required local tooling or desktop apps, this version streams geometry and textures on-demand—loading only what’s visible—making it surprisingly responsive even on mid-tier laptops.\n\nThe technical ambition is matched by emotional resonance. One commenter who lived in SF for two decades described walking through their old backyard and tennis courts as ‘emotional’ and ‘weird as hell’—a testament to how precisely the simulation mirrors lived geography. Others imagine practical extensions: toggling street names or business labels, teleporting to addresses, or integrating Street View imagery for richer detail. Still more dream bigger—proposing live MMOs, RC car racing circuits, or even GTA-style modding pipelines that reconstruct fire hydrants, traffic lights, and trees from low-res source imagery.\n\nWhat makes this especially notable is its accessibility. No app install, no VR headset, no sign-up—just a modern browser and curiosity. While it currently lacks semantic labels (e.g., ‘Golden Gate Bridge’) or dynamic elements (e.g., moving vehicles or weather), its foundation is robust and extensible. As one developer noted, it’s not just a demo—it’s a working prototype of what urban-scale, real-time 3D web mapping could become: open, interactive, and deeply personal."
+      },
+      "background": {
+        "zh": "苹果地图 Flyover 是苹果公司2012年推出的专有3D卫星视图模式，为部分城市提供逼真的地形与建筑模型。以 retroplasma 项目为代表的逆向工程工作，长期致力于解析其底层瓦片结构与认证机制，以便第三方合法调用。WebGL 是一种基于 OpenGL ES 的浏览器图形API，自2011年起已被所有主流浏览器原生支持，可在无需插件的情况下实现硬件加速的3D渲染。",
+        "en": "Apple Maps Flyover is a proprietary 3D satellite view mode introduced in 2012, offering photorealistic terrain and building models for select cities. Reverse-engineering efforts—like the retroplasma project—have long sought to access its underlying tile structure and authentication mechanisms to enable third-party use. WebGL, a browser API based on OpenGL ES, enables hardware-accelerated 3D graphics without plugins and is supported in all major browsers since 2011."
+      },
+      "discussion": {
+        "zh": "评论者普遍流露出对城市景观的强烈情感联结，同时就数据来源、与 retroplasma 项目的兼容性等技术问题展开讨论，并提出了地址传送、街名标注、以及结合图像生成模型丰富资产等改进建议。",
+        "en": "Commenters expressed strong emotional connections to the cityscape, asked technical questions about data sourcing and retroplasma compatibility, and proposed enhancements like address teleportation, street labeling, and integration with image-to-image models for richer asset generation."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/retroplasma/flyover-reverse-engineering",
+          "title": "GitHub - retroplasma/flyover-reverse-engineering: Reversing Apple's 3D satellite mode · GitHub"
+        },
+        {
+          "url": "https://www.khronos.org/webgl/",
+          "title": "WebGL - Low-Level 3 D Graphics API Based on OpenGL ES"
+        },
+        {
+          "url": "https://github.com/retroplasma/flyover-reverse-engineering/blob/master/README.md",
+          "title": "flyover-reverse-engineering/README.md at master · retroplasma/flyover-reverse-engineering"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49419237",
+      "slug": "2026-08-25-11-eu-regulatory-fragmentation-burdens-makers-and-micro-entrepreneurs-e166f261",
+      "path": "/article/2026-08-25-11-eu-regulatory-fragmentation-burdens-makers-and-micro-entrepreneurs-e166f261",
+      "rank": 11,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "l-one-lone",
+      "url": "https://lectronz.com/u/lectronz/articles/how-europe-is-killing-makers-and-micro-entrepreneurs",
+      "published_at": "2026-08-24T13:05:25+00:00",
+      "fetched_at": "2026-08-25T02:22:44.911655+00:00",
+      "tags": [
+        "EU-regulation",
+        "micro-entrepreneurship",
+        "maker-movement",
+        "compliance-burden",
+        "digital-policy"
+      ],
+      "image_path": "media/hackernews-story-49419237.jpg",
+      "title": {
+        "zh": "欧盟监管碎片化加重创客与小微创业者负担",
+        "en": "EU regulatory fragmentation burdens makers and micro-entrepreneurs"
+      },
+      "summary": {
+        "zh": "一篇引发广泛讨论的文章指出，欧盟监管在执行层面高度碎片化——尤其在《欧洲无障碍法案》及相关数字与产品规则下——尽管已有针对雇员少于10人、年营业额低于200万欧元企业的豁免条款，小微创业者与创客仍承受不成比例的合规负担。 这至关重要，因为监管摩擦正威胁草根创新，抑制欧盟单一市场内的跨境小微电商活动，并可能进一步拉大能承担合规成本的大型企业与推动硬件、开源及教育技术发展的独立创作者之间的差距。 依据欧盟第2003/361/EC号建议，微型企业正式豁免于《欧洲无障碍法案》义务，但各成员国执法尺度差异巨大；欧盟委员会曾提议建立统一中央登记系统，却被成员国部长理事会否决，最终形成27套各自为政的国家合规体系。",
+        "en": "A widely discussed article critiques how fragmented EU regulatory implementation—especially under the European Accessibility Act and related digital/product rules—disproportionately burdens makers and micro-entrepreneurs despite existing exemptions for businesses with fewer than 10 employees and under €2 million in annual turnover. This matters because regulatory friction threatens grassroots innovation, discourages cross-border micro-commerce in the EU’s single market, and risks widening the gap between large corporations—who can absorb compliance costs—and independent creators who drive hardware, open-source, and educational technology. Micro-enterprises are formally exempt from EAA requirements under EU Recommendation 2003/361/EC, but enforcement varies widely across member states; the EU Commission proposed a centralized registry, which was rejected by national ministers, resulting in 27 separate national compliance systems."
+      },
+      "body": {
+        "zh": "一篇题为《欧洲如何扼杀创客与小微创业者》的尖锐文章指出，欧盟一系列数字与产品监管法规——例如《欧洲无障碍法案》（EAA）及即将实施的包装与电商新规——正对小型创作者产生意料之外的负面影响。这些法规本意在于保障消费者权益或推动可持续发展，但其实际执行方式却给缺乏法务团队、多语种员工或集中物流能力的个体及微型企业带来了不成比例的合规成本。\n\n问题核心不在于立法目标本身，而在于这27个成员国如何各自转化并落实欧盟指令。正如一位评论者所言：欧盟颁布一项指令后，各国再将其转化为本国法律，但解释口径、执法力度和行政流程各不相同。一名从柏林向里斯本销售手工电子产品的创客，可能需应对20多种略有差异的同一项规则——每种都要求单独注册、提供本地语言文件，甚至完成不同国家的合规评估或税务申报。\n\n批评者强调，豁免条款确实存在：根据欧盟第2003/361/EC号建议，雇员少于10人且年营业额低于200万欧元的微型企业，明确豁免多数EAA义务；使用通用（非品牌）包装也常被排除在新标签要求之外。然而现实中，不确定性依然普遍存在——并非条文本身模糊，而是执法权分散且标准不一。部分国家对所有在线卖家严格执行新规；另一些则依赖平台层面的合规机制，或事实上忽略微小经营者。\n\n这场讨论更折射出欧盟治理的深层张力：统一协调与地方自治之间的平衡、公民保护与创新激励之间的取舍、大企业合规能力与草根数字工匠现实之间的落差。有评论者指出，欧盟委员会原提议设立单一中央登记系统以简化申报流程，却被成员国部长理事会否决，最终演变为各国自建门户的碎片化体系。与此同时，与中国模式的对比凸显了另一种思路：并非放松监管，而是聚焦关键节点（如大型电商平台与物流枢纽）进行高效监管——借规模效应实现监督，而不将负担转嫁给每个个体卖家。\n\n对于硬件创客、教育工作者、开源硬件开发者及独立软件产品人而言，这些影响真实而紧迫。监管摩擦不仅抬高运营成本，更抑制跨境试错意愿、阻碍进入欧盟市场，并可能将创新活动推向海外。这场讨论并非主张废除监管，而是呼吁“相称性”：制定既能守护公共利益、又不把车库发明家当作跨国巨头来对待的规则。",
+        "en": "A provocative new article titled *How Europe is killing makers and micro-entrepreneurs* argues that well-intentioned EU digital and product regulations—such as those under the European Accessibility Act (EAA) and upcoming packaging and e-commerce rules—are having unintended consequences for small-scale creators. Rather than protecting consumers or leveling the playing field, the piece contends these laws impose disproportionate compliance costs on individuals and micro-businesses who lack legal departments, multilingual staff, or centralized logistics infrastructure.\n\nThe core issue isn’t the goals of the legislation—accessibility, sustainability, consumer safety—but how they’re implemented across 27 member states. As one commenter notes, the EU passes a directive, but national governments transpose it into law with varying interpretations, enforcement rigor, and administrative procedures. A maker selling handmade electronics from Berlin to Lisbon may face 20+ slightly different versions of the same rule—each requiring separate registrations, language-specific documentation, and local tax or conformity assessments.\n\nCritics point out that exemptions do exist: micro-enterprises (fewer than 10 employees and under €2 million annual turnover, per EU Recommendation 2003/361/EC) are explicitly exempt from many EAA requirements, and generic (non-branded) packaging often falls outside new labeling mandates. Yet in practice, uncertainty persists—not because the rules are unclear on paper, but because enforcement is decentralized and inconsistent. Some countries apply rules strictly to all online sellers; others defer to platform-level compliance or ignore micro-sellers altogether.\n\nThe debate also reveals deeper tensions in EU governance: between harmonization and subsidiarity, between protecting citizens and enabling innovation, and between large corporate compliance capacity and grassroots digital craftsmanship. As one commenter observes, the original EU proposal included a single central registry to simplify reporting—yet this was rejected by member states’ ministers, leading instead to a patchwork of national portals. Meanwhile, comparisons with China highlight alternative models: not lighter regulation, but smarter enforcement focused on choke points like major platforms and logistics hubs—where scale enables oversight without burdening every individual seller.\n\nFor makers, educators, open-hardware developers, and solo software product builders, the stakes are real. Regulatory friction doesn’t just raise costs—it discourages cross-border experimentation, deters entry into EU markets, and risks pushing innovation offshore. The conversation isn’t about deregulation, but about proportionality: designing rules that protect public interest without treating a garage tinkerer like a multinational conglomerate."
+      },
+      "background": {
+        "zh": "《欧洲无障碍法案》（EAA）于2019年以指令2019/882形式通过，为面向残障人士的部分产品与服务设定了强制性无障碍要求。该法案适用于在欧盟运营的私营部门提供方，但明确豁免微型企业。欧盟对中小企业的界定遵循第2003/361/EC号建议，将微型企业定义为雇员少于10人、且年营业额或资产负债表总额不超过200万欧元的企业。",
+        "en": "The European Accessibility Act (EAA), adopted in 2019 as Directive 2019/882, sets mandatory accessibility requirements for certain products and services used by people with disabilities. It applies to private-sector providers operating in the EU, but includes explicit exemptions for microenterprises. EU SME classification follows Recommendation 2003/361/EC, defining micro-enterprises as businesses with fewer than 10 employees and annual turnover or balance sheet total not exceeding €2 million."
+      },
+      "discussion": {
+        "zh": "评论者就执法现实展开辩论：有人介绍中国依托平台与物流枢纽等‘关键节点’的监管模式；有人澄清微型企业豁免条款，批评原文夸大了合规义务；多人强调真正症结在于监管碎片化——即各国对欧盟指令的转化与执行差异，而非欧盟法律本身。",
+        "en": "Commenters debate enforcement realities: some highlight China’s choke-point enforcement model; others clarify micro-enterprise exemptions and criticize the article for overstating obligations; several stress that regulatory fragmentation—not EU law itself—is the main problem, rooted in divergent national transposition and enforcement."
+      },
+      "sources": [
+        {
+          "url": "https://toolkit.bot/blog/eaa-2026-sme-exemption",
+          "title": "EAA 2026 SME Exemption : Does Your Business Need to... — toolkit.bot"
+        },
+        {
+          "url": "https://accessible.org/counts-as-microenterprise-under-eaa/",
+          "title": "What Counts as a Microenterprise Under the EAA? | Accessible.org"
+        },
+        {
+          "url": "https://krisrivenburgh.com/microenterprises-exempt-eaa-requirements/",
+          "title": "Are Microenterprises Exempt from EAA Requirements?"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49421536",
+      "slug": "2026-08-25-12-xmpp-turns-25-as-open-federated-messaging-protocol-930dddd1",
+      "path": "/article/2026-08-25-12-xmpp-turns-25-as-open-federated-messaging-protocol-930dddd1",
+      "rank": 12,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "inputmice",
+      "url": "https://gultsch.de/posts/25-years-of-digital-independence/",
+      "published_at": "2026-08-24T15:51:31+00:00",
+      "fetched_at": "2026-08-25T02:22:44.911698+00:00",
+      "tags": [
+        "XMPP",
+        "decentralization",
+        "federated-systems",
+        "privacy",
+        "real-time-communication"
+      ],
+      "image_path": "media/hackernews-story-49421536.svg",
+      "title": {
+        "zh": "XMPP迎来25周年：开放、去中心化的即时通信协议",
+        "en": "XMPP turns 25 as open federated messaging protocol"
+      },
+      "summary": {
+        "zh": "一篇纪念性文章庆祝XMPP问世25周年，回顾其作为开放、联邦化、去中心化实时通信协议的持久价值，并强调社区持续创新与真实场景应用。 XMPP为集中式平台提供了经过验证的标准替代方案，使个人与组织得以重掌通信基础设施控制权——这在监控加剧、厂商锁定加深、算法不透明性上升的当下尤为关键。 XMPP仍在多个生产环境中活跃使用，包括jmp.chat（短信/电话桥接）、Movim（联邦化社交网络）、Fluux（现代XMPP客户端）及AI智能体间通信系统；其架构通过XML命名空间支持任意扩展，且无需中心权威。",
+        "en": "A commemorative essay marks XMPP’s 25th anniversary, reflecting on its enduring role as an open, federated, and decentralized real-time communication protocol with active community innovation and real-world deployments. XMPP offers a proven, standards-based alternative to centralized platforms, empowering individuals and organizations to reclaim control over communication infrastructure — a critical capability amid growing concerns about surveillance, vendor lock-in, and algorithmic opacity. XMPP remains actively used in production environments including jmp.chat (SMS/telephony bridge), Movim (federated social web), Fluux (modern XMPP client), and agent-to-agent communication systems; its architecture supports arbitrary extensibility via XML namespaces and requires no central authority."
+      },
+      "body": {
+        "zh": "在诞生25年后，可扩展消息与存在协议（XMPP）——最初名为Jabber——并未成为技术史上的陈迹，而是持续为数字自主权提供坚实而低调的支撑。丹尼尔·古尔奇（Daniel Gultsch）撰写的纪念文章指出，XMPP自诞生起坚守的开放性、联邦化与去中心化设计原则，在当今被封闭平台和监控驱动商业模式主导的时代，反而愈发关键。\n\n与WhatsApp或iMessage等中心化服务不同，XMPP的运作方式类似电子邮件：任何人都能运行自己的服务器、自由选择客户端，并在无需依赖单一商业实体的前提下，跨独立域名互通。这种架构赋予用户真正的主权——对数据、身份和基础设施的完全掌控。尽管谷歌Talk和Facebook Chat等巨头在2010年代陆续弃用XMPP，使其淡出大众视野，但它从未消失，而是在最重视自主权的领域持续演进：活动家网络、隐私优先社群、自托管基础设施，甚至新兴AI智能体系统中都能见到它的身影。\n\n现实中，XMPP正以多种方式焕发活力。jmp.chat将短信与电话功能桥接到XMPP，帮助用户摆脱运营商锁定；Cheogram和Dino分别提供简洁可靠的手机与桌面客户端；Movim和Fluux则基于XMPP构建现代化网页社交界面；开发者pavo-etc更将XMPP用作树莓派集群中AI智能体间通信的轻量级标准层。与此同时，Prosody和ejabberd等成熟稳定的服务器软件，仍在全球数千个独立部署中稳定运行。\n\n文章也坦承挑战，尤其是生态碎片化问题。有评论者指出，尽管Matrix与XMPP目标高度重合，但前者吸引了大量资金与开发资源，客观上分流了本可用于强化XMPP生态的投入。然而，这并非失败叙事，而是一次提醒：开放协议的价值不在于市场占有率，而在于长期维护、互操作能力以及对隐私、选择等人类基本价值的坚守。庆祝25周年，XMPP并非等待被重新发现，而是诚邀更多人加入共建真正服务于人的通信基础设施。",
+        "en": "Twenty-five years after its inception, the Extensible Messaging and Presence Protocol (XMPP) — originally known as Jabber — stands not as a relic, but as a quietly resilient foundation for digital self-determination. A reflective essay by Daniel Gultsch marks this milestone by highlighting how XMPP’s core design principles — openness, federation, and decentralization — remain urgently relevant in an era dominated by walled-garden platforms and surveillance-driven business models.\n\nUnlike centralized services like WhatsApp or iMessage, XMPP operates like email: anyone can run their own server, choose their client, and communicate across independent domains without relying on a single corporate entity. This architecture enables true user sovereignty — control over data, identity, and infrastructure. Though XMPP faded from mainstream consumer awareness after tech giants like Google Talk and Facebook Chat dropped support in the 2010s, it never disappeared. Instead, it evolved in niches where autonomy matters most: activist networks, privacy-conscious communities, self-hosted infrastructures, and even emerging AI agent systems.\n\nToday, real-world deployments illustrate XMPP’s quiet vitality. jmp.chat bridges SMS and telephony into XMPP, letting users ditch carrier lock-in; Cheogram and Dino provide polished mobile and desktop clients; Movim and Fluux reimagine social interaction atop XMPP with modern web interfaces; and developers like pavo-etc use XMPP as a lightweight, standards-based layer for inter-agent communication on Raspberry Pi clusters. Meanwhile, mature, battle-tested servers like Prosody and ejabberd continue to power thousands of independent deployments worldwide.\n\nThe essay also acknowledges challenges — notably ecosystem fragmentation. As one commenter notes, Matrix’s emergence diverted significant funding and developer attention away from XMPP, despite overlapping goals. Yet rather than framing this as defeat, the reflection treats it as a reminder: open protocols thrive not through dominance, but through sustained stewardship, interoperability, and alignment with human values like privacy and choice. In celebrating 25 years, XMPP isn’t asking to be rediscovered — it’s inviting renewed participation in building infrastructure that serves people, not platforms."
+      },
+      "background": {
+        "zh": "XMPP是IETF制定的开放标准（RFC 6120/6121），用于基于XML的实时消息与在线状态传递。其联邦化设计类似电子邮件：不同服务器上的用户（如@example.com和@xmpp.org）可无缝互通。与专有协议不同，XMPP允许任何人架设服务器、选择客户端，且无需许可即可实现互操作。",
+        "en": "XMPP is an open IETF standard (RFC 6120/6121) for real-time, XML-based messaging and presence. Its federated design mirrors email: users on different servers (e.g., @example.com and @xmpp.org) can communicate seamlessly. Unlike proprietary protocols, XMPP allows anyone to host a server, choose a client, and interoperate without permission."
+      },
+      "discussion": {
+        "zh": "评论者普遍赞赏XMPP的韧性与灵活性，举例说明从Google Voice迁移到jmp.chat等真实案例，以及AI智能体协同等新用途；部分人惋惜Matrix另起炉灶导致资金与开发力量分散，也有人质疑XMPP在主流技术圈中的可见度是否已落后于IRC或Matrix。",
+        "en": "Commenters express strong enthusiasm for XMPP’s resilience and flexibility, citing real-world migrations (e.g., from Google Voice to jmp.chat) and novel uses (e.g., AI agent coordination). Some lament Matrix’s divergence as a missed opportunity for unified funding and development, while others question XMPP’s current visibility compared to IRC or Matrix in broader tech circles."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/XMPP",
+          "title": "XMPP - Wikipedia"
+        },
+        {
+          "url": "https://xmpp.org/about/technology-overview/",
+          "title": "An Overview of XMPP | XMPP - The universal messaging standard"
+        },
+        {
+          "url": "https://developer.ibm.com/tutorials/x-xmppintro/",
+          "title": "XMPP architecture, applications, and examples"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1vxfmms",
+      "slug": "2026-08-25-13-should-marl-architectures-share-hyperparameters-for-fair-comparison-a1ba4fda",
+      "path": "/article/2026-08-25-13-should-marl-architectures-share-hyperparameters-for-fair-comparison-a1ba4fda",
+      "rank": 13,
+      "score": 8.0,
+      "source": "reddit",
+      "author": "/u/ham_bam0",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1vxfmms/hyperparameters_fine_tuning_for_marl_comparative/",
+      "published_at": "2026-08-24T21:10:10+00:00",
+      "fetched_at": "2026-08-25T02:22:45.061404+00:00",
+      "tags": [
+        "MARL",
+        "hyperparameter-tuning",
+        "reinforcement-learning",
+        "model-comparison",
+        "adversarial-robustness"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1vxfmms.svg",
+      "title": {
+        "zh": "MARL架构对比时是否必须统一超参数",
+        "en": "Should MARL architectures share hyperparameters for fair comparison"
+      },
+      "summary": {
+        "zh": "一名MARL研究者质疑：在评估冻结策略的对抗鲁棒性时，是否必须对Independent PPO与Graph PPO等不同架构强制使用相同超参数以确保公平比较？并指出强制统一常导致模型无法收敛。 该问题直指MARL基准测试的可复现性与科学严谨性核心，深刻影响架构创新的公平评估方式——尤其在对抗鲁棒性等安全关键属性上，训练动态会直接影响测试阶段行为。 研究者使用基于PyTorch的向量化多机器人仿真器VMAS，并聚焦于冻结模型的对抗鲁棒性测试；在Independent PPO、HetGPPO等架构上均观察到统一超参数导致的非收敛现象，表明这是架构固有不兼容性，而非调参疏忽。",
+        "en": "A MARL researcher questions whether hyperparameters must be unified across architectures (e.g., Independent PPO vs. Graph PPO) for fair comparison—especially when evaluating adversarial robustness of frozen policies—and reports that forced unification often causes non-convergence. This question cuts to the heart of reproducibility and rigor in MARL benchmarking, influencing how architectural advances are fairly assessed—particularly for safety-critical properties like adversarial robustness where training dynamics directly affect test-time behavior. The researcher uses VMAS—a PyTorch-based vectorized multi-robot simulator—and focuses on frozen-model adversarial robustness testing; non-convergence under unified hyperparameters is observed across architectures including HetGPPO, suggesting structural incompatibility rather than tuning oversight."
+      },
+      "body": {
+        "zh": "一位研究者在VMAS多智能体仿真平台上训练多种MARL模型（如独立PPO与图结构PPO，后者参考Bettini等人提出的HetGPPO），提出了一个看似细微却影响深远的方法论问题：当比较不同MARL架构时，为确保评估公平，是否必须强制所有模型使用完全相同的超参数？\n\n这一疑问源于实际训练经验：针对每种架构（如Independent PPO或Graph PPO）单独调优学习率、熵系数、KL散度系数和SGD批量大小等超参数，通常能获得稳定收敛；但若强行统一这些超参数，部分模型却可能彻底无法收敛——尤其在异构机器人协同等复杂任务中。而该研究者的最终目标并非单纯提升干净环境下的任务性能，而是评估已冻结策略在测试阶段面对对抗扰动时的鲁棒性。\n\n这一区别至关重要。在单智能体强化学习中，“统一超参数”常被视为公平比较的基本前提；但在MARL中，智能体间的相互依赖、环境非平稳性、信用分配难题以及图结构信息流等因素显著放大了挑战。一套能让独立PPO稳定训练的超参数，很可能导致图PPO因梯度传播失稳而崩溃。正如Bettini等人在HetGPPO工作中所揭示的，不同架构差异不仅是工程实现选择，更反映了对智能体交互本质的不同建模假设。\n\n该问题折射出当前MARL实证研究中关于可复现性的深层张力。若对抗鲁棒性评估依赖于那些在统一超参数下勉强收敛甚至完全失败的模型，那么机械地坚持“参数一致”反而会以牺牲科学有效性为代价换取表面可比性。反之，若允许各架构自由调参，则可能将架构优势与调参投入混为一谈——尤其当鲁棒性是在冻结策略上离线评估时。这本质上是顶级机器学习会议持续争论的核心议题：基准测试应优先追求“实践中可达成的最佳性能”，还是“严格控制变量的实验等价性”？\n\n归根结底，这个问题远不止关乎PPO变体或VMAS任务。它关乎整个MARL领域如何定义“公平比较”的科学内涵——所谓公平，是指施加相同条件，还是赋予同等成功机会？",
+        "en": "A researcher training multi-agent reinforcement learning (MARL) models on the VMAS simulator has raised a subtle but consequential methodological question: when comparing different MARL architectures—such as Independent PPO and Graph-based PPO (e.g., HetGPPO)—is it scientifically sound to use architecture-specific optimal hyperparameters, or must all models be evaluated using identical hyperparameters to ensure fairness?\n\nThe question arises from practical experience: while tuning hyperparameters like learning rate, entropy coefficient, and batch size separately for each architecture often yields stable, convergent training, forcing them to share a single hyperparameter set sometimes causes catastrophic non-convergence—especially in complex, heterogeneous robot coordination tasks. Yet the researcher’s end goal isn’t just performance on clean tasks; it’s evaluating *adversarial robustness* of frozen, pre-trained policies under test-time perturbations.\n\nThis distinction matters deeply. In single-agent RL, hyperparameter unification is often treated as a baseline fairness requirement—but MARL introduces compounding challenges: agent interdependence, non-stationarity, credit assignment complexity, and graph-structured information flow. A hyperparameter that stabilizes Independent PPO (where agents learn in isolation) may destabilize Graph PPO (which shares gradients across a learned communication topology). As shown in Bettini et al.’s HetGPPO work, architectural differences aren’t just implementation details—they reflect fundamentally distinct assumptions about agent interaction.\n\nThe broader implication touches on reproducibility standards in empirical MARL research. If robustness evaluation depends on models that barely converge—or fail entirely—under shared hyperparameters, then strict unification may sacrifice validity for superficial comparability. Conversely, allowing per-architecture tuning risks conflating architectural merit with tuning effort, especially when robustness is measured post-training on frozen models. The tension reflects an ongoing debate in top ML venues: whether benchmarking should prioritize *achievable best practice* or *controlled experimental equivalence*—particularly when assessing properties like adversarial resilience that are sensitive to training dynamics.\n\nUltimately, this isn’t just about PPO variants or VMAS tasks. It’s about how the field defines rigor in comparative MARL evaluation—and whether fairness means equal conditions, or equal opportunity to succeed."
+      },
+      "background": {
+        "zh": "多智能体强化学习（MARL）旨在训练多个智能体在共享环境中协作或竞争。VMAS是一个高吞吐、可微分的多机器人仿真器，专为可扩展MARL基准测试设计，支持Gymnasium、BenchMARL等主流库。HetGPPO是Bettini等人于2023年提出的面向异构机器人团队的图结构PPO变体。MARL中的对抗鲁棒性指策略在推理阶段抵抗小幅度定向扰动的能力——与单智能体场景不同，MARL鲁棒性受智能体间依赖与环境非平稳性制约，更为复杂。",
+        "en": "Multi-agent reinforcement learning (MARL) trains multiple agents to cooperate or compete in shared environments. VMAS is a high-throughput, differentiable simulator designed for scalable MARL benchmarking, supporting libraries like Gymnasium and BenchMARL. HetGPPO is a graph-based PPO variant for heterogeneous robot teams introduced by Bettini et al. in 2023. Adversarial robustness in MARL measures how policies withstand small, targeted perturbations during inference—unlike single-agent settings, MARL robustness is complicated by inter-agent dependencies and non-stationarity."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://github.com/proroklab/VectorizedMultiAgentSimulator",
+          "title": "GitHub - proroklab/VectorizedMultiAgentSimulator: VMAS is a vectorized differentiable simulator designed for efficient Multi-Agent Reinforcement Learning benchmarking. It is comprised of a vectorized 2D physics engine written in PyTorch and a set of challenging multi-robot scenarios. Additional scenarios can be implemented through a simple and modular interface. · GitHub"
+        },
+        {
+          "url": "https://github.com/proroklab/HetGPPO",
+          "title": "GitHub - proroklab/ HetGPPO : Heterogeneous Multi-Robot..."
+        },
+        {
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2023/file/d6f8517fceeca1e2cd61721dff786c14-Paper-Conference.pdf",
+          "title": "Robust Multi - Agent Reinforcement Learning via"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49420873",
+      "slug": "2026-08-25-14-xiaomi-xring-o3-cpu-beats-apple-in-multi-core-benchmarks-but-not-real-world-use-437945ad",
+      "path": "/article/2026-08-25-14-xiaomi-xring-o3-cpu-beats-apple-in-multi-core-benchmarks-but-not-real-world-use-437945ad",
+      "rank": 14,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "tosh",
+      "url": "https://twitter.com/lemire/status/2091894299289874926",
+      "published_at": "2026-08-24T15:08:17+00:00",
+      "fetched_at": "2026-08-25T02:22:44.911555+00:00",
+      "tags": [
+        "ARM",
+        "mobile-chips",
+        "CPU-architecture",
+        "Xiaomi",
+        "benchmarking"
+      ],
+      "image_path": "media/hackernews-story-49420873.jpg",
+      "title": {
+        "zh": "小米Xring O3多核跑分超苹果，但实际手机体验受限",
+        "en": "Xiaomi Xring O3 CPU beats Apple in multi-core benchmarks but not real-world use"
+      },
+      "summary": {
+        "zh": "小米发布Xring O3芯片，采用基于ARM C1-Ultra等核心的10核全大核CPU设计，AnTuTu跑分超520万，Geekbench单核得分为3945。 这标志着小米已具备定义高端移动芯片的能力，正逐步降低对高通与联发科的依赖，也反映出行业正转向依托ARM高端可授权核心实现性能竞争的新路径。 Xring O3采用ARM现成的C1-Ultra核心（非小米自研），最高主频4.35 GHz，首发支持LPDDR6内存，且完全取消能效核心，因此实际持续性能高度依赖手机的散热与供电能力。",
+        "en": "Xiaomi launched the Xring O3 SoC, featuring a 10-core all-big-core CPU based on ARM's C1-Ultra, C1-Premium, and C1-Pro cores, scoring over 5.2 million on AnTuTu and 3,945 on Geekbench single-core. It signals Xiaomi’s growing capability to define high-end mobile silicon—reducing reliance on Qualcomm and MediaTek—and reflects a broader industry shift toward ARM’s premium licensable cores as a path to competitiveness. The Xring O3 uses ARM’s off-the-shelf C1-Ultra core (not custom-designed by Xiaomi), runs at up to 4.35 GHz, supports LPDDR6 memory, and omits efficiency cores entirely—making sustained performance highly dependent on thermal and power delivery in real devices."
+      },
+      "body": {
+        "zh": "小米正式发布全新Xring O3系统级芯片（SoC），宣称其为当前性能最强的智能手机处理器：AnTuTu跑分突破520万，Geekbench单核得分为3945分。该成绩介于苹果M5 iPad（3556分）与M5 Max（4300分）之间；多核得分为15221分，略低于M5 Max的29200分，但小幅超越标准版M5的15285分。这一亮眼表现源于其“全大核”CPU架构：包含2颗最高频率达4.35 GHz的ARM C1-Ultra核心、4颗3.68 GHz的C1-Premium核心，以及4颗3.15 GHz的C1-Pro核心，全部基于台积电3纳米工艺制造，并首次支持LPDDR6内存。\n\n但必须厘清关键事实：Xring O3并未采用小米自研CPU微架构。它使用的是ARM公司授权的C1-Ultra核心——与联发科天玑9500完全相同。这意味着小米的角色是系统集成与配置优化，而非底层核心设计。该芯片彻底取消能效核心（E-cores），以牺牲续航和温控余量为代价换取峰值性能。正如一位用户指出，天玑9500在实验室理想条件下Geekbench单核可超4000分，但在真实手机散热与功耗限制下，实际得分回落至约3300分。\n\n更深远的意义在于产业格局变化。作为全球第三大智能手机厂商，小米正迈入三星、苹果同等级的垂直整合阶段——即有能力主导高端移动SoC的定义与落地。尽管尚不具备苹果那样的全栈自研能力，但小米已在NPU、内存控制器、先进制程协同等环节积累自主技术，对高通与联发科构成实质性竞争压力。\n\n然而，单纯依赖跑分容易误导。有工程师提醒：许多服务器CPU在多核Geekbench中轻松碾压苹果芯片，却根本无法放进手机——因为功耗密度与散热极限会瞬间引发过热降频甚至关机。Xring O3的10全大核设计虽纸面惊艳，若缺乏持续高频稳定性、精细电压调控及可靠整机散热方案，这些分数就难以转化为日常使用的流畅感与续航表现。",
+        "en": "Xiaomi has unveiled its new Xring O3 system-on-chip, claiming it is the fastest smartphone processor to date—scoring over 5.2 million points on AnTuTu and achieving a Geekbench single-core score of 3,945. That figure sits between Apple’s M5 iPad (3,556) and M5 Max (4,300), while its multi-core result of 15,221 narrowly trails the M5 Max’s 29,200 but surpasses the standard M5’s 15,285. The chip’s headline-grabbing performance stems from an all-big-core CPU design: two ARM C1-Ultra cores at up to 4.35 GHz, four C1-Premium cores at 3.68 GHz, and four C1-Pro cores at 3.15 GHz—all fabricated on TSMC’s 3nm process and paired with first-in-industry LPDDR6 memory support.\n\nBut context matters. As community commentators quickly pointed out, the Xring O3 does not feature custom CPU cores designed by Xiaomi. Instead, it uses ARM’s licensable C1-Ultra core—the same one found in MediaTek’s Dimensity 9500. This means Xiaomi’s role was integration and configuration—not microarchitecture innovation. The chip also lacks efficiency cores entirely, trading battery life and thermal headroom for peak synthetic scores. In practice, as one user noted, the Dimensity 9500’s C1-Ultra implementation dropped from over 4,000 in controlled lab tests to around 3,300 under smartphone-level power and cooling constraints.\n\nThe broader implication isn’t about dethroning Apple, but reshaping the mobile chip hierarchy. Xiaomi—the world’s third-largest smartphone vendor—is now vertically integrating at the SoC level, joining Samsung and Apple as companies capable of shipping chips built around ARM’s highest-tier licensed cores. While it doesn’t yet rival Apple’s full-stack silicon control, Xiaomi’s move signals growing leverage against traditional suppliers like Qualcomm and MediaTek—especially as it gains scale, manufacturing access, and IP ownership in adjacent areas like NPUs and memory controllers.\n\nStill, raw benchmark numbers alone mislead. As one engineer observed, many server CPUs easily outperform Apple chips in multi-core Geekbench—but none are viable in phones due to power density and thermal throttling. The Xring O3’s 10-core all-big layout may deliver impressive numbers on paper, but without sustained clock stability, efficient voltage scaling, or robust thermal management in slim devices, those gains won’t translate to everyday responsiveness or longevity. For consumers, the real test will be how well the chip balances speed, battery life, and heat across real apps—not just synthetic suites."
+      },
+      "background": {
+        "zh": "ARM提供两类主要授权模式：一是‘Cortex’模式，客户直接采用预设计核心（如Cortex-X4）；二是‘架构授权’模式，苹果等公司可基于ARM指令集自行设计完全定制的核心。小米Xring O3属于前者，采用ARM最高端的可授权核心C1-Ultra，与联发科天玑9500的方案本质相同。",
+        "en": "ARM offers two main licensing models: the 'Cortex' model, where licensees use pre-designed cores like Cortex-X4; and the 'Architectural License', where companies like Apple design fully custom cores compliant with ARM’s instruction set. Xiaomi’s Xring O3 falls into the former category—it uses ARM’s highest-tier licensable core (C1-Ultra), similar to how MediaTek uses it in the Dimensity 9500."
+      },
+      "discussion": {
+        "zh": "社区评论普遍指出该芯片由ARM设计而非小米自研，并强调实验室跑分无法反映手机真实的散热与功耗限制；部分用户认为它将加剧对联发科与高通的竞争压力，也有观点强调每瓦性能才是真正的瓶颈。",
+        "en": "Commenters emphasized that the chip is ARM-designed—not Xiaomi-designed—and cautioned that lab benchmarks don’t reflect real-world thermal and power constraints in smartphones; some noted it poses competitive pressure on MediaTek and Qualcomm, while others stressed that per-watt efficiency remains the true bottleneck."
+      },
+      "sources": [
+        {
+          "url": "https://nokiapoweruser.com/xiaomi-xring-o3-chip-specs-benchmarks/",
+          "title": "Xiaomi XRING O3 Specs & Benchmarks: 3nm TSMC, 10-Core CPU & LPDDR6 Memory - NPowerUser"
+        },
+        {
+          "url": "https://www.techtimes.com/articles/325315/20260824/xiaomi-xring-o3-tops-5m-antutu-all-big-core-cpu-first-lpddr6-mobile-chip.htm",
+          "title": "Xiaomi Xring O3 Tops 5M AnTuTu With All-Big-Core CPU and First LPDDR6 Mobile Chip"
+        },
+        {
+          "url": "https://www.notebookcheck.net/Xiaomi-launches-XRing-O3-claims-it-is-the-fastest-smartphone-SoC-with-an-AnTuTu-score-of-over-5-million.1376668.0.html",
+          "title": "Xiaomi launches XRing O3, claims it is the fastest smartphone SoC with an AnTuTu score of over 5 million - Notebookcheck News"
+        },
+        {
+          "url": "https://www.androidauthority.com/custom-cpu-cores-vs-arm-cortex-3040885/",
+          "title": "Custom CPU cores versus Arm Cortex cores: Everything you need to know - Android Authority"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49421489",
+      "slug": "2026-08-25-15-shipyard-ipfs-team-winds-down-as-project-shifts-to-decentralized-maintenance-df1dcae4",
+      "path": "/article/2026-08-25-15-shipyard-ipfs-team-winds-down-as-project-shifts-to-decentralized-maintenance-df1dcae4",
+      "rank": 15,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "iand",
+      "url": "https://ipshipyard.com/blog/2026-the-end-of-ipfs-at-shipyard/",
+      "published_at": "2026-08-24T15:48:45+00:00",
+      "fetched_at": "2026-08-25T02:22:44.911723+00:00",
+      "tags": [
+        "IPFS",
+        "decentralized-web",
+        "p2p",
+        "open-source-maintenance",
+        "Iroh"
+      ],
+      "image_path": "media/hackernews-story-49421489.png",
+      "title": {
+        "zh": "Shipyard团队停止维护IPFS，项目转向去中心化资助模式",
+        "en": "Shipyard IPFS team winds down as project shifts to decentralized maintenance"
+      },
+      "summary": {
+        "zh": "Shipyard团队因资金终止于2026年中正式停止IPFS实现维护工作；IPFS项目整体仍在继续，由去中心化资助计划及Protocol Labs、Iroh等独立团队共同维护。 这标志着关键去中心化基础设施维系方式的结构性转变：从集中式团队托管转向碎片化、资助驱动的维护模式，由此引发关于P2P生态长期可靠性、互操作性与创新速度的紧迫问题。 Shipyard于2025年主导编写了UnixFS与Kademlia DHT两大IPFS基础规范；Iroh由前Protocol Labs工程师开发，正主动放弃与Kubo兼容，转向更轻量、原生支持BLAKE3的P2P协议栈。",
+        "en": "The Shipyard team has officially ended its IPFS implementation work after its funding was cancelled, effective mid-2026; the broader IPFS project continues under decentralized maintainer grants and other independent teams like Protocol Labs and Iroh. This signals a structural shift in how critical decentralized infrastructure is sustained — moving from centralized team stewardship to fragmented, grant-supported maintenance — raising urgent questions about long-term reliability, interoperability, and innovation velocity across the p2p ecosystem. Shipyard authored two foundational IPFS specifications in 2025 (UnixFS and Kademlia DHT); Iroh — built by ex-Protocol Labs engineers — is explicitly diverging from Kubo compatibility to pursue a leaner, BLAKE3-native p2p stack."
+      },
+      "body": {
+        "zh": "长期参与IPFS生态建设的Shipyard团队近日宣布，将逐步停止其IPFS相关实现工作。在其题为《2026：Shipyard终止IPFS维护》的博文中，团队坦言专项资助已被取消，因此将有序结束对`git-remote-ipld`、`go-ds-gcs`等核心仓库的支持，并停止新功能开发。值得肯定的是，该团队在2025年主导完成了两项关键规范：UnixFS文件系统格式规范（支撑MFS、内容固定与绝大多数IPFS数据）和IPFS Kademlia分布式哈希表规范（定义节点发现与内容路由机制），这两份文档如今已成为各IPFS实现互操作的事实标准。\n\n需要明确的是，这并非IPFS项目的终结。多位社区成员在评论中反复强调：IPFS本身仍在持续演进，由Protocol Labs（维护参考实现Kubo）、Iroh等独立团队共同推动。整个项目正转向“个体维护者资助”模式，降低对单一中心化团队的依赖。这一转变既源于现实的资金约束，也契合去中心化基础设施的根本理念——关键基础设施的可持续性不应绑定于某一家机构的预算或路线图。\n\n社区讨论展现出罕见的技术深度与建设性。评论者不仅澄清了误解、肯定了Shipyard的文档贡献，还尖锐指出IPNS在支持动态Web应用方面的长期缺陷，并推荐了Iroh等新兴替代方案——后者由前Protocol Labs工程师创建，采用BLAKE3哈希、轻量级RPC设计，专注高效大文件同步与端到端加密。另有开发者开源了`IPFS-boot`工具，让Web应用可在IPFS上部署并支持热更新，同时不破坏内容寻址完整性，反映出真实的应用层需求。\n\nShipyard的退出之所以重要，不仅在于一个团队的谢幕，更在于它折射出去中心化基础设施正在经历的成熟阵痛。与依赖企业赞助或基金会支持的传统开源项目不同，IPFS生态依靠资助计划、志愿协作与衍生创业项目共同维系。Shipyard的离开揭示了这种模式的脆弱性，却也印证了生态的韧性——新方案正从同一技术社群中自然生长出来。对用户和开发者而言，核心信息很明确：IPFS仍在继续，但它的未来取决于实现的多样性，而非对某个维护者的依赖。",
+        "en": "The Shipyard team — a long-standing contributor to the IPFS ecosystem — has announced it is winding down its IPFS implementation work after more than a decade of active development. In a candid blog post titled '2026: The End of IPFS at Shipyard', the team revealed that its dedicated funding was cancelled, prompting a planned sunset of its core IPFS-related repositories and infrastructure support. This includes projects like `git-remote-ipld`, `go-ds-gcs`, and foundational specifications they authored in 2025 — notably the UnixFS and Kademlia DHT specs, which now serve as canonical references for interoperability across IPFS implementations.\n\nImportantly, this is not the end of IPFS itself. As multiple commenters emphasized, IPFS remains actively maintained by other independent teams — most notably Protocol Labs (which stewards Kubo, the reference implementation), as well as newer entrants like Iroh. The broader IPFS project is transitioning toward a model of individual maintainer grants, reducing reliance on centralized teams like Shipyard. This shift reflects both fiscal realities and a deeper philosophical alignment with decentralization: infrastructure sustainability should not hinge on any single organization’s budget or roadmap.\n\nThe community response has been unusually thoughtful and technically grounded. Commenters clarified misconceptions, praised Shipyard’s documentation contributions, critiqued longstanding technical trade-offs (like IPNS’s limitations for dynamic web apps), and highlighted alternatives such as Iroh — a lightweight, BLAKE3-based p2p protocol built by former Protocol Labs engineers. One developer even launched `IPFS-boot`, a tool enabling updateable web apps on IPFS without breaking content addressing — pointing to real-world demand for better application-layer abstractions.\n\nWhat makes this moment significant isn’t just the departure of one team, but what it reveals about the maturation — and growing pains — of decentralized infrastructure. Unlike traditional open-source projects sustained by corporate backing or foundations, IPFS relies on a patchwork of grants, volunteer effort, and spin-off ventures. Shipyard’s exit underscores how fragile that model can be — yet also how resilient the ecosystem has become, with viable alternatives emerging organically from within the same talent pool. For users and developers, the takeaway is clear: IPFS continues, but its future lies in diversity of implementations, not dependency on any one maintainer."
+      },
+      "background": {
+        "zh": "IPFS（星际文件系统）是一种点对点超媒体协议，通过以内容哈希（如CID）替代传统基于位置的地址（如HTTP URL），旨在构建更快、更安全、更开放的网络。它依赖多个独立实现共存，包括原始Go实现Kubo以及新兴实现Iroh等，而非单一代码库。Shipyard只是多个社区驱动团队之一，负责维护配套工具与规范，并非IPFS唯一的维护方。",
+        "en": "IPFS (InterPlanetary File System) is a peer-to-peer hypermedia protocol designed to make the web faster, safer, and more open by replacing location-based addressing (e.g., HTTP URLs) with content-based addressing (e.g., CID hashes). It relies on multiple independent implementations — including Kubo (the original Go implementation) and newer ones like Iroh — rather than a single monolithic codebase. Shipyard was one of several community-driven teams maintaining complementary tools and specifications, not the sole IPFS maintainer."
+      },
+      "discussion": {
+        "zh": "评论者普遍澄清了‘IPFS项目终结’的误解，肯定Shipyard的文档贡献，批评IPNS对动态Web应用支持不足，并指出由资深开发者推动、更具可持续性的Iroh是重要替代方案。",
+        "en": "Commenters widely corrected the misconception that IPFS itself is ending, praised Shipyard's documentation work, criticized IPNS's limitations for dynamic web apps, and highlighted Iroh as a more sustainable alternative backed by experienced developers."
+      },
+      "sources": [
+        {
+          "url": "https://ipshipyard.com/blog/2025-shipyard-ipfs-year-in-review/",
+          "title": "Shipyard 2025: Bringing IPFS Home"
+        },
+        {
+          "url": "https://ipshipyard.com/blog/2026-the-end-of-ipfs-at-shipyard/",
+          "title": "The end of IPFS at Shipyard"
+        },
+        {
+          "url": "https://github.com/n0-computer/iroh",
+          "title": "GitHub - n0-computer/ iroh : IP addresses break, dial keys instead."
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:49425819",
+      "slug": "2026-08-25-16-a-fringe-online-theory-claims-the-tang-dynasty-never-existed-46ddfadd",
+      "path": "/article/2026-08-25-16-a-fringe-online-theory-claims-the-tang-dynasty-never-existed-46ddfadd",
+      "rank": 16,
+      "score": 6.0,
+      "source": "hackernews",
+      "author": "related",
+      "url": "https://www.cnn.com/2026/08/19/style/china-tang-dynasty-never-existed-hoax-intl-hnk",
+      "published_at": "2026-08-24T21:03:06+00:00",
+      "fetched_at": "2026-08-25T02:22:44.911745+00:00",
+      "tags": [
+        "historical_denialism",
+        "Chinese_history",
+        "internet_folklore",
+        "conspiracy_theories",
+        "digital_historiography"
+      ],
+      "image_path": "media/hackernews-story-49425819.svg",
+      "title": {
+        "zh": "中国网络出现质疑唐朝真实性的边缘言论",
+        "en": "A fringe online theory claims the Tang Dynasty never existed"
+      },
+      "summary": {
+        "zh": "一种否认中国唐朝真实存在的边缘网络理论在中国社交媒体上走红，引发公众对历史素养与数字虚假信息的广泛讨论。 它折射出算法驱动平台助长历史否定主义的全球共性，冲击公众对既有史学体系的信任，并凸显普及可及的历史教育与史料辨析能力的紧迫性。 该主张与大量确凿证据相悖，包括唐亡后不久编修的两部正史、日本与阿拉伯世界的域外记载，以及乾陵等考古遗址——所有这些证据均可独立验证且长期被学界研究。",
+        "en": "A fringe online theory denying the historical existence of China's Tang Dynasty has gone viral across Chinese social media platforms, sparking widespread discussion about historical literacy and digital misinformation. It reflects broader global patterns of historical denialism enabled by algorithm-driven platforms, challenges public trust in established historiography, and highlights urgent needs for accessible historical education and source literacy. The claim contradicts overwhelming evidence including two official Tang histories compiled shortly after its fall, foreign records from Japan and the Arab world, and archaeological sites like the Qianling Mausoleum — all independently verifiable and widely studied."
+      },
+      "body": {
+        "zh": "中国互联网局部出现一种奇特又令人不安的现象：一小撮活跃用户正传播一种说法——唐朝（618–907年）根本不存在。这与主流历史讨论甚至学术修正主义截然不同，该主张既无考古依据，也无文献支撑，更未见于任何经同行评议的研究。它主要在短视频平台和小众论坛以挑衅式‘思想实验’或反讽梗的形式流传，常刻意剥离背景，披着伪学术外衣。\n\n这一理论与西方早已被证伪的‘幽灵时间假说’（Phantom Time Hypothesis）惊人相似——后者荒谬地声称欧洲中世纪早期约300年历史（包括加洛林王朝时期）纯属虚构。两类说法都选择性无视海量证据：同期文献、跨文化外交记录、实物遗存以及层层累积的史学传统。就唐朝而言，证据不仅包括唐亡后不久由新朝修撰的《旧唐书》《新唐书》，还包括日本、朝鲜、粟特及阿拉伯文献中关于唐朝外交、贸易与文化影响的明确记载。\n\n此事引人关注之处，并不在于其可信度（它毫无可信度），而在于其社会传播力。在算法偏好争议胜过清晰的平台上，历史否定论未必靠说服力走红，而是靠激发互动。部分用户视其为讽刺；另一些人则流露出真实困惑。由此引发的讨论，暴露出数字时代历史素养的深层断层：非专业读者如何评估史料？当原始文献难以获取或译本质量堪忧时，他们该向何处求助？社群又该如何共同捍卫基本事实共识？\n\n需要强调的是，这既非官方叙事，也非学界争论，而是披着怀疑主义外衣的网络民间传说。历史学者指出，唐朝存在的证据之充分，不亚于任何前现代社会：从乾陵保存完好的墓葬，到敦煌出土并经碳十四测定为8世纪的手稿；从波斯商人账簿中对长安的记述，到日本僧侣日记里对唐朝佛教学院的详实描述。真正值得讲述的故事，从来不是唐朝是否存在——而是当注意力经济奖励质疑而非审慎时，历史确定性何以如此轻易地被撼动。",
+        "en": "A curious and unsettling trend has surfaced on parts of China’s internet: a small but vocal group is promoting the idea that the Tang Dynasty (618–907 CE) never existed. Unlike mainstream historical discourse — or even scholarly revisionism — this claim lacks any basis in archaeology, textual evidence, or peer-reviewed research. Instead, it circulates through short-video platforms and niche forums as a provocative ‘thought experiment’ or ironic meme, often stripped of context and presented with faux-academic flair.\n\nThe theory bears striking resemblance to long-debunked Western conspiracy narratives like the ‘Phantom Time Hypothesis’, which falsely asserts that roughly 300 years of European history — including the Carolingian era — were fabricated. In both cases, proponents selectively dismiss vast bodies of evidence: contemporary records, cross-cultural diplomatic accounts, material remains, and layered historiographical traditions. For the Tang, that includes not only Chinese dynastic histories compiled immediately after its fall — such as the *Old Book of Tang* and *New Book of Tang* — but also Japanese, Korean, Sogdian, and Arab sources documenting Tang-era diplomacy, trade, and cultural exchange.\n\nWhat makes this episode notable isn’t its credibility — it has none — but its social resonance. On platforms where algorithmic curation rewards controversy over clarity, historical negationism can gain traction not because it persuades, but because it provokes engagement. Some users treat it as satire; others appear genuinely uncertain. The resulting debates expose fissures in digital historical literacy: how do non-specialists evaluate evidence? Where do they turn when primary sources are inaccessible or poorly translated? And how do communities collectively resist the erosion of shared factual ground?\n\nImportantly, this isn’t a state-sponsored narrative nor an academic debate — it’s internet folklore dressed in the language of skepticism. Historians emphasize that the Tang’s existence is as well-attested as any premodern polity: from the Qianling Mausoleum’s intact tombs to Dunhuang manuscripts carbon-dated to the 8th century, from Persian merchant logs mentioning Chang’an to Japanese monks’ diaries describing Tang Buddhist academies. The real story here isn’t about the Tang — it’s about how easily historical certainty can be destabilized in attention economies that reward doubt over diligence."
+      },
+      "background": {
+        "zh": "唐朝被史学界普遍视为中国历史上文化开放、诗歌鼎盛、制度创新的黄金时代，当时首都长安是世界最大城市，留下了丰富的文献、艺术与物质遗产。此类历史否定主义在中国学术界极为罕见，但与西方‘幽灵时间假说’等边缘理论存在跨文化呼应。",
+        "en": "The Tang Dynasty is widely regarded by historians as a golden age of cosmopolitan culture, poetry, and institutional innovation in Chinese history. It saw the flourishing of Chang'an — then the world's largest city — and left behind rich textual, artistic, and material legacies. Historical denialism of this kind is rare in Chinese academia but echoes fringe theories elsewhere, such as the Phantom Time hypothesis."
+      },
+      "discussion": {
+        "zh": "评论者援引《旧唐书》与乾陵等一手证据予以驳斥；有人将其比作‘幽灵时间假说’，称其同样毫无根据，且可能隐含意识形态动机；还有人指出，类似的历史怀疑倾向在美国和日本出版市场亦有显现。",
+        "en": "Commenters pointed to primary sources like the *Old Book of Tang* and Qianling Mausoleum as definitive counterevidence; some compared the theory to the Phantom Time conspiracy, calling it equally baseless and potentially motivated by ideological bias; others noted parallels with historical skepticism trends in the US and Japan."
+      },
+      "sources": []
+    },
+    {
+      "id": "rss:simonwillison.net_atom_everything_:49fca70a70651d4f",
+      "slug": "2026-08-25-17-llm-anthropic-0-27-updates-plugin-for-anthropic-s-new-python-sdk-85534853",
+      "path": "/article/2026-08-25-17-llm-anthropic-0-27-updates-plugin-for-anthropic-s-new-python-sdk-85534853",
+      "rank": 17,
+      "score": 6.0,
+      "source": "rss",
+      "author": "Simon Willison",
+      "url": "https://simonwillison.net/2026/Aug/24/llm-anthropic/",
+      "published_at": "2026-08-24T16:27:04+00:00",
+      "fetched_at": "2026-08-25T02:22:44.623900+00:00",
+      "tags": [
+        "LLM",
+        "Anthropic",
+        "Python",
+        "CLI",
+        "SDK"
+      ],
+      "image_path": "media/rss-simonwillison-net-atom-everything--49fca70a70651d4f.svg",
+      "title": {
+        "zh": "llm-anthropic 0.27 版本适配 Anthropic 新版 Python SDK",
+        "en": "llm-anthropic 0.27 updates plugin for Anthropic’s new Python SDK"
+      },
+      "summary": {
+        "zh": "llm-anthropic 0.27 版本升级插件以支持 Anthropic v1.0.0 Python SDK，该 SDK 将底层 HTTP 客户端由 httpx 替换为 httpx2，并依据官方迁移指南完成了自动化代码适配。 这保障了依赖 Anthropic 模型的 LLM 命令行用户不受影响，避免因 SDK 升级导致工具失效；也标志着 Python 大模型生态正统一向 httpx2 迁移，OpenAI SDK 已率先跟进。 本次更新通过 PR #84 实现，以 Anthropic 官方迁移文档为依据，并借助 Claude Code 辅助完成；用户无需修改配置，但必须同步升级 anthropic 和 httpx2 两个依赖包。",
+        "en": "llm-anthropic 0.27 upgrades the plugin to support Anthropic’s v1.0.0 Python SDK, which replaces httpx with httpx2, and includes automated migration fixes based on Anthropic’s official guide. This ensures continued compatibility for LLM CLI users relying on Anthropic models, preventing breakage as the broader Python LLM ecosystem converges on httpx2 — a trend also adopted by OpenAI’s SDK. The update was implemented via PR #84, guided by Anthropic’s MIGRATION.md and assisted by Claude Code; it requires no user-facing configuration changes but mandates upgrading both anthropic and httpx2 dependencies."
+      },
+      "body": {
+        "zh": "llm-anthropic 插件是 LLM 命令行工具的轻量扩展，用于连接 Anthropic 的 Claude 系列大模型。最新发布的 0.27 版本，核心目标是适配 Anthropic 全新推出的 Python SDK v1.0.0。该 SDK 进行了一次底层重构：将 HTTP 客户端从 httpx 切换为新一代的 httpx2。这一变动与 OpenAI 在两周前发布的 Python SDK v3.0.0 中的同类升级高度一致。\n\n这不是一个新增功能的版本，而是一次关键的兼容性维护更新。任何使用 llm 命令行工具调用 Anthropic 模型的开发者——比如通过 `llm -m claude-sonnet-5 '告诉我萝卜的冷知识'` 这类命令进行本地实验——若不升级，将面临导入失败或运行时异常。\n\n项目维护者 Simon Willison 采用了一种高效务实的方式完成迁移：他将 Anthropic 官方提供的 MIGRATION.md 迁移指南喂给 Claude Code（基于 Fable 5 模型），并提示其“升级至 anthropic>=1，并让所有测试通过”。最终生成的 PR #84 展现了借助 AI 辅助完成技术债清理的现代开发实践。\n\nhttpx2 并非简单改名：它是由 Pydantic 团队主导重构的新一代 HTTP 客户端，强化了类型安全、异步体验和与 Pydantic V2 等现代 Python 工具链的协同能力。终端用户虽看不到界面变化，但底层稳定性、错误提示清晰度和长期可维护性均得到提升。\n\n对开发者而言，结论明确：若你正在使用 llm-anthropic 插件，现在必须升级到 0.27 版本，才能继续对接 Anthropic 最新版 SDK。在 SDK 快速迭代的生态中，这类及时、平滑的依赖升级，正是保障命令行 AI 工具持续可用的关键一环。",
+        "en": "The llm-anthropic plugin — a lightweight extension that lets the LLM command-line tool interface with Anthropic’s Claude models — has released version 0.27. This update ensures full compatibility with Anthropic’s newly launched v1.0.0 Python SDK, which marks a major internal shift: the library has replaced its HTTP client from httpx to the next-generation httpx2. The change mirrors a similar move by OpenAI, whose Python SDK also migrated to httpx2 in its v3.0.0 release just two weeks earlier.\n\nThis isn’t a feature-driven release but a necessary maintenance update. Developers using llm with Anthropic models — for tasks like prompting Claude Sonnet via CLI commands or integrating into local AI workflows — would encounter import errors or runtime failures without this upgrade. The maintainer, Simon Willison, used Claude Code (powered by Fable 5) to automate much of the migration work, feeding it Anthropic’s official MIGRATION.md guide and asking it to adapt the plugin’s code and tests. The resulting pull request (#84) reflects a pragmatic, tool-assisted approach to keeping open-source integrations current.\n\nBehind the scenes, httpx2 represents more than just a rename: it’s a reimagined, Pydantic-led evolution of the popular httpx library — designed for better type safety, async ergonomics, and tighter integration with modern Python tooling like Pydantic V2. While end users won’t notice visual changes, the upgrade strengthens reliability, improves error messaging, and aligns the plugin with broader ecosystem trends toward stricter typing and composability.\n\nFor developers, the takeaway is straightforward: if you rely on llm-anthropic, upgrading to 0.27 is now required to use Anthropic’s latest SDK. It’s a small but critical link in the chain — ensuring that CLI-based LLM experimentation remains frictionless even as underlying libraries mature. In an ecosystem where SDKs evolve rapidly, such timely, low-friction updates are what keep developer tools alive."
+      },
+      "background": {
+        "zh": "LLM 是一个用于调用大语言模型的命令行工具和 Python 库，通过插件机制支持 Anthropic 等多家服务商。llm-anthropic 插件使用户能通过 CLI 直接调用 Claude 模型，只需配置 Anthropic API 密钥。httpx2 是由 Pydantic Services 接手维护的新一代 HTTP 客户端，旨在替代 httpx，提供更强的类型安全性和更优雅的异步编程支持。",
+        "en": "LLM is a command-line interface and Python library for interacting with large language models, supporting plugins for various providers including Anthropic. The llm-anthropic plugin enables CLI access to Claude models using Anthropic’s API keys. httpx2 is a recently stewardship-transitioned, next-generation HTTP client developed by Pydantic Services, designed to replace httpx with improved type safety and async patterns."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://github.com/pydantic/httpx2",
+          "title": "GitHub - pydantic/httpx2: A next generation HTTP client for Python. 🦋"
+        },
+        {
+          "url": "https://manueltgomes.com/python/pydantic-httpx2-whats-new-and-how-to-take-proper-advantage-of-it/",
+          "title": "Pydantic & HTTPX2: What's New and How to Use It"
+        },
+        {
+          "url": "https://llm.datasette.io/en/stable/",
+          "title": "LLM : A CLI utility and Python library for interacting with Large..."
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1vwtzix",
+      "slug": "2026-08-25-18-bmvc-2026-authors-seek-clarity-on-ijcv-special-issue-selection-b6a1dc50",
+      "path": "/article/2026-08-25-18-bmvc-2026-authors-seek-clarity-on-ijcv-special-issue-selection-b6a1dc50",
+      "rank": 18,
+      "score": 6.0,
+      "source": "reddit",
+      "author": "/u/Secondhanded_PhD",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1vwtzix/bmvc_2026_ijcv_recommendation_d/",
+      "published_at": "2026-08-24T05:39:57+00:00",
+      "fetched_at": "2026-08-25T02:22:45.061673+00:00",
+      "tags": [
+        "computer-vision",
+        "academic-publishing",
+        "BMVC",
+        "IJCV",
+        "conference-to-journal"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1vwtzix.svg",
+      "title": {
+        "zh": "BMVC 2026作者急询IJCV特刊推荐机制",
+        "en": "BMVC 2026 authors seek clarity on IJCV special issue selection"
+      },
+      "summary": {
+        "zh": "一名BMVC 2026作者在Reddit上公开询问IJCV特刊推荐的具体标准与通知时间，而这一流程在BMVC与IJCV的官方指南中均无明确说明。 该问题揭示了青年研究者在‘会议+期刊’双轨发表路径中面临的关键信息盲区；流程透明化将助力作者统筹修改计划、把握期刊截稿期，并提升学术影响力。 BMVC 2026采用OpenReview系统，强调审稿意见的质量而非分数，但未公布IJCV推荐的任何公开标准；历史上的IJCV会议特刊均由客座编辑人工遴选，而非按分数阈值自动触发。",
+        "en": "A BMVC 2026 author publicly asked for clarification on the criteria and timeline for paper recommendation to an upcoming IJCV special issue — a process not detailed in official BMVC or IJCV guidelines. This question highlights a critical gap in transparency for early-career researchers navigating dual publication pathways; clear guidance would help authors plan revisions, meet journal deadlines, and maximize academic impact. BMVC 2026 uses OpenReview and emphasizes qualitative review feedback over numeric scores, but offers no public criteria for IJCV recommendation; past IJCV special issues from conferences have been curated by guest editors, not automated by score thresholds."
+      },
+      "body": {
+        "zh": "一名研究者在Reddit的r/MachineLearning版块发帖，就BMVC 2026论文入选《国际计算机视觉期刊》（IJCV）特刊的推荐机制提出实际而紧迫的问题。他询问：入选推荐是否主要依据审稿分数？还是由领域主席（AC）和程序主席（PC）另行综合判断——例如结合口头报告资格、审稿人评语或论文潜在影响力？BMVC是英国顶尖的计算机视觉会议，IJCV则是该领域公认的权威期刊，兼具高选择性与长期学术影响力，因此这一“会议→期刊”通道对青年研究者尤为关键。\n\n该提问还涉及时间节点这一现实关切：作者是在BMVC录用通知阶段就获知推荐意向，还是需等待会后数周甚至数月才收到单独邮件？这种不确定性直接影响修订计划、特刊投稿截止日，乃至职称评审、基金申请等职业节点。发帖人明确呼吁曾亲历该流程的同行分享经验，反映出相关制度知识零散且未被官方指南收录。\n\nBMVC 2026官网文件确认投稿通过OpenReview管理，录用论文须“技术严谨”并推动领域知识进步，且鼓励新颖大胆的构想——即便实验验证尚不充分。但所有公开指南均未提及IJCV特刊路径，也未说明推荐是否自动适用于口头报告论文、是否属主观裁量，或是否关联特定审稿标准。类似地，IJCV过往特刊（如与GCPR会议或ICCV卫星研讨会合作的特刊）通常由客座编辑团队人工遴选，而非依赖量化分数阈值。\n\n对作者而言，影响切实存在：IJCV发表在学术评价中权重显著高于纯会议论文，尤其在北美以外地区。但若缺乏推荐逻辑与时间表的透明度，研究者将陷入策略性模糊——可能延误期刊级修订，或错失特刊投稿窗口。随着会议日益成为期刊的重要稿源，组织方提供清晰流程说明，将有助于增强社区信任并缓解程序性焦虑。",
+        "en": "A researcher posting on Reddit’s r/MachineLearning forum has raised a timely and practical question about the path from BMVC 2026 acceptance to inclusion in a forthcoming *International Journal of Computer Vision* (IJCV) special issue. The post asks how papers are selected for recommendation — whether it hinges primarily on numerical review scores, or whether Area Chairs and Program Chairs make a separate, qualitative judgment based on factors like oral presentation status, reviewer commentary, or perceived impact. With BMVC being a top-tier UK-based computer vision conference, and IJCV a premier archival journal with high selectivity and long-term visibility, this pipeline matters deeply to early-career researchers aiming for both conference exposure and journal credibility.\n\nThe query also touches on timing: do authors learn about potential IJCV recommendation at the time of BMVC notification, or only later — perhaps weeks or months after the conference? This uncertainty affects planning for revisions, resubmission deadlines, and even career milestones like tenure dossiers or grant applications. The poster explicitly invites input from those who have navigated this process before, underscoring that institutional knowledge is fragmented and not publicly documented in official BMVC or IJCV guidelines.\n\nOfficial BMVC 2026 materials confirm that submissions are managed via OpenReview and that accepted papers must be “technically sound” and advance knowledge — with encouragement for novel, bold ideas, even if empirically limited. However, none of the published guidelines mention the IJCV special issue pathway, nor clarify whether recommendation is automatic for oral papers, discretionary, or tied to specific review criteria. Similarly, IJCV’s past special issues — such as those linked to GCPR or workshops co-located with ICCV — typically originate from curated selections by guest editors, not algorithmic score thresholds.\n\nFor authors, the stakes are real: IJCV publication carries greater weight in academic evaluation than conference proceedings alone, especially outside North America. Yet without transparency around selection logic or timelines, researchers face strategic ambiguity — potentially delaying journal-ready revisions or missing submission windows. As conferences increasingly serve as feeders to journals, clearer communication from organizing committees would strengthen trust and reduce procedural anxiety across the community."
+      },
+      "background": {
+        "zh": "BMVC（英国机器视觉会议）是欧洲计算机视觉领域顶级年度会议，IJCV（《国际计算机视觉期刊》）则是Springer出版的权威归档期刊。顶级会议与期刊合作推出特刊是常见做法，允许录用论文经扩展与额外同行评审后转为期刊发表。",
+        "en": "BMVC (British Machine Vision Conference) is a leading annual European conference in computer vision, while IJCV is a highly respected archival journal published by Springer. It is common for top conferences to partner with journals for special issues, allowing extended versions of accepted papers to undergo additional peer review for journal publication."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://bmvc2026.bmva.org/authors/reviewing-guidelines/",
+          "title": "The 37th British Machine Vision Conference 2026: Reviewing Guidelines"
+        },
+        {
+          "url": "https://bmvc2026.bmva.org/authors/author-guidelines/",
+          "title": "The 37th British Machine Vision Conference 2026: Author Guidelines"
+        },
+        {
+          "url": "https://www.dagm-gcpr.de/proceedings-and-ijcv-issues",
+          "title": "DAGM GCPR (Proceedings and IJCV Issues )"
+        }
+      ]
+    }
+  ]
+}
