@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Mold linker slashes linking time with massive parallelism - Now AI News</title>
+  <meta name="description" content="Mold v1.0+, released in early 2026, is a massively parallel, drop-in linker that parallelizes both input file parsing and symbol resolution — achieving up to 10× faster linking tha" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-27-07-mold-linker-slashes-linking-time-with-massive-parallelism-17383159" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-27-07-mold-linker-slashes-linking-time-with-massive-parallelism-17383159" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-27-07-mold-linker-slashes-linking-time-with-massive-parallelism-17383159" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-27-07-mold-linker-slashes-linking-time-with-massive-parallelism-17383159" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Mold linker slashes linking time with massive parallelism" />
+  <meta property="og:description" content="Mold v1.0+, released in early 2026, is a massively parallel, drop-in linker that parallelizes both input file parsing and symbol resolution — achieving up to 10× faster linking tha" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-27-07-mold-linker-slashes-linking-time-with-massive-parallelism-17383159" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49455530.png" />
+  <meta property="article:published_time" content="2026-08-26T20:37:02+00:00" />
+  <meta property="article:modified_time" content="2026-08-27T11:25:24.000778+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mold linker slashes linking time with massive parallelism" />
+  <meta name="twitter:description" content="Mold v1.0+, released in early 2026, is a massively parallel, drop-in linker that parallelizes both input file parsing and symbol resolution — achieving up to 10× faster linking tha" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49455530.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-27-07-mold-linker-slashes-linking-time-with-massive-parallelism-17383159"}, "headline": "Mold linker slashes linking time with massive parallelism", "description": "Mold v1.0+, released in early 2026, is a massively parallel, drop-in linker that parallelizes both input file parsing and symbol resolution — achieving up to 10× faster linking tha", "image": ["https://nowainews.com/media/hackernews-story-49455530.png"], "datePublished": "2026-08-26T20:37:02+00:00", "dateModified": "2026-08-27T11:25:24.000778+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49455530.png" alt="Mold linker slashes linking time with massive parallelism" />
+    <div class="article-page-tags"><span>#linkers</span> <span>#systems-programming</span> <span>#performance-optimization</span> <span>#open-source</span> <span>#compilers</span></div>
+    <h1>Mold linker slashes linking time with massive parallelism</h1>
+    <p class="article-page-meta">News time: 2026-08-27T11:10:18.563142+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Mold is a new open-source linker that rethinks how linking — the final step in building compiled programs — can be accelerated. Unlike traditional linkers such as GNU ld (BFD), LLVM’s lld, or the now-deprecated gold, Mold achieves dramatic speedups by parallelizing not just symbol resolution but also input file parsing, two phases historically handled sequentially. Its design allows it to scale efficiently across dozens of CPU cores, turning what used to be a minutes-long bottleneck in large C/C++ builds into a sub-second operation in many cases.</p>
+<p>The project, authored by Rui Ueyama (known for his work on the Zig compiler and earlier linker optimizations), positions itself as a drop-in replacement: users can swap <code>ld</code> or <code>lld</code> with <code>mold</code> in their build systems without changing flags or workflows. Benchmarks cited in its documentation show Mold outperforming GNU ld by up to 10× and beating lld by ~10–30% on large codebases — especially those with many object files or complex symbol interdependencies.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>What sets Mold apart isn’t just raw speed, but <em>how</em> it achieves it. It avoids global locks during symbol table construction, uses memory-mapped I/O for faster file reads, and implements fine-grained parallelism over input sections rather than coarse-grained per-file threading. Crucially, it also restructures symbol resolution to minimize contention — a known scalability barrier in lld and gold. As one Hacker News commenter noted, even experimental parallelization added to lld showed diminishing returns under low thread counts, highlighting how Mold’s architectural choices go beyond incremental optimization.</p>
+<p>Mold arrives at a pivotal moment: gold has been officially deprecated, and while lld continues to improve (e.g., lld 23.x includes major ELF performance gains), its legacy architecture constrains how deeply parallelism can be embedded. Mold embraces a clean-slate approach — trading some niche compatibility for radical speed. Its open-source license and active maintenance (hosted on GitHub) have already made it a default choice in distributions like Gentoo and experimental toolchains for Rust and Zig. For developers iterating on large codebases — think Chromium, LLVM itself, or game engines — faster linking means tighter feedback loops and less waiting.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://arxiv.org/abs/2608.23228" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/rui314/mold" target="_blank" rel="noopener">GitHub - rui314/mold: mold: A Modern Linker 🦠</a><a href="https://wiki.gentoo.org/wiki/Mold" target="_blank" rel="noopener">mold - Gentoo wiki</a><a href="https://maskray.me/blog/2021-06-20-symbol-processing" target="_blank" rel="noopener">Symbol processing | MaskRay</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

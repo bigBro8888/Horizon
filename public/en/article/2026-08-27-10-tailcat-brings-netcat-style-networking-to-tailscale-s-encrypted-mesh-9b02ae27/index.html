@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Tailcat brings netcat-style networking to Tailscale’s encrypted mesh - Now AI News</title>
+  <meta name="description" content="Tailscale released Tailcat, a lightweight command-line tool that provides netcat-like functionality—listening, connecting, and piping data—entirely over Tailscale’s encrypted, NAT-" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-27-10-tailcat-brings-netcat-style-networking-to-tailscale-s-encrypted-mesh-9b02ae27" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-27-10-tailcat-brings-netcat-style-networking-to-tailscale-s-encrypted-mesh-9b02ae27" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-27-10-tailcat-brings-netcat-style-networking-to-tailscale-s-encrypted-mesh-9b02ae27" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-27-10-tailcat-brings-netcat-style-networking-to-tailscale-s-encrypted-mesh-9b02ae27" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Tailcat brings netcat-style networking to Tailscale’s encrypted mesh" />
+  <meta property="og:description" content="Tailscale released Tailcat, a lightweight command-line tool that provides netcat-like functionality—listening, connecting, and piping data—entirely over Tailscale’s encrypted, NAT-" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-27-10-tailcat-brings-netcat-style-networking-to-tailscale-s-encrypted-mesh-9b02ae27" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49452990.png" />
+  <meta property="article:published_time" content="2026-08-26T17:42:22+00:00" />
+  <meta property="article:modified_time" content="2026-08-27T11:25:24.000778+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tailcat brings netcat-style networking to Tailscale’s encrypted mesh" />
+  <meta name="twitter:description" content="Tailscale released Tailcat, a lightweight command-line tool that provides netcat-like functionality—listening, connecting, and piping data—entirely over Tailscale’s encrypted, NAT-" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49452990.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-27-10-tailcat-brings-netcat-style-networking-to-tailscale-s-encrypted-mesh-9b02ae27"}, "headline": "Tailcat brings netcat-style networking to Tailscale’s encrypted mesh", "description": "Tailscale released Tailcat, a lightweight command-line tool that provides netcat-like functionality—listening, connecting, and piping data—entirely over Tailscale’s encrypted, NAT-", "image": ["https://nowainews.com/media/hackernews-story-49452990.png"], "datePublished": "2026-08-26T17:42:22+00:00", "dateModified": "2026-08-27T11:25:24.000778+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49452990.png" alt="Tailcat brings netcat-style networking to Tailscale’s encrypted mesh" />
+    <div class="article-page-tags"><span>#networking</span> <span>#tailscale</span> <span>#p2p</span> <span>#devtools</span> <span>#zero-trust</span></div>
+    <h1>Tailcat brings netcat-style networking to Tailscale’s encrypted mesh</h1>
+    <p class="article-page-meta">News time: 2026-08-27T11:10:18.562887+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Tailcat is a new open-source utility that reimagines the classic <code>netcat</code>—the Swiss Army knife of network debugging—for modern zero-trust infrastructure. Instead of raw TCP/UDP sockets over the public internet, Tailcat routes connections through Tailscale’s secure, peer-to-peer data plane. This means developers and sysadmins can now establish ad-hoc, encrypted, bidirectional streams between devices—whether they’re behind corporate firewalls, home NATs, or carrier-grade IPv4—without configuring ports, setting up certificates, or managing keys.</p>
+<p>What makes Tailcat distinctive is its deliberate separation from Tailscale’s control plane. While full Tailscale deployments rely on a coordination service for authentication and policy enforcement, Tailcat uses only the underlying data-plane primitives: WireGuard®-encrypted tunnels, NAT traversal via magicsock, and DERP relays as fallback. This lets it operate in lightweight, ephemeral contexts—like scripting pipelines, CI environments, or embedded tools—where installing and authenticating a full Tailscale daemon would be overkill.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The tool mirrors netcat’s familiar CLI interface: <code>tailcat -l 8080</code> listens, <code>tailcat example.com 8080</code> connects—and both endpoints automatically discover and authenticate each other using Tailscale’s identity layer (e.g., via SSH keys or OAuth). Behind the scenes, no public IP addresses or DNS records are needed; devices communicate using stable, cryptographically derived node names like <code>alice@tailnet.example</code>.</p>
+<p>Real-world experimentation is already underway. A Minecraft mod uses Tailcat as its transport layer to enable peer-to-peer multiplayer without central servers—demonstrating how this tool lowers the barrier to building decentralized applications. Others highlight parallels with Iroh (a newer P2P sync stack) and reflect on historical alternatives like Tor’s onion services, underscoring how Tailcat fits into a broader resurgence of practical, developer-friendly P2P infrastructure. In an era where IPv6 adoption remains uneven and CGNAT blocks direct connectivity, Tailcat offers not just convenience—but a viable path toward trivial, secure, zero-config p2p.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/tailscale/tailcat" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://tailscale.com/docs/concepts/control-data-planes" target="_blank" rel="noopener">Control and data planes · Tailscale Docs</a><a href="https://tailscale.com/blog/how-tailscale-works" target="_blank" rel="noopener">Tailscale: How it works</a><a href="https://github.com/tailscale/tailcat" target="_blank" rel="noopener">GitHub - tailscale/tailcat: like netcat, but over Tailscale&#x27;s data plane, without Tailscale&#x27;s control plane · GitHub</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
