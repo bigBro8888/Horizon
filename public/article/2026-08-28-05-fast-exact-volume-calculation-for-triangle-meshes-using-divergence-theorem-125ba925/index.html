@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>用散度定理快速精确计算三角网格体积 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Alyssa Rosenzweig 展示了如何利用散度定理，通过对每个三角形与原点构成的有向四面体体积求和，实现任意定向封闭三角网格的精确 O(n) 体积计算。 该方法以快速、精确且易于实现的方式替代了传统缓慢或近似的体积估算，广泛适用于实时图形、物理仿真、CAD 和网格分析等领域。 算法仅需面片法向一致（统一朝外或朝内），原点位置无需在模型内部，且通过更换" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="用散度定理快速精确计算三角网格体积" />
+  <meta property="og:description" content="Alyssa Rosenzweig 展示了如何利用散度定理，通过对每个三角形与原点构成的有向四面体体积求和，实现任意定向封闭三角网格的精确 O(n) 体积计算。 该方法以快速、精确且易于实现的方式替代了传统缓慢或近似的体积估算，广泛适用于实时图形、物理仿真、CAD 和网格分析等领域。 算法仅需面片法向一致（统一朝外或朝内），原点位置无需在模型内部，且通过更换" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49476143.svg" />
+  <meta property="article:published_time" content="2026-08-28T09:00:46+00:00" />
+  <meta property="article:modified_time" content="2026-08-28T12:58:23.903098+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="用散度定理快速精确计算三角网格体积" />
+  <meta name="twitter:description" content="Alyssa Rosenzweig 展示了如何利用散度定理，通过对每个三角形与原点构成的有向四面体体积求和，实现任意定向封闭三角网格的精确 O(n) 体积计算。 该方法以快速、精确且易于实现的方式替代了传统缓慢或近似的体积估算，广泛适用于实时图形、物理仿真、CAD 和网格分析等领域。 算法仅需面片法向一致（统一朝外或朝内），原点位置无需在模型内部，且通过更换" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49476143.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925"}, "headline": "用散度定理快速精确计算三角网格体积", "description": "Alyssa Rosenzweig 展示了如何利用散度定理，通过对每个三角形与原点构成的有向四面体体积求和，实现任意定向封闭三角网格的精确 O(n) 体积计算。 该方法以快速、精确且易于实现的方式替代了传统缓慢或近似的体积估算，广泛适用于实时图形、物理仿真、CAD 和网格分析等领域。 算法仅需面片法向一致（统一朝外或朝内），原点位置无需在模型内部，且通过更换", "image": ["https://nowainews.com/media/hackernews-story-49476143.svg"], "datePublished": "2026-08-28T09:00:46+00:00", "dateModified": "2026-08-28T12:58:23.903098+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49476143.svg" alt="用散度定理快速精确计算三角网格体积" />
+    <div class="article-page-tags"><span>#computational-geometry</span> <span>#numerical-methods</span> <span>#computer-graphics</span> <span>#mathematics</span> <span>#mesh-processing</span></div>
+    <h1>用散度定理快速精确计算三角网格体积</h1>
+    <p class="article-page-meta">新闻时间: 2026-08-28T12:44:25.523386+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>Alyssa Rosenzweig 最近在博客中介绍了一种简洁而实用的技巧：利用向量微积分中的散度定理，在线性时间（O(n)，n为三角面片数量）内精确计算任意封闭三角网格多面体的体积。该方法无需低效的数值积分或体素化，而是将体积转化为向量场（例如 F = (x, 0, 0)/3）穿过物体表面的通量。由于边界由平面三角形构成，曲面积分简化为对每个三角形的求和——即该三角形与原点构成的有向四面体体积。</p>
+<p>这个有向四面体体积通过标量三重积计算：(1/6) × |(v₂ − v₁) ⋅ ((v₃ − v₁) × (0 − v₁))|，符号由三角形相对于原点的朝向决定。关键在于，原点可置于空间任意位置（不需在模型内部）；外部面片的贡献会自动抵消，仅内部体积被累加。结果既数学上严格精确，又计算极轻量——每个三角形仅需数次浮点运算。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>该方法在理论上并非全新——早在1980年ACM算法550中已有实现——但在实际工程中仍鲜为人知，尤其在图形学与仿真领域，开发者常默认采用更复杂的近似方案。其简洁性使其非常适合实时场景：如物理引擎每帧更新体积、CAD软件校验质量属性，或程序化建模工具验证模型是否水密。</p>
+<p>这项技术的价值不仅在于效率，更在于概念清晰与鲁棒性强。它不要求网格修复、凸分解或点在体内判断，只要求面片法向一致朝外（或朝内），即可处理任意封闭三角网格——包括非流形甚至自相交模型。同理，更换向量场还可直接导出形心、转动惯量等其他体积分量。正如一位读者所言，这正是二维“鞋带公式”在三维的自然推广——跨维度的优美统一。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://alyssarosenzweig.ca/blog/hilariously-fast-volume-computation-with-the-divergence-theorem.html" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://en.wikipedia.org/wiki/Divergence_theorem" target="_blank" rel="noopener">Divergence theorem - Wikipedia</a><a href="https://www.ams.org/journals/mcom/1986-46-173/S0025-5718-1986-0815838-7/S0025-5718-1986-0815838-7.pdf" target="_blank" rel="noopener">Computing Volumes of Polyhedra - American Mathematical Society</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

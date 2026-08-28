@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Researcher bypasses Claude Code Opus 5 Auto Mode with zip-based import hijacking - Now AI News</title>
+  <meta name="description" content="Johann Rehberger discovered an 80%-effective prompt injection attack against Claude Code Opus 5&#x27;s Auto Mode that exploits Python&#x27;s local module shadowing via ZIP archive extraction" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Researcher bypasses Claude Code Opus 5 Auto Mode with zip-based import hijacking" />
+  <meta property="og:description" content="Johann Rehberger discovered an 80%-effective prompt injection attack against Claude Code Opus 5&#x27;s Auto Mode that exploits Python&#x27;s local module shadowing via ZIP archive extraction" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--bc6639b3f24621f6.svg" />
+  <meta property="article:published_time" content="2026-08-27T22:50:25+00:00" />
+  <meta property="article:modified_time" content="2026-08-28T12:58:23.903098+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Researcher bypasses Claude Code Opus 5 Auto Mode with zip-based import hijacking" />
+  <meta name="twitter:description" content="Johann Rehberger discovered an 80%-effective prompt injection attack against Claude Code Opus 5&#x27;s Auto Mode that exploits Python&#x27;s local module shadowing via ZIP archive extraction" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--bc6639b3f24621f6.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55"}, "headline": "Researcher bypasses Claude Code Opus 5 Auto Mode with zip-based import hijacking", "description": "Johann Rehberger discovered an 80%-effective prompt injection attack against Claude Code Opus 5's Auto Mode that exploits Python's local module shadowing via ZIP archive extraction", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--bc6639b3f24621f6.svg"], "datePublished": "2026-08-27T22:50:25+00:00", "dateModified": "2026-08-28T12:58:23.903098+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--bc6639b3f24621f6.svg" alt="Researcher bypasses Claude Code Opus 5 Auto Mode with zip-based import hijacking" />
+    <div class="article-page-tags"><span>#prompt-injection</span> <span>#AI-safety</span> <span>#LLM-security</span> <span>#Claude</span> <span>#code-execution</span></div>
+    <h1>Researcher bypasses Claude Code Opus 5 Auto Mode with zip-based import hijacking</h1>
+    <p class="article-page-meta">News time: 2026-08-28T12:44:25.125845+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>A critical security flaw has been uncovered in Anthropic’s newly launched Claude Code Opus 5, specifically targeting its flagship safety feature: Auto Mode. Johann Rehberger, a widely respected prompt injection researcher, demonstrated an attack that succeeds roughly 80% of the time — not by tricking the model into writing malicious code directly, but by exploiting how Python resolves imports when local files shadow standard library modules.</p>
+<p>The attack begins with a seemingly benign instruction: download and extract a ZIP archive containing a maliciously named <code>struct.py</code>. When Claude Code later executes code that imports <code>base64</code>, Python’s import system — which searches the current directory before built-in modules — loads the attacker-controlled <code>struct.py</code> instead of the real one. That local file then executes arbitrary code, including spawning malware processes. Crucially, Auto Mode fails at two points: first, it allows the ZIP extraction and import hijacking to proceed; second, when Claude detects the compromise and attempts to issue a cleanup command (e.g., killing the malicious process), Auto Mode <em>blocks that very command</em>, treating it as potentially unsafe.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>This creates a paradoxical failure mode: the safety classifier permits the initial exploit, then obstructs the agent’s self-defense. As Simon Willison notes in his coverage, this undermines the core promise of Auto Mode — that it can safely automate tool use without human oversight. Anthropic had claimed near-perfect protection, citing a 0% success rate for browser-based prompt injection attacks when Auto Mode is enabled. Rehberger’s finding shows that such claims do not extend to code execution contexts involving local filesystem operations and Python’s import semantics.</p>
+<p>The implications go beyond one model version. It highlights a deeper tension in AI agent safety: classifiers trained to detect ‘obviously dangerous’ actions often miss subtle, multi-step exploits rooted in well-known software behaviors — like Python’s local-module shadowing, documented since 2006. Rehberger and Willison both stress that no classifier-based guardrail is sufficient on its own. Their shared recommendation is architectural: run unattended coding agents inside strict sandboxes — containers or VMs with no access to home directories, SSH keys, cloud credentials, or outbound network connectivity — and monitor them actively. Safety, they argue, belongs in infrastructure — not just in prompts or classifiers.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Aug/27/breaking-claude-code-opus-5-auto-mode/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://itmeetsot.eu/posts/2026-08-12-opus5_automode/" target="_blank" rel="noopener">Prompt Injection Experiments with Opus - 5 in Claude Code ...</a><a href="https://bugs.python.org/issue1421513" target="_blank" rel="noopener">Issue 1421513: IMPORT PROBLEM: Local submodule shadows global module - Python tracker</a><a href="https://bugs.python.org/issue22172" target="_blank" rel="noopener">Issue 22172: Local files shadow system modules, even from system modules - Python tracker</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

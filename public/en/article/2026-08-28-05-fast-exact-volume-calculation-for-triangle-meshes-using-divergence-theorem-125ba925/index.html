@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Fast exact volume calculation for triangle meshes using divergence theorem - Now AI News</title>
+  <meta name="description" content="Alyssa Rosenzweig demonstrated how the divergence theorem enables exact O(n) volume computation for any oriented, closed triangle mesh by summing signed tetrahedral volumes formed " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Fast exact volume calculation for triangle meshes using divergence theorem" />
+  <meta property="og:description" content="Alyssa Rosenzweig demonstrated how the divergence theorem enables exact O(n) volume computation for any oriented, closed triangle mesh by summing signed tetrahedral volumes formed " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49476143.svg" />
+  <meta property="article:published_time" content="2026-08-28T09:00:46+00:00" />
+  <meta property="article:modified_time" content="2026-08-28T12:58:23.903098+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Fast exact volume calculation for triangle meshes using divergence theorem" />
+  <meta name="twitter:description" content="Alyssa Rosenzweig demonstrated how the divergence theorem enables exact O(n) volume computation for any oriented, closed triangle mesh by summing signed tetrahedral volumes formed " />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49476143.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-28-05-fast-exact-volume-calculation-for-triangle-meshes-using-divergence-theorem-125ba925"}, "headline": "Fast exact volume calculation for triangle meshes using divergence theorem", "description": "Alyssa Rosenzweig demonstrated how the divergence theorem enables exact O(n) volume computation for any oriented, closed triangle mesh by summing signed tetrahedral volumes formed ", "image": ["https://nowainews.com/media/hackernews-story-49476143.svg"], "datePublished": "2026-08-28T09:00:46+00:00", "dateModified": "2026-08-28T12:58:23.903098+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49476143.svg" alt="Fast exact volume calculation for triangle meshes using divergence theorem" />
+    <div class="article-page-tags"><span>#computational-geometry</span> <span>#numerical-methods</span> <span>#computer-graphics</span> <span>#mathematics</span> <span>#mesh-processing</span></div>
+    <h1>Fast exact volume calculation for triangle meshes using divergence theorem</h1>
+    <p class="article-page-meta">News time: 2026-08-28T12:44:25.523386+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A recent blog post by Alyssa Rosenzweig reveals an elegant, underused trick for computing the exact volume of a closed triangulated polyhedron in linear time — O(n), where n is the number of triangular faces. Instead of resorting to slow numerical integration or voxelization, the method applies the divergence theorem from vector calculus: the volume of a solid region equals the flux of a carefully chosen vector field (e.g., F = (x, 0, 0)/3) through its boundary surface. Since the boundary is composed of flat triangles, the surface integral reduces to a simple sum over each triangle — specifically, the signed volume of the tetrahedron formed by the triangle and the origin.</p>
+<p>This signed tetrahedral volume is computed via the scalar triple product — (1/6) × |(v₂ − v₁) ⋅ ((v₃ − v₁) × (0 − v₁))| — with sign determined by triangle orientation relative to the origin. Crucially, the origin can be placed <em>anywhere</em>, not just inside the mesh; the signed contributions automatically cancel out external faces and accumulate only the enclosed volume. The result is both mathematically exact and computationally trivial — just a few floating-point operations per triangle.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The technique isn’t new in theory — it appears in classic computational geometry literature, including ACM Algorithm 550 from 1980 — but it remains surprisingly obscure in practice, especially among graphics and simulation developers who often default to heavier approximations. Its simplicity makes it ideal for real-time applications: think physics engines needing per-frame volume updates, CAD tools verifying mass properties, or procedural geometry generators validating watertightness.</p>
+<p>What elevates this beyond a neat math footnote is its conceptual clarity and robustness. Unlike methods requiring mesh repair, convex decomposition, or point-in-polyhedron tests, this approach works on any oriented, closed triangle mesh — even non-manifold or self-intersecting ones — as long as face normals consistently point outward (or inward). It also generalizes naturally: the same principle yields centroid, moment of inertia, and other volumetric integrals by choosing different vector fields. As one commenter noted, it’s the 3D analog of the familiar 2D shoelace formula for polygon area — a satisfying unification across dimensions.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://alyssarosenzweig.ca/blog/hilariously-fast-volume-computation-with-the-divergence-theorem.html" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/Divergence_theorem" target="_blank" rel="noopener">Divergence theorem - Wikipedia</a><a href="https://www.ams.org/journals/mcom/1986-46-173/S0025-5718-1986-0815838-7/S0025-5718-1986-0815838-7.pdf" target="_blank" rel="noopener">Computing Volumes of Polyhedra - American Mathematical Society</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

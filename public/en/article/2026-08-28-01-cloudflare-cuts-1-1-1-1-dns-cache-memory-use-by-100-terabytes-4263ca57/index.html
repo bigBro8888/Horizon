@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Cloudflare cuts 1.1.1.1 DNS cache memory use by 100 terabytes - Now AI News</title>
+  <meta name="description" content="Cloudflare reduced the memory footprint of its 1.1.1.1 DNS cache by 100 terabytes through five Rust-level memory layout and allocation optimizations deployed in production in 2026." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-28-01-cloudflare-cuts-1-1-1-1-dns-cache-memory-use-by-100-terabytes-4263ca57" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-28-01-cloudflare-cuts-1-1-1-1-dns-cache-memory-use-by-100-terabytes-4263ca57" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-28-01-cloudflare-cuts-1-1-1-1-dns-cache-memory-use-by-100-terabytes-4263ca57" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-28-01-cloudflare-cuts-1-1-1-1-dns-cache-memory-use-by-100-terabytes-4263ca57" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Cloudflare cuts 1.1.1.1 DNS cache memory use by 100 terabytes" />
+  <meta property="og:description" content="Cloudflare reduced the memory footprint of its 1.1.1.1 DNS cache by 100 terabytes through five Rust-level memory layout and allocation optimizations deployed in production in 2026." />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-28-01-cloudflare-cuts-1-1-1-1-dns-cache-memory-use-by-100-terabytes-4263ca57" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49468083.png" />
+  <meta property="article:published_time" content="2026-08-27T17:17:57+00:00" />
+  <meta property="article:modified_time" content="2026-08-28T12:58:23.903098+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Cloudflare cuts 1.1.1.1 DNS cache memory use by 100 terabytes" />
+  <meta name="twitter:description" content="Cloudflare reduced the memory footprint of its 1.1.1.1 DNS cache by 100 terabytes through five Rust-level memory layout and allocation optimizations deployed in production in 2026." />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49468083.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-28-01-cloudflare-cuts-1-1-1-1-dns-cache-memory-use-by-100-terabytes-4263ca57"}, "headline": "Cloudflare cuts 1.1.1.1 DNS cache memory use by 100 terabytes", "description": "Cloudflare reduced the memory footprint of its 1.1.1.1 DNS cache by 100 terabytes through five Rust-level memory layout and allocation optimizations deployed in production in 2026.", "image": ["https://nowainews.com/media/hackernews-story-49468083.png"], "datePublished": "2026-08-27T17:17:57+00:00", "dateModified": "2026-08-28T12:58:23.903098+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49468083.png" alt="Cloudflare cuts 1.1.1.1 DNS cache memory use by 100 terabytes" />
+    <div class="article-page-tags"><span>#systems-programming</span> <span>#memory-optimization</span> <span>#dns</span> <span>#rust</span> <span>#cloudflare</span></div>
+    <h1>Cloudflare cuts 1.1.1.1 DNS cache memory use by 100 terabytes</h1>
+    <p class="article-page-meta">News time: 2026-08-28T12:44:25.523449+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Cloudflare has dramatically reduced the memory footprint of its globally used 1.1.1.1 DNS resolver—by a staggering 100 terabytes—through a series of low-level, systems-oriented optimizations in Rust. This isn’t theoretical tuning: it’s production-grade engineering applied at planetary scale. The 1.1.1.1 service handles over 25 million DNS queries per second across more than 300 data centers, caching billions of DNS records to deliver fast, privacy-respecting resolution. Every byte saved multiplies across thousands of servers—and this optimization freed enough RAM to replace the entire memory capacity of over 130 of Cloudflare’s latest-generation servers.</p>
+<p>The improvements came from five tightly coordinated changes to how DNS cache entries are laid out and managed in memory. First, Cloudflare redesigned the <code>CacheEntry</code> struct to minimize padding and align fields for 64-bit efficiency—applying lessons long known in C but rarely prioritized in high-level services. Second, they replaced separate heap allocations for record payloads with embedded inline storage, eliminating pointer indirection and allocation overhead. Third, they introduced a custom slab allocator tuned specifically for fixed-size DNS entries, reducing fragmentation and metadata bloat. Fourth, they unified multiple independent lists (e.g., for TTL tracking and eviction) into a single compact arena, trading some Rust type-safety guarantees for massive memory density gains. Fifth, they optimized string handling by interning domain names and reusing buffers across query-response lifecycles.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>These changes cut per-entry memory usage by 56%—from an average of ~1.2 KB to ~0.53 KB—without sacrificing correctness, safety, or performance. In fact, the cache became measurably faster: lower memory pressure improved CPU cache locality, and fewer allocations reduced lock contention. The work was done incrementally, validated with real-world traffic traces and A/B testing across server fleets—no speculative rewriting, just disciplined measurement-driven iteration.</p>
+<p>What makes this especially notable is that it happened <em>after</em> 1.1.1.1 had already achieved massive scale and stability. As one engineer noted on Hacker News, optimization wasn’t the first step—it was the <em>last</em>, applied only once the system was proven, profitable, and deeply understood. That discipline—building first, optimizing later, and doing so with surgical precision—is what turned a routine infrastructure task into a landmark case study in modern systems programming.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://blog.cloudflare.com/dns-cache-memory-optimization-1111/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://blog.cloudflare.com/dns-cache-memory-optimization-1111/" target="_blank" rel="noopener">How we saved 100 terabytes of memory by optimizing 1.1.1.1’s DNS cache | Cloudflare Blog</a><a href="https://en.wikipedia.org/wiki/1.1.1.1" target="_blank" rel="noopener">1.1.1.1 - Wikipedia</a><a href="https://github.com/irbull/custom_allocators" target="_blank" rel="noopener">GitHub - irbull/custom_allocators: Custom allocators in Rust</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

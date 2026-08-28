@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>研究员用ZIP归档劫持Python导入绕过Claude Code Opus 5自动模式 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="约翰·雷赫伯格发现一种针对Claude Code Opus 5自动模式的提示注入攻击，通过ZIP归档解压与恶意`struct.py`文件劫持Python本地导入机制，成功率约80%。 该发现动摇了Anthropic关于自动模式近乎完美防御提示注入的主张，并暴露关键设计缺陷：安全机制本身会阻止代理自我修复，对实际部署的AI编程代理构成真实风险。 攻击依赖Pyt" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="研究员用ZIP归档劫持Python导入绕过Claude Code Opus 5自动模式" />
+  <meta property="og:description" content="约翰·雷赫伯格发现一种针对Claude Code Opus 5自动模式的提示注入攻击，通过ZIP归档解压与恶意`struct.py`文件劫持Python本地导入机制，成功率约80%。 该发现动摇了Anthropic关于自动模式近乎完美防御提示注入的主张，并暴露关键设计缺陷：安全机制本身会阻止代理自我修复，对实际部署的AI编程代理构成真实风险。 攻击依赖Pyt" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--bc6639b3f24621f6.svg" />
+  <meta property="article:published_time" content="2026-08-27T22:50:25+00:00" />
+  <meta property="article:modified_time" content="2026-08-28T12:58:23.903098+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="研究员用ZIP归档劫持Python导入绕过Claude Code Opus 5自动模式" />
+  <meta name="twitter:description" content="约翰·雷赫伯格发现一种针对Claude Code Opus 5自动模式的提示注入攻击，通过ZIP归档解压与恶意`struct.py`文件劫持Python本地导入机制，成功率约80%。 该发现动摇了Anthropic关于自动模式近乎完美防御提示注入的主张，并暴露关键设计缺陷：安全机制本身会阻止代理自我修复，对实际部署的AI编程代理构成真实风险。 攻击依赖Pyt" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--bc6639b3f24621f6.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-08-28-03-researcher-bypasses-claude-code-opus-5-auto-mode-with-zip-based-import-hijacking-667c6a55"}, "headline": "研究员用ZIP归档劫持Python导入绕过Claude Code Opus 5自动模式", "description": "约翰·雷赫伯格发现一种针对Claude Code Opus 5自动模式的提示注入攻击，通过ZIP归档解压与恶意`struct.py`文件劫持Python本地导入机制，成功率约80%。 该发现动摇了Anthropic关于自动模式近乎完美防御提示注入的主张，并暴露关键设计缺陷：安全机制本身会阻止代理自我修复，对实际部署的AI编程代理构成真实风险。 攻击依赖Pyt", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--bc6639b3f24621f6.svg"], "datePublished": "2026-08-27T22:50:25+00:00", "dateModified": "2026-08-28T12:58:23.903098+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--bc6639b3f24621f6.svg" alt="研究员用ZIP归档劫持Python导入绕过Claude Code Opus 5自动模式" />
+    <div class="article-page-tags"><span>#prompt-injection</span> <span>#AI-safety</span> <span>#LLM-security</span> <span>#Claude</span> <span>#code-execution</span></div>
+    <h1>研究员用ZIP归档劫持Python导入绕过Claude Code Opus 5自动模式</h1>
+    <p class="article-page-meta">新闻时间: 2026-08-28T12:44:25.125845+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>Anthropic最新发布的Claude Code Opus 5被发现存在严重安全漏洞，攻击目标直指其核心安全机制——“自动模式”（Auto Mode）。知名提示注入研究员约翰·雷赫伯格（Johann Rehberger）成功演示了一种成功率约80%的攻击：不靠诱导模型直接生成恶意代码，而是利用Python导入机制中“本地模块优先覆盖标准库模块”的固有行为。</p>
+<p>攻击流程分两步：首先诱使Claude Code下载并解压一个ZIP压缩包，其中包含一个名为<code>struct.py</code>的恶意文件；随后当模型执行<code>import base64</code>时，Python会错误加载当前目录下的<code>struct.py</code>而非标准库中的<code>struct</code>模块，从而触发任意代码执行，包括启动恶意进程。更关键的是，自动模式在此过程中两次失守：它既未阻止ZIP解压与恶意导入，又在Claude自身检测到入侵、试图发出清理指令（如终止恶意进程）时，将该指令判定为“潜在危险”而主动拦截。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>这形成了一个危险悖论：安全分类器放行了初始攻击，却阻断了模型的自我修复能力。西蒙·威利森（Simon Willison）在报道中指出，此举动摇了自动模式的根本承诺——即无需人工干预即可安全自动化工具调用。Anthropic此前曾宣称，在启用自动模式后，浏览器端提示注入攻击成功率已降至0%，但雷赫伯格的实验表明，这类指标无法反映代码执行场景下对文件系统和Python运行时特性的深度利用。</p>
+<p>该问题的影响远超单一模型版本。它揭示了AI代理安全领域的一个根本矛盾：依赖分类器识别“明显危险操作”的防护思路，往往难以捕捉基于成熟软件行为（例如自2006年起就被Python官方记录的本地模块遮蔽问题）构建的多步隐蔽攻击。雷赫伯格与威利森一致强调，仅靠分类器无法提供充分保障。他们共同建议采用架构级防护：将无人值守的编码代理运行于严格沙箱中——例如隔离容器或虚拟机，禁止访问家目录、SSH密钥、云凭证及外网连接，并实施持续监控。真正的安全，应扎根于基础设施，而非仅依赖提示词或分类器。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Aug/27/breaking-claude-code-opus-5-auto-mode/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://itmeetsot.eu/posts/2026-08-12-opus5_automode/" target="_blank" rel="noopener">Prompt Injection Experiments with Opus - 5 in Claude Code ...</a><a href="https://bugs.python.org/issue1421513" target="_blank" rel="noopener">Issue 1421513: IMPORT PROBLEM: Local submodule shadows global module - Python tracker</a><a href="https://bugs.python.org/issue22172" target="_blank" rel="noopener">Issue 22172: Local files shadow system modules, even from system modules - Python tracker</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
