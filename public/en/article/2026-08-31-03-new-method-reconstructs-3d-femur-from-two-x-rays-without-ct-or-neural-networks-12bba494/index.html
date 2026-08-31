@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>New method reconstructs 3D femur from two X-rays without CT or neural networks - Now AI News</title>
+  <meta name="description" content="A new pipeline reconstructs patient-specific 3D distal femur geometry from just two X-ray views using a PCA-based statistical shape model and PyTorch3D&#x27;s differentiable soft raster" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-08-31-03-new-method-reconstructs-3d-femur-from-two-x-rays-without-ct-or-neural-networks-12bba494" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-08-31-03-new-method-reconstructs-3d-femur-from-two-x-rays-without-ct-or-neural-networks-12bba494" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-08-31-03-new-method-reconstructs-3d-femur-from-two-x-rays-without-ct-or-neural-networks-12bba494" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-08-31-03-new-method-reconstructs-3d-femur-from-two-x-rays-without-ct-or-neural-networks-12bba494" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="New method reconstructs 3D femur from two X-rays without CT or neural networks" />
+  <meta property="og:description" content="A new pipeline reconstructs patient-specific 3D distal femur geometry from just two X-ray views using a PCA-based statistical shape model and PyTorch3D&#x27;s differentiable soft raster" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-08-31-03-new-method-reconstructs-3d-femur-from-two-x-rays-without-ct-or-neural-networks-12bba494" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w2go6l.svg" />
+  <meta property="article:published_time" content="2026-08-30T12:47:10+00:00" />
+  <meta property="article:modified_time" content="2026-08-31T07:08:12.824307+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="New method reconstructs 3D femur from two X-rays without CT or neural networks" />
+  <meta name="twitter:description" content="A new pipeline reconstructs patient-specific 3D distal femur geometry from just two X-ray views using a PCA-based statistical shape model and PyTorch3D&#x27;s differentiable soft raster" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w2go6l.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-08-31-03-new-method-reconstructs-3d-femur-from-two-x-rays-without-ct-or-neural-networks-12bba494"}, "headline": "New method reconstructs 3D femur from two X-rays without CT or neural networks", "description": "A new pipeline reconstructs patient-specific 3D distal femur geometry from just two X-ray views using a PCA-based statistical shape model and PyTorch3D's differentiable soft raster", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1w2go6l.svg"], "datePublished": "2026-08-30T12:47:10+00:00", "dateModified": "2026-08-31T07:08:12.824307+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1w2go6l.svg" alt="New method reconstructs 3D femur from two X-rays without CT or neural networks" />
+    <div class="article-page-tags"><span>#medical_imaging</span> <span>#differentiable_rendering</span> <span>#statistical_shape_modeling</span> <span>#3D_reconstruction</span> <span>#orthopedics</span></div>
+    <h1>New method reconstructs 3D femur from two X-rays without CT or neural networks</h1>
+    <p class="article-page-meta">News time: 2026-08-31T07:01:00.272543+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>Researchers have developed a novel, fully differentiable pipeline that reconstructs patient-specific 3D geometry of the distal femur using only two standard orthogonal X-ray images — one anteroposterior (PA) and one lateral view. Crucially, the method avoids both computed tomography (CT) scans and deep learning models, relying instead on classical geometric reasoning enhanced by modern differentiable rendering. The approach builds a statistical shape model (SSM) from 50 high-quality CT-derived femur meshes sourced from MedShapeNet, then fits this compact PCA-based model — parameterized by just 10 shape coefficients — to the silhouettes extracted from real X-rays.</p>
+<p>The core innovation lies in how the fitting is performed: using PyTorch3D’s soft rasterizer with sigma annealing to render synthetic X-ray silhouettes from candidate 3D shapes, then optimizing shape parameters via gradient descent (Adam) to minimize silhouette mismatch. A Mahalanobis prior ensures anatomically plausible outputs, preventing unrealistic deformations. What makes this especially challenging — and where much of the technical effort was spent — is establishing accurate point-to-surface correspondence between the model and target. Among several registration methods tested (KD-tree NN, CPD, BCPD, FilterReg), only ShapeWorks achieved acceptable fidelity (3.3× roughness vs CT ground truth), comfortably passing the author’s strict 5× error threshold.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Validation shows impressive precision: leave-one-out testing on five held-out femurs yielded mean surface errors between 0.86 mm and 1.43 mm — well within sub-millimeter clinical relevance. Failures occurred only for extreme anatomies lying outside the 49-mesh SSM’s principal mode coverage, highlighting a known limitation of linear PCA models. Interestingly, the soft rasterizer’s sigma parameter proved critically sensitive: hardcoding it caused an 87-fold accuracy drop across models, but tying it dynamically to camera extent × 1e−4 resolved the issue robustly. The team is now pursuing real-world validation with paired CT–X-ray data and automating X-ray segmentation — key steps before clinical deployment.</p>
+<p>This work bridges classical medical image analysis and modern differentiable graphics, offering a lightweight, interpretable, and hardware-efficient alternative to deep-learning-based 3D reconstruction. It demonstrates that carefully engineered optimization over compact statistical priors — rather than massive data and black-box networks — can still deliver clinically meaningful accuracy in orthopedic imaging.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1w2go6l/reconstructing_3d_bone_geometry_from_2_xray/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://pytorch3d.org/docs/renderer" target="_blank" rel="noopener">renderer · PyTorch3D</a><a href="https://andrewkchan.dev/posts/diff-render.html" target="_blank" rel="noopener">Adventures with Differentiable Mesh Rendering - Andrew Chan</a><a href="https://pytorch3d.readthedocs.io/en/latest/notes/renderer.html" target="_blank" rel="noopener">— PyTorch3D documentation</a><a href="https://www.semanticscholar.org/paper/Deep-Implicit-Statistical-Shape-Models-for-3D-Image-Raju-Miao/7925d5d8676a57ea563b027141137f71e9c915ad" target="_blank" rel="noopener">[PDF] Deep Implicit Statistical Shape Models for... | Semantic Scholar</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
