@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>uv 0.12.8 ships concurrent wheel download prevention and faster content-addressed caching - Now AI News</title>
+  <meta name="description" content="uv 0.12.8 prevents concurrent duplicate wheel downloads, accelerates dependency graph construction via indexed lockfile traversal, and enhances content-addressed caching with cross" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-01-08-uv-0-12-8-ships-concurrent-wheel-download-prevention-and-faster-content-addresse-4548cf4e" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-01-08-uv-0-12-8-ships-concurrent-wheel-download-prevention-and-faster-content-addresse-4548cf4e" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-01-08-uv-0-12-8-ships-concurrent-wheel-download-prevention-and-faster-content-addresse-4548cf4e" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-01-08-uv-0-12-8-ships-concurrent-wheel-download-prevention-and-faster-content-addresse-4548cf4e" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="uv 0.12.8 ships concurrent wheel download prevention and faster content-addressed caching" />
+  <meta property="og:description" content="uv 0.12.8 prevents concurrent duplicate wheel downloads, accelerates dependency graph construction via indexed lockfile traversal, and enhances content-addressed caching with cross" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-01-08-uv-0-12-8-ships-concurrent-wheel-download-prevention-and-faster-content-addresse-4548cf4e" />
+  <meta property="og:image" content="https://nowainews.com/media/github-release-380087785.png" />
+  <meta property="article:published_time" content="2026-08-31T22:18:57+00:00" />
+  <meta property="article:modified_time" content="2026-09-01T06:23:54.336538+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="uv 0.12.8 ships concurrent wheel download prevention and faster content-addressed caching" />
+  <meta name="twitter:description" content="uv 0.12.8 prevents concurrent duplicate wheel downloads, accelerates dependency graph construction via indexed lockfile traversal, and enhances content-addressed caching with cross" />
+  <meta name="twitter:image" content="https://nowainews.com/media/github-release-380087785.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-01-08-uv-0-12-8-ships-concurrent-wheel-download-prevention-and-faster-content-addresse-4548cf4e"}, "headline": "uv 0.12.8 ships concurrent wheel download prevention and faster content-addressed caching", "description": "uv 0.12.8 prevents concurrent duplicate wheel downloads, accelerates dependency graph construction via indexed lockfile traversal, and enhances content-addressed caching with cross", "image": ["https://nowainews.com/media/github-release-380087785.png"], "datePublished": "2026-08-31T22:18:57+00:00", "dateModified": "2026-09-01T06:23:54.336538+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/github-release-380087785.png" alt="uv 0.12.8 ships concurrent wheel download prevention and faster content-addressed caching" />
+    <div class="article-page-tags"><span>#python</span> <span>#packaging</span> <span>#uv</span> <span>#performance</span> <span>#caching</span></div>
+    <h1>uv 0.12.8 ships concurrent wheel download prevention and faster content-addressed caching</h1>
+    <p class="article-page-meta">News time: 2026-09-01T06:13:46.323974+00:00 · Source: github</p>
+    <article class="article-page-body"><p>Astral has released uv version 0.12.8, the latest patch in its high-performance Python packaging toolchain. Released on August 31, 2026, this update delivers tangible speedups for developers relying on uv in CI/CD pipelines, large monorepos, or dependency-heavy projects. The release focuses less on new features and more on refining core infrastructure—especially around concurrency safety, cache efficiency, and lockfile traversal—making it a quiet but impactful iteration for production users.</p>
+<p>One of the most operationally significant improvements is the prevention of concurrent wheel downloads. Previously, multiple simultaneous uv processes (e.g., parallel CI jobs) could redundantly fetch and extract the same remote wheel—wasting bandwidth, disk I/O, and time. Now, uv coordinates via file-based locking to ensure only one process downloads and caches a given wheel, while others wait and reuse the result. This change directly addresses long-standing pain points in shared build environments.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The release also advances uv’s content-addressed caching system—a foundational optimization where cached artifacts are stored under keys derived from their cryptographic hash, not their source URL or filename. With v0.12.8, uv now deduplicates identical files <em>within and across</em> cached wheels, reuses hashing buffers during extraction to cut allocations, and speeds up cache cleanup on macOS by reading hard-link counts in bulk. These low-level tweaks compound into measurable latency reductions, especially during cold starts or cache pruning.</p>
+<p>Beyond caching, dependency resolution sees meaningful acceleration: large lockfiles are now processed faster thanks to indexed package lookups during graph traversal—and that indexing now extends to exports, audits, dependency trees, and freshness checks. A separate optimization reduces redundant marker evaluation (e.g., <code>platform_system == 'Linux'</code>) in warm resolutions, further shaving milliseconds off repeated operations. Several bug fixes round out the release—including stricter hash validation for direct URL dependencies and improved Azure Storage API compatibility with credential retries.</p>
+<p>For teams already using uv as a pip replacement or in Docker builds, v0.12.8 requires no configuration changes—just an upgrade. Its performance gains accrue automatically, particularly in environments where multiple uv instances contend for network and cache resources. As uv continues maturing toward broader adoption, releases like this underscore its focus on robustness and real-world scalability—not just raw speed.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/astral-sh/uv/releases/tag/0.12.8" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://astral.sh/blog/uv-unified-python-packaging" target="_blank" rel="noopener">uv: Unified Python packaging - Astral</a><a href="https://docs.astral.sh/uv/concepts/cache/" target="_blank" rel="noopener">Caching | uv - Astral</a><a href="https://deepwiki.com/astral-sh/uv/4.4-caching-system" target="_blank" rel="noopener">Caching System | astral-sh/uv | DeepWiki</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
