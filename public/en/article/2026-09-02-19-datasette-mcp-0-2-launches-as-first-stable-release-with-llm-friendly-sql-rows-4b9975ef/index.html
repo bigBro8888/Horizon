@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>datasette-mcp 0.2 launches as first stable release with LLM-friendly SQL rows - Now AI News</title>
+  <meta name="description" content="datasette-mcp 0.2 is the first stable release, changing SQL query results from positional arrays to named-column objects and upgrading its dependency to MCP SDK v2.1.1. This improv" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-02-19-datasette-mcp-0-2-launches-as-first-stable-release-with-llm-friendly-sql-rows-4b9975ef" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-02-19-datasette-mcp-0-2-launches-as-first-stable-release-with-llm-friendly-sql-rows-4b9975ef" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-02-19-datasette-mcp-0-2-launches-as-first-stable-release-with-llm-friendly-sql-rows-4b9975ef" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-02-19-datasette-mcp-0-2-launches-as-first-stable-release-with-llm-friendly-sql-rows-4b9975ef" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="datasette-mcp 0.2 launches as first stable release with LLM-friendly SQL rows" />
+  <meta property="og:description" content="datasette-mcp 0.2 is the first stable release, changing SQL query results from positional arrays to named-column objects and upgrading its dependency to MCP SDK v2.1.1. This improv" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-02-19-datasette-mcp-0-2-launches-as-first-stable-release-with-llm-friendly-sql-rows-4b9975ef" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--06c1aea3d44b4ef2.svg" />
+  <meta property="article:published_time" content="2026-09-01T15:30:12+00:00" />
+  <meta property="article:modified_time" content="2026-09-02T06:07:14.127475+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="datasette-mcp 0.2 launches as first stable release with LLM-friendly SQL rows" />
+  <meta name="twitter:description" content="datasette-mcp 0.2 is the first stable release, changing SQL query results from positional arrays to named-column objects and upgrading its dependency to MCP SDK v2.1.1. This improv" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--06c1aea3d44b4ef2.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-02-19-datasette-mcp-0-2-launches-as-first-stable-release-with-llm-friendly-sql-rows-4b9975ef"}, "headline": "datasette-mcp 0.2 launches as first stable release with LLM-friendly SQL rows", "description": "datasette-mcp 0.2 is the first stable release, changing SQL query results from positional arrays to named-column objects and upgrading its dependency to MCP SDK v2.1.1. This improv", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--06c1aea3d44b4ef2.svg"], "datePublished": "2026-09-01T15:30:12+00:00", "dateModified": "2026-09-02T06:07:14.127475+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--06c1aea3d44b4ef2.svg" alt="datasette-mcp 0.2 launches as first stable release with LLM-friendly SQL rows" />
+    <div class="article-page-tags"><span>#datasette</span> <span>#model-context-protocol</span> <span>#llm-integration</span> <span>#python</span> <span>#web-api</span></div>
+    <h1>datasette-mcp 0.2 launches as first stable release with LLM-friendly SQL rows</h1>
+    <p class="article-page-meta">News time: 2026-09-02T05:47:14.737712+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>Simon Willison has released datasette-mcp 0.2 — the first non-alpha, production-ready version of this Datasette plugin that bridges relational data with the Model Context Protocol (MCP). Designed to let large language models interact with databases through standardized tooling, the plugin adds an <code>/-/mcp</code> endpoint to any Datasette instance, turning it into an MCP server that can expose database queries as callable tools for AI agents.</p>
+<p>The most user-facing improvement in this release is how SQL query results are structured in API responses. Previously, the <code>execute_sql</code> tool returned rows as positional arrays — for example, <code>['Alice', 32, 'Engineer']</code> — forcing LLMs to rely on column order alone. Now, each row is a JSON object with explicit keys: <code>{"name": "Alice", "age": 32, "role": "Engineer"}</code>. This change directly addresses a known pain point: weaker or less consistent LLMs often misalign values with columns when only positional indexing is available, leading to incorrect reasoning or hallucinated outputs.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Alongside this usability upgrade, datasette-mcp now depends on MCP SDK version 2.1.1, ensuring compatibility with the latest protocol features and security updates from the official MCP specification. The move to a stable 0.2 release signals more than just technical readiness — Willison notes he’s been using it “quite a bit himself” in real workflows, suggesting it’s already proving valuable for practical LLM-augmented data exploration.</p>
+<p>As part of the broader MCP ecosystem — an open standard launched by Anthropic in late 2024 to unify how AI systems connect to external tools — datasette-mcp exemplifies how lightweight, open-source integrations can lower the barrier to building context-aware agents. Unlike heavyweight orchestration frameworks, it leverages Datasette’s existing strengths: zero-config SQLite hosting, automatic schema introspection, and built-in web UI — all extended with one line in a configuration file or plugin install.</p>
+<p>For developers working at the intersection of databases and LLMs, datasette-mcp 0.2 represents a small but meaningful step toward robust, maintainable tool integration. It doesn’t add flashy new capabilities — no vector search, no caching layers — but it fixes a subtle yet critical interface mismatch between how databases speak and how many LLMs understand. That kind of quiet reliability is exactly what makes infrastructure tools mature.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Sep/1/datasette-mcp/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/datasette/datasette-mcp" target="_blank" rel="noopener">GitHub - datasette/datasette-mcp: Adds a /-/mcp MCP server to ...</a><a href="https://en.wikipedia.org/wiki/Model_Context_Protocol" target="_blank" rel="noopener">Model Context Protocol - Wikipedia</a><a href="https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro" target="_blank" rel="noopener">What is the Model Context Protocol (MCP)?</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
