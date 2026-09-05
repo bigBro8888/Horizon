@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>uv 0.12.10 adds PyPI token revocation and faster dependency locking - Now AI News</title>
+  <meta name="description" content="uv 0.12.10, released on September 4, 2026, introduces automatic revocation of PyPI trusted-publishing tokens after publishing, terminal-level dependency cycle visualization in `uv " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-05-07-uv-0-12-10-adds-pypi-token-revocation-and-faster-dependency-locking-4351dd5e" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-05-07-uv-0-12-10-adds-pypi-token-revocation-and-faster-dependency-locking-4351dd5e" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-05-07-uv-0-12-10-adds-pypi-token-revocation-and-faster-dependency-locking-4351dd5e" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-05-07-uv-0-12-10-adds-pypi-token-revocation-and-faster-dependency-locking-4351dd5e" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="uv 0.12.10 adds PyPI token revocation and faster dependency locking" />
+  <meta property="og:description" content="uv 0.12.10, released on September 4, 2026, introduces automatic revocation of PyPI trusted-publishing tokens after publishing, terminal-level dependency cycle visualization in `uv " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-05-07-uv-0-12-10-adds-pypi-token-revocation-and-faster-dependency-locking-4351dd5e" />
+  <meta property="og:image" content="https://nowainews.com/media/github-release-383059524.png" />
+  <meta property="article:published_time" content="2026-09-04T23:15:57+00:00" />
+  <meta property="article:modified_time" content="2026-09-05T05:52:17.769589+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="uv 0.12.10 adds PyPI token revocation and faster dependency locking" />
+  <meta name="twitter:description" content="uv 0.12.10, released on September 4, 2026, introduces automatic revocation of PyPI trusted-publishing tokens after publishing, terminal-level dependency cycle visualization in `uv " />
+  <meta name="twitter:image" content="https://nowainews.com/media/github-release-383059524.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-05-07-uv-0-12-10-adds-pypi-token-revocation-and-faster-dependency-locking-4351dd5e"}, "headline": "uv 0.12.10 adds PyPI token revocation and faster dependency locking", "description": "uv 0.12.10, released on September 4, 2026, introduces automatic revocation of PyPI trusted-publishing tokens after publishing, terminal-level dependency cycle visualization in `uv ", "image": ["https://nowainews.com/media/github-release-383059524.png"], "datePublished": "2026-09-04T23:15:57+00:00", "dateModified": "2026-09-05T05:52:17.769589+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/github-release-383059524.png" alt="uv 0.12.10 adds PyPI token revocation and faster dependency locking" />
+    <div class="article-page-tags"><span>#python</span> <span>#package-management</span> <span>#uv</span> <span>#dependency-resolution</span> <span>#devops</span></div>
+    <h1>uv 0.12.10 adds PyPI token revocation and faster dependency locking</h1>
+    <p class="article-page-meta">News time: 2026-09-05T05:42:59.628446+00:00 · Source: github</p>
+    <article class="article-page-body"><p>The Rust-based Python package manager uv has released version 0.12.10, delivering meaningful improvements in security, usability, and performance. Released on September 4, 2026, this patch builds on uv’s reputation for speed and reliability—offering developers a leaner, safer alternative to traditional Python tooling like pip and pip-tools. The update arrives at a time when secure, automated publishing workflows are increasingly critical, especially as more teams adopt PyPI’s Trusted Publishing mechanism powered by OpenID Connect (OIDC) tokens.</p>
+<p>One of the most notable changes is automatic revocation of short-lived PyPI trusted-publishing tokens after <code>uv publish</code> completes—even if the upload fails. This closes a subtle but real security gap: previously, tokens could linger unnecessarily after publishing attempts, increasing exposure surface. Now, uv proactively invalidates them, aligning with zero-trust principles without requiring manual cleanup or CI script tweaks.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Usability gains include clearer dependency cycle detection via <code>uv tree --invert</code>, which now surfaces terminal cycles directly in terminal output—helping developers quickly spot circular dependencies that might break builds or cause runtime surprises. Meanwhile, lockfile robustness improves significantly: <code>--locked</code> mode no longer fails when <code>exclude-newer-package</code> settings differ for packages outside the current resolution scope, and <code>uv lock --check</code> now tolerates updates to absolute or package-specific <code>exclude-newer</code> cutoffs. These fixes make lockfile-driven workflows more predictable in large, evolving monorepos.</p>
+<p>Performance optimizations target real-world pain points: locking large workspaces with conflicting extras is now faster thanks to smarter conflict simplification that excludes unrelated dependency groups; and <code>uv publish</code> speeds up artifact hashing by reusing buffers and consolidating I/O into single blocking tasks. Combined with deterministic ordering of <code>exclude-newer</code> entries in <code>uv.lock</code>, these changes reinforce uv’s role as a production-grade foundation for modern Python development pipelines.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/astral-sh/uv/releases/tag/0.12.10" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/astral-sh/uv" target="_blank" rel="noopener">GitHub - astral-sh/uv: An extremely fast Python package and project manager, written in Rust. · GitHub</a><a href="https://docs.pypi.org/trusted-publishers/" target="_blank" rel="noopener">Publishing to PyPI with a Trusted Publisher</a><a href="https://astral.sh/blog/uv" target="_blank" rel="noopener">uv: Python packaging in Rust</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
