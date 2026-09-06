@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>New guide visualizes how Rust&#x27;s dyn Trait uses vtables and fat pointers - Now AI News</title>
+  <meta name="description" content="Sofía Belén published an up-to-date, illustrated guide explaining Rust&#x27;s `dyn Trait` implementation using vtables and fat pointers, including coverage of dyn compatibility rules an" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="New guide visualizes how Rust&#x27;s dyn Trait uses vtables and fat pointers" />
+  <meta property="og:description" content="Sofía Belén published an up-to-date, illustrated guide explaining Rust&#x27;s `dyn Trait` implementation using vtables and fat pointers, including coverage of dyn compatibility rules an" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49576343.jpg" />
+  <meta property="article:published_time" content="2026-09-05T13:31:05+00:00" />
+  <meta property="article:modified_time" content="2026-09-06T06:04:28.035523+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="New guide visualizes how Rust&#x27;s dyn Trait uses vtables and fat pointers" />
+  <meta name="twitter:description" content="Sofía Belén published an up-to-date, illustrated guide explaining Rust&#x27;s `dyn Trait` implementation using vtables and fat pointers, including coverage of dyn compatibility rules an" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49576343.jpg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e"}, "headline": "New guide visualizes how Rust's dyn Trait uses vtables and fat pointers", "description": "Sofía Belén published an up-to-date, illustrated guide explaining Rust's `dyn Trait` implementation using vtables and fat pointers, including coverage of dyn compatibility rules an", "image": ["https://nowainews.com/media/hackernews-story-49576343.jpg"], "datePublished": "2026-09-05T13:31:05+00:00", "dateModified": "2026-09-06T06:04:28.035523+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49576343.jpg" alt="New guide visualizes how Rust&#x27;s dyn Trait uses vtables and fat pointers" />
+    <div class="article-page-tags"><span>#Rust</span> <span>#memory-layout</span> <span>#dynamic-dispatch</span> <span>#vtable</span> <span>#traits</span></div>
+    <h1>New guide visualizes how Rust&#x27;s dyn Trait uses vtables and fat pointers</h1>
+    <p class="article-page-meta">News time: 2026-09-06T05:53:56.050480+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A newly published, highly illustrated technical guide demystifies how Rust implements dynamic dispatch through <code>dyn Trait</code>. Written by Sofía Belén and hosted on her personal site, the article walks readers step-by-step through the memory layout of trait objects — explaining why a <code>&amp;dyn Display</code> isn’t just a regular pointer, but a <em>fat pointer</em>: two machine words wide, pairing a data address with a pointer to a <em>vtable</em> (virtual function table). Clear diagrams show how each vtable entry corresponds to a method in the trait, and how calling <code>obj.method()</code> under <code>dyn Trait</code> resolves at runtime via that table.</p>
+<p>The guide goes beyond basics to tackle nuanced topics like <em>dyn compatibility</em> — the modern term for what used to be called <em>object safety</em>. It clarifies why traits like <code>FnOnce</code> or those with generic methods can’t be made into <code>dyn Trait</code>, not due to arbitrary restrictions, but because the vtable would lack fixed, known offsets for such methods. Real-world implications are highlighted: for example, how violating dyn compatibility leads to compile-time errors, not silent misbehavior — a deliberate Rust design choice favoring correctness over convenience.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The article also addresses subtle pitfalls developers encounter in practice. One section warns that multiple vtable copies may exist across compilation units — meaning two <code>&amp;dyn Trait</code> pointers to the same underlying object might compare unequal, even though they point to identical data. This isn’t a bug, but a consequence of Rust’s current vtable ABI, where vtables aren’t guaranteed unique across crates or translation units. The author links this directly to debugging experiences, reinforcing why understanding memory layout matters when reasoning about pointer equality or FFI interop.</p>
+<p>Complementing the deep dive, the guide recommends practical tools like <a href="https://cheats.rs">cheats.rs</a>, whose memory layout visualizations serve as excellent companion material. Readers praised its clarity and joyful writing style — one commenter noted re-reading the introduction just to savor its structure. While aimed at intermediate Rustaceans, the piece assumes no prior knowledge of vtables or ABI details, scaffolding concepts with concrete examples and consistent visuals. It stands out not just for accuracy, but for making low-level mechanics feel approachable and deeply relevant to everyday Rust development.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://sofiabelen.github.io/projects/visualizing-rusts-vtables-how-dyn-trait-works-in-memory/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://geo-ant.github.io/blog/2023/rust-dyn-trait-objects-fat-pointers/" target="_blank" rel="noopener">Rust Deep Dive: Borked Vtables and Barking Cats</a><a href="https://www.eventhelix.com/rust/rust-to-assembly-return-impl-fn-vs-dyn-fn/" target="_blank" rel="noopener">Rust Closures Under the Hood: Comparing impl Fn and... | EventHelix</a><a href="https://medium.com/itir/dyn-traits-in-rust-in-2-hours-1a44130ac514" target="_blank" rel="noopener">Dyn traits in Rust in 2 hours. Crust of Rust: Dispatch and Fat… | by George Shuklin | ITIR | Medium</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

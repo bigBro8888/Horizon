@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>New Declarative Attention protocol lets LMs self-direct attention during generation - Now AI News</title>
+  <meta name="description" content="Researchers introduced Declarative Attention (DA), a new protocol where LMs explicitly declare their attention scope using token-level tags (&lt;global&gt;, &lt;focus&gt;, &lt;local&gt;) during auto" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-06-04-new-declarative-attention-protocol-lets-lms-self-direct-attention-during-generat-925bf8f6" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-06-04-new-declarative-attention-protocol-lets-lms-self-direct-attention-during-generat-925bf8f6" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-06-04-new-declarative-attention-protocol-lets-lms-self-direct-attention-during-generat-925bf8f6" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-06-04-new-declarative-attention-protocol-lets-lms-self-direct-attention-during-generat-925bf8f6" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="New Declarative Attention protocol lets LMs self-direct attention during generation" />
+  <meta property="og:description" content="Researchers introduced Declarative Attention (DA), a new protocol where LMs explicitly declare their attention scope using token-level tags (&lt;global&gt;, &lt;focus&gt;, &lt;local&gt;) during auto" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-06-04-new-declarative-attention-protocol-lets-lms-self-direct-attention-during-generat-925bf8f6" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w7sgf3.svg" />
+  <meta property="article:published_time" content="2026-09-05T06:07:09+00:00" />
+  <meta property="article:modified_time" content="2026-09-06T06:04:28.035523+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="New Declarative Attention protocol lets LMs self-direct attention during generation" />
+  <meta name="twitter:description" content="Researchers introduced Declarative Attention (DA), a new protocol where LMs explicitly declare their attention scope using token-level tags (&lt;global&gt;, &lt;focus&gt;, &lt;local&gt;) during auto" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w7sgf3.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-06-04-new-declarative-attention-protocol-lets-lms-self-direct-attention-during-generat-925bf8f6"}, "headline": "New Declarative Attention protocol lets LMs self-direct attention during generation", "description": "Researchers introduced Declarative Attention (DA), a new protocol where LMs explicitly declare their attention scope using token-level tags (<global>, <focus>, <local>) during auto", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1w7sgf3.svg"], "datePublished": "2026-09-05T06:07:09+00:00", "dateModified": "2026-09-06T06:04:28.035523+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1w7sgf3.svg" alt="New Declarative Attention protocol lets LMs self-direct attention during generation" />
+    <div class="article-page-tags"><span>#attention-mechanisms</span> <span>#efficient-llms</span> <span>#inference-optimization</span> <span>#long-context</span> <span>#language-model-architecture</span></div>
+    <h1>New Declarative Attention protocol lets LMs self-direct attention during generation</h1>
+    <p class="article-page-meta">News time: 2026-09-06T05:53:56.357491+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>Large language models face a growing bottleneck when handling ultra-long contexts: even if only a handful of tokens matter for the next word, standard attention layers must scan the entire key-value (KV) cache—often millions of tokens—on every decoding step. This O(N) computational overhead severely limits real-world scalability, especially in applications like long-document Q&amp;A or multi-turn dialogue with memory. While techniques like retrieval-augmented pre-selection or paged attention have helped, they rely on external proxies or memory reorganization—adding complexity without addressing the core insight: the model itself already knows what it needs to attend to.</p>
+<p>Declarative Attention (DA) flips this paradigm. Instead of forcing the model to <em>discover</em> relevance through costly global computation, DA invites it to <em>declare</em> its attention intent as part of its own generation process—like inserting lightweight, interpretable tags (<global>, <focus>, <local>) into its chain-of-thought. These are not post-hoc annotations but first-class tokens that the inference engine parses and acts upon immediately: skipping irrelevant KV blocks, loading only the declared region, and avoiding full-cache traversal entirely.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Evaluated zero-shot on 15 long-context benchmarks—including Needle-in-a-Haystack, Multi-Document QA, and code trace tasks—DA cut total attended tokens by over half on Gemma-4-31B (52.0%) and by over 30% on Qwen-3.6-27B (31.1%), with accuracy drops of just 1.27 and 2.75 percentage points respectively. Crucially, those losses shrink as model scale increases—suggesting DA aligns naturally with emergent reasoning behaviors. The protocol integrates cleanly into existing inference engines without architectural overhaul, requiring only token-level declaration support and parser-aware scheduling.</p>
+<p>What makes DA especially promising is its interpretability and composability. Unlike black-box sparse attention heuristics, each <focus> tag corresponds to a concrete span—say, lines 12–18 of a prior document—and can be logged, audited, or even edited by users. Future work may train models to generate more precise declarations, or combine DA with fine-grained retrieval. For now, DA proves that attention control need not be an engineering afterthought—it can be a native, self-aware capability baked into the model’s output stream.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1w7sgf3/language_models_can_control_their_own_attention_r/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://ichbinhandsome.github.io/2023/12/26/KV-Cache-in-Transformer-Inference/" target="_blank" rel="noopener">KV Cache in Transformer Inference | Ruixiang&#x27;s blog</a><a href="https://pub.towardsai.net/paged-attention-turning-the-page-on-transformer-memory-f394ca74e230" target="_blank" rel="noopener">Paged Attention: Turning the Page on Transformer ... | Towards AI</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

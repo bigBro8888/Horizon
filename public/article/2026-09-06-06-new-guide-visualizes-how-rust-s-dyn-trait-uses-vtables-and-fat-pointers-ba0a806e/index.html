@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>新指南图解 Rust 中 dyn Trait 的虚表与胖指针实现 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Sofía Belén 发布了一篇图文并茂、内容最新的技术指南，详解 Rust 如何通过虚表和胖指针实现 `dyn Trait`，涵盖 dyn 兼容性规则及实际内存布局中的常见陷阱。 理解虚表与胖指针对调试动态分发、对接 C/FFI、判断指针相等性，以及编写高性能且安全的抽象至关重要——尤其当越来越多开发者在库和 API 中使用 trait 对象时。 `dy" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="新指南图解 Rust 中 dyn Trait 的虚表与胖指针实现" />
+  <meta property="og:description" content="Sofía Belén 发布了一篇图文并茂、内容最新的技术指南，详解 Rust 如何通过虚表和胖指针实现 `dyn Trait`，涵盖 dyn 兼容性规则及实际内存布局中的常见陷阱。 理解虚表与胖指针对调试动态分发、对接 C/FFI、判断指针相等性，以及编写高性能且安全的抽象至关重要——尤其当越来越多开发者在库和 API 中使用 trait 对象时。 `dy" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49576343.jpg" />
+  <meta property="article:published_time" content="2026-09-05T13:31:05+00:00" />
+  <meta property="article:modified_time" content="2026-09-06T06:04:28.035523+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="新指南图解 Rust 中 dyn Trait 的虚表与胖指针实现" />
+  <meta name="twitter:description" content="Sofía Belén 发布了一篇图文并茂、内容最新的技术指南，详解 Rust 如何通过虚表和胖指针实现 `dyn Trait`，涵盖 dyn 兼容性规则及实际内存布局中的常见陷阱。 理解虚表与胖指针对调试动态分发、对接 C/FFI、判断指针相等性，以及编写高性能且安全的抽象至关重要——尤其当越来越多开发者在库和 API 中使用 trait 对象时。 `dy" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49576343.jpg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-09-06-06-new-guide-visualizes-how-rust-s-dyn-trait-uses-vtables-and-fat-pointers-ba0a806e"}, "headline": "新指南图解 Rust 中 dyn Trait 的虚表与胖指针实现", "description": "Sofía Belén 发布了一篇图文并茂、内容最新的技术指南，详解 Rust 如何通过虚表和胖指针实现 `dyn Trait`，涵盖 dyn 兼容性规则及实际内存布局中的常见陷阱。 理解虚表与胖指针对调试动态分发、对接 C/FFI、判断指针相等性，以及编写高性能且安全的抽象至关重要——尤其当越来越多开发者在库和 API 中使用 trait 对象时。 `dy", "image": ["https://nowainews.com/media/hackernews-story-49576343.jpg"], "datePublished": "2026-09-05T13:31:05+00:00", "dateModified": "2026-09-06T06:04:28.035523+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49576343.jpg" alt="新指南图解 Rust 中 dyn Trait 的虚表与胖指针实现" />
+    <div class="article-page-tags"><span>#Rust</span> <span>#memory-layout</span> <span>#dynamic-dispatch</span> <span>#vtable</span> <span>#traits</span></div>
+    <h1>新指南图解 Rust 中 dyn Trait 的虚表与胖指针实现</h1>
+    <p class="article-page-meta">新闻时间: 2026-09-06T05:53:56.050480+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>一篇新发布的、配有丰富插图的技术指南，深入浅出地解释了 Rust 如何通过 <code>dyn Trait</code> 实现动态分发。该指南由 Sofía Belén 撰写并发布于个人网站，逐步拆解 trait 对象在内存中的布局：它阐明为何 <code>&amp;dyn Display</code> 并非普通指针，而是一个“胖指针”（fat pointer）—— 占用两个机器字宽，分别存储数据地址和指向虚表（vtable）的指针。清晰的示意图展示了虚表中每一项如何对应 trait 中的一个方法，以及调用 <code>obj.method()</code> 时如何通过该表在运行时完成函数解析。</p>
+<p>指南不止于基础，还深入探讨了“dyn 兼容性”这一关键概念——即过去所称的“对象安全性”。它明确指出，像 <code>FnOnce</code> 或含泛型方法的 trait 无法转为 <code>dyn Trait</code>，原因并非随意限制，而是因为这类方法无法在虚表中预留固定且已知的偏移量。文中还结合实际开发场景说明影响：违反 dyn 兼容性会触发编译期错误，而非静默失败——这是 Rust 主动权衡后对正确性的坚持。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>文章亦揭示开发者常遇的隐蔽陷阱。例如指出，由于当前 Rust 虚表 ABI 不保证跨 crate 或编译单元的虚表唯一性，同一底层对象可能被多个 <code>&amp;dyn Trait</code> 指针引用，但它们的虚表指针却不同，导致指针比较结果为不等。这不是 bug，而是实现现状；该细节直接关联到调试、指针相等性判断及 FFI 交互等真实问题。</p>
+<p>指南还推荐了实用工具如 <a href="https://cheats.rs">cheats.rs</a>，其内存布局可视化内容可作为绝佳补充材料。读者盛赞其行文清晰、结构愉悦——有人甚至重读引言只为体会其精妙组织。虽面向中级 Rust 开发者，但全文不预设虚表或 ABI 等背景知识，所有概念均以具体示例和统一图表层层展开。它之所以脱颖而出，在于将底层机制讲得既准确，又贴近日常开发的真实需求。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://sofiabelen.github.io/projects/visualizing-rusts-vtables-how-dyn-trait-works-in-memory/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://geo-ant.github.io/blog/2023/rust-dyn-trait-objects-fat-pointers/" target="_blank" rel="noopener">Rust Deep Dive: Borked Vtables and Barking Cats</a><a href="https://www.eventhelix.com/rust/rust-to-assembly-return-impl-fn-vs-dyn-fn/" target="_blank" rel="noopener">Rust Closures Under the Hood: Comparing impl Fn and... | EventHelix</a><a href="https://medium.com/itir/dyn-traits-in-rust-in-2-hours-1a44130ac514" target="_blank" rel="noopener">Dyn traits in Rust in 2 hours. Crust of Rust: Dispatch and Fat… | by George Shuklin | ITIR | Medium</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

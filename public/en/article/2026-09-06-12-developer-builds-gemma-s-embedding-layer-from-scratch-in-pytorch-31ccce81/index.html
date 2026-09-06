@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Developer builds Gemma’s embedding layer from scratch in PyTorch - Now AI News</title>
+  <meta name="description" content="A Reddit user published a step-by-step PyTorch implementation of Gemma’s token embedding layer, covering vocabulary mapping, weight initialization, and untied embedding design. It " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-06-12-developer-builds-gemma-s-embedding-layer-from-scratch-in-pytorch-31ccce81" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-06-12-developer-builds-gemma-s-embedding-layer-from-scratch-in-pytorch-31ccce81" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-06-12-developer-builds-gemma-s-embedding-layer-from-scratch-in-pytorch-31ccce81" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-06-12-developer-builds-gemma-s-embedding-layer-from-scratch-in-pytorch-31ccce81" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Developer builds Gemma’s embedding layer from scratch in PyTorch" />
+  <meta property="og:description" content="A Reddit user published a step-by-step PyTorch implementation of Gemma’s token embedding layer, covering vocabulary mapping, weight initialization, and untied embedding design. It " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-06-12-developer-builds-gemma-s-embedding-layer-from-scratch-in-pytorch-31ccce81" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w7scxc.svg" />
+  <meta property="article:published_time" content="2026-09-05T06:01:57+00:00" />
+  <meta property="article:modified_time" content="2026-09-06T06:04:28.035523+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Developer builds Gemma’s embedding layer from scratch in PyTorch" />
+  <meta name="twitter:description" content="A Reddit user published a step-by-step PyTorch implementation of Gemma’s token embedding layer, covering vocabulary mapping, weight initialization, and untied embedding design. It " />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w7scxc.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-06-12-developer-builds-gemma-s-embedding-layer-from-scratch-in-pytorch-31ccce81"}, "headline": "Developer builds Gemma’s embedding layer from scratch in PyTorch", "description": "A Reddit user published a step-by-step PyTorch implementation of Gemma’s token embedding layer, covering vocabulary mapping, weight initialization, and untied embedding design. It ", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1w7scxc.svg"], "datePublished": "2026-09-05T06:01:57+00:00", "dateModified": "2026-09-06T06:04:28.035523+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1w7scxc.svg" alt="Developer builds Gemma’s embedding layer from scratch in PyTorch" />
+    <div class="article-page-tags"><span>#PyTorch</span> <span>#LLM</span> <span>#Gemma</span> <span>#Embeddings</span> <span>#Model Architecture</span></div>
+    <h1>Developer builds Gemma’s embedding layer from scratch in PyTorch</h1>
+    <p class="article-page-meta">News time: 2026-09-06T05:53:56.357553+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A Reddit user has shared a hands-on tutorial demonstrating how to implement the embedding layer of Google’s Gemma language model entirely in PyTorch — without relying on prebuilt Hugging Face or Transformers library abstractions. The post walks through core design choices: initializing the token embedding matrix, handling vocabulary size and embedding dimension (e.g., Gemma 2B uses 256K tokens and 2048-dimensional embeddings), and integrating optional features like RoPE-aware positional scaling — though the focus remains strictly on the foundational lookup-based token embedding component.</p>
+<p>This implementation sits at the very front of the LLM pipeline: given a batch of token IDs (integers), it returns dense vector representations that feed into subsequent transformer blocks. Unlike high-level APIs that hide internals behind <code>nn.Embedding</code>, this version exposes low-level details — such as weight initialization strategies (e.g., truncated normal with std=0.02), gradient behavior during fine-tuning, and how padding tokens are handled. It also clarifies how Gemma’s embedding layer differs from others: unlike some models that tie embeddings to the final output head, Gemma keeps them untied, meaning the input and output projections use separate weight matrices.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The tutorial is explicitly educational — not production-optimized — and targets developers who want to move beyond black-box inference and understand what happens before the first attention layer. It complements existing resources like the official Gemma documentation and the popular ‘Build a Large Language Model From Scratch’ series, but fills a gap by focusing specifically on Gemma’s open architecture rather than generic or LLaMA-inspired designs. Readers can adapt the code to experiment with embedding dropout, quantization, or custom initialization schemes.</p>
+<p>While the post doesn’t include full runnable code in the snippet, its structure suggests clear modularity: separate definitions for embedding weights, forward pass logic, and integration hooks for downstream layers. For practitioners learning LLM internals, this kind of granular, framework-native implementation serves as both a debugging aid and a conceptual anchor — turning abstract terms like ‘token embedding’ into tangible, editable Python objects.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1w7scxc/implementing_embedding_gemma_from_scratch_in/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/Gemma_(language_model)" target="_blank" rel="noopener">Gemma ( language model ) - Wikipedia</a><a href="https://developers.googleblog.com/en/gemma-explained-overview-gemma-model-family-architectures/" target="_blank" rel="noopener">Gemma explained: An overview of Gemma model family architectures</a><a href="https://blog.gopenai.com/building-llms-from-scratch-part-4-embedding-layer-0803f6b8495b" target="_blank" rel="noopener">Building LLMs From Scratch (Part 4): Embedding Layer | GoPenAI</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
