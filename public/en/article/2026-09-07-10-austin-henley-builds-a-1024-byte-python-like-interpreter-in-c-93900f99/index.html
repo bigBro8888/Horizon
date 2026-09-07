@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Austin Henley builds a 1024-byte Python-like interpreter in C - Now AI News</title>
+  <meta name="description" content="Austin Henley published a 1024-byte C implementation of a minimal Python-like interpreter that maps single-letter tokens (e.g., &#x27;f&#x27;) to fixed Python constructs (e.g., &#x27;for x in ran" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-07-10-austin-henley-builds-a-1024-byte-python-like-interpreter-in-c-93900f99" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-07-10-austin-henley-builds-a-1024-byte-python-like-interpreter-in-c-93900f99" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-07-10-austin-henley-builds-a-1024-byte-python-like-interpreter-in-c-93900f99" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-07-10-austin-henley-builds-a-1024-byte-python-like-interpreter-in-c-93900f99" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Austin Henley builds a 1024-byte Python-like interpreter in C" />
+  <meta property="og:description" content="Austin Henley published a 1024-byte C implementation of a minimal Python-like interpreter that maps single-letter tokens (e.g., &#x27;f&#x27;) to fixed Python constructs (e.g., &#x27;for x in ran" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-07-10-austin-henley-builds-a-1024-byte-python-like-interpreter-in-c-93900f99" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49591876.png" />
+  <meta property="article:published_time" content="2026-09-06T23:14:08+00:00" />
+  <meta property="article:modified_time" content="2026-09-07T06:14:00.260353+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Austin Henley builds a 1024-byte Python-like interpreter in C" />
+  <meta name="twitter:description" content="Austin Henley published a 1024-byte C implementation of a minimal Python-like interpreter that maps single-letter tokens (e.g., &#x27;f&#x27;) to fixed Python constructs (e.g., &#x27;for x in ran" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49591876.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-07-10-austin-henley-builds-a-1024-byte-python-like-interpreter-in-c-93900f99"}, "headline": "Austin Henley builds a 1024-byte Python-like interpreter in C", "description": "Austin Henley published a 1024-byte C implementation of a minimal Python-like interpreter that maps single-letter tokens (e.g., 'f') to fixed Python constructs (e.g., 'for x in ran", "image": ["https://nowainews.com/media/hackernews-story-49591876.png"], "datePublished": "2026-09-06T23:14:08+00:00", "dateModified": "2026-09-07T06:14:00.260353+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49591876.png" alt="Austin Henley builds a 1024-byte Python-like interpreter in C" />
+    <div class="article-page-tags"><span>#code-golf</span> <span>#interpreters</span> <span>#embedded-languages</span> <span>#systems-programming</span> <span>#python</span></div>
+    <h1>Austin Henley builds a 1024-byte Python-like interpreter in C</h1>
+    <p class="article-page-meta">News time: 2026-09-07T06:04:01.432307+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>In a playful yet technically impressive feat of code golf, Austin Henley has created a fully functional — albeit extremely minimal — Python-like interpreter that fits in exactly 1024 bytes of C source code. The interpreter doesn’t parse real Python; instead, it implements a deliberately crippled dialect where keywords are reduced to single letters: 'f' expands to <code>for x in range(y)</code>, 'w' means <code>while</code>, and 'i' stands for <code>if</code>. Variables are global integers, loops restart by reparsing the entire source from the top, and there’s no error checking whatsoever — if your input is malformed, the program simply crashes or misbehaves silently.</p>
+<p>This isn’t an attempt at practicality. It’s a systems-programming puzzle — a demonstration of how far you can push constraints while retaining <em>just enough</em> functionality to feel like a programming language. Henley’s implementation relies on aggressive shortcuts: no lexer or parser in the traditional sense, no AST, no memory management beyond a tiny stack and global array. Instead, it scans characters left-to-right, uses hardcoded offsets and string literals, and leans heavily on C’s preprocessor and undefined behavior tolerance to shave off every possible byte.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The project sits at the intersection of several niches: embedded-language design, retro computing aesthetics, and educational tooling. While it’s too fragile for real use, it serves as an accessible entry point into interpreter internals — especially for learners who want to see how control flow, scoping (however rudimentary), and evaluation can be bootstrapped from almost nothing. Its size makes it suitable for environments where even kilobytes matter, such as microcontrollers with under 4 kB of flash — though in practice, projects like Snek (a more robust embedded language) would be preferred for actual deployment.</p>
+<p>What makes this particularly compelling is its transparency: the full source is readable, annotated, and intentionally unoptimized for speed or safety — optimized only for brevity and conceptual clarity. It invites readers not just to run it, but to dissect, break, and rebuild it. As one commenter noted, it’s ‘nasty’ in the best possible way — a joyful, unapologetic hack that reveals how much complexity we usually take for granted in even the simplest language runtimes.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://austinhenley.com/blog/python1024.html" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/Code_golf" target="_blank" rel="noopener">Code golf</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

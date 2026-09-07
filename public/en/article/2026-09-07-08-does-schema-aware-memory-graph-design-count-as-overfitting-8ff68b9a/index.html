@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Does schema-aware memory graph design count as overfitting - Now AI News</title>
+  <meta name="description" content="A practitioner questions whether designing a memory graph based on known data structure—without inspecting QA pairs—constitutes overfitting or valid schema-aware engineering, and s" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-07-08-does-schema-aware-memory-graph-design-count-as-overfitting-8ff68b9a" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-07-08-does-schema-aware-memory-graph-design-count-as-overfitting-8ff68b9a" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-07-08-does-schema-aware-memory-graph-design-count-as-overfitting-8ff68b9a" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-07-08-does-schema-aware-memory-graph-design-count-as-overfitting-8ff68b9a" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Does schema-aware memory graph design count as overfitting" />
+  <meta property="og:description" content="A practitioner questions whether designing a memory graph based on known data structure—without inspecting QA pairs—constitutes overfitting or valid schema-aware engineering, and s" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-07-08-does-schema-aware-memory-graph-design-count-as-overfitting-8ff68b9a" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w8ph8b.svg" />
+  <meta property="article:published_time" content="2026-09-06T07:33:50+00:00" />
+  <meta property="article:modified_time" content="2026-09-07T06:14:00.260353+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Does schema-aware memory graph design count as overfitting" />
+  <meta name="twitter:description" content="A practitioner questions whether designing a memory graph based on known data structure—without inspecting QA pairs—constitutes overfitting or valid schema-aware engineering, and s" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w8ph8b.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-07-08-does-schema-aware-memory-graph-design-count-as-overfitting-8ff68b9a"}, "headline": "Does schema-aware memory graph design count as overfitting", "description": "A practitioner questions whether designing a memory graph based on known data structure—without inspecting QA pairs—constitutes overfitting or valid schema-aware engineering, and s", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1w8ph8b.svg"], "datePublished": "2026-09-06T07:33:50+00:00", "dateModified": "2026-09-07T06:14:00.260353+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1w8ph8b.svg" alt="Does schema-aware memory graph design count as overfitting" />
+    <div class="article-page-tags"><span>#machine-learning</span> <span>#data-leakage</span> <span>#knowledge-graphs</span> <span>#evaluation</span> <span>#system-design</span></div>
+    <h1>Does schema-aware memory graph design count as overfitting</h1>
+    <p class="article-page-meta">News time: 2026-09-07T06:04:01.720693+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A developer building infrastructure for long-term conversational memory recently posed a subtle but critical question on Reddit’s r/MachineLearning: if you design a memory graph—extracting people, facts, events, timestamps, and relations—based solely on the <em>known structural patterns</em> in your dataset (LoCoMo), without ever looking at the question-answer (QA) pairs used for evaluation, is that overfitting? The system achieves high recall across new multi-session conversations in the same format, suggesting robustness—but the concern lingers. This isn’t about tuning model weights or adding conditional logic like 'if question contains X, fetch fact #173.' Instead, it’s about architectural alignment: deliberately modeling the domain’s ontology upfront, before any QA exposure.</p>
+<p>The LoCoMo benchmark—introduced in early 2024 by Snap Research—is designed to stress-test long-term memory in LLM agents using real-world, multi-session dialogues. It evaluates not just factual recall, but cross-session reasoning, temporal consistency, contradiction resolution, and event summarization. Because LoCoMo’s data is grounded in structured real-world observations (e.g., who said what, when, and about which event), it naturally lends itself to knowledge graph representations. So building a memory graph around entities and relations isn’t arbitrary—it reflects how the underlying data was generated.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Yet the line between legitimate schema-aware engineering and implicit data leakage remains blurry. Overfitting typically implies learning statistical quirks of the test set; here, no QA pair informed the extractor rules or retrieval logic. But does knowing the <em>data generation process</em>—and designing infrastructure to mirror it—still risk biasing the evaluation? The poster asks for the ‘cleanest test’ to rule out leakage: one compelling proposal is holdout validation using <em>structurally distinct</em> conversations—e.g., switching from meeting logs to medical triage transcripts—where the same graph schema fails unless it captures truly generalizable abstractions.</p>
+<p>This question cuts across RAG, knowledge-augmented agents, and evaluation rigor. As more systems adopt context graphs and memory graphs, distinguishing principled architecture from accidental memorization becomes essential—not for theoretical purity, but for trustworthy deployment. The core insight is that overfitting isn’t only about parameters or examples; it can live in assumptions baked into the memory substrate itself.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1w8ph8b/is_designing_a_memory_graph_around_known_data/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/snap-research/LoCoMo" target="_blank" rel="noopener">GitHub - snap-research/locomo</a><a href="https://arxiv.org/abs/2402.17753" target="_blank" rel="noopener">[2402.17753] Evaluating Very Long-Term Conversational Memory ... LoCoMo Benchmark · MemHQ LoCoMo Benchmark: Long-Term Memory in Dialogues The LoCoMo benchmark, explained: long-term conversational ...</a><a href="https://ai.plainenglish.io/beyond-the-decision-trace-why-context-graphs-need-knowledge-architecture-2b5bfc90d4de" target="_blank" rel="noopener">Beyond the Decision Trace: Why Context Graphs Need Knowledge ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

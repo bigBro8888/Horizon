@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Drop-in sliding window attention cuts LLM KV-cache memory by 99% - Now AI News</title>
+  <meta name="description" content="A reusable Hugging Face inference layer implements sliding window attention with attention sinks for pretrained causal LLMs, reducing KV-cache memory by over 99% (e.g., from 1.84 G" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-07-09-drop-in-sliding-window-attention-cuts-llm-kv-cache-memory-by-99-18bc785e" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-07-09-drop-in-sliding-window-attention-cuts-llm-kv-cache-memory-by-99-18bc785e" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-07-09-drop-in-sliding-window-attention-cuts-llm-kv-cache-memory-by-99-18bc785e" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-07-09-drop-in-sliding-window-attention-cuts-llm-kv-cache-memory-by-99-18bc785e" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Drop-in sliding window attention cuts LLM KV-cache memory by 99%" />
+  <meta property="og:description" content="A reusable Hugging Face inference layer implements sliding window attention with attention sinks for pretrained causal LLMs, reducing KV-cache memory by over 99% (e.g., from 1.84 G" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-07-09-drop-in-sliding-window-attention-cuts-llm-kv-cache-memory-by-99-18bc785e" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w8repz.svg" />
+  <meta property="article:published_time" content="2026-09-06T09:23:59+00:00" />
+  <meta property="article:modified_time" content="2026-09-07T06:14:00.260353+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Drop-in sliding window attention cuts LLM KV-cache memory by 99%" />
+  <meta name="twitter:description" content="A reusable Hugging Face inference layer implements sliding window attention with attention sinks for pretrained causal LLMs, reducing KV-cache memory by over 99% (e.g., from 1.84 G" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w8repz.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-07-09-drop-in-sliding-window-attention-cuts-llm-kv-cache-memory-by-99-18bc785e"}, "headline": "Drop-in sliding window attention cuts LLM KV-cache memory by 99%", "description": "A reusable Hugging Face inference layer implements sliding window attention with attention sinks for pretrained causal LLMs, reducing KV-cache memory by over 99% (e.g., from 1.84 G", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1w8repz.svg"], "datePublished": "2026-09-06T09:23:59+00:00", "dateModified": "2026-09-07T06:14:00.260353+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1w8repz.svg" alt="Drop-in sliding window attention cuts LLM KV-cache memory by 99%" />
+    <div class="article-page-tags"><span>#LLM inference</span> <span>#attention optimization</span> <span>#KV cache</span> <span>#sliding window attention</span> <span>#efficient transformers</span></div>
+    <h1>Drop-in sliding window attention cuts LLM KV-cache memory by 99%</h1>
+    <p class="article-page-meta">News time: 2026-09-07T06:04:01.720790+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A new open-source implementation enables sliding window attention (SWA) for existing Hugging Face causal LLMs—without retraining or model modification. Developed by researcher /u/ahsaor8, the tool wraps pretrained models with a lightweight inference layer that replaces full-history key-value (KV) caching with a bounded, circular-buffer cache. This cache combines two ideas: attention sinks (tokens that consistently attract disproportionate attention, often early in context) and a recent sliding window (e.g., last 64 tokens). The result is dramatically smaller memory footprints and faster token generation—while preserving the original model architecture and weights.</p>
+<p>In benchmarks using Qwen2.5-7B, the SWA-64 variant reduced KV-cache memory from ~1.84 GB to just ~3.5 MB at 32K context length—a 99.8% reduction. Even at 16K context, memory dropped from ~923 MB to ~3.5 MB, and token-per-output-time (TPOT) improved from ~38.4 ms to ~30.5 ms. Crucially, this gain comes without changing the model’s weights or training pipeline—making it compatible with any HF-compatible decoder-only LLM out of the box.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The implementation includes streaming prefill, chunked attention masking, autoregressive decoding support, and built-in metrics for TTFT (time-to-first-token), TPOT, throughput, and real-time KV-cache memory usage. It also supports attention sinks—leveraging known empirical behavior in LLMs where early tokens (e.g., BOS or system prompts) act as stable attention anchors—even when they carry little semantic content. By retaining these sinks alongside the most recent tokens, SWA preserves some long-range coherence while discarding older, less attended positions.</p>
+<p>However, the trade-off is real: tasks requiring precise recall or reasoning across distances longer than the window size (e.g., referencing a detail from token #1000 in a 32K-sequence) may degrade. The author explicitly invites scrutiny on failure modes—asking which architectures, benchmarks, or edge cases deserve priority. This openness reflects a broader need in the LLM inference community: practical, composable optimizations that don’t force model retraining or vendor lock-in.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1w8repz/applying_sliding_window_attention_to_pretrained/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://klu.ai/glossary/sliding-window-attention" target="_blank" rel="noopener">What is Sliding Window Attention? — Klu</a><a href="https://huggingface.co/blog/tomaarsen/attention-sinks" target="_blank" rel="noopener">🕳️ Attention Sinks in LLMs for endless fluency</a><a href="https://insiderllm.com/guides/kv-cache-optimization-guide/" target="_blank" rel="noopener">KV Cache: Why Context Length Eats Your VRAM (And How to Fix It)</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

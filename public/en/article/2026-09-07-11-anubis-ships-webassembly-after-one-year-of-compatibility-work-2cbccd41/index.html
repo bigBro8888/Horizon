@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Anubis ships WebAssembly after one year of compatibility work - Now AI News</title>
+  <meta name="description" content="Anubis shipped production-ready WebAssembly support after a year-long development cycle, targeting Chrome 66+ and using Rust&#x27;s wasm32v1-none target to ensure minimal binary size an" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-07-11-anubis-ships-webassembly-after-one-year-of-compatibility-work-2cbccd41" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-07-11-anubis-ships-webassembly-after-one-year-of-compatibility-work-2cbccd41" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-07-11-anubis-ships-webassembly-after-one-year-of-compatibility-work-2cbccd41" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-07-11-anubis-ships-webassembly-after-one-year-of-compatibility-work-2cbccd41" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Anubis ships WebAssembly after one year of compatibility work" />
+  <meta property="og:description" content="Anubis shipped production-ready WebAssembly support after a year-long development cycle, targeting Chrome 66+ and using Rust&#x27;s wasm32v1-none target to ensure minimal binary size an" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-07-11-anubis-ships-webassembly-after-one-year-of-compatibility-work-2cbccd41" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49590611.svg" />
+  <meta property="article:published_time" content="2026-09-06T20:32:38+00:00" />
+  <meta property="article:modified_time" content="2026-09-07T06:14:00.260353+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Anubis ships WebAssembly after one year of compatibility work" />
+  <meta name="twitter:description" content="Anubis shipped production-ready WebAssembly support after a year-long development cycle, targeting Chrome 66+ and using Rust&#x27;s wasm32v1-none target to ensure minimal binary size an" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49590611.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-07-11-anubis-ships-webassembly-after-one-year-of-compatibility-work-2cbccd41"}, "headline": "Anubis ships WebAssembly after one year of compatibility work", "description": "Anubis shipped production-ready WebAssembly support after a year-long development cycle, targeting Chrome 66+ and using Rust's wasm32v1-none target to ensure minimal binary size an", "image": ["https://nowainews.com/media/hackernews-story-49590611.svg"], "datePublished": "2026-09-06T20:32:38+00:00", "dateModified": "2026-09-07T06:14:00.260353+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49590611.svg" alt="Anubis ships WebAssembly after one year of compatibility work" />
+    <div class="article-page-tags"><span>#WebAssembly</span> <span>#security</span> <span>#frontend</span> <span>#open-source</span> <span>#browser-compatibility</span></div>
+    <h1>Anubis ships WebAssembly after one year of compatibility work</h1>
+    <p class="article-page-meta">News time: 2026-09-07T06:04:01.432360+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>After a full year of engineering effort, the Anubis project — a privacy-focused, client-side challenge system often used as a CAPTCHA alternative — has officially shipped WebAssembly support. Unlike typical WASM rollouts that target modern browsers, this integration prioritizes real-world pragmatism: it works in Chrome 66 (released in 2018) and avoids features requiring newer runtime capabilities. The goal wasn’t performance at all costs, but rather maintaining strict backwards compatibility while delivering verifiable, client-side computation without leaking user data to servers.</p>
+<p>Anubis challenges are designed to run entirely in the browser — verifying proof-of-work, resource usage, or behavioral signals before granting access to protected content. By moving logic into WebAssembly, Anubis gains deterministic execution, memory isolation, and faster startup than equivalent JavaScript — all without sacrificing its core privacy promise. Crucially, the WASM module is loaded and executed only when needed, and never communicates with external endpoints during evaluation.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The implementation leans heavily on Rust’s <code>wasm32v1-none</code> target, which produces baseline WebAssembly without optional features like threads or SIMD. This choice enforces <code>#[no_std]</code>, eliminates dynamic memory allocation, and keeps binary size under 40 KB — small enough for low-bandwidth users and legacy devices. Developers also added graceful fallbacks: if WASM is disabled (e.g., via browser policy or user preference), Anubis falls back to a minimal, standards-compliant JavaScript path — and displays a clear message explaining why WASM is required.</p>
+<p>What stands out isn’t just technical execution, but philosophy: Anubis treats browser diversity not as an obstacle to be abstracted away, but as a design constraint to be honored. Its maintainers explicitly rejected ‘progressive enhancement’ in favor of ‘conservative compatibility’ — supporting older browsers not for nostalgia, but because those users often face the greatest surveillance pressure and least control over their tooling. As one commenter noted, this reflects deeper values about who open-source software serves — and who gets left behind when compatibility is deprioritized.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://anubis.techaro.lol/blog/2026/anubis-wasm/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://anubis.techaro.lol/docs/admin/configuration/challenges/" target="_blank" rel="noopener">Challenge Methods | Anubis</a><a href="https://anubis.techaro.lol/docs/user/frequently-asked-questions/" target="_blank" rel="noopener">Frequently Asked Questions | Anubis</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

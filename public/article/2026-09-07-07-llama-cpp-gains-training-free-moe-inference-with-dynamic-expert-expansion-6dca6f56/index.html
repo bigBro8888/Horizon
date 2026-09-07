@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>llama.cpp新增免训练MoE推理：动态扩展激活专家数 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="llama.cpp 新增免训练、纯运行时的 MoE 推理扩展，通过分层衰减与线性衰减策略动态增加每 token 激活专家数，已在 Qwen 3.6 35B 上实现并验证。 它在不需重训练或硬件升级的前提下，提升了推理阶段的参数利用率与专家多样性，让高性能 MoE 模型在本地及资源受限场景中更实用、更灵活。 该扩展基于动态阈值，支持按层范围配置；兼容 llam" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="llama.cpp新增免训练MoE推理：动态扩展激活专家数" />
+  <meta property="og:description" content="llama.cpp 新增免训练、纯运行时的 MoE 推理扩展，通过分层衰减与线性衰减策略动态增加每 token 激活专家数，已在 Qwen 3.6 35B 上实现并验证。 它在不需重训练或硬件升级的前提下，提升了推理阶段的参数利用率与专家多样性，让高性能 MoE 模型在本地及资源受限场景中更实用、更灵活。 该扩展基于动态阈值，支持按层范围配置；兼容 llam" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w94dtn.svg" />
+  <meta property="article:published_time" content="2026-09-06T18:41:34+00:00" />
+  <meta property="article:modified_time" content="2026-09-07T06:14:00.260353+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="llama.cpp新增免训练MoE推理：动态扩展激活专家数" />
+  <meta name="twitter:description" content="llama.cpp 新增免训练、纯运行时的 MoE 推理扩展，通过分层衰减与线性衰减策略动态增加每 token 激活专家数，已在 Qwen 3.6 35B 上实现并验证。 它在不需重训练或硬件升级的前提下，提升了推理阶段的参数利用率与专家多样性，让高性能 MoE 模型在本地及资源受限场景中更实用、更灵活。 该扩展基于动态阈值，支持按层范围配置；兼容 llam" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w94dtn.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56"}, "headline": "llama.cpp新增免训练MoE推理：动态扩展激活专家数", "description": "llama.cpp 新增免训练、纯运行时的 MoE 推理扩展，通过分层衰减与线性衰减策略动态增加每 token 激活专家数，已在 Qwen 3.6 35B 上实现并验证。 它在不需重训练或硬件升级的前提下，提升了推理阶段的参数利用率与专家多样性，让高性能 MoE 模型在本地及资源受限场景中更实用、更灵活。 该扩展基于动态阈值，支持按层范围配置；兼容 llam", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1w94dtn.svg"], "datePublished": "2026-09-06T18:41:34+00:00", "dateModified": "2026-09-07T06:14:00.260353+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1w94dtn.svg" alt="llama.cpp新增免训练MoE推理：动态扩展激活专家数" />
+    <div class="article-page-tags"><span>#MoE</span> <span>#llama.cpp</span> <span>#inference-optimization</span> <span>#sparse-models</span> <span>#LLM-architecture</span></div>
+    <h1>llama.cpp新增免训练MoE推理：动态扩展激活专家数</h1>
+    <p class="article-page-meta">新闻时间: 2026-09-07T06:04:01.720534+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一款面向稀疏混合专家（MoE）模型的新型推理架构已集成进 llama.cpp —— 这个广受欢迎、轻量级的 C/C++ 大语言模型推理引擎。与传统 MoE 推理不同（后者对每个 token 固定路由至 top-K 专家，例如 Mixtral 的 top-2 或 Qwen 的 top-4），该方案在运行时动态扩展每层的“激活专家数”，全程无需模型重训练、微调或结构修改。其核心包含两种互补衰减策略：“分层衰减”——即不同 Transformer 层启用不同数量的专家（如中间层启用更多专家）；以及“线性衰减”——路由影响力随生成步数从 99% 线性下降至 50%，从而在上下文展开过程中自然拓宽有效专家池。</p>
+<p>该实现完全后端无关：兼容 llama.cpp 支持的所有后端，包括 CPU、CUDA、Metal 和 Vulkan，可在笔记本电脑、工作站乃至边缘设备上直接使用。已在 Qwen 3.6 35B A4B+ 模型上完成实测验证——该开源 MoE 模型默认每 token 激活 4 个专家，而新方案可自适应地将单 token 路由专家数提升至 8 个以上，在保持低延迟的同时显著增加活跃参数量。关键在于，所有逻辑均位于推理调度器与路由器中，模型权重与量化格式无需任何改动。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>这并非理论构想：功能已作为 <code>moe-expansion</code> 分支正式发布，并附有详尽文档、使用示例与基准测试说明。作者强调，该扩展基于“阈值驱动”机制——路由决策实时响应门控 logits，而非静态规则；同时支持配置层范围（例如仅在第 10 至 25 层启用扩展）。这种灵活性使用户可在吞吐优先（少专家）与表达力优先（多专家）之间按需权衡，全部在推理阶段即时完成。</p>
+<p>对于本地部署 MoE 模型的开发者与研究者而言，这一改进大幅降低了利用更大专家容量的门槛，既避免显存暴涨，也无需训练开销。它还为探究专家多样性如何影响推理深度、幻觉率与长上下文连贯性等关键问题开辟了新路径——而这些问题过去常受限于僵化的 top-K 路由机制。随着 MoE 架构加速走出闭源生态（如 Mixtral、Grok、Qwen），运行时自适应路由或将与量化、KV 缓存一样，成为高效推理不可或缺的一环。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1w94dtn/proposed_architecture_for_inferencing_sparse_moe/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://medium.com/@apoorvajain1111/inside-the-sparse-brain-how-mixture-of-experts-moe-makes-llms-smarter-faster-and-greener-205b0fea1416" target="_blank" rel="noopener">Inside the Sparse Brain: How Mixture - of - Experts ( MoE )... | Medium</a><a href="https://localaimaster.com/models/mixtral-8x7b" target="_blank" rel="noopener">Mixtral 8x7B: Run MoE Model Locally — Ollama... | Local AI Master</a><a href="https://towardsai.com/p/artificial-intelligence/the-architecture-of-mistrals-sparse-mixture-of-experts-s〽️⭕e" target="_blank" rel="noopener">The Architecture of Mistral’s Sparse Mixture of Experts ... | Towards AI</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

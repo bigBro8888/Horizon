@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>llama.cpp gains training-free MoE inference with dynamic expert expansion - Now AI News</title>
+  <meta name="description" content="A training-free, runtime-only MoE inference extension for llama.cpp now enables dynamic expansion of active experts per token using layered and linear decay strategies — implemente" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="llama.cpp gains training-free MoE inference with dynamic expert expansion" />
+  <meta property="og:description" content="A training-free, runtime-only MoE inference extension for llama.cpp now enables dynamic expansion of active experts per token using layered and linear decay strategies — implemente" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w94dtn.svg" />
+  <meta property="article:published_time" content="2026-09-06T18:41:34+00:00" />
+  <meta property="article:modified_time" content="2026-09-07T06:14:00.260353+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="llama.cpp gains training-free MoE inference with dynamic expert expansion" />
+  <meta name="twitter:description" content="A training-free, runtime-only MoE inference extension for llama.cpp now enables dynamic expansion of active experts per token using layered and linear decay strategies — implemente" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w94dtn.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-07-07-llama-cpp-gains-training-free-moe-inference-with-dynamic-expert-expansion-6dca6f56"}, "headline": "llama.cpp gains training-free MoE inference with dynamic expert expansion", "description": "A training-free, runtime-only MoE inference extension for llama.cpp now enables dynamic expansion of active experts per token using layered and linear decay strategies — implemente", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1w94dtn.svg"], "datePublished": "2026-09-06T18:41:34+00:00", "dateModified": "2026-09-07T06:14:00.260353+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1w94dtn.svg" alt="llama.cpp gains training-free MoE inference with dynamic expert expansion" />
+    <div class="article-page-tags"><span>#MoE</span> <span>#llama.cpp</span> <span>#inference-optimization</span> <span>#sparse-models</span> <span>#LLM-architecture</span></div>
+    <h1>llama.cpp gains training-free MoE inference with dynamic expert expansion</h1>
+    <p class="article-page-meta">News time: 2026-09-07T06:04:01.720534+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A new architecture for inferring sparse Mixture-of-Experts (MoE) models has been integrated into llama.cpp — the widely adopted, lightweight C/C++ LLM inference engine. Unlike conventional MoE inference, which routes each token to a fixed top-K experts (e.g., top-2 for Mixtral or top-4 for Qwen), this approach dynamically expands the number of <em>active</em> experts per layer at runtime — without any model retraining, fine-tuning, or architectural modification. The method introduces two complementary decay strategies: <em>layered decay</em>, where expert activation count varies across transformer layers (e.g., more experts active in middle layers), and <em>linear decay</em>, where routing influence gradually diminishes from 99% to 50% over successive tokens — effectively broadening the effective expert pool as context unfolds.</p>
+<p>The implementation is fully backend-agnostic: it works across CPU, CUDA, Metal, and Vulkan backends in llama.cpp, making it accessible on laptops, workstations, and edge devices alike. It has been validated on Qwen 3.6 35B A4B+, a large open MoE model with 4 active experts per token by default — yet under this new scheme, the system can route up to 8+ experts per token adaptively, increasing total active parameters while preserving latency efficiency. Crucially, all logic resides in the inference scheduler and router; no changes are needed to model weights or quantization formats.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>This is not a theoretical proposal: the feature ships as a working branch (<code>moe-expansion</code>) with detailed documentation, usage examples, and benchmark notes. The author emphasizes that the expansion is <em>threshold-driven</em> — meaning routing decisions respond to real-time gating logits rather than static heuristics — and supports configurable layer ranges (e.g., apply expansion only between layers 10–25). That flexibility enables trade-offs: users can prioritize throughput (fewer experts) or expressivity (more experts) per use case, all at inference time.</p>
+<p>For developers and researchers deploying MoE models locally, this change lowers the barrier to leveraging larger expert capacity without GPU memory bloat or training overhead. It also opens new avenues for studying how expert diversity affects reasoning depth, hallucination, and long-context coherence — questions previously constrained by rigid top-K routing. As MoE adoption accelerates beyond proprietary stacks (e.g., Mixtral, Grok, Qwen), runtime-adaptive routing may become as essential to efficient inference as quantization or KV caching.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1w94dtn/proposed_architecture_for_inferencing_sparse_moe/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://medium.com/@apoorvajain1111/inside-the-sparse-brain-how-mixture-of-experts-moe-makes-llms-smarter-faster-and-greener-205b0fea1416" target="_blank" rel="noopener">Inside the Sparse Brain: How Mixture - of - Experts ( MoE )... | Medium</a><a href="https://localaimaster.com/models/mixtral-8x7b" target="_blank" rel="noopener">Mixtral 8x7B: Run MoE Model Locally — Ollama... | Local AI Master</a><a href="https://towardsai.com/p/artificial-intelligence/the-architecture-of-mistrals-sparse-mixture-of-experts-s〽️⭕e" target="_blank" rel="noopener">The Architecture of Mistral’s Sparse Mixture of Experts ... | Towards AI</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
