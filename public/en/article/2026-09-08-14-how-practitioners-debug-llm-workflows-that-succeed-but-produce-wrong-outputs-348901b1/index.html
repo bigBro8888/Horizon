@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>How practitioners debug LLM workflows that succeed but produce wrong outputs - Now AI News</title>
+  <meta name="description" content="A Reddit post surfaced widespread practitioner frustration with debugging LLM workflows that complete successfully but yield semantically incorrect outputs—highlighting the absence" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-08-14-how-practitioners-debug-llm-workflows-that-succeed-but-produce-wrong-outputs-348901b1" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-08-14-how-practitioners-debug-llm-workflows-that-succeed-but-produce-wrong-outputs-348901b1" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-08-14-how-practitioners-debug-llm-workflows-that-succeed-but-produce-wrong-outputs-348901b1" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-08-14-how-practitioners-debug-llm-workflows-that-succeed-but-produce-wrong-outputs-348901b1" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="How practitioners debug LLM workflows that succeed but produce wrong outputs" />
+  <meta property="og:description" content="A Reddit post surfaced widespread practitioner frustration with debugging LLM workflows that complete successfully but yield semantically incorrect outputs—highlighting the absence" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-08-14-how-practitioners-debug-llm-workflows-that-succeed-but-produce-wrong-outputs-348901b1" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1waewc3.svg" />
+  <meta property="article:published_time" content="2026-09-08T05:01:04+00:00" />
+  <meta property="article:modified_time" content="2026-09-08T06:21:37.350992+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How practitioners debug LLM workflows that succeed but produce wrong outputs" />
+  <meta name="twitter:description" content="A Reddit post surfaced widespread practitioner frustration with debugging LLM workflows that complete successfully but yield semantically incorrect outputs—highlighting the absence" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1waewc3.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-08-14-how-practitioners-debug-llm-workflows-that-succeed-but-produce-wrong-outputs-348901b1"}, "headline": "How practitioners debug LLM workflows that succeed but produce wrong outputs", "description": "A Reddit post surfaced widespread practitioner frustration with debugging LLM workflows that complete successfully but yield semantically incorrect outputs—highlighting the absence", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1waewc3.svg"], "datePublished": "2026-09-08T05:01:04+00:00", "dateModified": "2026-09-08T06:21:37.350992+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1waewc3.svg" alt="How practitioners debug LLM workflows that succeed but produce wrong outputs" />
+    <div class="article-page-tags"><span>#LLM-ops</span> <span>#debugging</span> <span>#agent-systems</span> <span>#production-ml</span> <span>#observability</span></div>
+    <h1>How practitioners debug LLM workflows that succeed but produce wrong outputs</h1>
+    <p class="article-page-meta">News time: 2026-09-08T05:55:49.224385+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A machine learning practitioner recently posed a deceptively simple but deeply frustrating question on Reddit’s r/MachineLearning: what do you do when an LLM-powered workflow runs to completion—no exceptions, no failed tool calls, no timeouts—yet the final output is plainly incorrect? This isn’t about crashes or stack traces; it’s about silent failures where every component reports 'success' while the system as a whole delivers nonsense, hallucinations, or misaligned business logic.</p>
+<p>This scenario is increasingly common in production-grade LLM applications—especially agentic systems that chain reasoning steps, retrieval, tool use, and stateful decision-making. Unlike traditional software, where a failing HTTP call or null pointer throws an immediate exception, LLM-based pipelines often lack clear failure boundaries. A retrieval step may return irrelevant documents without error; an LLM may misinterpret instructions yet generate syntactically valid JSON; a tool call may execute successfully but with wrong parameters. The result is a clean trace—and a broken outcome.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The original poster asked for real-world tactics—not textbook ideals—but practical, battle-tested habits: Do engineers start from the final output and work backward? Compare against a known-good run? Inspect intermediate states or model inputs? Audit retrieval relevance or tool invocation context? Or even step outside the trace entirely to verify external business state (e.g., database records or user intent)? Several respondents emphasized replaying the exact same input with logging enabled at every stage, while others highlighted lightweight LLM-as-a-judge evaluators to auto-flag suspicious outputs before they reach users.</p>
+<p>What makes this especially relevant now is the rise of LLMOps—the operational discipline for managing LLMs in production. As teams move beyond single-prompt demos into multi-step, stateful agent systems, observability gaps widen. Traditional metrics like latency or error rate become insufficient. Instead, teams need semantic correctness signals, structured tracing across LLM + tool + retrieval boundaries, and human-in-the-loop feedback loops. Some engineers reported building custom diff tools for agent state transitions or embedding validation checkpoints inside chains—like asserting that a retrieved document contains a required entity before proceeding. These aren’t theoretical fixes—they’re duct tape, glue, and guardrails forged in production fires.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1waewc3/when_a_run_is_wrong_but_nothing_actually_failed/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/LLM-as-a-Judge" target="_blank" rel="noopener">LLM-as-a-Judge</a><a href="https://grokipedia.com/page/llmops" target="_blank" rel="noopener">LLMOps</a><a href="https://cloud.google.com/discover/what-is-llmops" target="_blank" rel="noopener">LLMOps: What it is and how it works | Google Cloud</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

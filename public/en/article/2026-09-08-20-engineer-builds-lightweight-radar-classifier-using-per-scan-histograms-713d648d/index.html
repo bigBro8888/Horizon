@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Engineer builds lightweight radar classifier using per-scan histograms - Now AI News</title>
+  <meta name="description" content="A radar engineer implemented a 5-class object classifier on RadarScenes using per-scan 16-bin histograms and a 3-layer MLP with class-weighted cross-entropy loss, achieving macro F" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-08-20-engineer-builds-lightweight-radar-classifier-using-per-scan-histograms-713d648d" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-08-20-engineer-builds-lightweight-radar-classifier-using-per-scan-histograms-713d648d" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-08-20-engineer-builds-lightweight-radar-classifier-using-per-scan-histograms-713d648d" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-08-20-engineer-builds-lightweight-radar-classifier-using-per-scan-histograms-713d648d" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Engineer builds lightweight radar classifier using per-scan histograms" />
+  <meta property="og:description" content="A radar engineer implemented a 5-class object classifier on RadarScenes using per-scan 16-bin histograms and a 3-layer MLP with class-weighted cross-entropy loss, achieving macro F" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-08-20-engineer-builds-lightweight-radar-classifier-using-per-scan-histograms-713d648d" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w9m26u.svg" />
+  <meta property="article:published_time" content="2026-09-07T08:10:55+00:00" />
+  <meta property="article:modified_time" content="2026-09-08T06:21:37.350992+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Engineer builds lightweight radar classifier using per-scan histograms" />
+  <meta name="twitter:description" content="A radar engineer implemented a 5-class object classifier on RadarScenes using per-scan 16-bin histograms and a 3-layer MLP with class-weighted cross-entropy loss, achieving macro F" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1w9m26u.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-08-20-engineer-builds-lightweight-radar-classifier-using-per-scan-histograms-713d648d"}, "headline": "Engineer builds lightweight radar classifier using per-scan histograms", "description": "A radar engineer implemented a 5-class object classifier on RadarScenes using per-scan 16-bin histograms and a 3-layer MLP with class-weighted cross-entropy loss, achieving macro F", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1w9m26u.svg"], "datePublished": "2026-09-07T08:10:55+00:00", "dateModified": "2026-09-08T06:21:37.350992+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1w9m26u.svg" alt="Engineer builds lightweight radar classifier using per-scan histograms" />
+    <div class="article-page-tags"><span>#automotive radar</span> <span>#object classification</span> <span>#point cloud</span> <span>#imbalanced data</span> <span>#deep learning</span></div>
+    <h1>Engineer builds lightweight radar classifier using per-scan histograms</h1>
+    <p class="article-page-meta">News time: 2026-09-08T05:55:49.224724+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A radar signal processing engineer has developed a practical, five-class object classifier for automotive radar perception using the publicly available RadarScenes dataset. Instead of relying on complex point cloud architectures like PointPillars or VoxelNet, the approach uses a simple yet effective feature: a 16-bin histogram computed per radar scan — capturing distributions of velocity-compensated range, Doppler, and radar cross-section (RCS) across all detected points. This histogram is fed into a compact three-layer multilayer perceptron (MLP), trained with class-weighted cross-entropy loss to counteract severe data imbalance — especially for rare classes like two-wheelers and large vehicles.</p>
+<p>The model achieves a macro F1 score of 0.764 when objects have at least five radar detections — but drops sharply to 0.381 for single-point instances. This reveals a core challenge in radar perception: sparsity. Ablation studies confirmed that architectural changes — deeper MLPs, alternative encodings, or different binning strategies — yielded smaller improvements than the variance introduced by train/validation/test splits, underscoring how sensitive radar classification is to data partitioning. Notably, the author found that replacing histograms with per-instance statistics (e.g., mean/median/std) slightly degraded performance, suggesting distributional shape matters more than summary aggregates.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Confusion patterns offer valuable diagnostic insight. Cars are often misclassified as large vehicles when exhibiting unusually high RCS — possibly due to multipath reflections — while two-wheelers are frequently confused with pedestrians. This stems from overlapping velocity-compensated signatures: stationary or idling scooters and bicycles produce near-zero Doppler shifts indistinguishable from standing people. In one illustrative case, a single-point two-wheeler was labeled as pedestrian, whereas a single-point car in the same scene was classified correctly — highlighting how RCS and Doppler jointly support robust car identification, but not for two-wheelers.</p>
+<p>The work intentionally focuses on single-scan inference — a pragmatic starting point — with multi-scan accumulation flagged as critical future work. The author also plans to explore richer spatial encodings like PointNet and investigate micro-Doppler features to better separate subtle motion patterns. All code, experiments, and visualizations are openly shared in a detailed technical report, making this a highly accessible reference for engineers tackling real-world radar perception challenges.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1w9m26u/automotive_radar_object_classification_p/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://radar-scenes.com/" target="_blank" rel="noopener">RadarScenes - RadarScenes</a><a href="https://arxiv.org/html/2104.02493v2/" target="_blank" rel="noopener">RadarScenes : A Real-World Radar Point Cloud Data Set for...</a><a href="https://docs.pytorch.org/docs/2.13/generated/torch.nn.CrossEntropyLoss.html" target="_blank" rel="noopener">CrossEntropyLoss — PyTorch 2.13 documentation</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
