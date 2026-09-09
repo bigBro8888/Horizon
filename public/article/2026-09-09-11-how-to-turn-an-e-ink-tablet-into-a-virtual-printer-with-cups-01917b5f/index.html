@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>如何用CUPS将电子墨水平板变成虚拟打印机 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="一篇分步教程详细演示了如何通过自定义 CUPS 后端脚本，将电子墨水平板（如 reMarkable 或富士通 Quaderno）配置为虚拟的 IPP 兼容打印机。 它拓展了电子墨水设备的用途，使其不再局限于手写笔记；让用户能在任意 Linux 应用中无缝‘打印’审阅文档；并展示了如何利用标准化的 IPP 和 CUPS 架构，实现无需专用驱动的实用集成。 后端" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="如何用CUPS将电子墨水平板变成虚拟打印机" />
+  <meta property="og:description" content="一篇分步教程详细演示了如何通过自定义 CUPS 后端脚本，将电子墨水平板（如 reMarkable 或富士通 Quaderno）配置为虚拟的 IPP 兼容打印机。 它拓展了电子墨水设备的用途，使其不再局限于手写笔记；让用户能在任意 Linux 应用中无缝‘打印’审阅文档；并展示了如何利用标准化的 IPP 和 CUPS 架构，实现无需专用驱动的实用集成。 后端" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49617255.png" />
+  <meta property="article:published_time" content="2026-09-08T21:22:11+00:00" />
+  <meta property="article:modified_time" content="2026-09-09T06:09:02.562434+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="如何用CUPS将电子墨水平板变成虚拟打印机" />
+  <meta name="twitter:description" content="一篇分步教程详细演示了如何通过自定义 CUPS 后端脚本，将电子墨水平板（如 reMarkable 或富士通 Quaderno）配置为虚拟的 IPP 兼容打印机。 它拓展了电子墨水设备的用途，使其不再局限于手写笔记；让用户能在任意 Linux 应用中无缝‘打印’审阅文档；并展示了如何利用标准化的 IPP 和 CUPS 架构，实现无需专用驱动的实用集成。 后端" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49617255.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f"}, "headline": "如何用CUPS将电子墨水平板变成虚拟打印机", "description": "一篇分步教程详细演示了如何通过自定义 CUPS 后端脚本，将电子墨水平板（如 reMarkable 或富士通 Quaderno）配置为虚拟的 IPP 兼容打印机。 它拓展了电子墨水设备的用途，使其不再局限于手写笔记；让用户能在任意 Linux 应用中无缝‘打印’审阅文档；并展示了如何利用标准化的 IPP 和 CUPS 架构，实现无需专用驱动的实用集成。 后端", "image": ["https://nowainews.com/media/hackernews-story-49617255.png"], "datePublished": "2026-09-08T21:22:11+00:00", "dateModified": "2026-09-09T06:09:02.562434+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49617255.png" alt="如何用CUPS将电子墨水平板变成虚拟打印机" />
+    <div class="article-page-tags"><span>#CUPS</span> <span>#e-ink</span> <span>#Linux-printing</span> <span>#hardware-hacking</span> <span>#IPP</span></div>
+    <h1>如何用CUPS将电子墨水平板变成虚拟打印机</h1>
+    <p class="article-page-meta">新闻时间: 2026-09-09T05:57:31.956009+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>如果你的 reMarkable 或富士通 Quaderno 不只是一台手写笔记设备，而是一台真正可集成的‘打印机’呢？Nishant Joshi 发布的新教程就展示了如何做到这一点：不靠加装硬件，而是通过软件重配置。该指南详细说明了如何构建一个自定义 CUPS 后端，让电子墨水平板在 Linux 系统中表现为原生支持 IPP 协议的打印机。设置完成后，用户即可从任意应用程序（如 LibreOffice 或 Firefox）直接‘打印’PDF、网页或文档，内容会即时显示在电子墨水屏幕上。</p>
+<p>其核心在于打通两个世界：已有数十年历史的 CUPS 打印架构，与专为阅读而非打印设计的现代电子墨水设备。CUPS（通用 Unix 打印系统）长期依赖‘后端程序’（backend）——即负责与物理设备通信的小型脚本。作者编写了一个轻量级后端（可用 Python 或 Shell 实现），用于截获打印任务，将其转为适配屏幕的位图格式，并通过 USB 或网络推送到平板的显示层。关键一步是让该后端声明自身符合 IPP 标准，明确通告所支持的纸张尺寸（例如 reMarkable 2 的 <code>om_1404x1872</code>）、输出纸盒和介质类型，从而避免桌面应用意外缩放或裁剪内容。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>读者还将学到如何使用 IPP 命名规范（如 <code>om_NNNmmxYYYmm</code>）定义非标准纸张尺寸，通过精确匹配屏幕分辨率来规避自动缩放，并通过命令行或本地 Web 界面（localhost:631）配置 CUPS 打印队列。整个过程无需开发底层驱动，而是复用现有平板 API 和开源工具（如早期为富士通 Quaderno 开发的 <code>dpt-rp1-cups</code>）。</p>
+<p>更深层看，这篇教程引发了一个关于‘打印’本质的思考：它早已不再局限于油墨与纸张，而是指以应用无关、可靠高效的方式，将排版完成的内容送达任一具备接收能力的显示终端。正如一位评论者幽默指出的那样，这相当于把平板变成了‘会响应打印指令的电子纸’。它虽无法替代激光打印机处理大批量输出，却精准填补了一个安静但日益增长的需求：零干扰、无分心、超长续航的文档审阅体验——就在你目光停留的地方。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://nishantjosh.dev/blogs/how-to-build-a-fking-printer/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://en.wikipedia.org/wiki/CUPS" target="_blank" rel="noopener">CUPS - Wikipedia</a><a href="https://en.wikipedia.org/wiki/Internet_Printing_Protocol" target="_blank" rel="noopener">Internet Printing Protocol - Wikipedia</a><a href="https://www.cups.org/doc/man-backend.html" target="_blank" rel="noopener">backend (7) - CUPS</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

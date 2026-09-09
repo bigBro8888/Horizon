@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>How to turn an e-ink tablet into a virtual printer with CUPS - Now AI News</title>
+  <meta name="description" content="A step-by-step tutorial demonstrates how to configure an e-ink tablet (e.g., reMarkable or Fujitsu Quaderno) as a virtual IPP-compliant printer using a custom CUPS backend script. " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="How to turn an e-ink tablet into a virtual printer with CUPS" />
+  <meta property="og:description" content="A step-by-step tutorial demonstrates how to configure an e-ink tablet (e.g., reMarkable or Fujitsu Quaderno) as a virtual IPP-compliant printer using a custom CUPS backend script. " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49617255.png" />
+  <meta property="article:published_time" content="2026-09-08T21:22:11+00:00" />
+  <meta property="article:modified_time" content="2026-09-09T06:09:02.562434+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How to turn an e-ink tablet into a virtual printer with CUPS" />
+  <meta name="twitter:description" content="A step-by-step tutorial demonstrates how to configure an e-ink tablet (e.g., reMarkable or Fujitsu Quaderno) as a virtual IPP-compliant printer using a custom CUPS backend script. " />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49617255.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-09-11-how-to-turn-an-e-ink-tablet-into-a-virtual-printer-with-cups-01917b5f"}, "headline": "How to turn an e-ink tablet into a virtual printer with CUPS", "description": "A step-by-step tutorial demonstrates how to configure an e-ink tablet (e.g., reMarkable or Fujitsu Quaderno) as a virtual IPP-compliant printer using a custom CUPS backend script. ", "image": ["https://nowainews.com/media/hackernews-story-49617255.png"], "datePublished": "2026-09-08T21:22:11+00:00", "dateModified": "2026-09-09T06:09:02.562434+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49617255.png" alt="How to turn an e-ink tablet into a virtual printer with CUPS" />
+    <div class="article-page-tags"><span>#CUPS</span> <span>#e-ink</span> <span>#Linux-printing</span> <span>#hardware-hacking</span> <span>#IPP</span></div>
+    <h1>How to turn an e-ink tablet into a virtual printer with CUPS</h1>
+    <p class="article-page-meta">News time: 2026-09-09T05:57:31.956009+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>What if your reMarkable or Fujitsu Quaderno wasn’t just a note-taking device—but a fully integrated printer? A new tutorial by Nishant Joshi shows exactly how to do that: not by adding hardware, but by reconfiguring software. The guide walks readers through building a custom CUPS backend that makes the e-ink tablet appear as a native IPP-compliant printer to any Linux system. Once set up, users can ‘print’ PDFs, web pages, or documents from any application—just like sending jobs to a physical printer—and have them appear instantly on their e-ink screen.</p>
+<p>The trick lies in bridging two worlds: the decades-old CUPS printing architecture and modern e-ink devices designed for reading, not printing. CUPS—the Common Unix Printing System—has long relied on backends: small programs that handle communication with physical devices. By writing a lightweight backend script (in Python or shell), the author intercepts print jobs, converts them to a suitable bitmap format, and pushes them over USB or network to the tablet’s display layer. Crucially, the backend declares itself as IPP-compliant, advertising supported media sizes (e.g., <code>om_1404x1872</code> for reMarkable 2), output bins, and media types—so desktop apps like LibreOffice or Firefox don’t scale or crop unexpectedly.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Readers also learn how to define non-standard paper sizes using IPP naming conventions (<code>om_NNNmmxYYYmm</code>), avoid unwanted scaling by matching exact screen dimensions, and configure CUPS queues via command line or the web interface at localhost:631. The tutorial avoids low-level driver development, instead leveraging existing tablet APIs and open tools like <code>dpt-rp1-cups</code>, an earlier open-source backend for the Fujitsu Quaderno.</p>
+<p>Beyond technical execution, the piece sparks reflection on what ‘printing’ means today. It’s no longer about ink on paper—it’s about reliable, app-agnostic delivery of formatted content to any capable display. As one commenter notes, this turns the tablet into ‘paper that acts like a printer’. And while it won’t replace laser printers for volume output, it fills a quiet but growing niche: frictionless, distraction-free, battery-efficient document review—right where your eyes already are.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://nishantjosh.dev/blogs/how-to-build-a-fking-printer/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/CUPS" target="_blank" rel="noopener">CUPS - Wikipedia</a><a href="https://en.wikipedia.org/wiki/Internet_Printing_Protocol" target="_blank" rel="noopener">Internet Printing Protocol - Wikipedia</a><a href="https://www.cups.org/doc/man-backend.html" target="_blank" rel="noopener">backend (7) - CUPS</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
