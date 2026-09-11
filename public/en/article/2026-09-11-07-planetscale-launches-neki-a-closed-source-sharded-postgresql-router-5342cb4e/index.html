@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>PlanetScale launches Neki a closed-source sharded PostgreSQL router - Now AI News</title>
+  <meta name="description" content="PlanetScale launched Neki, a closed-source, sharded PostgreSQL routing layer that enables horizontal scaling while maintaining strong consistency across shards. Neki addresses a lo" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-11-07-planetscale-launches-neki-a-closed-source-sharded-postgresql-router-5342cb4e" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-11-07-planetscale-launches-neki-a-closed-source-sharded-postgresql-router-5342cb4e" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-11-07-planetscale-launches-neki-a-closed-source-sharded-postgresql-router-5342cb4e" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-11-07-planetscale-launches-neki-a-closed-source-sharded-postgresql-router-5342cb4e" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="PlanetScale launches Neki a closed-source sharded PostgreSQL router" />
+  <meta property="og:description" content="PlanetScale launched Neki, a closed-source, sharded PostgreSQL routing layer that enables horizontal scaling while maintaining strong consistency across shards. Neki addresses a lo" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-11-07-planetscale-launches-neki-a-closed-source-sharded-postgresql-router-5342cb4e" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49645686.png" />
+  <meta property="article:published_time" content="2026-09-10T15:43:49+00:00" />
+  <meta property="article:modified_time" content="2026-09-11T06:09:03.901365+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PlanetScale launches Neki a closed-source sharded PostgreSQL router" />
+  <meta name="twitter:description" content="PlanetScale launched Neki, a closed-source, sharded PostgreSQL routing layer that enables horizontal scaling while maintaining strong consistency across shards. Neki addresses a lo" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49645686.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-11-07-planetscale-launches-neki-a-closed-source-sharded-postgresql-router-5342cb4e"}, "headline": "PlanetScale launches Neki a closed-source sharded PostgreSQL router", "description": "PlanetScale launched Neki, a closed-source, sharded PostgreSQL routing layer that enables horizontal scaling while maintaining strong consistency across shards. Neki addresses a lo", "image": ["https://nowainews.com/media/hackernews-story-49645686.png"], "datePublished": "2026-09-10T15:43:49+00:00", "dateModified": "2026-09-11T06:09:03.901365+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49645686.png" alt="PlanetScale launches Neki a closed-source sharded PostgreSQL router" />
+    <div class="article-page-tags"><span>#PostgreSQL</span> <span>#database-sharding</span> <span>#distributed-databases</span> <span>#PlanetScale</span> <span>#CAP-theorem</span></div>
+    <h1>PlanetScale launches Neki a closed-source sharded PostgreSQL router</h1>
+    <p class="article-page-meta">News time: 2026-09-11T05:55:51.348074+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>PlanetScale has unveiled Neki, a new sharded PostgreSQL routing layer designed to scale Postgres horizontally while preserving strong consistency—something notoriously difficult in distributed SQL systems. Unlike traditional replication or read replicas, Neki partitions data across many independent PostgreSQL instances (shards), each running real, unmodified Postgres. Applications connect to Neki’s router using the standard PostgreSQL wire protocol, requiring no client-side changes. The router handles query routing, transaction coordination, and metadata management—abstracting away the complexity of sharding from developers.</p>
+<p>Neki builds on PlanetScale’s deep operational experience with Vitess, the open-source MySQL sharding system Google created and PlanetScale previously operated at massive scale. But rather than adapting Vitess for PostgreSQL, PlanetScale built Neki from scratch as a purpose-built Postgres sharding stack. It includes a lightweight router, per-shard sidecar agents, and a centralized control plane—all orchestrated to maintain ACID semantics across shards. According to PlanetScale, Neki supports hundreds of millions of queries per second and petabytes of data, with zero-downtime resharding and automated failover.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>What sets Neki apart is its claim to deliver strong consistency without sacrificing availability in typical production scenarios—a delicate balance under the CAP theorem. While the architecture isn’t fully disclosed, PlanetScale suggests it avoids eventual consistency by using synchronous cross-shard coordination for writes and two-phase commit–like protocols where needed. Still, tradeoffs exist: latency increases with cross-shard transactions, and availability may be reduced during network partitions—though PlanetScale says these are mitigated via intelligent timeouts and fallback behaviors.</p>
+<p>The launch has drawn sharp community scrutiny—not just for technical substance, but for messaging and philosophy. Early HN commenters criticized the blog post for failing to clearly define Neki upfront, calling it ‘a solution in search of a problem statement.’ Others raised concerns about its closed-source nature, especially given PlanetScale’s origins in open-source Vitess and its public criticism of Supabase’s open-source Multigres. The tension reflects broader industry debates: can horizontal scaling for Postgres succeed without transparency? And does strong consistency at scale demand proprietary tooling—or is that a concession to business model over engineering principle?</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://planetscale.com/blog/introducing-neki" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://neki.dev/" target="_blank" rel="noopener">Neki | Sharded Postgres by PlanetScale</a><a href="https://planetscale.com/docs/postgres/sharding" target="_blank" rel="noopener">Horizontal sharding for Postgres - PlanetScale</a><a href="https://planetscale.com/blog/introducing-neki" target="_blank" rel="noopener">Introducing Neki — PlanetScale</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
