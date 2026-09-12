@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Radar object classifier learns range bias, not true classes - Now AI News</title>
+  <meta name="description" content="A practitioner identified range-induced confounding in automotive radar object classification, where including range as a feature artificially inflates F1 scores by exploiting rada" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-12-09-radar-object-classifier-learns-range-bias-not-true-classes-d52bbcf0" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-12-09-radar-object-classifier-learns-range-bias-not-true-classes-d52bbcf0" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-12-09-radar-object-classifier-learns-range-bias-not-true-classes-d52bbcf0" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-12-09-radar-object-classifier-learns-range-bias-not-true-classes-d52bbcf0" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Radar object classifier learns range bias, not true classes" />
+  <meta property="og:description" content="A practitioner identified range-induced confounding in automotive radar object classification, where including range as a feature artificially inflates F1 scores by exploiting rada" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-12-09-radar-object-classifier-learns-range-bias-not-true-classes-d52bbcf0" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wdpat4.svg" />
+  <meta property="article:published_time" content="2026-09-11T18:57:40+00:00" />
+  <meta property="article:modified_time" content="2026-09-12T05:57:08.602592+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Radar object classifier learns range bias, not true classes" />
+  <meta name="twitter:description" content="A practitioner identified range-induced confounding in automotive radar object classification, where including range as a feature artificially inflates F1 scores by exploiting rada" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wdpat4.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-12-09-radar-object-classifier-learns-range-bias-not-true-classes-d52bbcf0"}, "headline": "Radar object classifier learns range bias, not true classes", "description": "A practitioner identified range-induced confounding in automotive radar object classification, where including range as a feature artificially inflates F1 scores by exploiting rada", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wdpat4.svg"], "datePublished": "2026-09-11T18:57:40+00:00", "dateModified": "2026-09-12T05:57:08.602592+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wdpat4.svg" alt="Radar object classifier learns range bias, not true classes" />
+    <div class="article-page-tags"><span>#confounding</span> <span>#radar-perception</span> <span>#model-robustness</span> <span>#sensor-bias</span> <span>#ML-best-practices</span></div>
+    <h1>Radar object classifier learns range bias, not true classes</h1>
+    <p class="article-page-meta">News time: 2026-09-12T05:44:44.875854+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A machine learning practitioner working on automotive radar point cloud classification has raised a subtle but critical concern: when range (distance to object) is included as an input feature, model F1 scores improve consistently across all validation folds and the final test set — yet this boost may reflect spurious correlation, not genuine class separation. The issue stems from a well-known physical property of automotive radar: farther objects return fewer reflected points due to signal attenuation and beam spread. As a result, range strongly correlates with point cloud density — and, unintentionally, with object size or type in the dataset. The model may thus learn that ‘large range → sparse points → large vehicle’, rather than recognizing intrinsic geometric or kinematic features of cars, trucks, or pedestrians.</p>
+<p>This isn’t classic overfitting — cross-validation stability and test-set performance rule that out. Instead, it’s <em>range-induced confounding</em>: range acts as a hidden proxy variable that entangles environment-dependent sensor behavior with semantic labels. The practitioner suspects their model is generalizing to the deployment environment (e.g., highway vs. urban layouts), not to object categories themselves — undermining real-world robustness when encountering new scenes or unseen range distributions.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>To diagnose this, they propose several pragmatic stress tests: stratifying train/test splits by range bins to see if performance collapses when range distributions diverge; ablation studies removing range as a feature entirely; or using causal inference tools like backdoor adjustment or invariant risk minimization. They also consider whether domain randomization — synthetically varying range–density relationships during training — could help decouple sensor artifacts from semantics. Crucially, they’re not asking how to maximize metrics, but how to ensure those metrics reflect meaningful, deployable intelligence.</p>
+<p>The question resonates beyond radar: any sensor modality with systematic physical biases — lidar dropouts in rain, camera motion blur at low light, thermal camera saturation near heat sources — risks similar confounding. Addressing it requires moving past accuracy-as-truth toward ecological validity: does the model succeed because it understands objects, or because it memorized the data collection setup? For autonomous driving systems, where safety-critical decisions hinge on perception, mistaking correlation for causation isn’t just academically unsatisfying — it’s potentially hazardous.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wdpat4/how_to_handle_cofound_variables_d/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://link.springer.com/article/10.1186/s42467-021-00012-z" target="_blank" rel="noopener">Object detection for automotive radar point clouds – a ...</a><a href="https://www.mdpi.com/1424-8220/24/22/7219" target="_blank" rel="noopener">Evaluation of Cluster Algorithms for Radar-Based Object ...</a><a href="https://www.thinkautonomous.ai/blog/how-radars-work/" target="_blank" rel="noopener">How RADARs work</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

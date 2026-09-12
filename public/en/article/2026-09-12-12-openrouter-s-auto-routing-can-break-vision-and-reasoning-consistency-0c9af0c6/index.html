@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>OpenRouter’s auto-routing can break vision and reasoning consistency - Now AI News</title>
+  <meta name="description" content="Mohamed Moustafa documented concrete inconsistencies in OpenRouter&#x27;s automatic model routing—including missing vision support and divergent handling of reasoning parameters—and hig" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-12-12-openrouter-s-auto-routing-can-break-vision-and-reasoning-consistency-0c9af0c6" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-12-12-openrouter-s-auto-routing-can-break-vision-and-reasoning-consistency-0c9af0c6" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-12-12-openrouter-s-auto-routing-can-break-vision-and-reasoning-consistency-0c9af0c6" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-12-12-openrouter-s-auto-routing-can-break-vision-and-reasoning-consistency-0c9af0c6" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="OpenRouter’s auto-routing can break vision and reasoning consistency" />
+  <meta property="og:description" content="Mohamed Moustafa documented concrete inconsistencies in OpenRouter&#x27;s automatic model routing—including missing vision support and divergent handling of reasoning parameters—and hig" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-12-12-openrouter-s-auto-routing-can-break-vision-and-reasoning-consistency-0c9af0c6" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--28569c3c31a0d771.svg" />
+  <meta property="article:published_time" content="2026-09-11T22:49:18+00:00" />
+  <meta property="article:modified_time" content="2026-09-12T05:57:08.602592+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OpenRouter’s auto-routing can break vision and reasoning consistency" />
+  <meta name="twitter:description" content="Mohamed Moustafa documented concrete inconsistencies in OpenRouter&#x27;s automatic model routing—including missing vision support and divergent handling of reasoning parameters—and hig" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--28569c3c31a0d771.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-12-12-openrouter-s-auto-routing-can-break-vision-and-reasoning-consistency-0c9af0c6"}, "headline": "OpenRouter’s auto-routing can break vision and reasoning consistency", "description": "Mohamed Moustafa documented concrete inconsistencies in OpenRouter's automatic model routing—including missing vision support and divergent handling of reasoning parameters—and hig", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--28569c3c31a0d771.svg"], "datePublished": "2026-09-11T22:49:18+00:00", "dateModified": "2026-09-12T05:57:08.602592+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--28569c3c31a0d771.svg" alt="OpenRouter’s auto-routing can break vision and reasoning consistency" />
+    <div class="article-page-tags"><span>#LLM APIs</span> <span>#OpenRouter</span> <span>#model routing</span> <span>#AI infrastructure</span> <span>#API abstraction</span></div>
+    <h1>OpenRouter’s auto-routing can break vision and reasoning consistency</h1>
+    <p class="article-page-meta">News time: 2026-09-12T05:44:44.087211+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>OpenRouter markets itself as a unified API gateway for large language models—offering automatic fallback, cost-optimized routing, and simplified model access across dozens of providers. At first glance, this abstraction is compelling: developers send a request to a single endpoint like <code>gpt-4o</code>, and OpenRouter handles the rest—choosing the cheapest or most available backend, retrying on failure, and even switching providers mid-deployment without code changes.</p>
+<p>But as Mohamed Moustafa’s incisive critique reveals, that convenience comes with subtle but serious trade-offs. Because OpenRouter routes requests dynamically across heterogeneous infrastructure—different providers run different serving stacks (e.g., vLLM vs. TGI vs. custom wrappers), with distinct tokenization, quantization, and inference settings—the <em>same</em> model name can behave differently depending on who’s serving it. A request to <code>gpt-4o</code> might hit Together AI one moment and Fireworks AI the next—and those two deployments may disagree on whether image inputs are accepted, how <code>reasoning_effort</code> is interpreted, or even whether streaming works reliably.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Worse, some providers omit capabilities entirely: vision support is not guaranteed across all backends for multimodal models, and certain reasoning parameters may be silently ignored or misapplied. This isn’t theoretical—it breaks deterministic testing, undermines prompt engineering, and introduces silent regressions in production pipelines where behavior must be stable across retries or scaling events.</p>
+<p>The good news? OpenRouter provides an escape hatch: the <code>provider.only</code> routing option. By explicitly pinning a request to a single provider—say, <code>anthropic/claude-3-5-sonnet-20241022@anthropic</code> instead of just <code>claude-3-5-sonnet-20241022</code>—developers regain control over behavior, latency, and feature availability. You can discover compatible providers for any model using the <code>/endpoints</code> API, which returns a curated list of backends supporting that exact model ID and configuration.</p>
+<p>This isn’t a bug—it’s the inevitable consequence of abstracting away infrastructure heterogeneity. As LLM orchestration matures, the field is learning that routing layers must balance cost, resilience, and <em>predictability</em>. For teams building reliable AI applications, explicit provider selection isn’t an advanced trick—it’s a foundational operational safeguard.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Sep/11/so-you-want-to-use-openrouter/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://openrouter.ai/docs/guides/routing/provider-selection" target="_blank" rel="noopener">Provider Routing - Smart Multi-Provider Request Management</a><a href="https://simonwillison.net/2026/Sep/11/so-you-want-to-use-openrouter/" target="_blank" rel="noopener">So you want to use OpenRouter?</a><a href="https://github.com/musistudio/claude-code-router/issues/188" target="_blank" rel="noopener">how to select specific provider for openrouter? · Issue #188 · musistudio/claude-code-router</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

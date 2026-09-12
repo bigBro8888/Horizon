@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>A 210M DiT trained on one GPU reveals null attention sinks and loss-quality decoupling - Now AI News</title>
+  <meta name="description" content="A researcher trained a 210M-parameter text-to-image DiT from scratch on one RTX PRO 6000 GPU and discovered (1) learned null attention slots dominate cross-attention mass (~90%) mi" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-12-03-a-210m-dit-trained-on-one-gpu-reveals-null-attention-sinks-and-loss-quality-deco-4dbd21d9" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-12-03-a-210m-dit-trained-on-one-gpu-reveals-null-attention-sinks-and-loss-quality-deco-4dbd21d9" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-12-03-a-210m-dit-trained-on-one-gpu-reveals-null-attention-sinks-and-loss-quality-deco-4dbd21d9" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-12-03-a-210m-dit-trained-on-one-gpu-reveals-null-attention-sinks-and-loss-quality-deco-4dbd21d9" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="A 210M DiT trained on one GPU reveals null attention sinks and loss-quality decoupling" />
+  <meta property="og:description" content="A researcher trained a 210M-parameter text-to-image DiT from scratch on one RTX PRO 6000 GPU and discovered (1) learned null attention slots dominate cross-attention mass (~90%) mi" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-12-03-a-210m-dit-trained-on-one-gpu-reveals-null-attention-sinks-and-loss-quality-deco-4dbd21d9" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wdfmvq.png" />
+  <meta property="article:published_time" content="2026-09-11T13:00:11+00:00" />
+  <meta property="article:modified_time" content="2026-09-12T05:57:08.602592+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="A 210M DiT trained on one GPU reveals null attention sinks and loss-quality decoupling" />
+  <meta name="twitter:description" content="A researcher trained a 210M-parameter text-to-image DiT from scratch on one RTX PRO 6000 GPU and discovered (1) learned null attention slots dominate cross-attention mass (~90%) mi" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wdfmvq.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-12-03-a-210m-dit-trained-on-one-gpu-reveals-null-attention-sinks-and-loss-quality-deco-4dbd21d9"}, "headline": "A 210M DiT trained on one GPU reveals null attention sinks and loss-quality decoupling", "description": "A researcher trained a 210M-parameter text-to-image DiT from scratch on one RTX PRO 6000 GPU and discovered (1) learned null attention slots dominate cross-attention mass (~90%) mi", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wdfmvq.png"], "datePublished": "2026-09-11T13:00:11+00:00", "dateModified": "2026-09-12T05:57:08.602592+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wdfmvq.png" alt="A 210M DiT trained on one GPU reveals null attention sinks and loss-quality decoupling" />
+    <div class="article-page-tags"><span>#diffusion-models</span> <span>#transformers</span> <span>#attention-mechanisms</span> <span>#text-to-image</span> <span>#model-interpretability</span></div>
+    <h1>A 210M DiT trained on one GPU reveals null attention sinks and loss-quality decoupling</h1>
+    <p class="article-page-meta">News time: 2026-09-12T05:44:44.875676+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A practitioner named Ivan Mikhnenkov successfully trained a 210-million-parameter text-to-image diffusion transformer (DiT) from scratch on a single RTX PRO 6000 GPU — completing the full training run in just 3.5 days. Using 4.2 million images at 256×256 resolution, the experiment was not aimed at setting new generation benchmarks, but rather at dissecting the <em>training dynamics</em> of modern DiTs end to end. The result is a rare, hands-on empirical study that surfaces three previously undocumented behaviors — two of which challenge widely held assumptions in diffusion model development.</p>
+<p>The first finding centers on <em>learned null attention slots</em>. The model incorporates two extra learnable key/value slots in every cross-attention layer — inspired by register tokens used in vision transformers. Mid-training, these slots absorb roughly 90% of the cross-attention mass at mid-noise levels in middle transformer blocks. In contrast, the EOS token — traditionally treated as the primary attention sink — drops to just ~4%, while content words retain only a few percent each, tightly aligned with their visual referents. Crucially, the register vectors grow to 4–13× the norm of regular image tokens, suggesting they evolve into dedicated global summarizers rather than passive placeholders.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Second, the flow-matching loss — often treated as a proxy for sample quality — proves misleading. Over training, it improved only slightly (0.805 → 0.754), while perceptual metrics surged: FID dropped from 33.7 to 27.0, FD-DINOv2 from 570 to 218, and object detection accuracy rose from 65% to 90%. The loss plateaued early and stayed nearly identical between train and validation sets for 24 epochs — indicating it tracks optimization stability, not fidelity. Most of the residual loss stems from irreducible noise in the velocity target itself.</p>
+<p>Third, a simple timestep shift — derived from FLUX.2’s latent geometry — delivered more gains than doubling sampling steps. With shift 2.8, 20-step sampling achieved FID 27.0; without shift, the same steps yielded FID 27.3 and worse FD-DINOv2. This underscores how architectural choices in scheduling can outweigh brute-force step inflation. The full setup — including RoPE, QK-norm, SwiGLU, and frozen FLAN-T5 text encoders — is fully open-sourced, with weights, demo, and blog post publicly available.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wdfmvq/training_a_210m_texttoimage_dit_from_scratch_on/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://arxiv.org/abs/2212.09748" target="_blank" rel="noopener">[2212.09748] Scalable Diffusion Models with Transformers</a><a href="https://arxiv.org/abs/2309.16588" target="_blank" rel="noopener">[2309.16588] Vision Transformers Need Registers - arXiv.org Register Tokens in Transformer Models - emergentmind.com GitHub - kyegomez/Vit-RGTS: Open source implementation of ... Vision Transformers Need Registers - arXiv.org Register tokens (Vision Transformers Need Registers) - AI Wiki Vision Transformers Need Registers - Qiang Zhang What are Register Tokens? | kyegomez/Vit-RGTS | DeepWiki</a><a href="https://layernorm.dev/posts/diffusion/4-flow-matching-loss/" target="_blank" rel="noopener">Diffusion &amp; Flow Matching Part 4: The Flow Matching Loss ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

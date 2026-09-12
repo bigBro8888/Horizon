@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Python 3.15 soft-deprecates re.match in favor of re.prefixmatch - Now AI News</title>
+  <meta name="description" content="Python 3.15 soft-deprecates re.match() and introduces re.prefixmatch() as its preferred, semantically clearer replacement; re.match() remains fully functional but is no longer reco" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-12-15-python-3-15-soft-deprecates-re-match-in-favor-of-re-prefixmatch-88e0aba7" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-12-15-python-3-15-soft-deprecates-re-match-in-favor-of-re-prefixmatch-88e0aba7" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-12-15-python-3-15-soft-deprecates-re-match-in-favor-of-re-prefixmatch-88e0aba7" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-12-15-python-3-15-soft-deprecates-re-match-in-favor-of-re-prefixmatch-88e0aba7" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Python 3.15 soft-deprecates re.match in favor of re.prefixmatch" />
+  <meta property="og:description" content="Python 3.15 soft-deprecates re.match() and introduces re.prefixmatch() as its preferred, semantically clearer replacement; re.match() remains fully functional but is no longer reco" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-12-15-python-3-15-soft-deprecates-re-match-in-favor-of-re-prefixmatch-88e0aba7" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--f86330f6327ebf55.png" />
+  <meta property="article:published_time" content="2026-09-11T14:47:57+00:00" />
+  <meta property="article:modified_time" content="2026-09-12T05:57:08.602592+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Python 3.15 soft-deprecates re.match in favor of re.prefixmatch" />
+  <meta name="twitter:description" content="Python 3.15 soft-deprecates re.match() and introduces re.prefixmatch() as its preferred, semantically clearer replacement; re.match() remains fully functional but is no longer reco" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--f86330f6327ebf55.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-12-15-python-3-15-soft-deprecates-re-match-in-favor-of-re-prefixmatch-88e0aba7"}, "headline": "Python 3.15 soft-deprecates re.match in favor of re.prefixmatch", "description": "Python 3.15 soft-deprecates re.match() and introduces re.prefixmatch() as its preferred, semantically clearer replacement; re.match() remains fully functional but is no longer reco", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--f86330f6327ebf55.png"], "datePublished": "2026-09-11T14:47:57+00:00", "dateModified": "2026-09-12T05:57:08.602592+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--f86330f6327ebf55.png" alt="Python 3.15 soft-deprecates re.match in favor of re.prefixmatch" />
+    <div class="article-page-tags"><span>#Python</span> <span>#regex</span> <span>#API design</span> <span>#deprecation</span> <span>#software engineering</span></div>
+    <h1>Python 3.15 soft-deprecates re.match in favor of re.prefixmatch</h1>
+    <p class="article-page-meta">News time: 2026-09-12T05:44:44.087336+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>Python 3.15 introduces a quiet but meaningful shift in how developers work with regular expressions: the <code>re.match()</code> function is now <em>soft-deprecated</em>. This doesn’t mean it’s broken or removed — it still works exactly as before — but the official guidance is clear: new code should avoid it. Instead, Python now encourages use of <code>re.prefixmatch()</code>, a newly added alias that more precisely describes what the function actually does — matching only at the <em>start</em> of a string, without requiring full-string alignment.</p>
+<p>The change reflects a long-standing source of confusion. Many developers mistakenly assume <code>re.match()</code> behaves like Perl’s <code>^</code>-anchored match or even like <code>re.fullmatch()</code>, only to be surprised when patterns fail mid-string or behave differently than expected. As Hugo van Kemenade, Python 3.15 release manager, explains, <code>re.match()</code>’s name implies broader semantics than it delivers — it’s neither a general search nor a complete match, but strictly a <em>prefix</em> operation. That ambiguity has led to subtle bugs and unnecessary debugging time across decades of Python code.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>To help developers choose correctly, the standard library now promotes three distinct, semantically clear primitives: <code>re.search()</code> for finding a pattern anywhere in the text, <code>re.fullmatch()</code> for requiring the entire string to match, and <code>re.prefixmatch()</code> for the specific case where anchoring only at the beginning is desired. This triad replaces the overloaded and ambiguous <code>re.match()</code> — which, while retained for backward compatibility, no longer appears in new documentation examples or tutorials.</p>
+<p>Soft deprecation follows PEP 387 guidelines: no warning is raised at runtime (since <code>re.match()</code> remains fully functional), but the official docs, style guides, and core developers now treat it as legacy. It’s a gentle nudge — not a breaking change — aligned with Python’s philosophy of favoring explicit, readable code over implicit convenience. Over time, this shift may reduce onboarding friction for newcomers and improve maintainability in large codebases where regex intent must be instantly clear.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Sep/11/soft-deprecating-re-match/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://peps.python.org/pep-0387/" target="_blank" rel="noopener">PEP 387 – Backwards Compatibility Policy | peps . python .org</a><a href="https://docs.python.org/3.15/library/re.html" target="_blank" rel="noopener">re — Regular expression operations — Python 3 . 15 .0rc1 documentation</a><a href="https://adamj.eu/tech/2026/08/16/python-prefer-prefixmatch-to-match/" target="_blank" rel="noopener">Python: use re . prefixmatch () instead of re . match () from Python 3 . 15</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
