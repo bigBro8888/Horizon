@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>whitetree adds dynamic inserts and deletes to scipy&#x27;s cKDTree - Now AI News</title>
+  <meta name="description" content="The developer released whitetree, a new library that enables dynamic insertions and deletions into scipy&#x27;s cKDTree for exact Mahalanobis nearest-neighbor search by maintaining mult" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-14-04-whitetree-adds-dynamic-inserts-and-deletes-to-scipy-s-ckdtree-9e751084" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-14-04-whitetree-adds-dynamic-inserts-and-deletes-to-scipy-s-ckdtree-9e751084" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-14-04-whitetree-adds-dynamic-inserts-and-deletes-to-scipy-s-ckdtree-9e751084" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-14-04-whitetree-adds-dynamic-inserts-and-deletes-to-scipy-s-ckdtree-9e751084" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="whitetree adds dynamic inserts and deletes to scipy&#x27;s cKDTree" />
+  <meta property="og:description" content="The developer released whitetree, a new library that enables dynamic insertions and deletions into scipy&#x27;s cKDTree for exact Mahalanobis nearest-neighbor search by maintaining mult" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-14-04-whitetree-adds-dynamic-inserts-and-deletes-to-scipy-s-ckdtree-9e751084" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wfg8e3.png" />
+  <meta property="article:published_time" content="2026-09-13T18:54:18+00:00" />
+  <meta property="article:modified_time" content="2026-09-14T06:26:43.505159+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="whitetree adds dynamic inserts and deletes to scipy&#x27;s cKDTree" />
+  <meta name="twitter:description" content="The developer released whitetree, a new library that enables dynamic insertions and deletions into scipy&#x27;s cKDTree for exact Mahalanobis nearest-neighbor search by maintaining mult" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wfg8e3.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-14-04-whitetree-adds-dynamic-inserts-and-deletes-to-scipy-s-ckdtree-9e751084"}, "headline": "whitetree adds dynamic inserts and deletes to scipy's cKDTree", "description": "The developer released whitetree, a new library that enables dynamic insertions and deletions into scipy's cKDTree for exact Mahalanobis nearest-neighbor search by maintaining mult", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wfg8e3.png"], "datePublished": "2026-09-13T18:54:18+00:00", "dateModified": "2026-09-14T06:26:43.505159+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wfg8e3.png" alt="whitetree adds dynamic inserts and deletes to scipy&#x27;s cKDTree" />
+    <div class="article-page-tags"><span>#kdtree</span> <span>#nearest-neighbors</span> <span>#dynamic-data-structures</span> <span>#mahalanobis-distance</span> <span>#scipy</span></div>
+    <h1>whitetree adds dynamic inserts and deletes to scipy&#x27;s cKDTree</h1>
+    <p class="article-page-meta">News time: 2026-09-14T06:13:36.997973+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A developer has created whitetree, a lightweight, pure numpy/scipy library that enables efficient <em>dynamic</em> nearest-neighbor search using Mahalanobis distance — something scipy’s cKDTree was never designed to do. Unlike the standard cKDTree, which is strictly static (requiring full rebuilds for any data change), whitetree maintains multiple cKDTree instances in parallel, each holding a subset of points. It achieves exact Mahalanobis search by first whitening input data — applying a linear transformation using the Cholesky factor of the estimated covariance matrix — so Mahalanobis distance reduces to standard Euclidean distance in the transformed space.</p>
+<p>The core insight lies in how updates are handled: instead of rebuilding one large tree, whitetree uses a geometric decomposition strategy — inspired by but distinct from the classic Bentley–Saxe method — where new points are inserted into small trees, and trees are merged or rebuilt only when size ratios exceed a threshold (e.g., 32×). This keeps the number of active trees low (just 3–4 at one million points) and ensures query time scales with the <em>number</em> of trees visited (typically 20–30% of static throughput), not their individual sizes. Deletions use tombstones rather than physical removal, preserving tree integrity while allowing exact results.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Benchmarks show dramatic speedups: whitetree is 40–300× faster than sklearn’s BallTree with Mahalanobis metric and 7–60× faster than FAISS Flat on 500k points — all while delivering <em>exact</em> results (distance error = 0.0) matching a static cKDTree. Crucially, it’s the only exact method tested that sustains high throughput under interleaved workloads — ~1,100 insert/delete/query cycles per second on a 200k-point sliding window — outperforming FAISS IDMap2 (~20/s), naive numpy brute force (~35/s), and rebuilding cKDTree per query (~8/s). The library is thread-safe for single-writer/multi-reader use and relies only on float64 covariance estimation with Ledoit-Wolf shrinkage and scale-relative ridge regularization.</p>
+<p>Still, whitetree isn’t universally faster: when updates arrive in large batches (e.g., 20k points), rebuilding a single cKDTree once per batch (2.2 s total) beats whitetree’s incremental overhead (14.9 s). Its advantage emerges precisely where streaming matters most — fine-grained, real-time interleaving of updates and queries. The author openly invites comparison against other exact dynamic indexes, noting gaps in the current benchmark landscape. Full code, tests, benchmarks, and design rationale are publicly available on GitHub.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wfg8e3/got_scipys_kdtree_to_handle_inserts_and_deletes/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/Whitening_transformation" target="_blank" rel="noopener">Whitening transformation - Wikipedia</a><a href="https://jeffe.cs.illinois.edu/teaching/datastructures/2011/notes/01-statictodynamic.pdf" target="_blank" rel="noopener">1 Static-to-Dynamic Transformations - University of Illinois ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
