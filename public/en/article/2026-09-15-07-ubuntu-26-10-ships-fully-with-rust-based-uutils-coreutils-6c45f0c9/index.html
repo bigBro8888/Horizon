@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Ubuntu 26.10 ships fully with Rust-based uutils coreutils - Now AI News</title>
+  <meta name="description" content="Ubuntu 26.10 ships with uutils coreutils 0.10.0 as the default system utility suite, fully replacing GNU coreutils across all installations. This is the first major Linux distribut" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-15-07-ubuntu-26-10-ships-fully-with-rust-based-uutils-coreutils-6c45f0c9" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-15-07-ubuntu-26-10-ships-fully-with-rust-based-uutils-coreutils-6c45f0c9" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-15-07-ubuntu-26-10-ships-fully-with-rust-based-uutils-coreutils-6c45f0c9" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-15-07-ubuntu-26-10-ships-fully-with-rust-based-uutils-coreutils-6c45f0c9" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Ubuntu 26.10 ships fully with Rust-based uutils coreutils" />
+  <meta property="og:description" content="Ubuntu 26.10 ships with uutils coreutils 0.10.0 as the default system utility suite, fully replacing GNU coreutils across all installations. This is the first major Linux distribut" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-15-07-ubuntu-26-10-ships-fully-with-rust-based-uutils-coreutils-6c45f0c9" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49696697.jpg" />
+  <meta property="article:published_time" content="2026-09-14T13:38:58+00:00" />
+  <meta property="article:modified_time" content="2026-09-15T06:24:50.226663+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ubuntu 26.10 ships fully with Rust-based uutils coreutils" />
+  <meta name="twitter:description" content="Ubuntu 26.10 ships with uutils coreutils 0.10.0 as the default system utility suite, fully replacing GNU coreutils across all installations. This is the first major Linux distribut" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49696697.jpg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-15-07-ubuntu-26-10-ships-fully-with-rust-based-uutils-coreutils-6c45f0c9"}, "headline": "Ubuntu 26.10 ships fully with Rust-based uutils coreutils", "description": "Ubuntu 26.10 ships with uutils coreutils 0.10.0 as the default system utility suite, fully replacing GNU coreutils across all installations. This is the first major Linux distribut", "image": ["https://nowainews.com/media/hackernews-story-49696697.jpg"], "datePublished": "2026-09-14T13:38:58+00:00", "dateModified": "2026-09-15T06:24:50.226663+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49696697.jpg" alt="Ubuntu 26.10 ships fully with Rust-based uutils coreutils" />
+    <div class="article-page-tags"><span>#Rust</span> <span>#Linux</span> <span>#system-tools</span> <span>#memory-safety</span> <span>#Ubuntu</span></div>
+    <h1>Ubuntu 26.10 ships fully with Rust-based uutils coreutils</h1>
+    <p class="article-page-meta">News time: 2026-09-15T06:08:50.109744+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Ubuntu 26.10 has officially replaced GNU coreutils with uutils — a cross-platform, Rust-based reimplementation — across all default installations. This marks the first Ubuntu release where <code>ls</code>, <code>cp</code>, <code>rm</code>, <code>mv</code>, and other foundational Unix utilities are no longer provided by GNU’s C-based implementation but instead by uutils version 0.10.0. The switch is part of Canonical’s multi-year effort to improve memory safety in system-critical components, leveraging Rust’s compile-time guarantees against buffer overflows, use-after-free, and null pointer dereferences.</p>
+<p>However, the transition is not without serious friction. Users have quickly uncovered critical stability issues: one widely reproduced test case triggers a segmentation fault in <code>rm -rf</code> when deleting deeply nested directories — a failure that leaves files intact and breaks basic filesystem hygiene. As demonstrated in containerized Ubuntu 26.10 environments, the crash occurs even after full system updates, while the legacy GNU <code>gnurm</code> command succeeds without error. This suggests uutils’ recursive deletion logic still lacks robustness under real-world path-depth or edge-case conditions.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The problem isn’t theoretical. It affects build toolchains: because <code>build-essential</code> now depends on <code>coreutils-from-uutils</code>, users cannot simply downgrade to GNU coreutils without breaking package dependencies. Workarounds exist — such as installing <code>coreutils-from-gnu</code> alongside — but they require manual intervention and risk dependency conflicts. Meanwhile, upstream uutils maintainers acknowledge incomplete option parity and behavioral differences; their documentation explicitly states that "some options might be missing or different behavior might be experienced."</p>
+<p>This milestone reflects broader industry momentum toward memory-safe systems programming — Microsoft also ships uutils for Windows, and Rust is increasingly used in Linux kernel modules and init systems. Yet Ubuntu’s decision to ship uutils <em>by default</em> in a stable release, before resolving known correctness bugs, highlights the tension between innovation and reliability. For developers and sysadmins, it means verifying tool behavior in automation scripts, especially around file operations, rather than assuming POSIX-compliant equivalence. Ultimately, Ubuntu 26.10 isn’t just a version bump — it’s a live stress test of Rust’s readiness for foundational Unix infrastructure.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.omgubuntu.co.uk/2026/09/ubuntu-2610-rust-coreutils-complete" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/uutils/coreutils" target="_blank" rel="noopener">GitHub - uutils/coreutils: Cross-platform Rust rewrite of the ...</a><a href="https://uutils.org/coreutils/" target="_blank" rel="noopener">coreutils | uutils</a><a href="https://computingforgeeks.com/ubuntu-2604-rust-coreutils-guide/" target="_blank" rel="noopener">Ubuntu 26.04 Rust Coreutils: uutils vs GNU Guide ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

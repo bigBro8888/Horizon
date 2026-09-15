@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Accelerate with FSDP2 lacks automatic batch size discovery - Now AI News</title>
+  <meta name="description" content="Hugging Face Accelerate with FSDP2 does not currently support automatic batch size reduction on CUDA OOM errors, unlike SFTTrainer&#x27;s auto_find_batch_size feature. This gap affects " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-15-17-accelerate-with-fsdp2-lacks-automatic-batch-size-discovery-c7a9a794" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-15-17-accelerate-with-fsdp2-lacks-automatic-batch-size-discovery-c7a9a794" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-15-17-accelerate-with-fsdp2-lacks-automatic-batch-size-discovery-c7a9a794" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-15-17-accelerate-with-fsdp2-lacks-automatic-batch-size-discovery-c7a9a794" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Accelerate with FSDP2 lacks automatic batch size discovery" />
+  <meta property="og:description" content="Hugging Face Accelerate with FSDP2 does not currently support automatic batch size reduction on CUDA OOM errors, unlike SFTTrainer&#x27;s auto_find_batch_size feature. This gap affects " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-15-17-accelerate-with-fsdp2-lacks-automatic-batch-size-discovery-c7a9a794" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wg9u62.svg" />
+  <meta property="article:published_time" content="2026-09-14T17:24:08+00:00" />
+  <meta property="article:modified_time" content="2026-09-15T06:24:50.226663+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Accelerate with FSDP2 lacks automatic batch size discovery" />
+  <meta name="twitter:description" content="Hugging Face Accelerate with FSDP2 does not currently support automatic batch size reduction on CUDA OOM errors, unlike SFTTrainer&#x27;s auto_find_batch_size feature. This gap affects " />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wg9u62.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-15-17-accelerate-with-fsdp2-lacks-automatic-batch-size-discovery-c7a9a794"}, "headline": "Accelerate with FSDP2 lacks automatic batch size discovery", "description": "Hugging Face Accelerate with FSDP2 does not currently support automatic batch size reduction on CUDA OOM errors, unlike SFTTrainer's auto_find_batch_size feature. This gap affects ", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wg9u62.svg"], "datePublished": "2026-09-14T17:24:08+00:00", "dateModified": "2026-09-15T06:24:50.226663+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wg9u62.svg" alt="Accelerate with FSDP2 lacks automatic batch size discovery" />
+    <div class="article-page-tags"><span>#distributed-training</span> <span>#FSDP</span> <span>#HuggingFace-Accelerate</span> <span>#CUDA-OOM</span> <span>#batch-size-tuning</span></div>
+    <h1>Accelerate with FSDP2 lacks automatic batch size discovery</h1>
+    <p class="article-page-meta">News time: 2026-09-15T06:08:50.692330+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A practitioner on Reddit recently asked whether Hugging Face Accelerate—when used with Fully Sharded Data Parallel version 2 (FSDP2)—supports automatic batch size reduction upon CUDA out-of-memory (OOM) errors, similar to the <code>auto_find_batch_size=True</code> feature in <code>SFTTrainer</code>. This is a practical pain point: while single-GPU fine-tuning workflows can gracefully recover from memory exhaustion by iteratively halving the batch size, multi-GPU training with FSDP2 currently offers no built-in equivalent. The user specifically questioned how OOM handling should work across distributed processes—if one GPU fails, does Accelerate restart the entire job with smaller batches, or must developers implement retry logic externally?</p>
+<p>The core issue lies in FSDP2’s design philosophy. Unlike <code>SFTTrainer</code>, which wraps training logic and includes dedicated OOM recovery heuristics, Accelerate serves as a lightweight orchestration layer. Its FSDP2 integration focuses on correct sharding, gradient synchronization, and memory-efficient parameter loading—not adaptive resource probing. As confirmed by Accelerate’s official documentation and benchmark scripts, there is no native mechanism to catch <code>torch.cuda.OutOfMemoryError</code>, adjust <code>per_device_train_batch_size</code>, and relaunch the distributed process group.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>That said, alternatives exist—but they require manual effort. One approach is wrapping the <code>accelerate.launch</code> command in a shell script that monitors exit codes and retries with decreasing batch sizes. Another is embedding OOM-catching logic inside the training loop using <code>try/except</code>, then signaling all ranks to synchronize and reinitialize the dataloader and optimizer with new dimensions. Neither solution is seamless: both risk race conditions, inconsistent state across ranks, or silent failures if not carefully implemented with <code>torch.distributed.barrier()</code>.</p>
+<p>For teams prioritizing robustness and developer velocity, this gap highlights a real trade-off. FSDP2 delivers strong memory scaling and compatibility with modern PyTorch features (e.g., <code>torch.compile</code>, fp8), but sacrifices some of the ergonomic automation found in higher-level trainers like <code>SFTTrainer</code> or <code>DPOTrainer</code>. Until Accelerate adds first-class support—or community tools like <code>trl-autobatch_grpo</code> mature into production-ready integrations—engineers must choose between full control (and complexity) or convenience (and limited scalability).</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wg9u62/how_to_automatically_find_the_batch_size_when/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://huggingface.co/docs/accelerate/v1.11.0/en/concept_guides/fsdp1_vs_fsdp2" target="_blank" rel="noopener">FSDP1 vs FSDP 2 · Hugging Face</a><a href="https://github.com/huggingface/accelerate/blob/main/benchmarks/fsdp2/main.py" target="_blank" rel="noopener">accelerate /benchmarks/ fsdp 2 /main.py at main · huggingface/ accelerate</a><a href="https://huggingface.co/learn/llm-course/chapter11/3" target="_blank" rel="noopener">Supervised Fine-Tuning · Hugging Face</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Tokio performance guide warns against mutexes and excessive wakeups - Now AI News</title>
+  <meta name="description" content="A new blog post outlines five actionable, low-level principles for optimizing Tokio-based Rust applications, emphasizing mutex avoidance, wakeup minimization, appropriate channel s" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-15-05-tokio-performance-guide-warns-against-mutexes-and-excessive-wakeups-fcde7184" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-15-05-tokio-performance-guide-warns-against-mutexes-and-excessive-wakeups-fcde7184" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-15-05-tokio-performance-guide-warns-against-mutexes-and-excessive-wakeups-fcde7184" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-15-05-tokio-performance-guide-warns-against-mutexes-and-excessive-wakeups-fcde7184" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Tokio performance guide warns against mutexes and excessive wakeups" />
+  <meta property="og:description" content="A new blog post outlines five actionable, low-level principles for optimizing Tokio-based Rust applications, emphasizing mutex avoidance, wakeup minimization, appropriate channel s" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-15-05-tokio-performance-guide-warns-against-mutexes-and-excessive-wakeups-fcde7184" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49698607.svg" />
+  <meta property="article:published_time" content="2026-09-14T15:27:56+00:00" />
+  <meta property="article:modified_time" content="2026-09-15T06:24:50.226663+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tokio performance guide warns against mutexes and excessive wakeups" />
+  <meta name="twitter:description" content="A new blog post outlines five actionable, low-level principles for optimizing Tokio-based Rust applications, emphasizing mutex avoidance, wakeup minimization, appropriate channel s" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49698607.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-15-05-tokio-performance-guide-warns-against-mutexes-and-excessive-wakeups-fcde7184"}, "headline": "Tokio performance guide warns against mutexes and excessive wakeups", "description": "A new blog post outlines five actionable, low-level principles for optimizing Tokio-based Rust applications, emphasizing mutex avoidance, wakeup minimization, appropriate channel s", "image": ["https://nowainews.com/media/hackernews-story-49698607.svg"], "datePublished": "2026-09-14T15:27:56+00:00", "dateModified": "2026-09-15T06:24:50.226663+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49698607.svg" alt="Tokio performance guide warns against mutexes and excessive wakeups" />
+    <div class="article-page-tags"><span>#Rust</span> <span>#Tokio</span> <span>#async-programming</span> <span>#performance-optimization</span> <span>#systems-programming</span></div>
+    <h1>Tokio performance guide warns against mutexes and excessive wakeups</h1>
+    <p class="article-page-meta">News time: 2026-09-15T06:08:50.109667+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A new technical blog post titled "Principles for Fast Tokio Applications" lays out concrete, production-tested strategies for building high-throughput asynchronous Rust services using the Tokio runtime. Rather than focusing on syntax or basic async patterns, the article zeroes in on low-level performance pitfalls that only become visible under real load — such as lock contention, unnecessary task wakeups, and inefficient synchronization primitives. It argues that many developers unknowingly trade latency and scalability for convenience, especially when reaching for <code>Arc&lt;Mutex&lt;T&gt;&gt;</code> to share state across tasks.</p>
+<p>The guide emphasizes three core tenets: first, avoid shared mutable state protected by mutexes whenever possible — not just for correctness, but because mutex acquisition and release trigger costly wakeups in Tokio’s scheduler. Second, minimize wakeups by preferring channels (like <code>mpsc</code>, <code>oneshot</code>, or <code>watch</code>) over polling or busy-waiting; these are zero-cost abstractions built into Tokio and don’t require enabling the full runtime feature set. Third, match concurrency primitives to workload shape — e.g., SPSC ring buffers for single-producer/single-consumer pipelines, or CPU pinning and busy-spinning for ultra-low-latency services where kernel scheduling overhead is unacceptable.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Beyond raw speed, the article stresses observability as a prerequisite for optimization: fine-grained tracing (e.g., with <code>tracing</code> crate) helps identify where time is spent — not just in application logic, but inside Tokio’s own scheduler loops, timer wheels, and I/O driver polls. Several commenters reinforce this point, noting that many production servers waste more CPU cycles managing epoll readiness or work-stealing than executing actual business logic. One engineer observes that the most common bottleneck isn’t code, but meta-work — the runtime’s internal bookkeeping.</p>
+<p>The discussion also extends to advanced alternatives: DPDK and SPDK for bypassing kernel networking and storage stacks entirely, or ef_vi for ultra-low-latency user-space NIC access. These aren’t replacements for Tokio, but complementary layers for niche, extreme-performance scenarios. Crucially, the guide doesn’t advocate premature optimization — instead, it offers a ladder of techniques, from simple channel usage to kernel-bypass tuning, each justified by measurable impact and clear trade-offs.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://dial9-rs.github.io/blog/principles-for-fast-tokio-applications/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://deepwiki.com/tokio-rs/tokio/2-architecture" target="_blank" rel="noopener">Architecture | tokio-rs/tokio | DeepWiki</a><a href="https://docs.rs/tokio/latest/tokio/runtime/" target="_blank" rel="noopener">tokio::runtime - Rust - Docs.rs Tokio - An asynchronous Rust runtime Rust Async Runtime Deep Dive: Tokio Architecture Runtime in tokio::runtime - Rust - Docs.rs GitHub - tokio-rs/tokio: A runtime for writing reliable ... tokio-rs/tokio | DeepWiki</a><a href="https://tokio.rs/" target="_blank" rel="noopener">Tokio - An asynchronous Rust runtime</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

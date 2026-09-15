@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Lightweight query-document expansion boosts BM25 with MS MARCO statistics - Now AI News</title>
+  <meta name="description" content="A practitioner released count-based query-document translation tables trained on MS MARCO and click logs, enabling BM25 retrieval to be improved via inverted index expansion—withou" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-15-18-lightweight-query-document-expansion-boosts-bm25-with-ms-marco-statistics-80a8be48" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-15-18-lightweight-query-document-expansion-boosts-bm25-with-ms-marco-statistics-80a8be48" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-15-18-lightweight-query-document-expansion-boosts-bm25-with-ms-marco-statistics-80a8be48" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-15-18-lightweight-query-document-expansion-boosts-bm25-with-ms-marco-statistics-80a8be48" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Lightweight query-document expansion boosts BM25 with MS MARCO statistics" />
+  <meta property="og:description" content="A practitioner released count-based query-document translation tables trained on MS MARCO and click logs, enabling BM25 retrieval to be improved via inverted index expansion—withou" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-15-18-lightweight-query-document-expansion-boosts-bm25-with-ms-marco-statistics-80a8be48" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wg3g03.svg" />
+  <meta property="article:published_time" content="2026-09-14T13:28:01+00:00" />
+  <meta property="article:modified_time" content="2026-09-15T06:24:50.226663+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Lightweight query-document expansion boosts BM25 with MS MARCO statistics" />
+  <meta name="twitter:description" content="A practitioner released count-based query-document translation tables trained on MS MARCO and click logs, enabling BM25 retrieval to be improved via inverted index expansion—withou" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wg3g03.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-15-18-lightweight-query-document-expansion-boosts-bm25-with-ms-marco-statistics-80a8be48"}, "headline": "Lightweight query-document expansion boosts BM25 with MS MARCO statistics", "description": "A practitioner released count-based query-document translation tables trained on MS MARCO and click logs, enabling BM25 retrieval to be improved via inverted index expansion—withou", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wg3g03.svg"], "datePublished": "2026-09-14T13:28:01+00:00", "dateModified": "2026-09-15T06:24:50.226663+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wg3g03.svg" alt="Lightweight query-document expansion boosts BM25 with MS MARCO statistics" />
+    <div class="article-page-tags"><span>#information-retrieval</span> <span>#semantic-search</span> <span>#bm25</span> <span>#query-expansion</span> <span>#ms-marco</span></div>
+    <h1>Lightweight query-document expansion boosts BM25 with MS MARCO statistics</h1>
+    <p class="article-page-meta">News time: 2026-09-15T06:08:50.692524+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A new open-source technique called 'poor man’s DSSM' offers a surprisingly effective way to add semantic awareness to traditional full-text search—without neural networks. Developed by Reddit user /u/SpiritedTrip, the method builds count-based translation tables from supervised query-document pairs—such as those in the MS MARCO dataset or real-world click logs. Instead of training deep models, it simply counts how often document-side text units (e.g., words or wordpieces) co-occur with query-side units across relevant pairs. For each document unit, it retains the top-k most strongly associated query units and injects them directly into the inverted index during indexing—effectively expanding each document’s postings with semantically related terms.</p>
+<p>This approach sits between classical term-matching and modern neural retrieval. Unlike BM25—which relies solely on lexical matching and term frequency—inverted index expansion here introduces weak but interpretable semantic signals. It’s not synonym replacement: a document containing 'car' might get expanded with 'automobile', 'vehicle', or even 'Tesla', depending on what queries historically led users to that document. The expansion is asymmetric and data-driven, grounded entirely in observed user behavior rather than linguistic rules or pretrained embeddings.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The implementation is deliberately minimal. The author packaged the precomputed expansion tables as a Hugging Face model repository, complete with a short demo script showing how to integrate them into a standard Lucene- or Whoosh-style indexer. Performance gains are modest but consistent—typically 2–4 percentage points improvement in MRR@10 over vanilla BM25 on MS MARCO dev sets—making it especially attractive for production systems where latency, cost, or interpretability constrain neural solutions.</p>
+<p>Crucially, the method inherits a key limitation from its statistical roots: it captures only linear associations. Where DSSM uses deep neural networks to learn non-linear semantic mappings in high-dimensional space, this version treats co-occurrence as a direct, rank-based lookup. That makes it fast and debuggable—but unable to handle compositional meaning or rare long-tail queries without sufficient click history. Still, for many real-world search engines—especially those serving niche domains or constrained environments—it represents a pragmatic, low-risk upgrade path toward better relevance.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wg3g03/ms_marco_clicktranslation_expansion_tables_poor/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://arxiv.org/abs/1611.09268" target="_blank" rel="noopener">[1611.09268] MS MARCO: A Human Generated MAchine Reading COmprehension Dataset</a><a href="https://www.microsoft.com/en-us/research/project/dssm/" target="_blank" rel="noopener">DSSM - Microsoft Research</a><a href="https://trec.nist.gov/pubs/trec11/papers/tsinghuau.novelty2.pdf" target="_blank" rel="noopener">Expansion - Based Technologies in Finding Relevant and New...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
