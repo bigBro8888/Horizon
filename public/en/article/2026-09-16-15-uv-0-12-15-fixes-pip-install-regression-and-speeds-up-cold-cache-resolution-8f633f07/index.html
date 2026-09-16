@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>uv 0.12.15 fixes pip install regression and speeds up cold-cache resolution - Now AI News</title>
+  <meta name="description" content="uv 0.12.15 fixes a regression that incorrectly rejected valid `uv pip install --system` and `--target .` commands, and improves cold-cache resolution performance by batching cache " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-16-15-uv-0-12-15-fixes-pip-install-regression-and-speeds-up-cold-cache-resolution-8f633f07" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-16-15-uv-0-12-15-fixes-pip-install-regression-and-speeds-up-cold-cache-resolution-8f633f07" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-16-15-uv-0-12-15-fixes-pip-install-regression-and-speeds-up-cold-cache-resolution-8f633f07" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-16-15-uv-0-12-15-fixes-pip-install-regression-and-speeds-up-cold-cache-resolution-8f633f07" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="uv 0.12.15 fixes pip install regression and speeds up cold-cache resolution" />
+  <meta property="og:description" content="uv 0.12.15 fixes a regression that incorrectly rejected valid `uv pip install --system` and `--target .` commands, and improves cold-cache resolution performance by batching cache " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-16-15-uv-0-12-15-fixes-pip-install-regression-and-speeds-up-cold-cache-resolution-8f633f07" />
+  <meta property="og:image" content="https://nowainews.com/media/github-release-389112346.png" />
+  <meta property="article:published_time" content="2026-09-15T12:09:40+00:00" />
+  <meta property="article:modified_time" content="2026-09-16T06:11:56.112263+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="uv 0.12.15 fixes pip install regression and speeds up cold-cache resolution" />
+  <meta name="twitter:description" content="uv 0.12.15 fixes a regression that incorrectly rejected valid `uv pip install --system` and `--target .` commands, and improves cold-cache resolution performance by batching cache " />
+  <meta name="twitter:image" content="https://nowainews.com/media/github-release-389112346.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-16-15-uv-0-12-15-fixes-pip-install-regression-and-speeds-up-cold-cache-resolution-8f633f07"}, "headline": "uv 0.12.15 fixes pip install regression and speeds up cold-cache resolution", "description": "uv 0.12.15 fixes a regression that incorrectly rejected valid `uv pip install --system` and `--target .` commands, and improves cold-cache resolution performance by batching cache ", "image": ["https://nowainews.com/media/github-release-389112346.png"], "datePublished": "2026-09-15T12:09:40+00:00", "dateModified": "2026-09-16T06:11:56.112263+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/github-release-389112346.png" alt="uv 0.12.15 fixes pip install regression and speeds up cold-cache resolution" />
+    <div class="article-page-tags"><span>#Python</span> <span>#package-manager</span> <span>#uv</span> <span>#tooling</span> <span>#release</span></div>
+    <h1>uv 0.12.15 fixes pip install regression and speeds up cold-cache resolution</h1>
+    <p class="article-page-meta">News time: 2026-09-16T05:58:30.539295+00:00 · Source: github</p>
+    <article class="article-page-body"><p>The Python tooling ecosystem just got a small but meaningful update: uv 0.12.15 is now available. Released on September 15, 2026, this patch release addresses a critical usability regression introduced in version 0.12.14 — one that unexpectedly blocked valid <code>pip install</code> commands in common real-world scenarios. Specifically, users running <code>uv pip install --system</code> inside Python-based Docker images (e.g., <code>python:*</code> base images) or using <code>--target .</code> to install packages directly into the current directory were met with validation errors, even though those commands are both legitimate and widely used.</p>
+<p>This regression stemmed from an overzealous symlink check that mistakenly rejected installation destinations that happened to be symbolic links — a common setup in containerized and CI environments. The fix reverts that change, restoring compatibility without compromising safety. Beyond correctness, the release also delivers a tangible performance win: cold-cache resolution — the scenario where uv must fetch and validate package metadata from scratch, such as on a fresh CI runner or new developer machine — is now faster thanks to batched cache writes during HTTP revalidation.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>While not a feature-packed milestone, this update reflects uv’s maturing development rhythm: rapid iteration, responsiveness to user feedback, and attention to both reliability and speed. For teams relying on uv for fast dependency management in CI/CD pipelines or container builds, 0.12.15 removes a recent friction point and subtly improves first-run latency. Installation remains effortless via shell or PowerShell scripts, and binaries are provided for all major platforms — including Apple Silicon, x86_64 and ARM64 Linux, Windows (x86, x64, ARM64), and even niche architectures like RISC-V, s390x, and PowerPC.</p>
+<p>uv continues to position itself as a high-performance, drop-in alternative to pip and venv — offering unified project management, lockfile support, Python version installation, script execution, and more — all built in Rust for speed and safety. As adoption grows, especially in infrastructure-heavy workflows, these targeted patches matter more than they might appear at first glance.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/astral-sh/uv/releases/tag/0.12.15" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener">uv is an extremely fast Python package and project manager , written...</a><a href="https://www.freecodecamp.org/news/how-to-manage-python-packages-with-uv/" target="_blank" rel="noopener">How to Manage Python Packages with uv</a><a href="https://github.com/astral-sh/uv/blob/main/BENCHMARKS.md" target="_blank" rel="noopener">uv/BENCHMARKS.md at main · astral-sh/uv - GitHub</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
