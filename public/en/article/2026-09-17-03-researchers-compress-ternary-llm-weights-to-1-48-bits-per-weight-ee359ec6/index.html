@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Researchers compress ternary LLM weights to 1.48 bits per weight - Now AI News</title>
+  <meta name="description" content="Researchers introduced BITCOS, a distribution-adaptive packing scheme that exploits the empirically observed 51.5% zero density in real ternary LLMs to reduce weight storage from 1" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-17-03-researchers-compress-ternary-llm-weights-to-1-48-bits-per-weight-ee359ec6" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-17-03-researchers-compress-ternary-llm-weights-to-1-48-bits-per-weight-ee359ec6" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-17-03-researchers-compress-ternary-llm-weights-to-1-48-bits-per-weight-ee359ec6" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-17-03-researchers-compress-ternary-llm-weights-to-1-48-bits-per-weight-ee359ec6" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Researchers compress ternary LLM weights to 1.48 bits per weight" />
+  <meta property="og:description" content="Researchers introduced BITCOS, a distribution-adaptive packing scheme that exploits the empirically observed 51.5% zero density in real ternary LLMs to reduce weight storage from 1" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-17-03-researchers-compress-ternary-llm-weights-to-1-48-bits-per-weight-ee359ec6" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49732931.png" />
+  <meta property="article:published_time" content="2026-09-16T20:59:24+00:00" />
+  <meta property="article:modified_time" content="2026-09-17T06:19:19.311668+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Researchers compress ternary LLM weights to 1.48 bits per weight" />
+  <meta name="twitter:description" content="Researchers introduced BITCOS, a distribution-adaptive packing scheme that exploits the empirically observed 51.5% zero density in real ternary LLMs to reduce weight storage from 1" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49732931.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-17-03-researchers-compress-ternary-llm-weights-to-1-48-bits-per-weight-ee359ec6"}, "headline": "Researchers compress ternary LLM weights to 1.48 bits per weight", "description": "Researchers introduced BITCOS, a distribution-adaptive packing scheme that exploits the empirically observed 51.5% zero density in real ternary LLMs to reduce weight storage from 1", "image": ["https://nowainews.com/media/hackernews-story-49732931.png"], "datePublished": "2026-09-16T20:59:24+00:00", "dateModified": "2026-09-17T06:19:19.311668+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49732931.png" alt="Researchers compress ternary LLM weights to 1.48 bits per weight" />
+    <div class="article-page-tags"><span>#LLM-quantization</span> <span>#ternary-computing</span> <span>#model-compression</span> <span>#hardware-aware-ml</span> <span>#arithmetic-coding</span></div>
+    <h1>Researchers compress ternary LLM weights to 1.48 bits per weight</h1>
+    <p class="article-page-meta">News time: 2026-09-17T06:07:11.316962+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A new paper titled 'Breaking the 1.58-bit Barrier for Ternary LLMs' demonstrates a concrete advance in model compression: researchers have reduced the average bit cost of storing ternary large language model (LLM) weights from the long-assumed theoretical minimum of log₂(3) ≈ 1.58 bits per weight down to 1.48 bits per weight. This is not achieved through exotic mathematics or hardware-specific tricks, but by observing a simple, widespread empirical fact — real ternary models contain far more zeros than the uniform distribution assumes. Across 29 state-of-the-art ternary LLMs, including BitNet variants and Maple-Preview, the team measured zero densities ranging up to 51.5%, meaning over half the weights are exactly zero.</p>
+<p>This imbalance breaks the assumption behind the 1.58-bit limit — which only holds if −1, 0, and +1 occur with equal probability (≈33.3% each). In practice, zeros dominate, so encoding schemes can exploit that skew. The authors introduce BITCOS (Bitwise Ternary COmpression Scheme), a lightweight, distribution-adaptive packing method. BITCOS uses a compact presence bitmap to flag non-zero positions, then packs the sign bits of non-zero values tightly — no arithmetic coding tables, no vector lookups, just efficient bit-level layout tuned to real model statistics.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The result is both practical and portable: BITCOS achieves lossless compression, requires no changes to inference kernels, and works across CPU and GPU backends. Unlike prior approaches like arithmetic coding or LUT-based vector quantization, BITCOS adds negligible runtime overhead while delivering measurable memory savings — roughly 6.3% smaller weight storage at identical accuracy. For hardware designers targeting ternary accelerators, this means more model capacity per SRAM block or higher bandwidth efficiency without redesigning compute units.</p>
+<p>Importantly, the work reframes how we think about 'theoretical limits' in quantization. The 1.58-bit bound is information-theoretic <em>only under uniformity</em> — a mathematical ideal rarely seen in deployed models. By measuring actual distributions instead of assuming them, BITCOS shows how empirical rigor can beat textbook bounds. As one commenter noted, 'I honestly assumed that’s how they already work' — highlighting how intuitive yet overlooked this optimization was. It’s a reminder that sometimes the biggest gains come not from inventing new math, but from looking closely at what models actually do.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://arxiv.org/abs/2609.16338" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/1.58-bit_large_language_model" target="_blank" rel="noopener">1.58-bit large language model - Wikipedia</a><a href="https://github.com/purpleskulll/bitnet-t5b" target="_blank" rel="noopener">GitHub - purpleskulll/bitnet-t5b: Ternary LLM weights at 1.600 bits per weight with table-free arithmetic decoding on AVX2. Lossless re-encoding of BitNet b1.58 weights; bit-identical output. · GitHub</a><a href="https://www.machucavalley.tech/blog/breaking-1-58-bit-barrier-ternary-llms/" target="_blank" rel="noopener">Beyond 1.58 Bits: The Quest to Shrink LLMs to the Absolute Limit</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
