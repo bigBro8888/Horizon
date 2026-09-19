@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>NHANES CHD classifier exposes questionnaire-based data leakage - Now AI News</title>
+  <meta name="description" content="A researcher publicly audited and quantified questionnaire-based data leakage in NHANES CHD prediction — showing PR-AUC inflated from 0.23 to 0.51 when including diagnostic self-re" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-19-06-nhanes-chd-classifier-exposes-questionnaire-based-data-leakage-bbeac055" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-19-06-nhanes-chd-classifier-exposes-questionnaire-based-data-leakage-bbeac055" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-19-06-nhanes-chd-classifier-exposes-questionnaire-based-data-leakage-bbeac055" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-19-06-nhanes-chd-classifier-exposes-questionnaire-based-data-leakage-bbeac055" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="NHANES CHD classifier exposes questionnaire-based data leakage" />
+  <meta property="og:description" content="A researcher publicly audited and quantified questionnaire-based data leakage in NHANES CHD prediction — showing PR-AUC inflated from 0.23 to 0.51 when including diagnostic self-re" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-19-06-nhanes-chd-classifier-exposes-questionnaire-based-data-leakage-bbeac055" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wjp062.png" />
+  <meta property="article:published_time" content="2026-09-18T12:36:07+00:00" />
+  <meta property="article:modified_time" content="2026-09-19T06:01:43.056694+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="NHANES CHD classifier exposes questionnaire-based data leakage" />
+  <meta name="twitter:description" content="A researcher publicly audited and quantified questionnaire-based data leakage in NHANES CHD prediction — showing PR-AUC inflated from 0.23 to 0.51 when including diagnostic self-re" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wjp062.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-19-06-nhanes-chd-classifier-exposes-questionnaire-based-data-leakage-bbeac055"}, "headline": "NHANES CHD classifier exposes questionnaire-based data leakage", "description": "A researcher publicly audited and quantified questionnaire-based data leakage in NHANES CHD prediction — showing PR-AUC inflated from 0.23 to 0.51 when including diagnostic self-re", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wjp062.png"], "datePublished": "2026-09-18T12:36:07+00:00", "dateModified": "2026-09-19T06:01:43.056694+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wjp062.png" alt="NHANES CHD classifier exposes questionnaire-based data leakage" />
+    <div class="article-page-tags"><span>#healthcare-ml</span> <span>#data-leakage</span> <span>#epidemiology</span> <span>#imbalanced-learning</span> <span>#model-calibration</span></div>
+    <h1>NHANES CHD classifier exposes questionnaire-based data leakage</h1>
+    <p class="article-page-meta">News time: 2026-09-19T05:49:41.729732+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A new open-source machine learning project tackles coronary heart disease (CHD) risk prediction using real-world U.S. population survey data — but its most valuable contribution isn’t the model’s accuracy. Instead, it’s a meticulous, self-reported audit of how easily ML models can cheat when trained on structured health questionnaires. The project uses four cycles of the National Health and Nutrition Examination Survey (NHANES) from 2011 to 2018, covering roughly 21,500 adults after cleaning. It trains logistic regression, random forest, and gradient boosting models to predict self-reported, physician-diagnosed CHD using only objective and demographic features: age, blood pressure, BMI, waist circumference, and lipid panel results.</p>
+<p>The critical insight came from confronting NHANES’ design: its questionnaire section explicitly asks participants about prior cardiovascular diagnoses — including stroke, angina, and even CHD itself. When those questions were included as features, the model’s precision-recall AUC (PR-AUC) jumped dramatically — from 0.23 to 0.51. That gain wasn’t due to learning biological risk signals; it was pure data leakage — the model simply learned that people who report one cardiovascular condition often report others. Rather than silently dropping those columns, the author documented the magnitude of the effect transparently, treating leakage not as noise to discard but as a measurable confounder to report.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Equally rigorous was the handling of class imbalance and calibration. With CHD prevalence at just ~4%, unweighted models produced catastrophically miscalibrated outputs: mean predicted risk hovered near 30%, wildly overestimating true incidence. To fix this, the author applied sigmoid recalibration <em>only</em> on the development set — before touching the held-out test set — and froze the decision threshold in advance. Final test-set performance: ROC-AUC of 0.875 and PR-AUC of 0.239 for logistic regression (similar for tree-based models). Notably, age alone achieved 0.83 ROC-AUC, underscoring how dominant demographic factors are in this setting.</p>
+<p>The project deliberately omits known clinical predictors like smoking status, diabetes diagnosis, and antihypertensive medication use — not because they’re irrelevant, but to keep scope bounded and reproducible. All code, preprocessing steps, and audit logs are public on GitHub. This isn’t just a CHD classifier — it’s a methodological case study in responsible ML hygiene for observational health data, where transparency about leakage, calibration, and evaluation discipline matters more than incremental model gains.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wjp062/classifying_coronary_heart_disease_risk_from/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/shaikhamalkawi-ux/HbA1c-Age-Aware-Reliability-NHANES" target="_blank" rel="noopener">GitHub - shaikhamalkawi-ux/HbA1c-Age-Aware-Reliability-NHANES: Reproducibility materials for age-aware HbA1c reliability evaluation across NHANES cycles. · GitHub</a><a href="https://sinyi-chou.github.io/classification-pr-curve/" target="_blank" rel="noopener">Precision - Recall Curve , a Different View of Imbalanced Classifiers</a><a href="https://machinelearningmastery.com/roc-curves-and-precision-recall-curves-for-imbalanced-classification/" target="_blank" rel="noopener">ROC Curves and Precision-Recall Curves for Imbalanced ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

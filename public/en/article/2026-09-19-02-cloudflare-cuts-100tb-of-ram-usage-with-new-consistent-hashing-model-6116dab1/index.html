@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Cloudflare cuts 100TB of RAM usage with new consistent hashing model - Now AI News</title>
+  <meta name="description" content="Cloudflare reduced global RAM usage by 100TB by replacing heuristic-based consistent hashing with a mathematically optimized model that cuts virtual node count by 50% while maintai" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-19-02-cloudflare-cuts-100tb-of-ram-usage-with-new-consistent-hashing-model-6116dab1" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-19-02-cloudflare-cuts-100tb-of-ram-usage-with-new-consistent-hashing-model-6116dab1" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-19-02-cloudflare-cuts-100tb-of-ram-usage-with-new-consistent-hashing-model-6116dab1" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-19-02-cloudflare-cuts-100tb-of-ram-usage-with-new-consistent-hashing-model-6116dab1" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Cloudflare cuts 100TB of RAM usage with new consistent hashing model" />
+  <meta property="og:description" content="Cloudflare reduced global RAM usage by 100TB by replacing heuristic-based consistent hashing with a mathematically optimized model that cuts virtual node count by 50% while maintai" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-19-02-cloudflare-cuts-100tb-of-ram-usage-with-new-consistent-hashing-model-6116dab1" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49758580.png" />
+  <meta property="article:published_time" content="2026-09-18T18:51:46+00:00" />
+  <meta property="article:modified_time" content="2026-09-19T06:01:43.056694+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Cloudflare cuts 100TB of RAM usage with new consistent hashing model" />
+  <meta name="twitter:description" content="Cloudflare reduced global RAM usage by 100TB by replacing heuristic-based consistent hashing with a mathematically optimized model that cuts virtual node count by 50% while maintai" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49758580.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-19-02-cloudflare-cuts-100tb-of-ram-usage-with-new-consistent-hashing-model-6116dab1"}, "headline": "Cloudflare cuts 100TB of RAM usage with new consistent hashing model", "description": "Cloudflare reduced global RAM usage by 100TB by replacing heuristic-based consistent hashing with a mathematically optimized model that cuts virtual node count by 50% while maintai", "image": ["https://nowainews.com/media/hackernews-story-49758580.png"], "datePublished": "2026-09-18T18:51:46+00:00", "dateModified": "2026-09-19T06:01:43.056694+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49758580.png" alt="Cloudflare cuts 100TB of RAM usage with new consistent hashing model" />
+    <div class="article-page-tags"><span>#systems-engineering</span> <span>#hashing</span> <span>#memory-optimization</span> <span>#cloudflare</span> <span>#distributed-systems</span></div>
+    <h1>Cloudflare cuts 100TB of RAM usage with new consistent hashing model</h1>
+    <p class="article-page-meta">News time: 2026-09-19T05:49:41.476440+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Cloudflare has eliminated 100 terabytes of RAM across its global network—not by upgrading hardware, but by rethinking how it applies consistent hashing to distribute traffic and state across servers. In a follow-up to earlier optimizations that saved 50TB, this latest breakthrough stems from deep mathematical analysis of the hash ring’s structure, combined with pragmatic engineering refinements in Rust-based implementations.</p>
+<p>Consistent hashing is foundational to Cloudflare’s infrastructure: it maps Worker script IDs, cache keys, and server addresses onto a circular number line (a ‘ring’) so that adding or removing servers only affects a small fraction of cached data or routing decisions. But traditional implementations—like Ketama—rely on many virtual nodes per physical server to smooth load distribution. That approach inflates memory use dramatically: each virtual node requires metadata storage, and with millions of servers and billions of keys, those overheads compound into tens of terabytes.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Cloudflare’s team derived tighter theoretical bounds on load variance and proved that far fewer virtual nodes are needed than previously assumed—especially when combined with high-quality hash functions and careful bucket sizing. They replaced ad-hoc heuristics with provably optimal partitioning logic, then validated the model against real-world traffic patterns across hundreds of data centers. The result? A 50% reduction in virtual node count without increasing load imbalance—and a direct 100TB drop in RAM footprint.</p>
+<p>Beyond raw savings, the work signals a broader shift: as memory costs rise and hardware scaling slows, rigorous math-informed systems engineering is regaining priority over ‘throw more RAM at it’ thinking. Engineers at companies handling planetary-scale traffic now treat memory not as an infinite resource—but as a constrained, design-critical dimension. And unlike speculative optimizations, this one shipped: it’s live in production, powering every Cloudflare Worker request today.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://blog.cloudflare.com/saving-100-tb-of-ram-with-math/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/Consistent_hashing" target="_blank" rel="noopener">Consistent hashing - Wikipedia</a><a href="https://blog.cloudflare.com/saving-100-tb-of-ram-with-math/" target="_blank" rel="noopener">Saving another 100TB of RAM with math (and Rust) | Cloudflare Blog</a><a href="https://www.swequiz.com/articles/cloudflare-workers-cold-starts" target="_blank" rel="noopener">How Cloudflare Cut Cold Starts 10x: From TLS... | SWE Quiz</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

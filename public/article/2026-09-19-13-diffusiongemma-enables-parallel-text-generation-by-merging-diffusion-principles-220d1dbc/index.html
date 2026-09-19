@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>DiffusionGemma融合扩散模型与Gemma架构实现并行文本生成 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="DiffusionGemma是一个概念性PyTorch实现，将扩散建模原理与Gemma风格的Transformer架构融合，使文本生成可在完全并行、迭代的模式下从随机初始序列开始。 它挑战了自回归范式，为并行文本生成提供了基于扩散的新路径，有望降低推理延迟，并启发更充分利用现代GPU并行能力的新架构设计。 该实现直接在离散token空间操作（而非隐空间），采" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-09-19-13-diffusiongemma-enables-parallel-text-generation-by-merging-diffusion-principles-220d1dbc" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-19-13-diffusiongemma-enables-parallel-text-generation-by-merging-diffusion-principles-220d1dbc" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-19-13-diffusiongemma-enables-parallel-text-generation-by-merging-diffusion-principles-220d1dbc" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-19-13-diffusiongemma-enables-parallel-text-generation-by-merging-diffusion-principles-220d1dbc" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="DiffusionGemma融合扩散模型与Gemma架构实现并行文本生成" />
+  <meta property="og:description" content="DiffusionGemma是一个概念性PyTorch实现，将扩散建模原理与Gemma风格的Transformer架构融合，使文本生成可在完全并行、迭代的模式下从随机初始序列开始。 它挑战了自回归范式，为并行文本生成提供了基于扩散的新路径，有望降低推理延迟，并启发更充分利用现代GPU并行能力的新架构设计。 该实现直接在离散token空间操作（而非隐空间），采" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-09-19-13-diffusiongemma-enables-parallel-text-generation-by-merging-diffusion-principles-220d1dbc" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wkdnns.svg" />
+  <meta property="article:published_time" content="2026-09-19T05:41:20+00:00" />
+  <meta property="article:modified_time" content="2026-09-19T06:01:43.056694+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DiffusionGemma融合扩散模型与Gemma架构实现并行文本生成" />
+  <meta name="twitter:description" content="DiffusionGemma是一个概念性PyTorch实现，将扩散建模原理与Gemma风格的Transformer架构融合，使文本生成可在完全并行、迭代的模式下从随机初始序列开始。 它挑战了自回归范式，为并行文本生成提供了基于扩散的新路径，有望降低推理延迟，并启发更充分利用现代GPU并行能力的新架构设计。 该实现直接在离散token空间操作（而非隐空间），采" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wkdnns.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-09-19-13-diffusiongemma-enables-parallel-text-generation-by-merging-diffusion-principles-220d1dbc"}, "headline": "DiffusionGemma融合扩散模型与Gemma架构实现并行文本生成", "description": "DiffusionGemma是一个概念性PyTorch实现，将扩散建模原理与Gemma风格的Transformer架构融合，使文本生成可在完全并行、迭代的模式下从随机初始序列开始。 它挑战了自回归范式，为并行文本生成提供了基于扩散的新路径，有望降低推理延迟，并启发更充分利用现代GPU并行能力的新架构设计。 该实现直接在离散token空间操作（而非隐空间），采", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wkdnns.svg"], "datePublished": "2026-09-19T05:41:20+00:00", "dateModified": "2026-09-19T06:01:43.056694+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wkdnns.svg" alt="DiffusionGemma融合扩散模型与Gemma架构实现并行文本生成" />
+    <div class="article-page-tags"><span>#diffusion-models</span> <span>#llm-architecture</span> <span>#pytorch</span> <span>#text-generation</span> <span>#parallel-decoding</span></div>
+    <h1>DiffusionGemma融合扩散模型与Gemma架构实现并行文本生成</h1>
+    <p class="article-page-meta">新闻时间: 2026-09-19T05:49:41.729520+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>Reddit上出现了一个名为DiffusionGemma的新概念框架，它提出了一种全新的并行文本生成方式：将传统自回归语言建模重新构想为一种扩散过程。与Gemma等标准大语言模型逐词从左到右预测不同，DiffusionGemma把文本生成看作一个去噪任务——从完全随机（加噪）的序列出发，通过多轮迭代逐步优化为连贯文本，其思路类似于Stable Diffusion生成图像的方式。该实现完全用PyTorch从零编写，不依赖Hugging Face Transformers或任何预训练权重，因此兼具透明性和教学价值，适合研究者和学生深入理解生成机制。</p>
+<p>这一设计借鉴了DiffuSeq、LDM-Text等文本扩散模型的思路，后者在低维隐空间中运作，以规避直接对离散token进行扩散带来的不稳定性。DiffusionGemma将这些思想适配到类似Gemma（谷歌开源的轻量级开放权重LLM）的架构中，但替换了其因果注意力机制和下一个token预测头，代之以基于扩散的迭代精炼循环。关键在于，每一轮迭代同时更新所有位置的token，从而真正实现推理阶段的并行化——绕过了自回归解码固有的顺序延迟瓶颈。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>该帖并未宣称达到SOTA性能或提供基准测试结果，而是聚焦于架构洞见与教学意义。其中包含可运行的PyTorch代码，实现了前向传播、噪声调度与逐步去噪等全部核心逻辑，且无需外部库支持。尽管尚未在标准NLP任务上验证，也未与Parallel Jacobi Decoding等优化基线对比，但其设计启发人们思考：扩散式动态是否能成为传统解码策略之外的可行替代路径——尤其在硬件并行能力尚未被充分释放的场景下。</p>
+<p>对工程师而言，DiffusionGemma处于一个引人深思的交汇点：它既非开箱即用的生产模型，也不是纯理论抽象，而是一个功能完备的原型。它的价值不在于立竿见影的速度提升，而在于重构我们对序列生成的认知——挑战一个根本假设：“生成文本”是否必须等于“预测下一个词”。随着并行解码机制在机器翻译与图像生成领域日益成熟，此类框架正帮助拓展未来大模型推理引擎的设计边界。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wkdnns/diffusiongemma_how_it_generates_text_in_parallel/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://en.wikipedia.org/wiki/Stable_Diffusion" target="_blank" rel="noopener">Stable Diffusion - Wikipedia</a><a href="https://www.linkedin.com/learning/generative-ai-introduction-to-diffusion-models-for-text-generation/types-of-text-diffusion-models-29724015" target="_blank" rel="noopener">Types of text diffusion models - Gemini Video Tutorial | LinkedIn...</a><a href="https://lyndakade.ir/en/learning/generative-ai-introduction-to-diffusion-models-for-text-generation" target="_blank" rel="noopener">Generative AI: Introduction to Diffusion Models for Text Generation</a><a href="https://arxiv.org/html/2606.05703" target="_blank" rel="noopener">Parallel Jacobi Decoding for Fast Autoregressive Image Generation</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
