@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>一位Rust开发者体验Zig后的内存模型对比 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="一位Rust开发者发布了一篇深度个人反思文章，将Zig的手动内存管理、极简运行时和务实语法与Rust的所有权模型及开发体验进行了系统对比。 这一对比帮助系统程序员理解‘默认安全’（Rust）与‘设计即控制’（Zig）之间的实际权衡，为新项目选型和旧系统迁移提供实践参考。 Zig采用显式分配器且无自动析构逻辑，依赖可选的编译期安全检查（如调试分配器检测悬垂指针" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-09-20-07-a-rust-developer-tries-zig-and-compares-memory-models-aea721e3" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-20-07-a-rust-developer-tries-zig-and-compares-memory-models-aea721e3" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-20-07-a-rust-developer-tries-zig-and-compares-memory-models-aea721e3" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-20-07-a-rust-developer-tries-zig-and-compares-memory-models-aea721e3" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="一位Rust开发者体验Zig后的内存模型对比" />
+  <meta property="og:description" content="一位Rust开发者发布了一篇深度个人反思文章，将Zig的手动内存管理、极简运行时和务实语法与Rust的所有权模型及开发体验进行了系统对比。 这一对比帮助系统程序员理解‘默认安全’（Rust）与‘设计即控制’（Zig）之间的实际权衡，为新项目选型和旧系统迁移提供实践参考。 Zig采用显式分配器且无自动析构逻辑，依赖可选的编译期安全检查（如调试分配器检测悬垂指针" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-09-20-07-a-rust-developer-tries-zig-and-compares-memory-models-aea721e3" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49766637.svg" />
+  <meta property="article:published_time" content="2026-09-19T13:55:18+00:00" />
+  <meta property="article:modified_time" content="2026-09-20T06:20:54.232430+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="一位Rust开发者体验Zig后的内存模型对比" />
+  <meta name="twitter:description" content="一位Rust开发者发布了一篇深度个人反思文章，将Zig的手动内存管理、极简运行时和务实语法与Rust的所有权模型及开发体验进行了系统对比。 这一对比帮助系统程序员理解‘默认安全’（Rust）与‘设计即控制’（Zig）之间的实际权衡，为新项目选型和旧系统迁移提供实践参考。 Zig采用显式分配器且无自动析构逻辑，依赖可选的编译期安全检查（如调试分配器检测悬垂指针" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49766637.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-09-20-07-a-rust-developer-tries-zig-and-compares-memory-models-aea721e3"}, "headline": "一位Rust开发者体验Zig后的内存模型对比", "description": "一位Rust开发者发布了一篇深度个人反思文章，将Zig的手动内存管理、极简运行时和务实语法与Rust的所有权模型及开发体验进行了系统对比。 这一对比帮助系统程序员理解‘默认安全’（Rust）与‘设计即控制’（Zig）之间的实际权衡，为新项目选型和旧系统迁移提供实践参考。 Zig采用显式分配器且无自动析构逻辑，依赖可选的编译期安全检查（如调试分配器检测悬垂指针", "image": ["https://nowainews.com/media/hackernews-story-49766637.svg"], "datePublished": "2026-09-19T13:55:18+00:00", "dateModified": "2026-09-20T06:20:54.232430+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49766637.svg" alt="一位Rust开发者体验Zig后的内存模型对比" />
+    <div class="article-page-tags"><span>#Zig</span> <span>#Rust</span> <span>#systems-programming</span> <span>#language-design</span> <span>#memory-safety</span></div>
+    <h1>一位Rust开发者体验Zig后的内存模型对比</h1>
+    <p class="article-page-meta">新闻时间: 2026-09-20T06:11:05.768267+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>当一位经验丰富的Rust开发者最近为系统编程任务转向Zig时，体验带来的并非语法上的意外，而更像是一次理念层面的“认知冲击”。Rust的所有权系统——由编译器在编译期强制执行、深度融入类型系统——长期以来就像一张织入语言本身的“安全网”。而Zig则完全不提供这张网：内存分配需显式传入分配器，释放必须手动完成，作用域结束时也不会自动调用析构逻辑。作者欣赏Zig的透明性与控制力——尤其在对接C代码或编写底层抽象时——但也怀念Rust对悬垂指针和重复释放等错误的零运行时开销防护。</p>
+<p>文章指出，Zig极简的运行时和无隐藏行为的设计，使其更像“带护栏的C”，而非Rust的继任者。Rust依赖零成本抽象和编译期推理（如借用检查），Zig则拥抱编译期计算（comptime）和显式资源管理。这种权衡也体现在工具链上：Zig的语言服务器（ZLS）已支持跳转定义、自动补全等核心LSP功能，但在IDE集成、重构能力及交叉编译易用性方面，仍落后于Rust成熟的rust-analyzer。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>一个反复出现的主题是稳定性与实用性的取舍。Zig规范仍在演进，标准库尚未冻结——这使得它不适合存档类项目，例如移植上世纪80年代的K&amp;R C代码。相比之下，Rust生态已在生产基础设施中历经多年实战检验，但其所有权语义的学习曲线对不熟悉该范式的开发者依然陡峭。作者总结道：Zig在需要精细控制和无缝C互操作的场景中表现突出；Rust则在正确性、可维护性和团队协作效率上更具优势。</p>
+<p>归根结底，这场对比并非评判孰优孰劣，而是厘清每种语言所接受的约束，以及它们各自赋能哪一类开发者。对重视显式性胜过自动化的人而言，Zig显得坦率而真诚；对更愿信任编译器保障安全的人而言，Rust仍难以替代。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://besok.github.io/posts/what-zig-felt-like-coming-from-rust/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://piembsystech.com/memory-management-in-zig-programming-language/" target="_blank" rel="noopener">Memory Management in Zig Programming Language...</a><a href="https://lzwjava.com/notes/2025-06-30-zigs-better-c-en" target="_blank" rel="noopener">Zig : A Better C Alternative</a><a href="https://bytegoblin.io/blog/memory-safety-in-c-vs-rust-vs-zig.mdx" target="_blank" rel="noopener">Memory Safety in C++ vs Rust vs Zig | ByteGoblin.io</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
