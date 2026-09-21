@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>高中生用C++从零实现自动微分与张量库 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="一名高中生公开分享了自己编写的、零依赖的C++库，实现了自动微分核心机制与基础张量运算，目标是通过动手实现深入理解机器学习基本原理。 它表明深度机器学习底层原理对有热情的学习者而言并非遥不可及；同时提供了罕见的C++教学参考，帮助建立系统级ML认知，弥合PyTorch风格API与ggml等底层推理库之间的理解鸿沟。 该库仅支持标量输出的自动微分，采用即时执行" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-09-21-14-high-school-student-builds-minimal-autograd-and-tensor-library-in-c-e0db8178" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-21-14-high-school-student-builds-minimal-autograd-and-tensor-library-in-c-e0db8178" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-21-14-high-school-student-builds-minimal-autograd-and-tensor-library-in-c-e0db8178" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-21-14-high-school-student-builds-minimal-autograd-and-tensor-library-in-c-e0db8178" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="高中生用C++从零实现自动微分与张量库" />
+  <meta property="og:description" content="一名高中生公开分享了自己编写的、零依赖的C++库，实现了自动微分核心机制与基础张量运算，目标是通过动手实现深入理解机器学习基本原理。 它表明深度机器学习底层原理对有热情的学习者而言并非遥不可及；同时提供了罕见的C++教学参考，帮助建立系统级ML认知，弥合PyTorch风格API与ggml等底层推理库之间的理解鸿沟。 该库仅支持标量输出的自动微分，采用即时执行" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-09-21-14-high-school-student-builds-minimal-autograd-and-tensor-library-in-c-e0db8178" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wlj8vv.svg" />
+  <meta property="article:published_time" content="2026-09-20T14:57:56+00:00" />
+  <meta property="article:modified_time" content="2026-09-21T06:30:40.037557+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="高中生用C++从零实现自动微分与张量库" />
+  <meta name="twitter:description" content="一名高中生公开分享了自己编写的、零依赖的C++库，实现了自动微分核心机制与基础张量运算，目标是通过动手实现深入理解机器学习基本原理。 它表明深度机器学习底层原理对有热情的学习者而言并非遥不可及；同时提供了罕见的C++教学参考，帮助建立系统级ML认知，弥合PyTorch风格API与ggml等底层推理库之间的理解鸿沟。 该库仅支持标量输出的自动微分，采用即时执行" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wlj8vv.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-09-21-14-high-school-student-builds-minimal-autograd-and-tensor-library-in-c-e0db8178"}, "headline": "高中生用C++从零实现自动微分与张量库", "description": "一名高中生公开分享了自己编写的、零依赖的C++库，实现了自动微分核心机制与基础张量运算，目标是通过动手实现深入理解机器学习基本原理。 它表明深度机器学习底层原理对有热情的学习者而言并非遥不可及；同时提供了罕见的C++教学参考，帮助建立系统级ML认知，弥合PyTorch风格API与ggml等底层推理库之间的理解鸿沟。 该库仅支持标量输出的自动微分，采用即时执行", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wlj8vv.svg"], "datePublished": "2026-09-20T14:57:56+00:00", "dateModified": "2026-09-21T06:30:40.037557+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wlj8vv.svg" alt="高中生用C++从零实现自动微分与张量库" />
+    <div class="article-page-tags"><span>#autograd</span> <span>#C++</span> <span>#machine-learning-education</span> <span>#tensor-library</span> <span>#systems-ml</span></div>
+    <h1>高中生用C++从零实现自动微分与张量库</h1>
+    <p class="article-page-meta">新闻时间: 2026-09-21T06:17:03.700306+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一名高三学生开源了一个C++项目，实现了极简的张量库和自动微分（autograd）引擎——它并非面向生产，而是作为深入理解现代机器学习框架底层原理的实践学习工具。</p>
+<p>该项目托管在GitHub上，不依赖任何外部库，强调代码清晰性而非性能。它支持基础张量运算，如加法、乘法和矩阵乘法，并为标量函数提供前向与反向传播功能。梯度通过前向计算过程中动态构建的简易计算图，采用反向模式自动微分计算——这种设计思路与micrograd或Joel Grus的autograd教学实现一脉相承。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>尤为难得的是其开发背景：作者尚在高中阶段，却主动选择C++这一在机器学习入门教育中极少使用的语言，直面底层挑战——内存布局、RAII资源管理、表达式模板（早期版本中）、以及原地操作与拷贝语义的显式区分。相比Python教程，C++实现迫使开发者直面所有权、生命周期和内存安全等关键问题，而这正是从算法研究迈向系统级机器学习工程的核心能力。</p>
+<p>该帖发布于r/MachineLearning社区，诚邀技术反馈，尤其关注梯度传播的正确性、API易用性，以及可扩展方向（例如高阶导数或GPU加速）。尽管当前代码极为精简——不支持广播、无动态形状、无CUDA——但它架起了一座连接理论微积分与真实框架内核的教育桥梁。此类项目与Karpathy的micrograd、ggml文档等主流学习资源形成互补，提供了罕见的“C++优先”视角来理解自动微分本质。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wlj8vv/autograd_project_p/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://github.com/joelgrus/autograd" target="_blank" rel="noopener">GitHub - joelgrus/autograd: coding an autograd from scratch · GitHub</a><a href="https://medium.com/sfu-cspmp/diy-deep-learning-crafting-your-own-autograd-engine-from-scratch-for-effortless-backpropagation-ddab167faaf5" target="_blank" rel="noopener">DIY Deep Learning: Crafting Your Own Autograd Engine from Scratch for Effortless Backpropagation | by Bhavya Sankhla | SFU Professional Computer Science | Medium</a><a href="https://www.everydev.ai/tools/ggml" target="_blank" rel="noopener">ggml - C++ Tensor Library for ML | EveryDev.ai</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
