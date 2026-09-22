@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Cloudflare Python Workers launch as generally available - Now AI News</title>
+  <meta name="description" content="Cloudflare has launched Python Workers as generally available, enabling production Python code compiled to WebAssembly via Pyodide to run on its workerd runtime. This makes Python " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-22-04-cloudflare-python-workers-launch-as-generally-available-bae40590" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-22-04-cloudflare-python-workers-launch-as-generally-available-bae40590" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-22-04-cloudflare-python-workers-launch-as-generally-available-bae40590" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-22-04-cloudflare-python-workers-launch-as-generally-available-bae40590" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Cloudflare Python Workers launch as generally available" />
+  <meta property="og:description" content="Cloudflare has launched Python Workers as generally available, enabling production Python code compiled to WebAssembly via Pyodide to run on its workerd runtime. This makes Python " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-22-04-cloudflare-python-workers-launch-as-generally-available-bae40590" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--b3a971b72e2de3b7.svg" />
+  <meta property="article:published_time" content="2026-09-21T22:25:44+00:00" />
+  <meta property="article:modified_time" content="2026-09-22T06:21:47.671621+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Cloudflare Python Workers launch as generally available" />
+  <meta name="twitter:description" content="Cloudflare has launched Python Workers as generally available, enabling production Python code compiled to WebAssembly via Pyodide to run on its workerd runtime. This makes Python " />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--b3a971b72e2de3b7.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-22-04-cloudflare-python-workers-launch-as-generally-available-bae40590"}, "headline": "Cloudflare Python Workers launch as generally available", "description": "Cloudflare has launched Python Workers as generally available, enabling production Python code compiled to WebAssembly via Pyodide to run on its workerd runtime. This makes Python ", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--b3a971b72e2de3b7.svg"], "datePublished": "2026-09-21T22:25:44+00:00", "dateModified": "2026-09-22T06:21:47.671621+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--b3a971b72e2de3b7.svg" alt="Cloudflare Python Workers launch as generally available" />
+    <div class="article-page-tags"><span>#Cloudflare</span> <span>#WebAssembly</span> <span>#Python</span> <span>#Serverless</span> <span>#Edge Computing</span></div>
+    <h1>Cloudflare Python Workers launch as generally available</h1>
+    <p class="article-page-meta">News time: 2026-09-22T06:10:08.124247+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>Cloudflare has officially launched Python Workers as generally available (GA), marking the end of a two-year preview period. Developers can now deploy production-grade Python code directly on Cloudflare’s edge network — without managing servers, containers, or VMs. This isn’t traditional Python execution: instead, Cloudflare compiles Python to WebAssembly using Pyodide and runs it inside workerd, its high-performance, V8-based runtime originally built for JavaScript and WebAssembly workloads.</p>
+<p>The technical architecture is both novel and pragmatic. By leveraging Pyodide — a mature Python distribution for browsers and Node.js that bundles CPython with scientific packages like NumPy and SciPy — Cloudflare avoids maintaining a separate Python interpreter. Instead, it embeds Pyodide into workerd, enabling fast cold starts and consistent behavior across edge locations. This approach sidesteps the complexity of cross-platform Python binaries while preserving access to a large portion of the Python standard library and ecosystem.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>However, the WebAssembly sandbox imposes real constraints. As documented, Python’s <code>multiprocessing</code> and <code>threading</code> modules are disabled — not just limited, but non-functional — because WebAssembly currently lacks OS-level threading and process isolation primitives. This means CPU-bound parallelism and traditional concurrent I/O patterns won’t work as expected. Developers must rely on async I/O (e.g., <code>asyncio</code>) and stateless, short-lived request handling — aligning with serverless best practices but requiring adaptation for many existing Python applications.</p>
+<p>A standout feature is local development fidelity: the <code>pywrangler</code> CLI (distributed as <code>workers-py</code> on PyPI) simulates the full production stack locally — including running Pyodide-in-Wasm inside a native <code>workerd</code> binary. On macOS ARM64, that binary weighs in at 123MB and lives under <code>node_modules</code>, reflecting the trade-off between accuracy and tooling footprint. The release also signals deep collaboration with the Pyodide project: Gyeongjae Choi and Hood Chatham, both core Pyodide maintainers, co-authored the official announcement — underscoring Cloudflare’s investment beyond infrastructure into upstream open source.</p>
+<p>For Python developers, this GA release lowers the barrier to edge computing — no more rewriting logic in JavaScript or Rust to benefit from low-latency, globally distributed execution. It’s not a drop-in replacement for all Python use cases, but it opens new doors for data transformation, API gateways, ML inference pre-processing, and lightweight backend services — all running closer to users than ever before.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Sep/21/cloudflare-python-worker/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://pyodide.org/" target="_blank" rel="noopener">Pyodide — Version 314.0.7</a><a href="https://github.com/cloudflare/workerd" target="_blank" rel="noopener">GitHub - cloudflare/workerd: The JavaScript / Wasm runtime that powers Cloudflare Workers · GitHub</a><a href="https://blog.cloudflare.com/workerd-open-source-workers-runtime/" target="_blank" rel="noopener">Introducing workerd: the Open Source Workers runtime | Cloudflare Blog</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
