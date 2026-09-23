@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Templar introduces stage skipping for fault-tolerant pipeline-parallel LLM training - Now AI News</title>
+  <meta name="description" content="Templar&#x27;s Crucible platform introduces stage skipping—a method that bypasses failed pipeline stages during training—combined with SparseLoCo and pipeline compression to maintain mo" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-23-06-templar-introduces-stage-skipping-for-fault-tolerant-pipeline-parallel-llm-train-b0274955" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-23-06-templar-introduces-stage-skipping-for-fault-tolerant-pipeline-parallel-llm-train-b0274955" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-23-06-templar-introduces-stage-skipping-for-fault-tolerant-pipeline-parallel-llm-train-b0274955" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-23-06-templar-introduces-stage-skipping-for-fault-tolerant-pipeline-parallel-llm-train-b0274955" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Templar introduces stage skipping for fault-tolerant pipeline-parallel LLM training" />
+  <meta property="og:description" content="Templar&#x27;s Crucible platform introduces stage skipping—a method that bypasses failed pipeline stages during training—combined with SparseLoCo and pipeline compression to maintain mo" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-23-06-templar-introduces-stage-skipping-for-fault-tolerant-pipeline-parallel-llm-train-b0274955" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wnd5ys.svg" />
+  <meta property="article:published_time" content="2026-09-22T15:47:47+00:00" />
+  <meta property="article:modified_time" content="2026-09-23T06:11:00.391034+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Templar introduces stage skipping for fault-tolerant pipeline-parallel LLM training" />
+  <meta name="twitter:description" content="Templar&#x27;s Crucible platform introduces stage skipping—a method that bypasses failed pipeline stages during training—combined with SparseLoCo and pipeline compression to maintain mo" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wnd5ys.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-23-06-templar-introduces-stage-skipping-for-fault-tolerant-pipeline-parallel-llm-train-b0274955"}, "headline": "Templar introduces stage skipping for fault-tolerant pipeline-parallel LLM training", "description": "Templar's Crucible platform introduces stage skipping—a method that bypasses failed pipeline stages during training—combined with SparseLoCo and pipeline compression to maintain mo", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wnd5ys.svg"], "datePublished": "2026-09-22T15:47:47+00:00", "dateModified": "2026-09-23T06:11:00.391034+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wnd5ys.svg" alt="Templar introduces stage skipping for fault-tolerant pipeline-parallel LLM training" />
+    <div class="article-page-tags"><span>#fault-tolerance</span> <span>#pipeline-parallelism</span> <span>#distributed-training</span> <span>#large-language-models</span> <span>#system-reliability</span></div>
+    <h1>Templar introduces stage skipping for fault-tolerant pipeline-parallel LLM training</h1>
+    <p class="article-page-meta">News time: 2026-09-23T05:56:01.597156+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>Templar’s Crucible platform has introduced a novel technique called <em>stage skipping</em> to maintain training progress when individual pipeline stages fail during large-scale LLM pre-training. Unlike traditional fault-tolerance approaches that pause or restart training upon worker failure, Crucible allows healthy stages to continue forward and backward passes by dynamically bypassing the failed stage—effectively omitting its computation for several global steps. This keeps tokens flowing through the pipeline instead of stalling, preserving throughput and model convergence under realistic failure conditions.</p>
+<p>Crucible combines stage skipping with two complementary techniques: SparseLoCo and pipeline compression. SparseLoCo is a communication-efficient algorithm that uses Top-k sparsification and 2-bit quantization to reduce inter-replica update traffic—critical when scaling across many replicas. Pipeline compression, meanwhile, reduces activation and gradient sizes exchanged between consecutive stages within a replica. Together, these methods lower bandwidth pressure while enabling graceful degradation during failures.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>In simulations using a 178M-parameter model, eight data-parallel replicas, and four pipeline stages per replica, Crucible sustained validation loss within ~0.5% of the no-failure baseline—even when each replica had a 1% chance per global step of losing one stage for six consecutive steps. Notably, fixed projection layers shared across transformer blocks further improved robustness: they appear to align representations across stage boundaries, making skipped-stage bypasses less disruptive to learning dynamics. While this alignment effect remains a hypothesis, empirical results strongly support it.</p>
+<p>Importantly, this work simulates <em>learning resilience</em>, not infrastructure recovery—it does not measure hardware replacement time or cloud cost savings. Rather, it demonstrates that training can remain stable even on volatile compute pools like spot instances or preemptible workers. For practitioners building production LLM training systems, stage skipping offers a pragmatic path toward higher resource utilization without sacrificing model quality.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wnd5ys/simulating_fault_tolerance_with_stage_skipping_in/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://openreview.net/forum?id=gBppFpDjyW" target="_blank" rel="noopener">Communication Efficient LLM Pre-Training with SparseLoCo | OpenReview</a><a href="https://github.com/one-covenant/SparseLoCo" target="_blank" rel="noopener">GitHub - one-covenant/SparseLoCo: CCLoco: Scaling Up Top-K Error Feedback with Local Optimizers · GitHub</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

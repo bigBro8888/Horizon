@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>WordPress fixes unauthenticated path traversal that enables conditional RCE - Now AI News</title>
+  <meta name="description" content="WordPress 7.1.2, released on September 22, 2026, patches an unauthenticated path traversal vulnerability (CVE-2026-87902) in `get_page_template()` that could lead to conditional re" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-23-03-wordpress-fixes-unauthenticated-path-traversal-that-enables-conditional-rce-e3731a10" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-23-03-wordpress-fixes-unauthenticated-path-traversal-that-enables-conditional-rce-e3731a10" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-23-03-wordpress-fixes-unauthenticated-path-traversal-that-enables-conditional-rce-e3731a10" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-23-03-wordpress-fixes-unauthenticated-path-traversal-that-enables-conditional-rce-e3731a10" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="WordPress fixes unauthenticated path traversal that enables conditional RCE" />
+  <meta property="og:description" content="WordPress 7.1.2, released on September 22, 2026, patches an unauthenticated path traversal vulnerability (CVE-2026-87902) in `get_page_template()` that could lead to conditional re" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-23-03-wordpress-fixes-unauthenticated-path-traversal-that-enables-conditional-rce-e3731a10" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49803959.png" />
+  <meta property="article:published_time" content="2026-09-22T16:33:45+00:00" />
+  <meta property="article:modified_time" content="2026-09-23T06:11:00.391034+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="WordPress fixes unauthenticated path traversal that enables conditional RCE" />
+  <meta name="twitter:description" content="WordPress 7.1.2, released on September 22, 2026, patches an unauthenticated path traversal vulnerability (CVE-2026-87902) in `get_page_template()` that could lead to conditional re" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49803959.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-23-03-wordpress-fixes-unauthenticated-path-traversal-that-enables-conditional-rce-e3731a10"}, "headline": "WordPress fixes unauthenticated path traversal that enables conditional RCE", "description": "WordPress 7.1.2, released on September 22, 2026, patches an unauthenticated path traversal vulnerability (CVE-2026-87902) in `get_page_template()` that could lead to conditional re", "image": ["https://nowainews.com/media/hackernews-story-49803959.png"], "datePublished": "2026-09-22T16:33:45+00:00", "dateModified": "2026-09-23T06:11:00.391034+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49803959.png" alt="WordPress fixes unauthenticated path traversal that enables conditional RCE" />
+    <div class="article-page-tags"><span>#WordPress</span> <span>#path-traversal</span> <span>#RCE</span> <span>#web-security</span> <span>#CVE</span></div>
+    <h1>WordPress fixes unauthenticated path traversal that enables conditional RCE</h1>
+    <p class="article-page-meta">News time: 2026-09-23T05:56:01.492113+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>WordPress has released version 7.1.2 to patch a critical security vulnerability—tracked as CVE-2026-87902 and GHSA-7hp8-65ch-5whp—that allows unauthenticated attackers to traverse file paths and load arbitrary local PHP files outside the theme directory. The flaw resides in the <code>get_page_template()</code> function, which handles page-template resolution. When improperly sanitized, user-supplied input can manipulate the template lookup logic to point to files like <code>/etc/passwd</code> or <code>/var/www/html/wp-config.php</code>, provided those files are readable by the web server.</p>
+<p>What makes this especially dangerous is its <em>conditional</em> path to remote code execution (RCE). While the vulnerability itself is a local file inclusion (LFI), it becomes exploitable for RCE only when certain preconditions are met—such as the presence of attacker-controlled data in included files (e.g., serialized objects in cache files) or when combined with other weaknesses like insecure deserialization or plugin-specific behaviors. This isn’t universal RCE out of the box—but in real-world deployments where caching plugins, custom themes, or legacy extensions are active, the risk escalates significantly.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The fix, committed in <a href="https://github.com/WordPress/wordpress-develop/commit/9c4e85">9c4e85</a>, introduces strict validation on template paths: it now enforces that resolved templates must reside within the expected theme or parent-theme directories and rejects any path containing <code>..</code> or absolute path components. As a courtesy to users still running older versions, WordPress backported the patch to all supported branches dating back to 4.7—a notable effort given that roughly one-third of active WordPress installations remain on pre-7.x versions, according to community estimates.</p>
+<p>This vulnerability arrives amid a broader wave of high-severity path traversal flaws—including GitLab’s CVE-2026-85706, patched just days earlier. Experts point to systemic issues: most programming language standard libraries lack safe-by-default abstractions for scoped filesystem access. As one developer noted, tools like <code>libpathrs</code> aim to replace global-path string manipulation with file-descriptor–based path resolution—a paradigm shift needed to prevent recurrence. For site owners, immediate upgrading remains the only reliable mitigation; static site generators like Hugo are gaining traction precisely because they eliminate such dynamic server-side risks altogether.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/WordPress/wordpress-develop/security/advisories/GHSA-7hp8-65ch-5whp" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://wordpress.org/news/2026/09/wordpress-7-1-2-release/" target="_blank" rel="noopener">WordPress 7.1.2 Release – WordPress News</a><a href="https://patchstack.com/articles/wordpress-7-1-2-security-release-unauthenticated-lfi-to-rce/" target="_blank" rel="noopener">WordPress 7.1.2 Security Release: Unauthenticated LFI to RCE - Patchstack</a><a href="https://github.com/WordPress/wordpress-develop/security/advisories/GHSA-7hp8-65ch-5whp" target="_blank" rel="noopener">Unauthenticated path traversal in page-template resolution ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

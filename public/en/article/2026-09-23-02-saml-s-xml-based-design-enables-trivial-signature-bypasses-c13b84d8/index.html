@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>SAML’s XML-based design enables trivial signature bypasses - Now AI News</title>
+  <meta name="description" content="Trail of Bits published a foundational critique arguing SAML’s architecture is inherently insecure due to its deep coupling with error-prone XML cryptography and misaligned design " />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-23-02-saml-s-xml-based-design-enables-trivial-signature-bypasses-c13b84d8" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-23-02-saml-s-xml-based-design-enables-trivial-signature-bypasses-c13b84d8" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-23-02-saml-s-xml-based-design-enables-trivial-signature-bypasses-c13b84d8" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-23-02-saml-s-xml-based-design-enables-trivial-signature-bypasses-c13b84d8" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="SAML’s XML-based design enables trivial signature bypasses" />
+  <meta property="og:description" content="Trail of Bits published a foundational critique arguing SAML’s architecture is inherently insecure due to its deep coupling with error-prone XML cryptography and misaligned design " />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-23-02-saml-s-xml-based-design-enables-trivial-signature-bypasses-c13b84d8" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49806335.png" />
+  <meta property="article:published_time" content="2026-09-22T18:57:17+00:00" />
+  <meta property="article:modified_time" content="2026-09-23T06:11:00.391034+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SAML’s XML-based design enables trivial signature bypasses" />
+  <meta name="twitter:description" content="Trail of Bits published a foundational critique arguing SAML’s architecture is inherently insecure due to its deep coupling with error-prone XML cryptography and misaligned design " />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49806335.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-23-02-saml-s-xml-based-design-enables-trivial-signature-bypasses-c13b84d8"}, "headline": "SAML’s XML-based design enables trivial signature bypasses", "description": "Trail of Bits published a foundational critique arguing SAML’s architecture is inherently insecure due to its deep coupling with error-prone XML cryptography and misaligned design ", "image": ["https://nowainews.com/media/hackernews-story-49806335.png"], "datePublished": "2026-09-22T18:57:17+00:00", "dateModified": "2026-09-23T06:11:00.391034+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49806335.png" alt="SAML’s XML-based design enables trivial signature bypasses" />
+    <div class="article-page-tags"><span>#SAML</span> <span>#authentication</span> <span>#XML</span> <span>#OIDC</span> <span>#identity-security</span></div>
+    <h1>SAML’s XML-based design enables trivial signature bypasses</h1>
+    <p class="article-page-meta">News time: 2026-09-23T05:56:01.492089+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A scathing new analysis from Trail of Bits labels SAML not just flawed—but a 'fractal of bad design': every layer, from its XML foundation to cryptographic bindings and protocol flows, compounds insecurity. The core issue lies in how SAML ties authentication to XML Signature (XMLSig), a specification notoriously fragile in practice. As documented in academic and industry research, real-world SAML implementations routinely fail to validate signatures correctly—allowing attackers to strip, duplicate, or reposition signed elements without detection. One infamous example cited by developers is the default behavior of certain C-based XMLSig libraries: they would verify signatures not only against the intended public key but also against an HMAC key supplied <em>by the attacker</em> inside the SAML document—and even accept TLS certificates from arbitrary domains as valid signing keys.</p>
+<p>This isn’t theoretical. Researchers have demonstrated XML Signature Wrapping (XSW) attacks that let adversaries forge authenticated sessions with minimal effort. A 2014 study confirmed these vulnerabilities are widespread across SAML validation frameworks, and recent AI-assisted audits (e.g., using Claude) have rediscovered similar flaws—highlighting how deeply embedded the problems are in parser logic and custom XML handling code. Unlike modern protocols built around stateless tokens and clear cryptographic boundaries, SAML treats identity assertions as mutable documents, inviting complexity where simplicity is needed.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The critique doesn’t stop at cryptography. Commenters on Hacker News point out that SAML reflects a broader era of over-engineering: when XML was seen as the universal solution for everything—including authentication, which is fundamentally about <em>proving who you are</em>, not marking up structured data. OIDC, while not perfect, shifts toward JSON Web Tokens (JWTs) with explicit algorithm declarations, audience checks, and standardized validation routines—though it too suffers from pitfalls like 'none' algorithm abuse and inconsistent library support.</p>
+<p>Still, enterprise inertia keeps SAML alive. As one practitioner notes, SAML offers IdP-initiated flows and stable, if mediocre, interoperability across legacy systems—features OIDC hasn’t fully matched in broad deployment. Yet the growing consensus is clear: maintaining SAML means carrying technical debt that grows more dangerous with every integration. For security teams, the takeaway is urgent: treat SAML as a known-risk legacy component—not a neutral transport—and prioritize migration paths that reduce XML surface area and enforce strict signature verification.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://blog.trailofbits.com/2026/09/21/saml-a-fractal-of-bad-design/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://arxiv.org/abs/1401.7483" target="_blank" rel="noopener">Secure SAML validation to prevent XML signature wrapping attacks</a><a href="https://securze.com/2024/12/01/saml-fundamentals-use-cases-exploits-and-best-practices/" target="_blank" rel="noopener">SAML : Fundamentals, Use Cases, Exploits, and Best Practices...</a><a href="https://cybersecuritynews.com/claude-ai-finds-saml-security-flaws/" target="_blank" rel="noopener">Claude AI Finds SAML Security Flaws That Can Let Attackers Take...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

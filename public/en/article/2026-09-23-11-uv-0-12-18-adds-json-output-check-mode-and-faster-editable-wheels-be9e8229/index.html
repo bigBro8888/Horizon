@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>uv 0.12.18 adds JSON output, --check mode, and faster editable wheels - Now AI News</title>
+  <meta name="description" content="uv 0.12.18 introduces JSON output for pip commands, a --check flag for safe dry-run dependency operations, improved PEP 517 build error reporting, preview build dependency validati" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-23-11-uv-0-12-18-adds-json-output-check-mode-and-faster-editable-wheels-be9e8229" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-23-11-uv-0-12-18-adds-json-output-check-mode-and-faster-editable-wheels-be9e8229" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-23-11-uv-0-12-18-adds-json-output-check-mode-and-faster-editable-wheels-be9e8229" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-23-11-uv-0-12-18-adds-json-output-check-mode-and-faster-editable-wheels-be9e8229" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="uv 0.12.18 adds JSON output, --check mode, and faster editable wheels" />
+  <meta property="og:description" content="uv 0.12.18 introduces JSON output for pip commands, a --check flag for safe dry-run dependency operations, improved PEP 517 build error reporting, preview build dependency validati" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-23-11-uv-0-12-18-adds-json-output-check-mode-and-faster-editable-wheels-be9e8229" />
+  <meta property="og:image" content="https://nowainews.com/media/github-release-394178000.png" />
+  <meta property="article:published_time" content="2026-09-22T23:00:51+00:00" />
+  <meta property="article:modified_time" content="2026-09-23T06:11:00.391034+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="uv 0.12.18 adds JSON output, --check mode, and faster editable wheels" />
+  <meta name="twitter:description" content="uv 0.12.18 introduces JSON output for pip commands, a --check flag for safe dry-run dependency operations, improved PEP 517 build error reporting, preview build dependency validati" />
+  <meta name="twitter:image" content="https://nowainews.com/media/github-release-394178000.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-23-11-uv-0-12-18-adds-json-output-check-mode-and-faster-editable-wheels-be9e8229"}, "headline": "uv 0.12.18 adds JSON output, --check mode, and faster editable wheels", "description": "uv 0.12.18 introduces JSON output for pip commands, a --check flag for safe dry-run dependency operations, improved PEP 517 build error reporting, preview build dependency validati", "image": ["https://nowainews.com/media/github-release-394178000.png"], "datePublished": "2026-09-22T23:00:51+00:00", "dateModified": "2026-09-23T06:11:00.391034+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/github-release-394178000.png" alt="uv 0.12.18 adds JSON output, --check mode, and faster editable wheels" />
+    <div class="article-page-tags"><span>#python</span> <span>#package-management</span> <span>#uv</span> <span>#cli-tools</span> <span>#devops</span></div>
+    <h1>uv 0.12.18 adds JSON output, --check mode, and faster editable wheels</h1>
+    <p class="article-page-meta">News time: 2026-09-23T05:56:02.211599+00:00 · Source: github</p>
+    <article class="article-page-body"><p>Astral has released uv 0.12.18 — the latest update to its blazing-fast Python package installer and resolver. Released on September 22, 2026, this patch delivers practical improvements for developers who rely on uv for dependency management, environment setup, and reproducible builds. Unlike major version jumps, this release focuses on reliability, interoperability, and automation-readiness — making it especially valuable for CI/CD pipelines, tooling integrators, and teams adopting uv at scale.</p>
+<p>The most immediately useful additions are <code>--output-format json</code> and <code>--check</code>. The new JSON output option works across <code>uv pip install</code> and <code>uv pip sync</code>, including with <code>--dry-run</code> and <code>--check</code>, enabling structured parsing in scripts and IDE integrations. Meanwhile, <code>--check</code> lets users preview exactly what would be installed or removed — without touching the environment — a long-requested safety guard for automated workflows. These features bring uv closer to production-grade robustness while preserving its signature speed.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Under the hood, uv’s build system is becoming more resilient. It now correctly identifies failures from PEP 517 <code>get_requires_for_build_*</code> hooks — critical for projects using modern build backends like setuptools or hatchling. A related preview feature validates build dependencies when using <code>uv build --no-build-isolation</code>, helping catch missing build-time requirements before compilation fails mid-process. Performance also sees a tangible win: editable wheel creation is significantly faster thanks to skipping compression during temporary wheel generation — a small but impactful optimization for local development loops.</p>
+<p>Bug fixes round out the release with notable attention to correctness and portability. uv now properly handles wheel compatibility across Python ABI variants (e.g., stable vs. generic tags), restores project files on interrupted operations like <code>uv add</code> or <code>uv remove</code>, and avoids dangerous path normalization on Windows — rejecting archive entries that resolve to absolute paths. It also correctly parses URLs with query fragments (e.g., <code>?v=1.2</code>) and generates accurate platform tags for BSD and Haiku systems. Taken together, these changes reflect uv’s maturing focus: not just raw speed, but predictable, secure, and cross-platform behavior.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/astral-sh/uv/releases/tag/0.12.18" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/astral-sh/uv" target="_blank" rel="noopener">GitHub - astral-sh/uv: An extremely fast Python package and ... Installation | uv - Astral uv · PyPI uv: A Complete Guide to Python&#x27;s Fastest Package Manager Python UV: The Ultimate Guide to the Fastest Python Package ... How to Use uv Python Package Manager (Complete 2026)</a><a href="https://pydevtools.com/handbook/explanation/uv-complete-guide/" target="_blank" rel="noopener">uv: A Complete Guide to Python&#x27;s Fastest Package Manager</a><a href="https://www.datacamp.com/tutorial/python-uv" target="_blank" rel="noopener">Python UV: The Ultimate Guide to the Fastest Python Package ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
