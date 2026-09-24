@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Tailscale overhauls userspace WireGuard for higher throughput - Now AI News</title>
+  <meta name="description" content="Tailscale shipped major performance optimizations to its userspace WireGuard implementation on Linux and Android, achieving up to 3× higher throughput and lower latency through zer" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-24-06-tailscale-overhauls-userspace-wireguard-for-higher-throughput-9c7b7beb" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-24-06-tailscale-overhauls-userspace-wireguard-for-higher-throughput-9c7b7beb" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-24-06-tailscale-overhauls-userspace-wireguard-for-higher-throughput-9c7b7beb" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-24-06-tailscale-overhauls-userspace-wireguard-for-higher-throughput-9c7b7beb" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Tailscale overhauls userspace WireGuard for higher throughput" />
+  <meta property="og:description" content="Tailscale shipped major performance optimizations to its userspace WireGuard implementation on Linux and Android, achieving up to 3× higher throughput and lower latency through zer" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-24-06-tailscale-overhauls-userspace-wireguard-for-higher-throughput-9c7b7beb" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49819880.png" />
+  <meta property="article:published_time" content="2026-09-23T17:49:07+00:00" />
+  <meta property="article:modified_time" content="2026-09-24T06:18:51.808500+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tailscale overhauls userspace WireGuard for higher throughput" />
+  <meta name="twitter:description" content="Tailscale shipped major performance optimizations to its userspace WireGuard implementation on Linux and Android, achieving up to 3× higher throughput and lower latency through zer" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49819880.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-24-06-tailscale-overhauls-userspace-wireguard-for-higher-throughput-9c7b7beb"}, "headline": "Tailscale overhauls userspace WireGuard for higher throughput", "description": "Tailscale shipped major performance optimizations to its userspace WireGuard implementation on Linux and Android, achieving up to 3× higher throughput and lower latency through zer", "image": ["https://nowainews.com/media/hackernews-story-49819880.png"], "datePublished": "2026-09-23T17:49:07+00:00", "dateModified": "2026-09-24T06:18:51.808500+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49819880.png" alt="Tailscale overhauls userspace WireGuard for higher throughput" />
+    <div class="article-page-tags"><span>#networking</span> <span>#wireguard</span> <span>#performance-optimization</span> <span>#tailscale</span> <span>#userspace-kernel</span></div>
+    <h1>Tailscale overhauls userspace WireGuard for higher throughput</h1>
+    <p class="article-page-meta">News time: 2026-09-24T06:08:52.425670+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Tailscale has published a detailed engineering post explaining how it is dramatically improving the performance of its core networking stack. The company identified bottlenecks in its userspace WireGuard implementation — specifically in packet handling, memory allocation, and syscall overhead — and applied targeted optimizations across Linux and Android. These include zero-copy packet forwarding, reduced memory allocations per packet, tighter integration with epoll for event handling, and smarter batching of cryptographic operations. As a result, Tailscale now achieves up to 3× higher throughput on Linux servers and significantly lower latency on mobile devices.</p>
+<p>The improvements are especially meaningful because Tailscale’s entire control plane and data plane run in userspace — unlike kernel-mode WireGuard, which benefits from direct hardware access and zero context switches. While kernel WireGuard remains faster in raw benchmarks, Tailscale’s architecture enables features like seamless NAT traversal, automatic key rotation, DNS-based service discovery, and coordinated exit node routing — all without requiring root privileges or kernel modules. This trade-off between convenience and peak performance has long defined Tailscale’s positioning.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The blog also outlines longer-term directions: exploring DPDK for ultra-high-throughput deployments (e.g., data centers or edge gateways), evaluating eBPF offloads for selective kernel acceleration, and continuing to close the gap with kernel WireGuard through algorithmic refinements rather than wholesale rewrites. Notably, Tailscale emphasizes that its userspace approach isn’t a temporary compromise — it’s a deliberate design choice enabling cross-platform consistency, rapid iteration, and fine-grained observability.</p>
+<p>Community feedback reflects real-world stakes. Some users report hitting hard ceilings — under 1 Gbps on macOS/Windows, struggling to reach 10 Gbps even on Linux with synthetic loads — while others praise Tailscale’s reliability and ease of use over raw speed. Tailscale co-founder apenwarr clarifies that past optimizations actually made their userspace WireGuard <em>faster</em> than kernel WireGuard in certain scenarios, and that both implementations have since evolved in tandem. Ultimately, this effort signals that performance is no longer a secondary concern for Tailscale — it’s central to scaling securely across laptops, cloud VMs, IoT devices, and enterprise infrastructure.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://tailscale.com/blog/making-tailscale-faster" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/Data_Plane_Development_Kit" target="_blank" rel="noopener">Data Plane Development Kit - Wikipedia</a><a href="https://www.netmaker.io/resources/kernel-module-vs-user-space-wireguard" target="_blank" rel="noopener">Kernel Module vs . User Space : WireGuard Implementation Guide</a><a href="https://serverside.com/blog/wireguard-vs-tailscale-vs-headscale-vs-netbird" target="_blank" rel="noopener">WireGuard vs Tailscale vs Headscale vs NetBird... | Serverside.com</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
