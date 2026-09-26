@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Fixing label token budget in frozen-encoder heads lifts Banking77 accuracy to 76.0% - Now AI News</title>
+  <meta name="description" content="The author fixed uniform 3-token truncation of multi-token labels in frozen-encoder decision heads by dynamically sizing token windows per label and switching to space-separated la" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-26-06-fixing-label-token-budget-in-frozen-encoder-heads-lifts-banking77-accuracy-to-76-8d950c19" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-26-06-fixing-label-token-budget-in-frozen-encoder-heads-lifts-banking77-accuracy-to-76-8d950c19" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-26-06-fixing-label-token-budget-in-frozen-encoder-heads-lifts-banking77-accuracy-to-76-8d950c19" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-26-06-fixing-label-token-budget-in-frozen-encoder-heads-lifts-banking77-accuracy-to-76-8d950c19" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Fixing label token budget in frozen-encoder heads lifts Banking77 accuracy to 76.0%" />
+  <meta property="og:description" content="The author fixed uniform 3-token truncation of multi-token labels in frozen-encoder decision heads by dynamically sizing token windows per label and switching to space-separated la" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-26-06-fixing-label-token-budget-in-frozen-encoder-heads-lifts-banking77-accuracy-to-76-8d950c19" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wqi6sw.svg" />
+  <meta property="article:published_time" content="2026-09-26T05:24:09+00:00" />
+  <meta property="article:modified_time" content="2026-09-26T06:18:56.198488+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Fixing label token budget in frozen-encoder heads lifts Banking77 accuracy to 76.0%" />
+  <meta name="twitter:description" content="The author fixed uniform 3-token truncation of multi-token labels in frozen-encoder decision heads by dynamically sizing token windows per label and switching to space-separated la" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wqi6sw.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-26-06-fixing-label-token-budget-in-frozen-encoder-heads-lifts-banking77-accuracy-to-76-8d950c19"}, "headline": "Fixing label token budget in frozen-encoder heads lifts Banking77 accuracy to 76.0%", "description": "The author fixed uniform 3-token truncation of multi-token labels in frozen-encoder decision heads by dynamically sizing token windows per label and switching to space-separated la", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wqi6sw.svg"], "datePublished": "2026-09-26T05:24:09+00:00", "dateModified": "2026-09-26T06:18:56.198488+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wqi6sw.svg" alt="Fixing label token budget in frozen-encoder heads lifts Banking77 accuracy to 76.0%" />
+    <div class="article-page-tags"><span>#LLM distillation</span> <span>#tokenization</span> <span>#model compression</span> <span>#decision heads</span> <span>#BERT</span></div>
+    <h1>Fixing label token budget in frozen-encoder heads lifts Banking77 accuracy to 76.0%</h1>
+    <p class="article-page-meta">News time: 2026-09-26T06:07:57.479294+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A developer training lightweight decision heads on a frozen ModernBERT encoder discovered a subtle but critical flaw in how multi-token labels were handled during inference: all 77 banking intent labels were uniformly truncated to just three tokens—causing semantic collisions like 'declined_card_payment', 'declined_cash_withdrawal', and 'declined_transfer' all collapsing into 'declined_'. This truncation, baked into Laya’s default 192-token option budget, severely degraded model discrimination. By instead allocating token windows per label—using space-separated formatting (e.g., 'declined card payment') and dynamically sizing each label’s context—the author raised Banking77 test-set accuracy from 67.5% to 76.0%, matching the hosted Jev model’s 76.4% on its smaller benchmark.</p>
+<p>The insight emerged from rigorous empirical debugging—not theoretical design. The author measured actual token consumption, counted collisions (18 under underscore formatting at 3 tokens vs. only 7 with spaces), and ran ablations across budget strategies. They also uncovered two related phenomena: first, frozen encoders excel at recognizing stated facts ('first transfer to this payee') but fail at arithmetic reasoning ('larger than usual'), confirming their reliance on surface lexical patterns; second, teacher agreement is not ground-truth accuracy—so they introduced a gold-standard human-verified evaluation split, revealing a meaningful gap between seen (100%) and unseen (93.5%) rows.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>All experiments used the open Laya checkpoint (ModernBERT-large, 421M params) with frozen encoder layers and lightweight decision heads trained for 48 epochs. Training completed in just 18 minutes on an RTX 5060 laptop thanks to encoder output caching. Code, data scripts, and browser demo are publicly available under Apache-2.0. The next step? Unfreezing the top two transformer layers while preserving cached outputs—to probe how much of the remaining gap to full fine-tuning (~94%) can be closed without sacrificing efficiency.</p>
+<p>This work reframes a common practice—uniform token budgeting for classification options—as a hidden source of error in distillation pipelines. It shows that even small, deterministic changes to tokenization and window sizing can yield double-digit accuracy gains when working with frozen encoders and constrained decision heads.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wqi6sw/my_frozenencoder_decision_heads_were_reading_3/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://arxiv.org/html/2609.27866" target="_blank" rel="noopener">A Shared Encoder Is Not a Shared Task:Conditional Comparison for...</a><a href="https://pinggy.io/blog/best_open_source_jev_alternatives_self_hosted_decision_models/" target="_blank" rel="noopener">Best Open Source Jev Alternatives: 5 Self-Hosted Decision Models</a><a href="https://www.hunteralphahub.com/laya/reference" target="_blank" rel="noopener">Laya , Specified: Checkpoints , Limits and What We Measured (2026)</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
