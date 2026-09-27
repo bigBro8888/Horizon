@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>纯NumPy手写MLP可视化工具实时展示权重、t-SNE和神经元消融 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="一个完全手写的NumPy版MLP新增了实时GUI界面，可在训练过程中动态可视化权重演化、各层t-SNE/PCA嵌入、神经元消融影响及鲁棒性指标。 该工具弥合了机器学习教学中抽象理论与具象直觉之间的鸿沟，为学生和研究者提供了前所未有的透明性，使其无需依赖框架抽象即可深入理解神经网络行为与可解释性。 MLP在MNIST上训练可达约98.5%准确率；所有可视化（包" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-09-27-02-interactive-numpy-mlp-visualizer-shows-weights-t-sne-and-ablation-in-real-time-a83539ca" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-27-02-interactive-numpy-mlp-visualizer-shows-weights-t-sne-and-ablation-in-real-time-a83539ca" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-27-02-interactive-numpy-mlp-visualizer-shows-weights-t-sne-and-ablation-in-real-time-a83539ca" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-27-02-interactive-numpy-mlp-visualizer-shows-weights-t-sne-and-ablation-in-real-time-a83539ca" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="纯NumPy手写MLP可视化工具实时展示权重、t-SNE和神经元消融" />
+  <meta property="og:description" content="一个完全手写的NumPy版MLP新增了实时GUI界面，可在训练过程中动态可视化权重演化、各层t-SNE/PCA嵌入、神经元消融影响及鲁棒性指标。 该工具弥合了机器学习教学中抽象理论与具象直觉之间的鸿沟，为学生和研究者提供了前所未有的透明性，使其无需依赖框架抽象即可深入理解神经网络行为与可解释性。 MLP在MNIST上训练可达约98.5%准确率；所有可视化（包" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-09-27-02-interactive-numpy-mlp-visualizer-shows-weights-t-sne-and-ablation-in-real-time-a83539ca" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wqy1qd.png" />
+  <meta property="article:published_time" content="2026-09-26T18:38:38+00:00" />
+  <meta property="article:modified_time" content="2026-09-27T06:45:39.217312+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="纯NumPy手写MLP可视化工具实时展示权重、t-SNE和神经元消融" />
+  <meta name="twitter:description" content="一个完全手写的NumPy版MLP新增了实时GUI界面，可在训练过程中动态可视化权重演化、各层t-SNE/PCA嵌入、神经元消融影响及鲁棒性指标。 该工具弥合了机器学习教学中抽象理论与具象直觉之间的鸿沟，为学生和研究者提供了前所未有的透明性，使其无需依赖框架抽象即可深入理解神经网络行为与可解释性。 MLP在MNIST上训练可达约98.5%准确率；所有可视化（包" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wqy1qd.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-09-27-02-interactive-numpy-mlp-visualizer-shows-weights-t-sne-and-ablation-in-real-time-a83539ca"}, "headline": "纯NumPy手写MLP可视化工具实时展示权重、t-SNE和神经元消融", "description": "一个完全手写的NumPy版MLP新增了实时GUI界面，可在训练过程中动态可视化权重演化、各层t-SNE/PCA嵌入、神经元消融影响及鲁棒性指标。 该工具弥合了机器学习教学中抽象理论与具象直觉之间的鸿沟，为学生和研究者提供了前所未有的透明性，使其无需依赖框架抽象即可深入理解神经网络行为与可解释性。 MLP在MNIST上训练可达约98.5%准确率；所有可视化（包", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wqy1qd.png"], "datePublished": "2026-09-26T18:38:38+00:00", "dateModified": "2026-09-27T06:45:39.217312+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wqy1qd.png" alt="纯NumPy手写MLP可视化工具实时展示权重、t-SNE和神经元消融" />
+    <div class="article-page-tags"><span>#educational-tool</span> <span>#interpretability</span> <span>#neural-networks</span> <span>#visualization</span> <span>#numpy</span></div>
+    <h1>纯NumPy手写MLP可视化工具实时展示权重、t-SNE和神经元消融</h1>
+    <p class="article-page-meta">新闻时间: 2026-09-27T06:35:07.343886+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一款全新的开源教学工具，让学习者能真正‘看见’神经网络的学习过程。该工具完全基于NumPy实现，不依赖任何深度学习框架或自动微分——所有组件均为手写：前向传播、手动反向传播、带动量的随机梯度下降（SGD）、L2正则化、Dropout、余弦学习率衰减以及四种激活函数。在MNIST数据集上训练后，测试准确率达约98.5%——虽非SOTA，但已远超教学所需。</p>
+<p>其核心突破在于实时交互式GUI。训练过程中，用户可同步观察每个小批量与每轮的损失曲线、各层梯度模长、以及‘失活神经元’（dead neurons）占比。权重分布动态更新，直观对比当前值与初始化状态；第一层感受野动画则清晰呈现滤波器如何演化。更进一步，界面提供深度可解释性功能：所有层的测试集PCA与t-SNE嵌入均用纯NumPy实时计算，揭示高维表征在各隐藏层中如何分离或坍缩。每个错分样本在图中以连线指向它最易混淆的数字类簇，使分类错误具备空间可读性。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>工具还内置一个‘实验工坊’，支持可控干预：用户可逐个消融（置零）神经元、缩放其输出、剪枝整组单元、向权重注入噪声，或调节softmax温度——每次操作后，测试准确率即时刷新。鲁棒性曲线展示模型在输入噪声或旋转扰动下的性能衰减；置信度-准确率权衡图则显示不同阈值下覆盖率与正确率的关系。全部功能本地运行，全程透明，无黑盒抽象。</p>
+<p>项目定位明确：面向高中生、自学爱好者与高校教师。GitHub仓库提供清晰文档、极简依赖与课堂即用示例。它剥离了框架复杂性，将焦点重新拉回神经网络内部真实发生的事——不只是‘如何训练’，更是‘如何看见它思考’。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wqy1qd/p_a_small_mlp_from_scratch_in_numpy_with_a_gui_to/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding" target="_blank" rel="noopener">t-distributed stochastic neighbor embedding - Wikipedia</a><a href="https://learnopencv.com/t-sne-for-feature-visualization/" target="_blank" rel="noopener">t-SNE for Feature Visualization - LearnOpenCV</a><a href="https://arxiv.org/abs/2408.17322" target="_blank" rel="noopener">[2408.17322] Investigating Neuron Ablation in Attention Heads ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
