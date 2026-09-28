@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Go模块路径不应硬编码GitHub地址 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="文章主张将 Go 模块路径从基于 GitHub.com 的形式（如 github.com/user/repo）改为基于自定义域名的形式（如 example.com/go/repo），以避免平台锁定并简化未来代码托管平台迁移。 硬编码 GitHub 地址会使 Go 模块在基础设施变更（如迁移到 GitLab 或启用内部 Git 服务器）时变得脆弱，并削弱模块路" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="Go模块路径不应硬编码GitHub地址" />
+  <meta property="og:description" content="文章主张将 Go 模块路径从基于 GitHub.com 的形式（如 github.com/user/repo）改为基于自定义域名的形式（如 example.com/go/repo），以避免平台锁定并简化未来代码托管平台迁移。 硬编码 GitHub 地址会使 Go 模块在基础设施变更（如迁移到 GitLab 或启用内部 Git 服务器）时变得脆弱，并削弱模块路" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49868404.svg" />
+  <meta property="article:published_time" content="2026-09-27T16:50:58+00:00" />
+  <meta property="article:modified_time" content="2026-09-28T07:01:54.640724+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Go模块路径不应硬编码GitHub地址" />
+  <meta name="twitter:description" content="文章主张将 Go 模块路径从基于 GitHub.com 的形式（如 github.com/user/repo）改为基于自定义域名的形式（如 example.com/go/repo），以避免平台锁定并简化未来代码托管平台迁移。 硬编码 GitHub 地址会使 Go 模块在基础设施变更（如迁移到 GitLab 或启用内部 Git 服务器）时变得脆弱，并削弱模块路" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49868404.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886"}, "headline": "Go模块路径不应硬编码GitHub地址", "description": "文章主张将 Go 模块路径从基于 GitHub.com 的形式（如 github.com/user/repo）改为基于自定义域名的形式（如 example.com/go/repo），以避免平台锁定并简化未来代码托管平台迁移。 硬编码 GitHub 地址会使 Go 模块在基础设施变更（如迁移到 GitLab 或启用内部 Git 服务器）时变得脆弱，并削弱模块路", "image": ["https://nowainews.com/media/hackernews-story-49868404.svg"], "datePublished": "2026-09-27T16:50:58+00:00", "dateModified": "2026-09-28T07:01:54.640724+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49868404.svg" alt="Go模块路径不应硬编码GitHub地址" />
+    <div class="article-page-tags"><span>#Go</span> <span>#software-architecture</span> <span>#dependency-management</span> <span>#devops</span> <span>#open-source</span></div>
+    <h1>Go模块路径不应硬编码GitHub地址</h1>
+    <p class="article-page-meta">新闻时间: 2026-09-28T06:48:34.840279+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>Iain Campbell 在一篇广受讨论的博客文章中指出，Go 开发者应避免在模块路径中直接硬编码 GitHub.com 地址——例如在 <code>go.mod</code> 中将模块路径设为 <code>github.com/org/repo</code>。这种做法虽常见且便捷，却隐式地将代码绑定到了 GitHub 的基础设施和域名上。一旦团队迁移到 GitLab、Bitbucket 或内部 Git 服务器，所有导入语句、CI 流水线和文档链接都会失效，除非手动逐一修改，或在所有依赖模块中统一使用 <code>replace</code> 指令进行重定向。</p>
+<p>文章建议改用组织可控的稳定域名，例如 <code>example.com/go/repo</code>，从而将模块的逻辑命名空间与其物理托管位置解耦。这符合 Go 模块的设计初衷：模块路径本质上是命名空间，而非实际 URL。正如 Go 官方模块参考文档所强调，模块路径是模块的唯一标识符（结合版本号），并作为该模块内所有包的导入前缀。自定义域名让这一命名空间具备可移植性与长期稳定性。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>但该建议也存在现实权衡。多位评论者指出，域名所有权本身带来新风险——域名过期、注册商政策突变，或公司倒闭都可能导致包被彻底遗弃，其危害不亚于平台锁定。有评论引用 VeriSign 曾大规模删除域名的案例；另一人则提醒：开源维护者续费域名的可能性，远低于微软持续运营 github.com 的确定性。还有人强调，Go 内置的 <code>replace</code> 指令已能本地化解迁移痛点，因此为模块路径引入自定义域名可能是过早优化。</p>
+<p>不过，其核心主张超越了 Go 语言本身：将代码与临时性基础设施耦合，终将损害长期可维护性。无论是 GitHub 地址、云厂商 SDK，还是硬编码的 S3 终端节点，今日图方便做的架构决策，往往成为明日的技术债。这篇文章并非要求一刀切地强制迁移，而是呼吁团队主动思考：我们愿意在哪一层接受耦合？并把模块路径当作一个经过审慎设计、力求持久的标识符，而非偶然出现的 URL。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://iain.rocks/blog/dont-couple-your-go-code-to-github" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://go.dev/ref/mod" target="_blank" rel="noopener">Go Modules Reference - The Go Programming Language</a><a href="https://go.dev/doc/modules/gomod-ref" target="_blank" rel="noopener">go.mod file reference - The Go Programming Language How to handle Go module path setup - LabEx A Deep Dive Into How Go Modules Work - DEV Community Go Modules: A Beginner&#x27;s Guide in 2026 | igmGuru path package - path - Go Packages code generation - How to get the path to a Go module ...</a><a href="https://labex.io/tutorials/go-how-to-handle-go-module-path-setup-437951" target="_blank" rel="noopener">How to handle Go module path setup - LabEx</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

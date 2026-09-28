@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Avoid hardcoding GitHub URLs in Go module paths - Now AI News</title>
+  <meta name="description" content="The article advocates replacing GitHub.com-based Go module paths (e.g., github.com/user/repo) with custom domain-based paths (e.g., example.com/go/repo) to avoid vendor lock-in and" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Avoid hardcoding GitHub URLs in Go module paths" />
+  <meta property="og:description" content="The article advocates replacing GitHub.com-based Go module paths (e.g., github.com/user/repo) with custom domain-based paths (e.g., example.com/go/repo) to avoid vendor lock-in and" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49868404.svg" />
+  <meta property="article:published_time" content="2026-09-27T16:50:58+00:00" />
+  <meta property="article:modified_time" content="2026-09-28T07:01:54.640724+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Avoid hardcoding GitHub URLs in Go module paths" />
+  <meta name="twitter:description" content="The article advocates replacing GitHub.com-based Go module paths (e.g., github.com/user/repo) with custom domain-based paths (e.g., example.com/go/repo) to avoid vendor lock-in and" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49868404.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-28-04-avoid-hardcoding-github-urls-in-go-module-paths-8034f886"}, "headline": "Avoid hardcoding GitHub URLs in Go module paths", "description": "The article advocates replacing GitHub.com-based Go module paths (e.g., github.com/user/repo) with custom domain-based paths (e.g., example.com/go/repo) to avoid vendor lock-in and", "image": ["https://nowainews.com/media/hackernews-story-49868404.svg"], "datePublished": "2026-09-27T16:50:58+00:00", "dateModified": "2026-09-28T07:01:54.640724+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49868404.svg" alt="Avoid hardcoding GitHub URLs in Go module paths" />
+    <div class="article-page-tags"><span>#Go</span> <span>#software-architecture</span> <span>#dependency-management</span> <span>#devops</span> <span>#open-source</span></div>
+    <h1>Avoid hardcoding GitHub URLs in Go module paths</h1>
+    <p class="article-page-meta">News time: 2026-09-28T06:48:34.840279+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A widely discussed blog post by Iain Campbell argues that Go developers should stop embedding GitHub.com URLs directly into their module paths — for example, using <code>github.com/org/repo</code> as the module path in <code>go.mod</code>. While this pattern is common and convenient, it creates an implicit dependency on GitHub’s infrastructure and domain. If a team migrates to GitLab, Bitbucket, or an internal Git server, every import statement, CI pipeline, and documentation link breaks unless manually updated — or unless workarounds like <code>replace</code> directives are applied across all dependent modules.</p>
+<p>The article proposes using stable, organization-controlled domains instead — such as <code>example.com/go/repo</code> — to decouple the logical identity of a module from its physical hosting location. This approach aligns with Go’s design principle that the module path serves as a <em>namespace</em>, not a URL. As the Go Modules Reference states, the module path is the module’s unique identifier (combined with version), and becomes the import prefix for all its packages. A custom domain makes that namespace portable and future-proof.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>However, the advice isn’t without tradeoffs. Several commenters raise practical concerns: domain ownership introduces new risks — expiration, registrar policy changes, or business dissolution could orphan packages just as surely as platform lock-in. One commenter cites VeriSign’s history of mass domain deletions; another warns that open-source maintainers are less likely to renew domains than Microsoft is to keep github.com online. Others point out that Go’s built-in <code>replace</code> directive already solves migration pain points locally — suggesting that domain abstraction may be over-engineering for many teams.</p>
+<p>Still, the core argument resonates beyond Go: coupling code to transient infrastructure undermines long-term maintainability. Whether it’s GitHub URLs, cloud provider SDKs, or hardcoded S3 endpoints, architectural decisions made for convenience today often become technical debt tomorrow. The post doesn’t demand universal adoption — rather, it invites teams to consciously choose <em>where</em> they accept coupling, and to treat module paths as deliberate, durable identifiers — not accidental URLs.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://iain.rocks/blog/dont-couple-your-go-code-to-github" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://go.dev/ref/mod" target="_blank" rel="noopener">Go Modules Reference - The Go Programming Language</a><a href="https://go.dev/doc/modules/gomod-ref" target="_blank" rel="noopener">go.mod file reference - The Go Programming Language How to handle Go module path setup - LabEx A Deep Dive Into How Go Modules Work - DEV Community Go Modules: A Beginner&#x27;s Guide in 2026 | igmGuru path package - path - Go Packages code generation - How to get the path to a Go module ...</a><a href="https://labex.io/tutorials/go-how-to-handle-go-module-path-setup-437951" target="_blank" rel="noopener">How to handle Go module path setup - LabEx</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

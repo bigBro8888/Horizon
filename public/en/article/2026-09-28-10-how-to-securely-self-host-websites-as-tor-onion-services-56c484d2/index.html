@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>How to securely self-host websites as Tor onion services - Now AI News</title>
+  <meta name="description" content="A detailed technical guide demonstrates concrete optimizations and security hardening techniques for self-hosting websites as Tor onion services—including base64 asset embedding, i" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-28-10-how-to-securely-self-host-websites-as-tor-onion-services-56c484d2" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-28-10-how-to-securely-self-host-websites-as-tor-onion-services-56c484d2" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-28-10-how-to-securely-self-host-websites-as-tor-onion-services-56c484d2" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-28-10-how-to-securely-self-host-websites-as-tor-onion-services-56c484d2" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="How to securely self-host websites as Tor onion services" />
+  <meta property="og:description" content="A detailed technical guide demonstrates concrete optimizations and security hardening techniques for self-hosting websites as Tor onion services—including base64 asset embedding, i" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-28-10-how-to-securely-self-host-websites-as-tor-onion-services-56c484d2" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49870295.png" />
+  <meta property="article:published_time" content="2026-09-27T20:03:36+00:00" />
+  <meta property="article:modified_time" content="2026-09-28T07:01:54.640724+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How to securely self-host websites as Tor onion services" />
+  <meta name="twitter:description" content="A detailed technical guide demonstrates concrete optimizations and security hardening techniques for self-hosting websites as Tor onion services—including base64 asset embedding, i" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49870295.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-28-10-how-to-securely-self-host-websites-as-tor-onion-services-56c484d2"}, "headline": "How to securely self-host websites as Tor onion services", "description": "A detailed technical guide demonstrates concrete optimizations and security hardening techniques for self-hosting websites as Tor onion services—including base64 asset embedding, i", "image": ["https://nowainews.com/media/hackernews-story-49870295.png"], "datePublished": "2026-09-27T20:03:36+00:00", "dateModified": "2026-09-28T07:01:54.640724+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49870295.png" alt="How to securely self-host websites as Tor onion services" />
+    <div class="article-page-tags"><span>#Tor</span> <span>#self-hosting</span> <span>#privacy</span> <span>#web-performance</span> <span>#security</span></div>
+    <h1>How to securely self-host websites as Tor onion services</h1>
+    <p class="article-page-meta">News time: 2026-09-28T06:48:34.840261+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Self-hosting a website on the Tor network—as an onion service—goes beyond simply installing Tor and configuring a hidden service. It demands deliberate architectural choices that balance privacy, performance, and operational safety. A recent in-depth guide by David Álvarez Rosa walks through real-world optimizations used by practitioners: embedding images as base64 in HTML, inlining all CSS to avoid external requests, minimizing JavaScript reliance, and favoring server-side rendering. These aren’t theoretical suggestions—they’re responses to Tor’s inherent latency and lack of caching infrastructure, where every HTTP round-trip adds measurable delay.</p>
+<p>Security hardening is equally critical. The guide emphasizes binding onion services to non-loopback addresses (e.g., 127.13.37.1 instead of 127.0.0.1) to prevent accidental exposure if the same port is later reused for a clearnet service. It also recommends adding the Onion-Location HTTP header to clearnet sites—so Tor Browser can automatically redirect users to the onion version without manual navigation. This bridges usability and privacy: visitors get stronger security (no exit-node tampering, no DNS leaks, no certificate authorities) while retaining discoverability.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Unlike traditional HTTPS hosting, onion services operate without DNS, TLS certificates, or public IP addresses. Their identity is cryptographically derived from the service’s private key—resulting in a fixed, long .onion address. This eliminates entire attack surfaces: no domain hijacking, no CA compromise, no IP-based geolocation or firewall blocking. But it also means developers must rethink assumptions about assets, redirects, and client-side logic—especially since many Tor users rely on older devices or bandwidth-constrained connections.</p>
+<p>The community discussion reinforces this pragmatism. Contributors share nuanced trade-offs: why backend rendering beats client-side frameworks for onion sites, how CSS transitions reduce JS overhead, and why separate ports and bind addresses are not just best practices—but essential isolation mechanisms. One commenter cuts to the core: 'No DNS, no CA, no exposed IP. Just a ridiculously long string of characters and a bit of determination.' That succinctly captures both the simplicity and sovereignty of onion-based self-hosting.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://david.alvarezrosa.com/posts/self-hosting-on-the-dark-web/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/.onion" target="_blank" rel="noopener">.onion - Wikipedia</a><a href="https://en.wikipedia.org/wiki/Tor_(network)" target="_blank" rel="noopener">Tor (network) - Wikipedia</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
