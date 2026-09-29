@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>N分类为何非要N个logit？N−1个其实就够了 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="一位Reddit用户提出，用受约束的N−1维logit替代标准N维logit输出层，令最后一个logit由其余logit之和的负值动态计算，从而消除冗余参数。 它揭示了广泛应用的softmax参数化中一个根本性冗余问题，并将深度学习实践与统计学中关于可识别性和约束优化的长期原则联系起来。 零和约束要求所有logit之和为零，使softmax输出空间与其内在的" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-09-29-15-why-use-n-logits-for-n-class-classification-when-n-1-suffice-002b86bb" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-29-15-why-use-n-logits-for-n-class-classification-when-n-1-suffice-002b86bb" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-29-15-why-use-n-logits-for-n-class-classification-when-n-1-suffice-002b86bb" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-29-15-why-use-n-logits-for-n-class-classification-when-n-1-suffice-002b86bb" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="N分类为何非要N个logit？N−1个其实就够了" />
+  <meta property="og:description" content="一位Reddit用户提出，用受约束的N−1维logit替代标准N维logit输出层，令最后一个logit由其余logit之和的负值动态计算，从而消除冗余参数。 它揭示了广泛应用的softmax参数化中一个根本性冗余问题，并将深度学习实践与统计学中关于可识别性和约束优化的长期原则联系起来。 零和约束要求所有logit之和为零，使softmax输出空间与其内在的" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-09-29-15-why-use-n-logits-for-n-class-classification-when-n-1-suffice-002b86bb" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wt1mk0.svg" />
+  <meta property="article:published_time" content="2026-09-29T05:26:38+00:00" />
+  <meta property="article:modified_time" content="2026-09-29T07:05:51.364484+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="N分类为何非要N个logit？N−1个其实就够了" />
+  <meta name="twitter:description" content="一位Reddit用户提出，用受约束的N−1维logit替代标准N维logit输出层，令最后一个logit由其余logit之和的负值动态计算，从而消除冗余参数。 它揭示了广泛应用的softmax参数化中一个根本性冗余问题，并将深度学习实践与统计学中关于可识别性和约束优化的长期原则联系起来。 零和约束要求所有logit之和为零，使softmax输出空间与其内在的" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wt1mk0.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-09-29-15-why-use-n-logits-for-n-class-classification-when-n-1-suffice-002b86bb"}, "headline": "N分类为何非要N个logit？N−1个其实就够了", "description": "一位Reddit用户提出，用受约束的N−1维logit替代标准N维logit输出层，令最后一个logit由其余logit之和的负值动态计算，从而消除冗余参数。 它揭示了广泛应用的softmax参数化中一个根本性冗余问题，并将深度学习实践与统计学中关于可识别性和约束优化的长期原则联系起来。 零和约束要求所有logit之和为零，使softmax输出空间与其内在的", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wt1mk0.svg"], "datePublished": "2026-09-29T05:26:38+00:00", "dateModified": "2026-09-29T07:05:51.364484+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wt1mk0.svg" alt="N分类为何非要N个logit？N−1个其实就够了" />
+    <div class="article-page-tags"><span>#softmax</span> <span>#neural-networks</span> <span>#parameterization</span> <span>#identifiability</span> <span>#optimization</span></div>
+    <h1>N分类为何非要N个logit？N−1个其实就够了</h1>
+    <p class="article-page-meta">新闻时间: 2026-09-29T06:51:52.965871+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>Reddit机器学习板块近期出现一则引人深思的提问：既然softmax输出必须加总为1，本质上只在N−1维概率单纯形上取值，那为何标准神经网络输出层仍要独立计算全部N个logit？作者指出，这N个logit中仅有N−1个具备统计可识别性；第N个logit完全可由其余N−1个的负和推导得出——即对logits施加零和约束。这种重参数化能从最终全连接层中移除一个冗余自由度，相当于将输出头的可训练权重数量减少N个（每个输出神经元减1个）。</p>
+<p>这并非纯理论游戏。在统计建模领域——尤其是微生物组等成分数据建模中——对回归系数施加零和约束已是成熟做法，用以解决因参考点任意选择或样本级偏移导致的可识别性问题。类似地，在Stan生态的brms等贝叶斯建模工具中，分类变量常默认采用“和为零”先验，以规避多重共线性并确保参数可解释。其核心逻辑是：若无此类约束，模型将面临参数不可识别困境——不同权重组合可能产生完全相同的softmax输出，从而干扰优化过程并损害泛化能力。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>但在深度学习实践中，该方案却鲜有应用。PyTorch、TensorFlow等主流框架均默认使用无约束logits实现softmax，训练流程也更依赖隐式正则化（如权重衰减）或初始化技巧，而非显式约束。原帖作者推测零和约束或能略微加快收敛速度，但也坦承：在大规模场景下，这种收益很可能微乎其微——毕竟过参数化本身常被容忍，且梯度通常保持稳定。然而，这一提问恰恰揭示了基础统计原理与深度学习惯用实践之间的一处微妙错位。</p>
+<p>其深层意义在于重塑我们对模型设计的理解。Softmax常被当作黑箱归一化步骤，但其输入空间的几何结构实则至关重要。强制logits零和，能使输出层参数空间严格匹配目标分布的内在维度——这是迈向更简洁、更可解释、更理论自洽架构的重要一步。尽管短期内未必颠覆工业界惯例，但它提醒我们：哪些“默认设置”其实值得重新审视——尤其当效率、透明度与鲁棒性日益与准确率同等重要之时。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wt1mk0/why_not_just_have_one_less_feature_before_softmax/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://en.wikipedia.org/wiki/Softmax_function" target="_blank" rel="noopener">Softmax function - Wikipedia</a><a href="https://link.springer.com/article/10.1007/s11634-021-00465-4" target="_blank" rel="noopener">Robust logistic zero-sum regression for microbiome compositional data | Advances in Data Analysis and Classification | Springer Nature Link</a><a href="https://discourse.mc-stan.org/t/brms-implementation-of-sum-to-zero-constraints/30738" target="_blank" rel="noopener">BRMS: Implementation of sum to zero constraints - brms - The Stan Forums</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

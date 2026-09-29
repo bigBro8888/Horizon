@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Researcher hijacks PS5’s RTMP streaming traffic via MITM - Now AI News</title>
+  <meta name="description" content="A developer publicly documented and demonstrated a practical MITM attack that intercepts the PS5’s unencrypted RTMP streaming traffic by spoofing DNS and running a local RTMP serve" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-29-11-researcher-hijacks-ps5-s-rtmp-streaming-traffic-via-mitm-39c102de" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-29-11-researcher-hijacks-ps5-s-rtmp-streaming-traffic-via-mitm-39c102de" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-29-11-researcher-hijacks-ps5-s-rtmp-streaming-traffic-via-mitm-39c102de" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-29-11-researcher-hijacks-ps5-s-rtmp-streaming-traffic-via-mitm-39c102de" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Researcher hijacks PS5’s RTMP streaming traffic via MITM" />
+  <meta property="og:description" content="A developer publicly documented and demonstrated a practical MITM attack that intercepts the PS5’s unencrypted RTMP streaming traffic by spoofing DNS and running a local RTMP serve" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-29-11-researcher-hijacks-ps5-s-rtmp-streaming-traffic-via-mitm-39c102de" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49879702.webp" />
+  <meta property="article:published_time" content="2026-09-28T15:35:23+00:00" />
+  <meta property="article:modified_time" content="2026-09-29T07:05:51.364484+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Researcher hijacks PS5’s RTMP streaming traffic via MITM" />
+  <meta name="twitter:description" content="A developer publicly documented and demonstrated a practical MITM attack that intercepts the PS5’s unencrypted RTMP streaming traffic by spoofing DNS and running a local RTMP serve" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49879702.webp" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-29-11-researcher-hijacks-ps5-s-rtmp-streaming-traffic-via-mitm-39c102de"}, "headline": "Researcher hijacks PS5’s RTMP streaming traffic via MITM", "description": "A developer publicly documented and demonstrated a practical MITM attack that intercepts the PS5’s unencrypted RTMP streaming traffic by spoofing DNS and running a local RTMP serve", "image": ["https://nowainews.com/media/hackernews-story-49879702.webp"], "datePublished": "2026-09-28T15:35:23+00:00", "dateModified": "2026-09-29T07:05:51.364484+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49879702.webp" alt="Researcher hijacks PS5’s RTMP streaming traffic via MITM" />
+    <div class="article-page-tags"><span>#security</span> <span>#streaming</span> <span>#console-hacking</span> <span>#RTMP</span> <span>#systems-research</span></div>
+    <h1>Researcher hijacks PS5’s RTMP streaming traffic via MITM</h1>
+    <p class="article-page-meta">News time: 2026-09-29T06:51:52.975433+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A security researcher has demonstrated how to intercept and manipulate the PlayStation 5’s live video streaming traffic by performing a man-in-the-middle (MITM) attack on its Real-Time Messaging Protocol (RTMP) stream. The PS5 natively supports streaming gameplay directly to platforms like Twitch and YouTube when users are signed in — but instead of using encrypted RTMPS, the console sends unencrypted RTMP traffic over the local network during setup and handshaking. By redirecting DNS queries for streaming endpoints and running a local RTMP server (e.g., nginx-rtmp), the attacker can impersonate Twitch or YouTube, capture raw video and audio frames, and even inject custom overlays or metadata before forwarding the stream onward.</p>
+<p>This isn’t theoretical: the technique is implemented in open-source tools like PS5-Streamer, which repurposes the PS5’s built-in streaming feature to broadcast to third-party platforms such as Bilibili. The setup relies on dnsmasq to spoof DNS responses and route PS5 traffic to a local nginx-rtmp instance — effectively turning a Raspberry Pi or small Linux server into a stealthy streaming proxy. While Sony doesn’t officially support this use case, the exploit works because the PS5’s streaming stack makes no certificate validation or protocol enforcement beyond basic RTMP handshake negotiation.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The implications extend beyond novelty. Unencrypted RTMP means video, audio, and potentially session tokens flow in plaintext — exposing sensitive data to anyone on the same network segment. As one commenter noted, this lack of encryption leaves room for more serious exploits, especially given RTMP’s complex parsing logic and legacy design. Meanwhile, Microsoft has moved toward official, secure alternatives: Xbox consoles now support certified external destinations like Lightstream Studio using modern protocols, eliminating the need for MITM workarounds.</p>
+<p>Still, the hack highlights an enduring tension in consumer hardware: convenience versus control. Console manufacturers prioritize seamless user experiences over deep protocol hardening — and developers fill the gap with creative, community-driven tooling. For hobbyists, streamers, or cloud gaming experimenters, this method offers low-cost, high-fidelity capture without HDMI capture cards. But it also underscores how much foundational infrastructure remains exposed — not due to flaws, but by design.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://yashgarg.dev/posts/hijacking-ps5-rtmp-stream/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://developers.google.com/youtube/v3/live/guides/ingestion-protocol-comparison" target="_blank" rel="noopener">YouTube Live Streaming Ingestion Protocol Comparison</a><a href="https://devtechnosys.ae/blog/video-streaming-protocols/" target="_blank" rel="noopener">Video Streaming Protocols : HLS, DASH, WebRTC &amp; More</a><a href="https://github.com/EnixCoda/PS5-Streamer" target="_blank" rel="noopener">GitHub - EnixCoda/PS5-Streamer: Stream your PS5 game life to ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
