@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>GLM-5.3与Claude Mythos Preview首次实现二进制利用中的控制流劫持 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="GLM-5.3在Anthropic内部二进制利用基准测试中实现4%的完整控制流劫持成功率，Claude Mythos Preview达6%；这是首次观测到非零成功率，而此前模型（如Claude Opus 4.6和GLM-5.2）在全部100次尝试中成功率均为0%。 这是首个实证证据，表明大语言模型已能执行过去需专家人力完成的核心进攻性安全任务，对AI安全治理" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-09-30-01-glm-5-3-and-claude-mythos-preview-achieve-first-verified-control-flow-hijacks-in-9eaf0a7d" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-30-01-glm-5-3-and-claude-mythos-preview-achieve-first-verified-control-flow-hijacks-in-9eaf0a7d" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-30-01-glm-5-3-and-claude-mythos-preview-achieve-first-verified-control-flow-hijacks-in-9eaf0a7d" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-30-01-glm-5-3-and-claude-mythos-preview-achieve-first-verified-control-flow-hijacks-in-9eaf0a7d" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="GLM-5.3与Claude Mythos Preview首次实现二进制利用中的控制流劫持" />
+  <meta property="og:description" content="GLM-5.3在Anthropic内部二进制利用基准测试中实现4%的完整控制流劫持成功率，Claude Mythos Preview达6%；这是首次观测到非零成功率，而此前模型（如Claude Opus 4.6和GLM-5.2）在全部100次尝试中成功率均为0%。 这是首个实证证据，表明大语言模型已能执行过去需专家人力完成的核心进攻性安全任务，对AI安全治理" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-09-30-01-glm-5-3-and-claude-mythos-preview-achieve-first-verified-control-flow-hijacks-in-9eaf0a7d" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--c48f1ff5058b49fc.svg" />
+  <meta property="article:published_time" content="2026-09-29T22:20:28+00:00" />
+  <meta property="article:modified_time" content="2026-09-30T06:52:49.638495+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GLM-5.3与Claude Mythos Preview首次实现二进制利用中的控制流劫持" />
+  <meta name="twitter:description" content="GLM-5.3在Anthropic内部二进制利用基准测试中实现4%的完整控制流劫持成功率，Claude Mythos Preview达6%；这是首次观测到非零成功率，而此前模型（如Claude Opus 4.6和GLM-5.2）在全部100次尝试中成功率均为0%。 这是首个实证证据，表明大语言模型已能执行过去需专家人力完成的核心进攻性安全任务，对AI安全治理" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--c48f1ff5058b49fc.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-09-30-01-glm-5-3-and-claude-mythos-preview-achieve-first-verified-control-flow-hijacks-in-9eaf0a7d"}, "headline": "GLM-5.3与Claude Mythos Preview首次实现二进制利用中的控制流劫持", "description": "GLM-5.3在Anthropic内部二进制利用基准测试中实现4%的完整控制流劫持成功率，Claude Mythos Preview达6%；这是首次观测到非零成功率，而此前模型（如Claude Opus 4.6和GLM-5.2）在全部100次尝试中成功率均为0%。 这是首个实证证据，表明大语言模型已能执行过去需专家人力完成的核心进攻性安全任务，对AI安全治理", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--c48f1ff5058b49fc.svg"], "datePublished": "2026-09-29T22:20:28+00:00", "dateModified": "2026-09-30T06:52:49.638495+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--c48f1ff5058b49fc.svg" alt="GLM-5.3与Claude Mythos Preview首次实现二进制利用中的控制流劫持" />
+    <div class="article-page-tags"><span>#ai-security-research</span> <span>#red-teaming</span> <span>#binary-exploitation</span> <span>#llm-safety</span> <span>#generative-ai</span></div>
+    <h1>GLM-5.3与Claude Mythos Preview首次实现二进制利用中的控制流劫持</h1>
+    <p class="article-page-meta">新闻时间: 2026-09-30T06:39:48.782040+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>Anthropic前沿红队的一项里程碑式评估显示，两款新一代大语言模型——GLM-5.3与Claude Mythos Preview——首次在真实二进制程序上自主实现了完整的控制流劫持。在一项包含100个手工筛选二进制利用任务的内部基准测试中，GLM-5.3成功率达4%，Claude Mythos Preview达6%。关键在于，此前所有模型（包括Claude Opus 4.6和GLM-5.2）在全部100次尝试中均未成功一次。这一非零表现标志着明确的能力跃迁：不再是渐进式提升，而是AI驱动网络攻击能力出现质变。</p>
+<p>控制流劫持是现实世界漏洞利用的核心技术。它通过覆盖栈上返回地址、或利用返回导向编程（ROP）串联内存中已有代码片段（gadgets）等方式，强行改变程序执行路径，将控制权转向攻击者逻辑。过去，这需要深厚的汇编语言、内存布局与缓解机制绕过等专业知识。如今LLM能部分端到端完成该过程——从分析反汇编代码到生成可用的利用原语——表明网络攻击自动化的边界正发生根本性变化。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>该基准为内部设计且未公开，但其任务选取体现典型红队严谨性：样本来自存在栈溢出、堆use-after-free等真实内存破坏漏洞的二进制程序。两模型并非孤立运行，推测已集成工具调用框架、符号执行器或调试环境；但其成功仍高度依赖对底层程序行为、约束条件与副作用的深度推理。值得注意的是，Anthropic明确未向公众发布Claude Mythos Preview，主因正是其网络安全能力——这一罕见决策极具警示意义。</p>
+<p>这并不意味着AI已能大规模稳定编写零日漏洞利用代码。成功率仍低，可复现性待验证，实际部署还需大量人工干预、环境适配，并绕过ASLR、栈金丝雀、控制流完整性（CFI）等现代防护机制。但该结果清晰传递一个紧迫事实：AI安全理论担忧与实际进攻能力之间的鸿沟正在快速收窄。对防御方、红队及政策制定者而言，AI驱动的漏洞利用已非假设，而是可观测、可测量、且已被顶尖实验室列为实质性风险的现实。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Sep/29/anthropic-frontier-red-team/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://en.wikipedia.org/wiki/Return-oriented_programming" target="_blank" rel="noopener">Return-oriented programming - Wikipedia</a><a href="https://crypto.stanford.edu/cs155old/cs155-spring11/lectures/03-ctrl-hijack.pdf" target="_blank" rel="noopener">Control Hijacking Attacks Note: project 1 is out</a><a href="https://lmstudio.ai/models/glm-5.3" target="_blank" rel="noopener">GLM - 5 . 3</a><a href="https://en.wikipedia.org/wiki/Claude_Mythos" target="_blank" rel="noopener">Claude Mythos - Wikipedia</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

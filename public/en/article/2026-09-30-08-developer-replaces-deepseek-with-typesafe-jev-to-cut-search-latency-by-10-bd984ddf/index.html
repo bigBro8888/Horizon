@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Developer replaces DeepSeek with TypeSafe Jev to cut search latency by 10× - Now AI News</title>
+  <meta name="description" content="A developer replaced a DeepSeek-based free-form LLM query parser with TypeSafe Jev on OpenRouter’s Decisions API in their Steam game search engine, achieving ~10× faster structured" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-09-30-08-developer-replaces-deepseek-with-typesafe-jev-to-cut-search-latency-by-10-bd984ddf" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-09-30-08-developer-replaces-deepseek-with-typesafe-jev-to-cut-search-latency-by-10-bd984ddf" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-09-30-08-developer-replaces-deepseek-with-typesafe-jev-to-cut-search-latency-by-10-bd984ddf" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-09-30-08-developer-replaces-deepseek-with-typesafe-jev-to-cut-search-latency-by-10-bd984ddf" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Developer replaces DeepSeek with TypeSafe Jev to cut search latency by 10×" />
+  <meta property="og:description" content="A developer replaced a DeepSeek-based free-form LLM query parser with TypeSafe Jev on OpenRouter’s Decisions API in their Steam game search engine, achieving ~10× faster structured" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-09-30-08-developer-replaces-deepseek-with-typesafe-jev-to-cut-search-latency-by-10-bd984ddf" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wtsn3s.svg" />
+  <meta property="article:published_time" content="2026-09-30T01:55:29+00:00" />
+  <meta property="article:modified_time" content="2026-09-30T06:52:49.638495+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Developer replaces DeepSeek with TypeSafe Jev to cut search latency by 10×" />
+  <meta name="twitter:description" content="A developer replaced a DeepSeek-based free-form LLM query parser with TypeSafe Jev on OpenRouter’s Decisions API in their Steam game search engine, achieving ~10× faster structured" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wtsn3s.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-09-30-08-developer-replaces-deepseek-with-typesafe-jev-to-cut-search-latency-by-10-bd984ddf"}, "headline": "Developer replaces DeepSeek with TypeSafe Jev to cut search latency by 10×", "description": "A developer replaced a DeepSeek-based free-form LLM query parser with TypeSafe Jev on OpenRouter’s Decisions API in their Steam game search engine, achieving ~10× faster structured", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wtsn3s.svg"], "datePublished": "2026-09-30T01:55:29+00:00", "dateModified": "2026-09-30T06:52:49.638495+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wtsn3s.svg" alt="Developer replaces DeepSeek with TypeSafe Jev to cut search latency by 10×" />
+    <div class="article-page-tags"><span>#LLM-optimization</span> <span>#search-engine</span> <span>#structured-output</span> <span>#cost-reduction</span> <span>#latency-optimization</span></div>
+    <h1>Developer replaces DeepSeek with TypeSafe Jev to cut search latency by 10×</h1>
+    <p class="article-page-meta">News time: 2026-09-30T06:39:49.262287+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A solo developer behind indiedex.gg — a niche search engine for hidden-gem Steam games — recently overhauled a critical bottleneck in their query understanding pipeline. When users type natural-language requests like “a game like Hades that feels cozier and is co-op,” the system must parse not just keywords but layered intent: reference titles, emotional vibes (e.g., ‘cozy’), multiplayer constraints, and genre tags. Previously, this step relied on DeepSeek, a powerful open-weight LLM, invoked via free-form text generation. Though accurate, it added ~1.5 seconds of median latency per query and incurred nontrivial cost — especially problematic for a high-traffic frontend where speed directly impacts user retention.</p>
+<p>The developer switched to TypeSafe Jev, accessed through OpenRouter’s new Decisions API. Unlike traditional LLMs, Jev doesn’t generate prose; instead, it answers a fixed set of structured questions in parallel — such as “Is this referencing a specific game?” or “Does the user want co-op?” — returning typed values (booleans, enums) with confidence scores. The developer composed these outputs with lightweight regex helpers to reconstruct the exact same structured intent format their downstream search engine already expected. No changes were needed to indexing, ranking, or result rendering — only the parsing layer was swapped.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Benchmarking across 50 real-world queries showed dramatic improvements: Jev reduced extraction latency from ~1.5s to ~150ms (roughly 10× faster), cut end-to-end route latency nearly in half (from 2871ms to ~1500ms), and lowered per-query cost by about 6× (from $0.014 to ~$0.0023). Crucially, functional correctness held steady: tag extraction accuracy remained at 96–100%, and top-N game recommendations overlapped strongly with the old pipeline. The author notes this isn’t about building chatbots — it’s about embedding <em>machine-native reasoning</em> into application logic, where deterministic, low-latency decisions matter more than fluent sentences.</p>
+<p>This case illustrates a broader shift: as structured reasoning models mature, developers are moving beyond prompt-and-parse hacks toward purpose-built inference interfaces. Jev’s design — outputting JSON-serializable, confidence-annotated decisions — aligns tightly with software engineering needs: testability, composability, and observability. For search, moderation, filtering, and decision-heavy UX, such models may soon become the default choice over general-purpose LLMs — not because they’re smarter, but because they’re <em>more appropriate</em>.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wtsn3s/i_cut_cost_and_latency_on_my_search_engine_with/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/Jev_(AI_model)" target="_blank" rel="noopener">Jev (AI model) - Wikipedia</a><a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev" target="_blank" rel="noopener">Introducing System One Models &amp; Jev - TypeSafe AI Blog</a><a href="https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request" target="_blank" rel="noopener">Submit a Decisions (questions and answers) request - OpenRouter | Documentation</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
