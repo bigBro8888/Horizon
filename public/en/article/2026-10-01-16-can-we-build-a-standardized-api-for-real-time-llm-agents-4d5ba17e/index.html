@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Can we build a standardized API for real-time LLM agents? - Now AI News</title>
+  <meta name="description" content="A Reddit discussion raises the need for a generalized, vendor-agnostic API standard for real-time LLM agents—akin to MCP for tool calling—that supports dynamic, interruptible inter" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-01-16-can-we-build-a-standardized-api-for-real-time-llm-agents-4d5ba17e" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-01-16-can-we-build-a-standardized-api-for-real-time-llm-agents-4d5ba17e" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-01-16-can-we-build-a-standardized-api-for-real-time-llm-agents-4d5ba17e" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-01-16-can-we-build-a-standardized-api-for-real-time-llm-agents-4d5ba17e" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Can we build a standardized API for real-time LLM agents?" />
+  <meta property="og:description" content="A Reddit discussion raises the need for a generalized, vendor-agnostic API standard for real-time LLM agents—akin to MCP for tool calling—that supports dynamic, interruptible inter" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-01-16-can-we-build-a-standardized-api-for-real-time-llm-agents-4d5ba17e" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wu7kz0.svg" />
+  <meta property="article:published_time" content="2026-09-30T15:14:07+00:00" />
+  <meta property="article:modified_time" content="2026-10-01T07:29:50.356073+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Can we build a standardized API for real-time LLM agents?" />
+  <meta name="twitter:description" content="A Reddit discussion raises the need for a generalized, vendor-agnostic API standard for real-time LLM agents—akin to MCP for tool calling—that supports dynamic, interruptible inter" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1wu7kz0.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-01-16-can-we-build-a-standardized-api-for-real-time-llm-agents-4d5ba17e"}, "headline": "Can we build a standardized API for real-time LLM agents?", "description": "A Reddit discussion raises the need for a generalized, vendor-agnostic API standard for real-time LLM agents—akin to MCP for tool calling—that supports dynamic, interruptible inter", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1wu7kz0.svg"], "datePublished": "2026-09-30T15:14:07+00:00", "dateModified": "2026-10-01T07:29:50.356073+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1wu7kz0.svg" alt="Can we build a standardized API for real-time LLM agents?" />
+    <div class="article-page-tags"><span>#LLM-agents</span> <span>#real-time-ai</span> <span>#API-design</span> <span>#human-AI-interaction</span> <span>#agent-architecture</span></div>
+    <h1>Can we build a standardized API for real-time LLM agents?</h1>
+    <p class="article-page-meta">News time: 2026-10-01T07:09:56.013761+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A growing number of developers and researchers are asking a deceptively simple but deeply architectural question: what should the interface look like for building general-purpose, real-time LLM agents? Unlike traditional chat APIs that process one request at a time, real-time agents must handle dynamic, overlapping events—like voice interruptions during speech synthesis, live UI updates while reasoning, or mid-generation corrections in coding assistants. Projects such as GPT-4o’s low-latency multimodal streaming, Alibaba’s Wan-Streamer (a native-streaming video-LLM running at 25 fps with ~200 ms latency), and Codex’s mid-turn steering—where users inject new instructions <em>while</em> the model is generating—demonstrate that real-time interaction is technically feasible in narrow domains.</p>
+<p>But these implementations remain siloed and vendor-specific. The Reddit post highlights a critical gap: while Model Context Protocol (MCP) tools have successfully standardized how agents call external functions (e.g., fetching data or editing code), no equivalent exists for <em>how agents receive, prioritize, and respond to asynchronous stimuli during inference</em>. This isn’t just about faster tokens—it’s about modeling time, concurrency, and interruption as first-class concerns in agent design.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The AsyncLLM preprint (arXiv:2609.35427) offers one early blueprint: using Python’s <code>asyncio</code> with shared memory blocks to coordinate coroutines across perception, planning, and action modules. Yet it still requires developers to orchestrate low-level inference pipelines—a barrier to broad adoption. What’s missing is a vendor-agnostic abstraction layer: an API contract that lets OpenAI, Anthropic, or open-weight model hosts expose not just streaming tokens, but structured event streams (e.g., <code>user_interrupt</code>, <code>ui_update</code>, <code>sensor_alert</code>) and safe, atomic steering commands.</p>
+<p>Such a standard would unlock reusable agent architectures—like a debugging assistant that pauses, replans, and resumes based on IDE breakpoints; a research agent that adapts its search strategy after hearing a user’s verbal ‘no, focus on policy impacts’; or a voice-controlled spreadsheet tool that handles overlapping calendar alerts and spoken edits without freezing. Without it, every team reinvents real-time plumbing—slowing progress, fragmenting tooling, and limiting interoperability. The question isn’t whether real-time agents are possible. It’s whether we’ll build them together—or separately, over and over.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1wu7kz0/which_api_for_general_realtime_llm_agents_d/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://mcpservers.org/" target="_blank" rel="noopener">Awesome MCP Servers</a><a href="https://codex.danielvaughan.com/2026/03/29/codex-cli-mid-turn-steering/" target="_blank" rel="noopener">Mid - Turn Steering in Codex CLI: Redirecting Agents in Flight</a><a href="https://arxiv.org/abs/2606.25041" target="_blank" rel="noopener">[2606.25041] Wan - Streamer v0.1: End-to-end Real - time Interactive...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
