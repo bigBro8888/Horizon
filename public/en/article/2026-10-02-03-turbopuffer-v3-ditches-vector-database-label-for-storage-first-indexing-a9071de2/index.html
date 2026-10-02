@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Turbopuffer v3 ditches vector database label for storage-first indexing - Now AI News</title>
+  <meta name="description" content="Turbopuffer v3, released in January 2026, abandons the &#x27;vector database&#x27; label and instead implements ANN search as a secondary index over durable, columnar object storage — mirror" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-02-03-turbopuffer-v3-ditches-vector-database-label-for-storage-first-indexing-a9071de2" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-02-03-turbopuffer-v3-ditches-vector-database-label-for-storage-first-indexing-a9071de2" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-02-03-turbopuffer-v3-ditches-vector-database-label-for-storage-first-indexing-a9071de2" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-02-03-turbopuffer-v3-ditches-vector-database-label-for-storage-first-indexing-a9071de2" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Turbopuffer v3 ditches vector database label for storage-first indexing" />
+  <meta property="og:description" content="Turbopuffer v3, released in January 2026, abandons the &#x27;vector database&#x27; label and instead implements ANN search as a secondary index over durable, columnar object storage — mirror" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-02-03-turbopuffer-v3-ditches-vector-database-label-for-storage-first-indexing-a9071de2" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-49923466.png" />
+  <meta property="article:published_time" content="2026-10-01T16:01:56+00:00" />
+  <meta property="article:modified_time" content="2026-10-02T07:15:49.915110+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Turbopuffer v3 ditches vector database label for storage-first indexing" />
+  <meta name="twitter:description" content="Turbopuffer v3, released in January 2026, abandons the &#x27;vector database&#x27; label and instead implements ANN search as a secondary index over durable, columnar object storage — mirror" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-49923466.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-02-03-turbopuffer-v3-ditches-vector-database-label-for-storage-first-indexing-a9071de2"}, "headline": "Turbopuffer v3 ditches vector database label for storage-first indexing", "description": "Turbopuffer v3, released in January 2026, abandons the 'vector database' label and instead implements ANN search as a secondary index over durable, columnar object storage — mirror", "image": ["https://nowainews.com/media/hackernews-story-49923466.png"], "datePublished": "2026-10-01T16:01:56+00:00", "dateModified": "2026-10-02T07:15:49.915110+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-49923466.png" alt="Turbopuffer v3 ditches vector database label for storage-first indexing" />
+    <div class="article-page-tags"><span>#vector-databases</span> <span>#database-design</span> <span>#ANN</span> <span>#information-retrieval</span> <span>#systems-engineering</span></div>
+    <h1>Turbopuffer v3 ditches vector database label for storage-first indexing</h1>
+    <p class="article-page-meta">News time: 2026-10-02T06:58:44.044123+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>In a bold architectural pivot, Turbopuffer has released version 3 — not as an upgrade to its prior vector database, but as a deliberate departure from the 'vector database' paradigm altogether. The new design treats approximate nearest neighbor (ANN) search not as the core engine, but as a secondary index layered atop durable, columnar object storage — much like how PostgreSQL or MySQL build B-tree or full-text indexes over tables. This shift reframes vector search as a <em>capability</em> of a broader data system, rather than a siloed service built exclusively for high-dimensional vectors.</p>
+<p>The motivation stems from real-world scaling pain: earlier ANN-first systems suffer from write amplification, costly reindexing, and tight coupling between vector layout and storage. As one commenter notes, tuning indexing throughput had hit diminishing returns — because the bottleneck wasn’t the algorithm, but the underlying data model. Turbopuffer v3 instead anchors durability in immutable columnar fragments stored on object storage (e.g., S3), letting ANN indexes be rebuilt, swapped, or even omitted without compromising data integrity.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>This approach aligns closely with emerging patterns in embedded and cloud-native systems. LanceDB, for example, also stores rows in columnar fragments and treats vector indexes as optional, detachable layers — a design praised by users building local code-graph tools who found traditional vector databases too slow or heavyweight. Turbopuffer’s implementation supports both vector and full-text (BM25) search from the same storage layer, enabling hybrid retrieval without data duplication or synchronization overhead.</p>
+<p>Critically, this isn’t just theoretical. Turbopuffer v3 targets sub-200 ms p99 latency over 100 billion vectors per namespace — evidence that storage-first design doesn’t sacrifice performance. It also ships with a Python SDK and HTTP API, making it production-ready for developers already using SQLite-based or LanceDB-like stacks. The community response — 82 detailed comments and a 307 score — reflects broad resonance with the critique: the term 'vector database' may have outlived its technical usefulness.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://turbopuffer.com/blog/rip-vector-database" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://aiwiki.ai/wiki/turbopuffer" target="_blank" rel="noopener">Turbopuffer | AI Wiki</a><a href="https://llms3.com/node/turbopuffer" target="_blank" rel="noopener">Turbopuffer | LLMS3</a><a href="https://bestllmfor.com/guides/lancedb-embedded-vector-db/" target="_blank" rel="noopener">LanceDB: An Embedded Vector Database, No Server | BestLLMfor</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
