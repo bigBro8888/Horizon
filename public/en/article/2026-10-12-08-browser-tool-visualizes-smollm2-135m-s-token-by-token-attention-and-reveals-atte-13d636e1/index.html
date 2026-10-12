@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Browser tool visualizes SmolLM2-135M’s token-by-token attention and reveals attention sink - Now AI News</title>
+  <meta name="description" content="A fully client-side browser tool now visualizes token-by-token generation and attention flow for SmolLM2-135M, revealing the attention sink phenomenon in real time during inference" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-12-08-browser-tool-visualizes-smollm2-135m-s-token-by-token-attention-and-reveals-atte-13d636e1" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-12-08-browser-tool-visualizes-smollm2-135m-s-token-by-token-attention-and-reveals-atte-13d636e1" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-12-08-browser-tool-visualizes-smollm2-135m-s-token-by-token-attention-and-reveals-atte-13d636e1" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-12-08-browser-tool-visualizes-smollm2-135m-s-token-by-token-attention-and-reveals-atte-13d636e1" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Browser tool visualizes SmolLM2-135M’s token-by-token attention and reveals attention sink" />
+  <meta property="og:description" content="A fully client-side browser tool now visualizes token-by-token generation and attention flow for SmolLM2-135M, revealing the attention sink phenomenon in real time during inference" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-12-08-browser-tool-visualizes-smollm2-135m-s-token-by-token-attention-and-reveals-atte-13d636e1" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1x3lgnz.svg" />
+  <meta property="article:published_time" content="2026-10-11T22:30:50+00:00" />
+  <meta property="article:modified_time" content="2026-10-12T07:30:09.478671+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Browser tool visualizes SmolLM2-135M’s token-by-token attention and reveals attention sink" />
+  <meta name="twitter:description" content="A fully client-side browser tool now visualizes token-by-token generation and attention flow for SmolLM2-135M, revealing the attention sink phenomenon in real time during inference" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1x3lgnz.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-12-08-browser-tool-visualizes-smollm2-135m-s-token-by-token-attention-and-reveals-atte-13d636e1"}, "headline": "Browser tool visualizes SmolLM2-135M’s token-by-token attention and reveals attention sink", "description": "A fully client-side browser tool now visualizes token-by-token generation and attention flow for SmolLM2-135M, revealing the attention sink phenomenon in real time during inference", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1x3lgnz.svg"], "datePublished": "2026-10-11T22:30:50+00:00", "dateModified": "2026-10-12T07:30:09.478671+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1x3lgnz.svg" alt="Browser tool visualizes SmolLM2-135M’s token-by-token attention and reveals attention sink" />
+    <div class="article-page-tags"><span>#LLM</span> <span>#attention-mechanism</span> <span>#model-interpretability</span> <span>#web-ml</span> <span>#onnx</span></div>
+    <h1>Browser tool visualizes SmolLM2-135M’s token-by-token attention and reveals attention sink</h1>
+    <p class="article-page-meta">News time: 2026-10-12T07:18:49.567676+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A developer has built a fully client-side web tool that lets anyone watch—step by step—how the compact SmolLM2-135M language model chooses its next word and where it directs attention across prior tokens. Unlike most LLM demos that run on remote servers, this one executes entirely in the browser using ONNX Runtime Web with int8 quantization—no backend, no API calls, and it even works smoothly on smartphones. Users type a prompt, and the tool generates one token at a time, displaying not only the top candidate words and their probabilities but also interactive attention links: lines connecting the current token to earlier ones, labeled with attention weights.</p>
+<p>Clicking any word highlights exactly where its attention flows—ranked by strength—and reveals patterns like repeated focus on the beginning of the sequence. During development, the creator initially mistook this behavior for a bug: nearly every token appeared to attend overwhelmingly to the first token (often the BOS or start-of-sequence token). After investigation, they realized it was the well-documented 'attention sink' phenomenon—a known architectural quirk in many transformer models where certain early tokens act as stable anchors, absorbing disproportionate attention mass.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The tool is open source and includes a live demo hosted on GitHub Pages. It leverages SmolLM2-135M, a lightweight 135-million-parameter model designed for on-device use and released by Hugging Face’s TinyBERT team in early 2025. At roughly 85 MB and capable of ~40 tokens per second in WebAssembly mode, it strikes a rare balance between capability and deployability in constrained environments.</p>
+<p>What makes this project especially valuable is its pedagogical clarity. By stripping away abstraction layers—no Python, no GPU servers, no black-box APIs—it turns abstract concepts like attention matrices and token prediction into tangible, inspectable interactions. For students, educators, and developers exploring model interpretability, it transforms theoretical knowledge into lived intuition. And because it runs locally, it preserves privacy and enables real-time experimentation without latency or cost.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1x3lgnz/i_built_a_browser_tool_to_visualize_how_a_small/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://huggingface.co/HuggingFaceTB/SmolLM2-135M" target="_blank" rel="noopener">HuggingFaceTB/SmolLM2-135M · Hugging Face</a><a href="https://huggingface.co/blog/tomaarsen/attention-sinks" target="_blank" rel="noopener">Attention Sinks in LLMs for endless fluency</a><a href="https://onnxruntime.ai/docs/tutorials/web/" target="_blank" rel="noopener">Web | onnxruntime</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
