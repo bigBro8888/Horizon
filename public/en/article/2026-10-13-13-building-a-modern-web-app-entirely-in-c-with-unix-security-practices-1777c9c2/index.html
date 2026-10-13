@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Building a modern web app entirely in C with Unix security practices - Now AI News</title>
+  <meta name="description" content="A detailed, hands-on guide demonstrates how to build a secure, production-capable web application entirely in C using CGI, chroot, privilege-dropping, and minimal Unix tooling—with" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Building a modern web app entirely in C with Unix security practices" />
+  <meta property="og:description" content="A detailed, hands-on guide demonstrates how to build a secure, production-capable web application entirely in C using CGI, chroot, privilege-dropping, and minimal Unix tooling—with" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50058528.svg" />
+  <meta property="article:published_time" content="2026-10-12T16:13:10+00:00" />
+  <meta property="article:modified_time" content="2026-10-13T08:00:05.730867+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Building a modern web app entirely in C with Unix security practices" />
+  <meta name="twitter:description" content="A detailed, hands-on guide demonstrates how to build a secure, production-capable web application entirely in C using CGI, chroot, privilege-dropping, and minimal Unix tooling—with" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50058528.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2"}, "headline": "Building a modern web app entirely in C with Unix security practices", "description": "A detailed, hands-on guide demonstrates how to build a secure, production-capable web application entirely in C using CGI, chroot, privilege-dropping, and minimal Unix tooling—with", "image": ["https://nowainews.com/media/hackernews-story-50058528.svg"], "datePublished": "2026-10-12T16:13:10+00:00", "dateModified": "2026-10-13T08:00:05.730867+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50058528.svg" alt="Building a modern web app entirely in C with Unix security practices" />
+    <div class="article-page-tags"><span>#C</span> <span>#web-development</span> <span>#systems-programming</span> <span>#security</span> <span>#unix</span></div>
+    <h1>Building a modern web app entirely in C with Unix security practices</h1>
+    <p class="article-page-meta">News time: 2026-10-13T07:40:21.012395+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>What if you could build a production-ready web application without JavaScript frameworks, Node.js, or even a traditional web server like nginx? A recent article titled <em>A Modern Web App in C</em> makes that case—not as a nostalgic experiment, but as a pragmatic, security-conscious engineering choice. The author walks through building a lightweight, secure web service using only standard C, POSIX system calls, and decades-old Unix tools: CGI scripts, chroot jails, OpenBSD’s <code>pledge()</code>-style privilege reduction (emulated on Linux), and minimal HTTP handling via raw sockets.</p>
+<p>The core idea is radical simplicity: avoid dependency bloat, reduce attack surface, and embrace Unix philosophy—do one thing well. Instead of layering Express, Babel, Webpack, and Docker, the stack consists of a C binary serving static assets and dynamic content via CGI, fronted by a stripped-down httpd (like OpenBSD’s <code>httpd</code> or <code>thttpd</code>) or even plain <code>inetd</code>. Security isn’t bolted on—it’s designed in from the start, using <code>setuid</code>/<code>setgid</code>, <code>chroot</code>, process sandboxing, and strict file permissions.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>This isn’t theoretical. The article cites real-world precedents: BusyBox’s built-in CGI support, FastCGI deployments from the early 2000s, and even modern hybrids like C++ servers compiled to WebAssembly for client-side logic. One commenter notes their restaurant-ordering SaaS—written in C and deployed via FastCGI—was so stable it was acquired by a franchise, only to degrade after being rewritten in proprietary Microsoft stacks.</p>
+<p>Of course, tradeoffs exist. C demands manual memory management, no built-in TLS or HTTP/2, and zero safety nets for common web pitfalls like XSS or CSRF—those must be handled explicitly. But for constrained environments (embedded gateways, air-gapped systems, or high-assurance services), that control is valuable. As one reader puts it: "There’s a reason why C is not used for web servers today"—but also a reason why it <em>should be reconsidered</em> when minimalism, auditability, and deterministic behavior outweigh developer convenience.</p>
+<p>Ultimately, the piece isn’t advocating C for every team or project. It’s a reminder that modern web development doesn’t have to mean maximalist tooling—and that returning to first principles can yield surprising resilience, clarity, and performance.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://prophitt.me/writing/a-modern-web-app-in-c" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/JoramMalley/Linux-privilege-escalation" target="_blank" rel="noopener">GitHub - JoramMalley/Linux-privilege-escalation: A curated ...</a><a href="https://computingforgeeks.com/linux-privilege-escalation-guide-kali/" target="_blank" rel="noopener">Linux Privilege Escalation: Complete Guide for Pentesters</a><a href="https://www.youtube.com/watch?v=Tu19Fwmp-cs" target="_blank" rel="noopener">A Simple Web Server in C - YouTube</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

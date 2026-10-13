@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Firefox users can now manually resume large downloads from one-time links - Now AI News</title>
+  <meta name="description" content="A developer documented a manual, file-level workaround enabling Firefox users to resume interrupted large downloads from one-time URLs by reusing existing .part files and forcing t" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-13-16-firefox-users-can-now-manually-resume-large-downloads-from-one-time-links-9f72979b" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-13-16-firefox-users-can-now-manually-resume-large-downloads-from-one-time-links-9f72979b" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-13-16-firefox-users-can-now-manually-resume-large-downloads-from-one-time-links-9f72979b" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-13-16-firefox-users-can-now-manually-resume-large-downloads-from-one-time-links-9f72979b" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Firefox users can now manually resume large downloads from one-time links" />
+  <meta property="og:description" content="A developer documented a manual, file-level workaround enabling Firefox users to resume interrupted large downloads from one-time URLs by reusing existing .part files and forcing t" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-13-16-firefox-users-can-now-manually-resume-large-downloads-from-one-time-links-9f72979b" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50061791.svg" />
+  <meta property="article:published_time" content="2026-10-12T19:36:02+00:00" />
+  <meta property="article:modified_time" content="2026-10-13T08:00:05.730867+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Firefox users can now manually resume large downloads from one-time links" />
+  <meta name="twitter:description" content="A developer documented a manual, file-level workaround enabling Firefox users to resume interrupted large downloads from one-time URLs by reusing existing .part files and forcing t" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50061791.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-13-16-firefox-users-can-now-manually-resume-large-downloads-from-one-time-links-9f72979b"}, "headline": "Firefox users can now manually resume large downloads from one-time links", "description": "A developer documented a manual, file-level workaround enabling Firefox users to resume interrupted large downloads from one-time URLs by reusing existing .part files and forcing t", "image": ["https://nowainews.com/media/hackernews-story-50061791.svg"], "datePublished": "2026-10-12T19:36:02+00:00", "dateModified": "2026-10-13T08:00:05.730867+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50061791.svg" alt="Firefox users can now manually resume large downloads from one-time links" />
+    <div class="article-page-tags"><span>#Firefox</span> <span>#downloads</span> <span>#networking</span> <span>#resumable</span> <span>#web-browsers</span></div>
+    <h1>Firefox users can now manually resume large downloads from one-time links</h1>
+    <p class="article-page-meta">News time: 2026-10-13T07:40:21.012522+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Firefox has long lacked native support for resuming interrupted downloads when the source URL is a one-time link — a common scenario for secure file sharing. Unlike standard URLs that remain valid, one-time links expire after the first request, making traditional resume logic impossible: Firefox’s built-in downloader expects the same URL to accept <code>Range</code> requests, but the server rejects subsequent requests with errors like 404 or 410. A developer named Lunar Watcher recently documented a reliable manual workaround that lets users recover progress without restarting multi-gigabyte downloads from scratch.</p>
+<p>The method hinges on Firefox’s internal download staging behavior. When a download begins, Firefox creates a <code>.part</code> file and writes incoming bytes to it. If the connection drops mid-transfer, that <code>.part</code> file retains all successfully received data — but Firefox won’t reuse it automatically upon retry because the new request starts fresh with a new <code>.part</code> file and no knowledge of prior offsets. The workaround involves pausing a <em>new</em> download attempt, swapping in the old <code>.part</code> file, and unpausing — effectively tricking Firefox into continuing from the correct byte position.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>This isn’t a browser patch or configuration toggle; it’s a systems-level hack grounded in how HTTP range requests interact with stateless server-side link expiration. It requires no third-party tools, works with stock Firefox, and only needs basic file operations — though it demands careful timing and awareness of Firefox’s temporary file naming (e.g., avoiding accidental overwrites). The technique is especially valuable for users downloading large datasets, ISO images, or video archives from privacy-focused services that enforce one-time links for security.</p>
+<p>The broader context reveals a tension between web security and usability. One-time links protect against unauthorized redistribution but break fundamental web expectations around resumability — a feature baked into HTTP/1.1 via the <code>Range</code> header and <code>206 Partial Content</code> responses. Servers supporting byte serving <em>could</em> allow resumes even with short-lived tokens — if they embed offset-aware logic — but most don’t. Until Firefox implements smarter local state tracking or servers adopt more resilient token designs, workarounds like this fill a real gap. For now, it’s a pragmatic win for power users who prioritize control over convenience.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://lunarwatcher.codeberg.page/til/firefox/resumable-big-downloads.html" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/HTTP_Range_request" target="_blank" rel="noopener">HTTP Range request</a><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests" target="_blank" rel="noopener">HTTP range requests - MDN Web Docs</a><a href="https://goodsign.io/one-time-download-link" target="_blank" rel="noopener">One - Time Download Link — Share a File That Downloads Once</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

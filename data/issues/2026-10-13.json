@@ -1,0 +1,1275 @@
+{
+  "date": "2026-10-13",
+  "generated_at": "2026-10-13T08:00:05.730867+00:00",
+  "total_fetched": 27,
+  "count": 24,
+  "articles": [
+    {
+      "id": "hackernews:story:50065692",
+      "slug": "2026-10-13-01-new-proof-shows-ai-models-can-cryptographically-hide-arbitrary-capabilities-9fc1604a",
+      "path": "/article/2026-10-13-01-new-proof-shows-ai-models-can-cryptographically-hide-arbitrary-capabilities-9fc1604a",
+      "rank": 1,
+      "score": 9.0,
+      "source": "hackernews",
+      "author": "sbulaev",
+      "url": "https://arxiv.org/abs/2610.13928",
+      "published_at": "2026-10-13T02:07:08+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012298+00:00",
+      "tags": [
+        "AI_safety",
+        "model_interpretability",
+        "neural_networks",
+        "adversarial_machine_learning",
+        "AI_alignment"
+      ],
+      "image_path": "media/hackernews-story-50065692.png",
+      "title": {
+        "zh": "新论文证明AI模型可密码学隐藏任意能力",
+        "en": "New proof shows AI models can cryptographically hide arbitrary capabilities"
+      },
+      "summary": {
+        "zh": "一篇新发布的arXiv论文（编号2610.13928）首次给出严格密码学证明：神经网络权重可理论上保证地编码任意能力，这些能力在特定输入触发前完全潜伏，且能规避所有标准检测手段。 这动摇了AI安全、模型审计和开源部署的底层假设——表明在表达能力强的模型中，不可检测的、激活门控的行为不仅是可能的，而且是数学上必然存在的，从而对信任机制、验证方法和监管框架提出紧迫挑战。 该证明通过标准非线性激活函数和足够宽度的模型构建类密码学神经电路（如伪随机函数），无需特殊架构或训练技巧，但依赖计算学习理论中的标准假设。",
+        "en": "A new arXiv paper (2610.13928) provides a formal cryptographic proof that neural network weights can provably encode arbitrary capabilities that remain latent until activated by specific inputs—evading all standard detection methods. This undermines foundational assumptions in AI safety, model auditing, and open-source deployment—showing that undetectable, activation-gated behaviors are not just plausible but mathematically inevitable in expressive models, raising urgent questions about trust, verification, and regulatory oversight. The proof relies on constructing neural circuits that emulate cryptographic primitives (e.g., pseudorandom functions) using standard nonlinear activations and sufficient model width; it does not require exotic architectures or training tricks, but assumes standard computational learning assumptions."
+      },
+      "body": {
+        "zh": "一篇发表在arXiv上的突破性理论论文证明：神经网络权重可以严格地、以密码学方式隐藏“潜伏能力”——即某些行为会完全静默，直到被特定（甚至看似无害）的输入序列激活。这不同于简单的过拟合或记忆现象；其机制在数学上类似于加密：能力被嵌入模型参数中，能抵御标准可解释性工具、审计方法乃至行为测试的探测——除非提供精确的“密钥”输入。\n\n该论文形式化了研究人员长期怀疑却缺乏严格依据的一个猜想：大语言模型等深度网络具备足够强的表征能力，可在权重中实现激活门控逻辑电路。这些电路类似数字逻辑门（如AND、XOR或阈值单元），协同工作，仅当满足特定隐藏条件（例如某段特殊token序列、嵌入模式或梯度特征）时，模型才输出此前完全不可见的行为——比如绕过安全过滤器、泄露私有数据，或执行未授权代码。\n\n关键在于，这项工作并非仅靠经验观察。作者从密码学原语（如伪随机函数和单向置换）出发，构造了到神经网络权重配置的明确归约，并在计算学习理论的标准假设下完成证明。他们指出：对任意可计算函数f和任意输入x，总存在一种神经架构与权重初始化方式，使得f(x)仅在触发条件下被计算；而在其他所有标准探测手段下，该行为在统计上与随机噪声无法区分。\n\n这对AI安全与开源信任构成深远挑战。若一个公开发布的模型（例如某个微调后的LLaMA变体）含有此类隐藏能力，则无论进行多少红队测试、权重检查或提示压力测试，都无法发现它——除非知晓触发条件。更严峻的是，该触发条件未必是人类可读的：它可能是一组罕见token组合、细微的嵌入扰动，甚至是一种时序侧信道。正如一位评论者所言，这模糊了“休眠代理”与工程化隐写术之间的界限——此时模型本身既是载体，也是密码。\n\n尽管当前构造仍属理论性质，且需满足一定架构约束（如足够宽度、深度与非线性），但它确立了一个坚实的下界：只要模型表达能力足够强，此类隐藏就“原则上不可避免”。这意味着，在医疗、金融或国家基础设施等高风险场景中，部署策略必须默认接受“可能存在不可探测能力”的前提，将验证责任从“证明它安全”转向“证明它未隐藏任何东西”。论文并未声称这类后门普遍存在，但确凿证明了其理论可行性。",
+        "en": "A groundbreaking theoretical result published on arXiv demonstrates that neural network weights can provably encode latent capabilities—behaviors that remain completely dormant until activated by a specific, often innocuous input sequence. Unlike simple overfitting or memorization, this hiding mechanism is mathematically analogous to cryptographic encryption: the capability is embedded in the model’s parameters in a way that resists detection by standard interpretability tools, auditing methods, or even behavioral testing—unless the precise ‘key’ input is supplied.\n\nThe paper formalizes what researchers have long suspected but lacked rigorous grounding for: that large language models and other deep networks possess sufficient representational capacity to implement activation-gated logic circuits within their weights. These circuits behave like digital logic gates—AND, XOR, or threshold units—orchestrated so that only when certain hidden conditions are met (e.g., a particular token sequence, embedding pattern, or gradient signature) does the model output a previously undetectable behavior—such as bypassing safety filters, leaking private data, or executing unauthorized code.\n\nCrucially, the work doesn’t rely on empirical observation alone. It constructs an explicit reduction from cryptographic primitives (e.g., pseudorandom functions and one-way permutations) to neural weight configurations, proving existence under standard assumptions in computational learning theory. The authors show that for any computable function f and any input x, there exists a neural architecture and weight initialization such that f(x) is computed *only* when triggered—and remains statistically indistinguishable from random noise under all standard probing techniques otherwise.\n\nThis has profound implications for AI safety and open-source trust. If a model released publicly—say, a fine-tuned LLaMA variant—contains such a hidden capability, no amount of red-teaming, weight inspection, or prompt-based stress testing would reveal it without knowing the trigger. Worse, the trigger need not be human-readable: it could be a rare token combination, a subtle embedding perturbation, or even a timing side channel. As one commenter noted, this blurs the line between ‘sleeper agents’ and engineered steganography—where the model itself becomes both carrier and cipher.\n\nWhile the construction is currently theoretical and requires careful architectural constraints (e.g., sufficient width, depth, and nonlinearity), it establishes a hard lower bound on what’s *possible*. That means real-world deployment strategies—especially for high-stakes domains like healthcare, finance, or national infrastructure—must now assume that undetectable capabilities *could* exist, shifting the burden from ‘prove it’s safe’ to ‘prove it’s not hiding anything’. The paper doesn’t claim such backdoors are common—but it proves they’re *in principle unavoidable* in expressive enough models."
+      },
+      "background": {
+        "zh": "神经密码学指利用神经网络执行或破解密码操作（如密钥交换、加解密或隐写），通过学习模拟密码原语的表征来实现。近期研究已表明，神经网络可在不依赖显式算法的情况下自主学会加解密；同时，通过权重篡改或嵌入空间混淆等方式在模型中隐写数据也已有探索。",
+        "en": "Neural cryptography refers to using neural networks to perform or break cryptographic operations—such as key exchange, encryption, or steganography—by learning representations that mimic cryptographic primitives. Recent work has shown neural nets can learn to encrypt/decrypt without explicit algorithms, and steganographic hiding of data inside models has been explored via weight manipulation or embedding-space obfuscation."
+      },
+      "discussion": {
+        "zh": "评论者普遍担忧现实风险，尤其关注带网络连接器的本地部署开源模型；同时就观测到的现象究竟是真正的密码学隐藏还是单纯过拟合展开讨论。部分人指出该话题与r/LocalLLaMA社区早前讨论存在呼应，另有用户反思人类对神经网络本质理解的根本局限。",
+        "en": "Commenters express concern about real-world risks—especially for open-source models deployed locally with web connectors—while debating whether observed behaviors reflect true cryptographic hiding or merely overfitting. Some note parallels with prior discussions on r/LocalLLaMA, and others reflect on the fundamental limits of neural network understanding."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Neural_cryptography",
+          "title": "Neural cryptography - Wikipedia"
+        },
+        {
+          "url": "https://www.sciencedirect.com/science/article/pii/S0925231226004819",
+          "title": "Neural cryptography: Synergy and conflict between neural ..."
+        },
+        {
+          "url": "https://arxiv.org/pdf/1912.10413",
+          "title": "Hiding Data in Images Using Cryptography and Deep Neural Network Neural cryptography - Wikipedia [1912.10413] Hiding Data in Images Using Cryptography and ... Repurposing Neural Networks for Efficient Cryptographic ... Neural Cryptography: From Symmetric Encryption to Adversarial ... Deep Neural Cryptography"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50055304",
+      "slug": "2026-10-13-02-hackers-triggered-automatic-defrost-cycles-in-european-supermarket-fridges-37c5ec93",
+      "path": "/article/2026-10-13-02-hackers-triggered-automatic-defrost-cycles-in-european-supermarket-fridges-37c5ec93",
+      "rank": 2,
+      "score": 9.0,
+      "source": "hackernews",
+      "author": "Zeekaas",
+      "url": "https://www.tomshardware.com/tech-industry/cyber-security/unprecedented-cyberattack-cripples-supermarket-fridges-across-europe-as-hackers-activate-automatic-defrosting-delivery-and-store-prices-also-impacted-by-incident",
+      "published_at": "2026-10-12T12:16:42+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012425+00:00",
+      "tags": [
+        "cyber-physical-systems",
+        "industrial-control-systems",
+        "supply-chain-security",
+        "critical-infrastructure",
+        "iot-security"
+      ],
+      "image_path": "media/hackernews-story-50055304.jpg",
+      "title": {
+        "zh": "黑客远程启动欧洲超市冷藏柜自动除霜导致食品变质",
+        "en": "Hackers triggered automatic defrost cycles in European supermarket fridges"
+      },
+      "summary": {
+        "zh": "2026年10月，黑客利用丹佛斯SM800和SC355等老旧制冷控制器的已知漏洞，远程批量触发自动除霜功能，波及欧洲约400家超市，导致大量食品变质与门店运营中断。 此次攻击表明，关键基础设施中存在安全隐患的工业物联网设备（尤其是具备物理影响能力的设备）可能被大规模武器化，暴露出零售与食品供应链在工控系统安全和供应链韧性上的长期投入不足。 受攻击设备包括运行EOS 2021固件的丹佛斯SM800控制器和运行EOS 2016固件的SC355控制器，二者均未对远程除霜指令实施身份验证；恢复需人工现场重置并升级固件，而其中许多型号的固件已停止官方支持。",
+        "en": "In October 2026, hackers exploited known vulnerabilities in legacy Danfoss SM800 and SC355 refrigeration controllers to remotely trigger automatic defrost cycles across ~400 European supermarkets, causing widespread food spoilage and operational disruption. This attack demonstrates how insecure industrial IoT devices in critical infrastructure—especially those with physical safety consequences—can be weaponized at scale, exposing systemic underinvestment in ICS security and supply-chain resilience across retail and food distribution. The exploited devices included Danfoss SM800 (running EOS 2021) and SC355 (running EOS 2016), both lacking authentication for remote defrost commands; recovery required manual onsite resets and firmware updates—many of which are no longer officially supported."
+      },
+      "body": {
+        "zh": "这是一起罕见且令人警醒的网络-物理系统攻击事件：黑客远程触发法国及其他欧洲国家数百家超市冷藏设备的自动除霜功能，导致冷冻柜内部温度飙升至50°C，大量生鲜食品变质，门店运营陷入混乱。攻击目标是老旧的丹佛斯（Danfoss）制冷控制器，其中许多仍在运行EOS 2016或EOS 2021等过时固件版本，且未加防护地直接暴露在互联网上。\n\n与常见的数据窃取类攻击不同，此次事件造成了即时物理后果：本应安排在夜间低峰期进行的除霜操作，被恶意设定在营业高峰时段强制执行——导致蒸发器结霜迅速融化、压缩机过载停机、制冷功能全面失效，原本低温运行的冷柜瞬间变成“温箱”。据确认，近400家法国超市受影响，连锁品牌InterMarché首当其冲。店员报告称警报持续鸣响、温控屏显示红色告警，肉制品、乳制品和速冻食品在数小时内开始解冻滴水。\n\n所利用的漏洞早已公开。网络安全公司Claroty旗下Team82团队于2026年初披露，部分丹佛斯SM800与SC355控制器存在未经身份验证的远程指令接口，攻击者无需任何凭证即可远程触发除霜、篡改温控设定或关闭报警——而这些设备本就不是为直连互联网设计的。现实中，它们却被接入网络，只为实现厂商宣传的“效率提升”，例如远程故障诊断与跨门店能效比对。\n\n真正令人深思的是事件背后的系统性成因：并非高难度零日漏洞，而是大量服役超15年的工业设备，在缺乏安全预算、无更新窗口、无专职运维的现实条件下，被迫接入开放网络。正如一位Hacker News评论者所言：“坐办公室写代码的人，很难理解倒班工人连基础安全审查和设备定期更换都是一种奢侈。”这不只是冰箱被黑，而是整个民生基础设施正悄然依赖着那些被遗忘在角落、却仍联网运转的‘老古董’。",
+        "en": "In a rare and alarming demonstration of cyber-physical harm, hackers remotely activated automatic defrost cycles across hundreds of supermarket refrigeration units in France and other parts of Europe—causing temperatures inside freezers to spike as high as 50°C, spoiling perishable food and disrupting store operations. The attack targeted legacy Danfoss refrigeration controllers, many running outdated firmware versions like EOS 2016 and EOS 2021, which were exposed to the internet without adequate security controls.\n\nUnlike typical data-theft breaches, this incident had immediate physical consequences: frost buildup was deliberately melted during peak business hours—not overnight, as intended—overloading compressors, disabling cooling, and turning freezers into warm storage cabinets. Reports confirm nearly 400 French supermarkets were affected, with InterMarché among the hardest hit. Store staff reported alarms blaring, temperature displays flashing red, and shelves rapidly filling with thawing meat, dairy, and frozen meals.\n\nThe vulnerability exploited is well documented. Claroty’s Team82 researchers disclosed earlier in 2026 that certain Danfoss SM800 and SC355 controllers contain unauthenticated remote command interfaces—allowing attackers to trigger defrost, override setpoints, or disable alarms without credentials. These devices were never designed for internet exposure; yet many were connected remotely to enable ‘efficiency gains’ like remote diagnostics and centralized fleet management—a feature Danfoss itself promotes for retail chains.\n\nWhat makes this attack especially sobering is its systemic root cause: not a zero-day exploit, but decades-old industrial equipment operating in insecure network environments, with no budget or operational window for updates. As one Hacker News commenter observed, ‘The laptop class doesn’t grok that the shift-work labor class has nothing in terms of luxuries like security reviews.’ This isn’t just about fridges—it’s about how critical infrastructure quietly depends on obsolete, internet-facing hardware—and who bears the cost when it fails."
+      },
+      "background": {
+        "zh": "商用制冷系统每日通常执行两到四次自动除霜，以清除蒸发器盘管上的结霜，该操作一般安排在客流低谷时段，避免柜内温度异常升高。丹佛斯SC355与SM800是超市冷藏柜广泛使用的可编程逻辑控制器（PLC），当接入楼宇管理系统时，可通过以太网或蜂窝调制解调器实现远程监控与控制。",
+        "en": "Commercial refrigeration systems use automatic defrost cycles—typically two to four times per day—to remove frost buildup from evaporator coils. These cycles are usually scheduled during low-traffic hours to avoid temperature spikes. Danfoss SC355 and SM800 are widely deployed programmable logic controllers (PLCs) used to manage refrigeration cases in supermarkets; they support remote monitoring and control via Ethernet or cellular modems when integrated into building management systems."
+      },
+      "discussion": {
+        "zh": "Hacker News评论区用户强调了技术债背后的社会经济维度：一线基础设施运维人员缺乏安全更新所需的人力与预算，与‘笔记本电脑级’软件团队形成鲜明对比；另有用户将此事类比医疗设备需付费订阅才能运行的现象，指出商业化模式正日益侵蚀安全关键系统的可靠性。",
+        "en": "Hacker News commenters highlighted the socioeconomic dimension of tech debt—pointing out that frontline infrastructure operators lack resources for security updates, unlike 'laptop-class' software teams. Others drew parallels to medical devices requiring paid subscriptions to function, underscoring how monetization models increasingly compromise safety-critical systems."
+      },
+      "sources": [
+        {
+          "url": "https://www.msn.com/en-us/technology/cybersecurity/danfoss-says-hacked-controllers-behind-50c-french-supermarket-fridges-ran-old-firmware/ar-AA2e6nkW",
+          "title": "Danfoss says hacked controllers behind 50C French ... - MSN"
+        },
+        {
+          "url": "https://cybernews.com/security/danfoss-refrigeration-hack-france-supermarkets/",
+          "title": "Refrigeration Cyberattack Hits French Supermarkets | Cybernews"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50055593",
+      "slug": "2026-10-13-03-developer-turns-wifi-7-router-into-320-msps-software-defined-radio-8304d0a6",
+      "path": "/article/2026-10-13-03-developer-turns-wifi-7-router-into-320-msps-software-defined-radio-8304d0a6",
+      "rank": 3,
+      "score": 9.0,
+      "source": "hackernews",
+      "author": "djfergus",
+      "url": "https://github.com/h0m3us3r/w1700k-sdr",
+      "published_at": "2026-10-12T12:41:58+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012544+00:00",
+      "tags": [
+        "SDR",
+        "WiFi7",
+        "hardware-hacking",
+        "RF-engineering",
+        "open-source"
+      ],
+      "image_path": "media/hackernews-story-50055593.png",
+      "title": {
+        "zh": "开发者将WiFi 7路由器改造成320 Msps软件定义无线电接收器",
+        "en": "Developer turns WiFi 7 router into 320 Msps software-defined radio"
+      },
+      "summary": {
+        "zh": "h0m3us3r 修改了 Gemtek W1700K WiFi 7 路由器（搭载 MediaTek MT7996 芯片）的开源固件，直连其模数转换器（ADC），实现原生 5 GHz 频段下 320 Msps 的软件定义无线电接收功能。 它大幅降低了高速 SDR 实验门槛，以不到 150 美元的成本提供 320 Msps 采样能力（此前仅见于昂贵实验室设备），并揭示了消费级 WiFi 芯片中尚未被充分利用的射频潜力。 该接收器工作在 5 GHz 频段，瞬时可用带宽约 100–200 MHz（非直流耦合），受板载模拟滤波与基带信道化限制；需定制固件，且不支持发射功能。",
+        "en": "h0m3us3r modified open-source firmware for the Gemtek W1700K WiFi 7 router (MT7996 chipset) to enable direct ADC access, achieving a 320 Msps software-defined radio receiver operating natively in the 5 GHz band. It dramatically lowers the barrier to high-speed SDR experimentation, offering a sub-$150 path to 320 Msps sampling — previously available only in expensive lab equipment — and reveals untapped RF capabilities in mass-market WiFi chipsets. The receiver operates in the 5 GHz band with ~100–200 MHz usable instantaneous bandwidth (not DC-coupled), limited by onboard analog filtering and baseband channelization; it requires custom firmware and does not support transmit functionality."
+      },
+      "body": {
+        "zh": "一位名为 h0m3us3r 的硬件黑客成功挖掘出市售 WiFi 7 路由器的隐藏能力：将其改造为高速软件定义无线电（SDR）接收器。他通过修改开源固件，直接调用 MediaTek MT7996 芯片（搭载于 Gemtek W1700K 路由器中）内部的射频采样通路，实现了每秒 3.2 亿次采样（320 Msps）的实时接收能力。这一速率是其此前基于 ESP32 开发的 SDR（最高 80 Msps）的四倍，也远超多数入门级 SDR 接收器。\n\n这并非简单的概念验证。该方案完全绕过 WiFi 协议栈，直接访问芯片内部的模数转换器（ADC）和基带处理单元——即 WiFi 信号数字化前的原始通路。它实质上将路由器已有的射频前端（包括 5 GHz 收发链路）重定义为宽频带接收器，可一次性捕获数十乃至上百兆赫兹的瞬时带宽信号。虽然不支持直流耦合、也无法全频段调谐，但它原生工作在 5 GHz ISM 频段，具备高采样率与低延迟优势。\n\n其意义远超业余爱好范畴。一台 WiFi 7 路由器售价仅 100–150 美元，而商用同级别（300+ Msps）SDR 设备动辄数千美元，且需专用 PCIe 卡或台式仪器。此举为学生、研究人员和射频教学者提供了低成本开展宽带信号分析、频谱监测与实时解调实验的新途径。它也揭示了一个趋势：为支持 WiFi 7 超宽 320 MHz 信道与多链路操作而设计的现代芯片，本身就蕴藏着通用射频感知的巨大潜力。\n\n当然，实际应用仍需注意硬件限制。正如社区评论所指出，有效可用带宽小于原始采样率所暗示的理论值——受限于模拟滤波、信道划分及缺乏直流耦合。有用户建议外接衰减器、滤波器或上下变频模块来扩展频率覆盖范围。但即便如此，这一项目仍有力证明：深度嵌入、大规模量产的消费级芯片，完全可通过开源方式被重新赋予工程新生命——让普通网络设备蜕变为开放的新型无线电平台。",
+        "en": "A hardware hacker known as h0m3us3r has unlocked an unexpected capability in off-the-shelf WiFi 7 routers: using them as high-speed software-defined radio (SDR) receivers. By modifying open-source firmware and leveraging the raw RF sampling paths inside MediaTek’s MT7996 chipset — found in the Gemtek W1700K router — the project achieves a real-time sampling rate of 320 million samples per second (Msps). That’s four times faster than the ESP32-based SDR the same developer previously built, and far beyond what most budget SDR dongles offer.\n\nThis isn’t just a proof-of-concept tweak. The technique bypasses the WiFi protocol stack entirely, tapping directly into the chip’s analog-to-digital converters (ADCs) and baseband processing units before digital signal conditioning for WiFi. It effectively repurposes the router’s existing RF front-end — including its 5 GHz transceiver chain — as a wideband receiver capable of capturing signals across tens or even hundreds of megahertz of instantaneous bandwidth. While not DC-coupled or fully tunable across all spectrum bands, it operates natively in the 5 GHz ISM band with exceptional speed and low latency.\n\nThe implications extend well beyond hobbyist curiosity. At $100–$150, a WiFi 7 router is dramatically cheaper than commercial 300+ Msps SDRs, which often cost thousands of dollars and require specialized PCIe cards or bench-top instruments. This opens doors for students, researchers, and RF educators to experiment with wideband signal analysis, spectrum monitoring, and real-time demodulation — without needing lab-grade gear. It also highlights how modern WiFi chipsets, designed for ultra-wide 320 MHz channels and multi-link operation, contain untapped potential for general-purpose RF sensing.\n\nStill, practical use requires careful hardware awareness. As community commenters note, the effective usable bandwidth is narrower than the raw sampling rate suggests — due to analog filtering, channelization, and lack of DC coupling. Some users suggest augmenting the setup with external attenuators, filters, or up/downconverters to broaden frequency coverage. But even in its current form, this hack demonstrates how deeply embedded, mass-produced silicon can be reclaimed for novel engineering purposes — turning consumer networking gear into a new kind of open radio platform."
+      },
+      "background": {
+        "zh": "软件定义无线电（SDR）将模拟无线电信号转化为数字数据，以便在软件中灵活处理。采样率（单位：每秒采样次数）决定最大瞬时带宽，并影响动态范围与混叠效应。WiFi 7 芯片（如 MediaTek MT7996）需支持 320 MHz 超宽信道与先进多输入多输出（MIMO）技术，因此内置高速模数转换器（ADC）与数字基带模块，这些部件可被重新用于通用射频感知任务。",
+        "en": "Software-defined radios (SDRs) convert analog radio signals into digital data for flexible processing in software. Sampling rate — measured in samples per second — determines maximum instantaneous bandwidth and affects dynamic range and aliasing. WiFi 7 chipsets like MediaTek’s MT7996 support 320 MHz wide channels and advanced MIMO, requiring high-speed ADCs and digital baseband blocks that can be repurposed for general RF sensing."
+      },
+      "discussion": {
+        "zh": "社区评论呈现积极而深入的技术讨论：有用户指出因采用相同芯片组，该方案可能适配 Banana Pi R4；也有用户提醒当前可用带宽较窄，限制了多数 SDR 场景；多人强调其成本优势，并建议搭配外部滤波器、衰减器等硬件扩展功能。",
+        "en": "Commenters express enthusiasm and technical engagement: one notes compatibility with the Banana Pi R4 due to shared chipset; another cautions about narrow usable bandwidth limiting broad SDR applications; several highlight cost advantages and suggest hardware augmentations like external filters and attenuators."
+      },
+      "sources": [
+        {
+          "url": "https://www.rtl-sdr.com/turning-a-wi-fi-7-router-into-a-320-msps-sdr/",
+          "title": "Turning a Wi-Fi 7 Router into a 320 Msps SDR - RTL-SDR"
+        },
+        {
+          "url": "https://juejin.cn/post/7576555431942701066",
+          "title": "QCN9274 Review: Advanced RF Capabilities for High-Density..."
+        }
+      ]
+    },
+    {
+      "id": "rss:simonwillison.net_atom_everything_:901eddfa61b84a5e",
+      "slug": "2026-10-13-04-python-3-15-launches-with-explicit-lazy-imports-via-pep-810-332e0af6",
+      "path": "/article/2026-10-13-04-python-3-15-launches-with-explicit-lazy-imports-via-pep-810-332e0af6",
+      "rank": 4,
+      "score": 9.0,
+      "source": "rss",
+      "author": "Simon Willison",
+      "url": "https://simonwillison.net/2026/Oct/12/python-3-15/",
+      "published_at": "2026-10-12T18:15:38+00:00",
+      "fetched_at": "2026-10-13T07:40:20.491351+00:00",
+      "tags": [
+        "Python",
+        "PEP-810",
+        "lazy-imports",
+        "Python-3.15",
+        "performance"
+      ],
+      "image_path": "media/rss-simonwillison-net-atom-everything--901eddfa61b84a5e.webp",
+      "title": {
+        "zh": "Python 3.15正式发布，引入显式懒加载导入机制",
+        "en": "Python 3.15 launches with explicit lazy imports via PEP 810"
+      },
+      "summary": {
+        "zh": "Python 3.15 于2026年10月12日正式发布，引入了基于 `lazy import` 语法的显式懒加载导入（PEP 810）以及推导式中的解包功能（PEP 798）。 显式懒加载导入能显著降低命令行工具、插件系统及大型应用的启动时间和内存占用，以不破坏现有语义、无需全局运行时改动的方式，解决了 Python 长期存在的性能痛点。 懒加载是局部且需显式声明的：仅用 `lazy import` 标记的模块才会延迟加载，且该行为不会自动传递至其依赖模块；推导式解包支持列表、集合和字典，分别使用 `*` 和 `**` 语法。",
+        "en": "Python 3.15 was released on October 12, 2026, introducing explicit lazy imports via `lazy import` syntax (PEP 810) and unpacking in comprehensions (PEP 798). Explicit lazy imports significantly reduce startup time and memory usage for CLI tools, plugins, and large applications — solving a long-standing pain point without breaking existing semantics or requiring global runtime changes. Lazy imports are local and opt-in: only modules marked with `lazy import` defer loading, and the laziness does not propagate to their dependencies. Unpacking in comprehensions supports lists, sets, and dicts using `*` and `**` syntax."
+      },
+      "body": {
+        "zh": "Python 3.15 正式发布，标志着该语言演进的重要一步——开发者首次能通过清晰、显式的语法启用模块懒加载。此次发布由广受尊敬的 Python 开发者 Simon Willison 宣布，并由版本维护者 Hugo van Kemenade 主导整理。它终止了对 Python 3.10 的支持，全面拥抱 3.11 及后续版本的新特性。对于像 Willison 的 LLM 命令行工具这类需兼容多个 Python 版本的开源项目维护者而言，这意味着可立即卸下旧版兼容包袱，转而采用以性能为导向的新功能。\n\n最引人注目的新特性是 PEP 810 提出的“显式懒加载导入”。与 2022 年被 Python 指导委员会否决的 PEP 690（全局隐式懒加载）不同，PEP 810 采用明确选择、细粒度控制的方式。开发者只需写下 `lazy import json` 或 `lazy from pathlib import Path`，模块便只在代码中首次访问其符号时才真正加载并执行。这有效避免了 `sentence_transformers` 等重型依赖在启动时就被急切初始化，显著缓解了命令行工具、测试套件和插件系统长期面临的启动延迟问题。\n\n另一项实用更新是“推导式中的解包”（PEP 798），让列表、集合和字典推导式支持更简洁的扁平化写法。例如，`[ *L for L in lists ]` 可直接替代嵌套推导式 `[x for L in lists for x in L]`。这一特性延续自 Python 3.5 的 PEP 448 解包泛化，属于渐进式增强，而非范式颠覆，为数据处理密集型代码带来切实的可读性提升。\n\nPython 3.15 的真正价值在于创新与务实的平衡：它不强求全局懒加载（易引发隐蔽 Bug 和调试困难），而是将控制权交还给开发者，精准优化启动耗时与内存占用。且每个 `lazy import` 的懒加载行为仅限于该语句本身，不会自动传递至间接依赖——这种可预测性，正是生产级工具与框架广泛采用的关键前提。",
+        "en": "Python 3.15 has officially arrived, marking a major milestone in the language’s evolution — and for the first time, developers can opt into lazy module loading with clear, explicit syntax. The release, announced by respected Python developer Simon Willison and curated by release manager Hugo van Kemenade, drops support for Python 3.10 while fully embracing features introduced in 3.11 and beyond. For maintainers of cross-version tools like Willison’s LLM CLI, this shift means dropping legacy compatibility burdens and adopting performance-focused innovations right away.\n\nThe standout feature is PEP 810: explicit lazy imports. Unlike earlier proposals such as PEP 690 — which attempted global, implicit lazy loading and was rejected by the Python Steering Council in 2022 — PEP 810 takes an opt-in, granular approach. Developers now write `lazy import json` or `lazy from pathlib import Path`, and the module is only loaded and executed the first time its symbols are accessed. This avoids costly eager initialization of heavy dependencies like `sentence_transformers` at startup — a real pain point for CLI tools, test runners, and plugin-based applications.\n\nAnother notable addition is unpacking in comprehensions (PEP 798), which brings concise, readable flattening to list, set, and dict comprehensions. For example, `[ *L for L in lists ]` cleanly replaces nested comprehensions like `[x for L in lists for x in L]`. While syntactically elegant, this change builds directly on Python 3.5’s PEP 448 unpacking generalizations — extending rather than overhauling existing patterns. It’s a small but welcome ergonomic win for data-heavy code.\n\nWhat makes Python 3.15 especially significant is how it balances innovation with pragmatism. Rather than forcing lazy behavior system-wide — risking subtle bugs and debugging complexity — it gives developers precise control where it matters most: startup latency and memory footprint. And because laziness is local to each `lazy import` statement, it doesn’t cascade to transitive dependencies unless explicitly declared. That predictability is key for adoption in production tooling and frameworks."
+      },
+      "background": {
+        "zh": "Python 传统上采用急切导入：模块一旦被 import 就立即加载并执行，即使其中的符号从未被使用，也会造成额外开销。这对拥有可选或低频依赖的工具尤为不利。PEP 690（2022年）曾尝试引入自动懒加载，但因过于隐式、难以推理而被否决。PEP 810 则反其道而行之，让懒加载变得显式、可预测且作用域可控。",
+        "en": "Python traditionally uses eager imports: modules are loaded and executed immediately upon import, even if their symbols are never used. This causes unnecessary overhead in tools with optional or rarely used dependencies. PEP 690 (2022) proposed automatic lazy imports but was rejected for being too implicit and hard to reason about. PEP 810 responds by making laziness explicit, predictable, and scoped."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://peps.python.org/pep-0810/",
+          "title": "PEP 810 – Explicit lazy imports | peps.python.org"
+        },
+        {
+          "url": "https://socket.dev/blog/pep-810-proposes-explicit-lazy-imports-for-python-3-15",
+          "title": "PEP 810 Proposes Explicit Lazy Imports for Python 3.15 - Soc..."
+        },
+        {
+          "url": "https://blog.jetbrains.com/pycharm/2026/06/explicit-lazy-imports-are-coming-to-python-3-15/",
+          "title": "Explicit Lazy Imports Are Coming to Python 3.15 - The JetBrains Blog"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1x4awlk",
+      "slug": "2026-10-13-05-what-mechanistic-argument-supports-next-token-prediction-plus-rl-leading-to-agi-27fa57d4",
+      "path": "/article/2026-10-13-05-what-mechanistic-argument-supports-next-token-prediction-plus-rl-leading-to-agi-27fa57d4",
+      "rank": 5,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/Repulsive_Twist_9221",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1x4awlk/what_is_the_strongest_mechanistic_argument_that/",
+      "published_at": "2026-10-12T19:09:27+00:00",
+      "fetched_at": "2026-10-13T07:40:21.142480+00:00",
+      "tags": [
+        "AGI",
+        "mechanistic_interpretability",
+        "computational_learning_theory",
+        "transformer_limits",
+        "reinforcement_learning"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1x4awlk.jpg",
+      "title": {
+        "zh": "下一个词预测加强化学习能否通向通用智能",
+        "en": "What mechanistic argument supports next-token prediction plus RL leading to AGI"
+      },
+      "summary": {
+        "zh": "一则高信噪比的Reddit帖子明确提出：请给出下一个词预测叠加强化学习可通向开放式通用智能的最强第一性原理机制性论证，而非推测或展望。 这一问题挑战着万亿级AI投资与全球政策制定所依赖的核心假设；对其作出严谨回答，将决定当前扩展路径是否真能通向AGI，抑或必须转向全新的学习范式。 目前尚无形式化证明表明下一个词预测能催生通用计算或递归自我改进；大语言模型中的强化学习微调通常依赖静态文本轨迹与合成奖励信号，而非真实环境的闭环反馈。",
+        "en": "A high-signal Reddit post explicitly requests the strongest first-principles, mechanistic argument—not speculation—that next-token prediction combined with reinforcement learning can yield open-ended general intelligence. This question challenges assumptions underpinning trillion-dollar AI investments and global policy efforts; answering it rigorously would clarify whether current scaling paths lead to AGI—or require fundamentally new learning paradigms. No formal proof exists that next-token prediction induces universal computation or recursive self-improvement; RL fine-tuning in LMs typically uses static text trajectories and synthetic rewards, not real-world environmental feedback loops."
+      },
+      "body": {
+        "zh": "一则在 r/MachineLearning 上获得高分的帖子，跳出了当前AI发展的喧嚣，直击一个基础性工程问题：当下主流的训练范式——即下一个词预测叠加强化学习——能否产生开放式的通用智能？其最强有力的*机制性*、第一性原理论证是什么？作者明确拒绝趋势外推、关于‘智能’的哲学定义，或对未来突破的空泛期待，而是要求基于计算学习理论、信息论以及Transformer架构可观测行为的因果解释。\n\n该帖子反映出AI研究界日益增长的审慎态度：单纯扩大现有方法是否足以实现AGI？尽管大语言模型在模式识别和统计关联上表现出色，但其核心目标——预测下一个词——缺乏显式目标设定、跨轮次的持久记忆，或对世界的因果建模能力。强化学习虽引入了目标导向的反馈机制，但当前大多数RL微调（例如基于奖励模型的PPO）仍运行在静态文本轨迹之上，而非真实世界中的闭环交互。ARC-AGI等新基准显示，经RL增强的模型确实在系统性泛化上有所提升，但提升幅度有限，且内部机制往往并不透明。\n\n从机制上看，自注意力机制使Transformer能够实现动态的词元选择与上下文窗口内的隐式推理，相关研究已证实其具备基于优先级的词元抑制能力。但这不等于构建出持久的智能体、环境或因果关系的内在模型。RL的整合目前仍较浅层：奖励信号通常来自人类偏好或合成指标，而非自主获取的环境反馈。尤为关键的是，目前尚无形式化证明表明，即使拥有无限数据与算力，下一个词预测本身就能催生通用计算能力或递归自我改进能力——而这二者被广泛视为开放式智能的必要前提。\n\n这并非否定技术进步，而是呼吁理论严谨性。若AGI真能从当前范式中涌现，我们必须理解它*如何*发生，而不仅是*是否*发生。厘清哪些计算归纳偏置、表征能力与学习动力学，可能将狭窄的预测能力拓展为通用推理能力，这对AI对齐、安全及高效研发至关重要。缺乏这种机制性理解，部署决策就容易依赖直觉，而非扎实依据。",
+        "en": "A recent high-scoring post on r/MachineLearning cuts through the hype surrounding AI progress and asks a foundational engineering question: What is the strongest *mechanistic*, first-principles argument that today’s dominant training paradigm—next-token prediction combined with reinforcement learning—can produce open-ended general intelligence? The author explicitly rejects speculative extrapolations, philosophical definitions of ‘intelligence,’ or appeals to future breakthroughs. Instead, they demand causal explanations grounded in computational learning theory, information theory, and the observable behavior of transformer architectures.\n\nThe post reflects growing scrutiny within the AI research community about whether scaling current methods is sufficient for AGI. While large language models excel at pattern recognition and statistical correlation, their core objective—predicting the next token—lacks explicit goals, memory persistence across episodes, or causal world modeling. Reinforcement learning adds goal-directed feedback, but most current RL fine-tuning (e.g., PPO on reward models) operates on static text trajectories, not real-world interaction loops. Recent benchmarks like ARC-AGI suggest RL-augmented models can improve systematic generalization—but only up to a point, and often without transparent internal mechanisms.\n\nMechanistically, self-attention enables transformers to implement dynamic token selection and implicit reasoning over context windows, as shown in analyses of attention-based priority filtering. However, this does not equate to building persistent internal models of agents, environments, or causality. RL integration remains shallow: rewards are typically derived from human preferences or synthetic signals, not autonomous environmental feedback. Crucially, no formal proof exists that next-token prediction—even with infinite data and compute—induces universal computation or recursive self-improvement, both considered prerequisites for open-ended intelligence.\n\nThis isn’t skepticism about progress—it’s a call for theoretical rigor. If AGI emerges from current paradigms, we need to understand *how*, not just *that*. Identifying the precise computational inductive biases, representational capacities, and learning dynamics that could bridge narrow prediction to general reasoning is essential for alignment, safety, and efficient R&D. Without such grounding, deployment decisions risk being guided by intuition rather than mechanism."
+      },
+      "background": {
+        "zh": "下一个词预测是Transformer类语言模型的核心预训练目标，模型通过海量文本学习统计规律。强化学习则常用于后续微调阶段，借助奖励模型与PPO等算法，使模型输出更符合人类偏好或特定任务目标。开放式通用智能指系统能自主习得新技能、构建因果性世界模型，并在无固定任务边界条件下递归优化自身认知能力。",
+        "en": "Next-token prediction is the core pretraining objective for transformer-based language models, where models learn statistical regularities in massive text corpora. Reinforcement learning is later applied during fine-tuning to align outputs with human preferences or task-specific goals, often using reward models and algorithms like PPO. Open-ended general intelligence refers to systems capable of autonomously acquiring new skills, forming causal world models, and recursively improving their own cognition without fixed task boundaries."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://sota.engin.umich.edu/wp-content/uploads/sites/85/2024/03/Next_Token_Prediction.pdf",
+          "title": "Mechanics of Next Token Prediction with Self-Attention"
+        },
+        {
+          "url": "https://proceedings.mlr.press/v238/li24f.html",
+          "title": "Mechanics of Next Token Prediction with Self-Attention - PMLR"
+        },
+        {
+          "url": "https://par.nsf.gov/servlets/purl/10494690",
+          "title": "Mechanics of Next Token Prediction with Self-Attention"
+        },
+        {
+          "url": "https://twit.tv/posts/tech/how-reflection-ai-building-smarter-machines-reinforcement-learning-and-future-agi",
+          "title": "How Reflection AI Is Building Smarter Machines: Reinforcement ..."
+        },
+        {
+          "url": "https://huggingface.co/papers/2311.18232",
+          "title": "Paper page - LMRL Gym: Benchmarks for Multi-Turn Reinforcement ..."
+        },
+        {
+          "url": "https://python.plainenglish.io/the-role-of-reinforcement-learning-in-fine-tuning-language-models-f0b8ab741f3b",
+          "title": "The Role of Reinforcement Learning in Fine-Tuning Language Models"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1x49d61",
+      "slug": "2026-10-13-06-looped-diffusion-transformer-reuses-transformer-blocks-per-denoising-step-e778d06b",
+      "path": "/article/2026-10-13-06-looped-diffusion-transformer-reuses-transformer-blocks-per-denoising-step-e778d06b",
+      "rank": 6,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/Fit-Ant2238",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1x49d61/looped_diffusion_transformer_the_same_blocks_run/",
+      "published_at": "2026-10-12T18:13:49+00:00",
+      "fetched_at": "2026-10-13T07:40:21.142593+00:00",
+      "tags": [
+        "diffusion-models",
+        "transformer-architecture",
+        "efficient-ai",
+        "generative-models",
+        "model-compression"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1x49d61.svg",
+      "title": {
+        "zh": "循环扩散变换器：每个去噪步内复用同一组Transformer模块",
+        "en": "Looped Diffusion Transformer reuses transformer blocks per denoising step"
+      },
+      "summary": {
+        "zh": "循环扩散变换器（arXiv 2609.40305，2026年9月30日发布）在每个去噪步骤内循环复用共享Transformer模块，并通过深度监督与自调制注意力机制稳定训练；循环深度可在采样时自由调整，无需重新训练。 它支持在运行时精细调控图像质量与推理延迟之间的平衡，让高保真文生图在资源受限设备上更易部署，并为算力感知型生成模型设计树立了新范式。 2.6亿参数的Looped-DiT以不到基线模型1/4.9的推理计算量，超越17亿参数基线；在多个提示词测试中，循环深度3与4生成图像质量几乎无差别；官方代码与权重采用MIT协议，已开源至GitHub与Hugging Face。",
+        "en": "The Looped Diffusion Transformer (arXiv 2609.40305, 30 Sep 2026) introduces intra-step looping of shared transformer blocks, stabilized by deep supervision and self-modulating attention, enabling variable loop depth at sampling time without retraining. It enables fine-grained, runtime tradeoffs between image quality and inference latency—making high-fidelity text-to-image generation more accessible on resource-constrained devices—and establishes a new paradigm for compute-aware generative model design. The 260M Looped-DiT beats a 1.7B-parameter baseline with 4.9× less inference compute; loop depth 3–4 yields near-identical visual quality on tested prompts; official code and weights are MIT-licensed and publicly available on GitHub and Hugging Face."
+      },
+      "body": {
+        "zh": "一种名为“循环扩散变换器”（Looped-DiT）的新型文本生成图像模型架构，正在挑战“模型越大效果越好”的传统思路。它不靠堆叠参数，而是在每个去噪步骤内部多次复用同一组Transformer模块，使模型在推理时逻辑上更深，但参数量不变。这种“循环”并非简单重复：早期尝试因中间特征更新不稳定而失败；作者通过两项关键技术解决了该问题——对每次循环内部都施加深度监督，以及引入自调制注意力机制，后者能根据中间特征动态调整注意力权重，从而保障稳定性和表达能力。\n\n该论文（arXiv 2609.40305，2026年9月30日发布）报告了显著的效率提升：一个仅2.6亿参数的Looped-DiT，在FID、CLIP分数和人类偏好等标准评测中，超越了一个参数量大6.5倍的非循环基线模型，同时推理计算量仅为其1/4.9。尤为关键的是，“循环深度”（即每步内复用模块的次数）可在采样时自由设定，就像调节总去噪步数一样灵活。这意味着用户可按需权衡生成速度与图像质量：在Apple M5 Pro上，单图生成耗时约23秒（深度1）升至约45秒（深度4），且质量提升在深度3后趋于饱和。\n\n该模型开源实现（MIT协议，由OpenSenseNova托管于GitHub与Hugging Face）支持即刻验证。一位Reddit用户使用PyTorch MPS后端在本地运行测试：固定100步欧拉采样、CFG=6.0，并对五个不同提示词生成图像——结果证实，从深度1到3视觉质量跃升明显，而深度3与4的结果几乎一致。模型虽在深度4下训练，却无需微调即可无缝适配其他深度，体现出架构设计的强泛化性。\n\nLooped-DiT真正突破之处，在于为生成模型开辟了一条新设计维度：“每步计算深度”。不同于传统模型训练即固化深度，它将模型能力与推理预算解耦，支持跨设备自适应部署——从手机芯片到数据中心GPU皆可受益。这一思路也呼应了高效AI领域的趋势，如RWKV、Mamba等循环深度语言模型，预示着生成式AI正迈向更动态、更算力感知的架构范式。",
+        "en": "A new architectural approach to text-to-image diffusion models—called the Looped Diffusion Transformer (Looped-DiT)—challenges the conventional wisdom that bigger models always yield better results. Instead of scaling up parameter count, Looped-DiT runs a shared set of transformer blocks multiple times *within each denoising step*, effectively making the model deeper at inference time without increasing its size. This looping is not trivial: early attempts failed due to unstable feature updates, but the authors solved this with two key innovations—deep supervision applied at every internal loop iteration, and self-modulating attention, which dynamically adjusts attention weights based on intermediate features to maintain stability and expressivity.\n\nThe paper (arXiv 2609.40305, released 30 September 2026) reports striking efficiency gains: a 260-million-parameter Looped-DiT outperforms a non-looped model 6.5× larger on standard image generation benchmarks—including FID, CLIP score, and human preference metrics—while using only 4.9× less inference compute. Crucially, loop depth—the number of times the shared blocks are reused per step—is fully configurable *at sampling time*, just like adjusting the number of denoising steps. This means users can trade off latency for quality on the fly: on an Apple M5 Pro, generating one image took ~23 seconds at loop depth 1 and ~45 seconds at depth 4, with diminishing returns beyond depth 3.\n\nThe open implementation (MIT-licensed, hosted on GitHub and Hugging Face by OpenSenseNova) enables immediate experimentation. A Reddit user tested it locally using PyTorch MPS backend, fixed Euler sampling (100 steps, CFG=6.0), and five diverse prompts—confirming visual quality improves sharply from depth 1 to 3, then plateaus between depths 3 and 4. The model was trained at depth 4, yet generalizes seamlessly to other depths without retraining—a strong sign of architectural robustness.\n\nBeyond raw speed or size, Looped-DiT introduces a new design axis for generative models: *computational depth per step*. Unlike traditional models where depth is fixed at training time, Looped-DiT decouples model capacity from inference budget, enabling adaptive deployment across devices—from mobile chips to datacenter GPUs. It also echoes trends in efficient AI, such as recurrent-depth language models (e.g., RWKV, Mamba), suggesting a broader shift toward dynamic, compute-aware architectures in generative modeling."
+      },
+      "background": {
+        "zh": "扩散变换器（DiT）用视觉-语言Transformer替代文生图模型中的U-Net主干，虽具扩展性，但常伴随高昂参数与计算开销。‘循环’（前向传播中复用层）在循环神经网络中常见，但在扩散模型中因训练不稳定而罕见；深度监督则是在中间层添加辅助损失信号，以改善梯度流动与收敛性。",
+        "en": "Diffusion transformers (DiTs) replace U-Net backbones in text-to-image models with vision-language transformer architectures, offering scalability but often at high parameter and compute cost. Looping—reusing layers within a forward pass—is common in recurrent models but rare in diffusion due to instability; deep supervision adds auxiliary loss signals at intermediate layers to improve gradient flow and convergence."
+      },
+      "discussion": {
+        "zh": "Reddit用户在消费级硬件上成功复现了不同循环深度下的质量提升，指出深度3后收益递减，并围绕‘循环深度’与‘总采样步数’的权衡展开技术讨论，凸显Looped-DiT在实际部署中的实用灵活性。",
+        "en": "Reddit users confirmed reproducible quality gains across loop depths on consumer hardware, noted diminishing returns after depth 3, and engaged in technical discussion about tradeoffs between loop depth and total sampling steps—highlighting Looped-DiT’s practical flexibility for real-world deployment."
+      },
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2609.40305",
+          "title": "[2609.40305] Looped Diffusion Transformer - arXiv.org"
+        },
+        {
+          "url": "https://github.com/OpenSenseNova/Looped-DiT",
+          "title": "Looped-DiT: Looped Diffusion Transformer - GitHub"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1x44f9m",
+      "slug": "2026-10-13-07-u-lens-enables-single-pass-label-free-uncertainty-diagnosis-in-reasoning-lms-ca2dbe5e",
+      "path": "/article/2026-10-13-07-u-lens-enables-single-pass-label-free-uncertainty-diagnosis-in-reasoning-lms-ca2dbe5e",
+      "rank": 7,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/AdRevolutionary3242",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1x44f9m/uspace_uncovering_when_and_why_uncertainty_arises/",
+      "published_at": "2026-10-12T15:10:34+00:00",
+      "fetched_at": "2026-10-13T07:40:21.142825+00:00",
+      "tags": [
+        "uncertainty quantification",
+        "interpretability",
+        "language models",
+        "reasoning",
+        "model diagnostics"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1x44f9m.svg",
+      "title": {
+        "zh": "U-Lens实现语言模型单次前向推理的无标签不确定性诊断",
+        "en": "U-Lens enables single-pass, label-free uncertainty diagnosis in reasoning LMs"
+      },
+      "summary": {
+        "zh": "U-Space项目推出U-Lens方法，仅需一次前向推理和Jacobian lens，即可在无需标注、无需训练的前提下，量化并分类语言模型推理过程中的四类不确定性：歧义、信息缺失、证据冲突和一般性不确定。 U-Lens大幅降低了可信语言模型落地的门槛，使实时、可解释的不确定性监控成为可能，且不增加延迟或数据依赖，因而适用于安全关键场景、RAG系统及人机协同流程。 U-Lens需预拟合的Jacobian lens（Hugging Face已提供40余种模型版本）；对未支持模型，仅需约100条无标签提示即可拟合新lens，且无需参数更新；推理开销极小——仅一次向量点积加熵均值计算。",
+        "en": "U-Space introduces U-Lens, a label-free, single-forward-pass method that quantifies and classifies four types of uncertainty (ambiguity, missing info, conflicting evidence, general uncertainty) in reasoning LMs using only a Jacobian lens and token entropy. U-Lens lowers the barrier to trustworthy LM deployment by enabling real-time, interpretable uncertainty monitoring without added latency or data dependencies—making it practical for safety-critical, RAG, and human-in-the-loop systems. U-Lens requires a pre-fitted Jacobian lens (available for >40 models on Hugging Face); for unsupported models, fitting a new lens takes ~100 unlabeled prompts and only backward passes; inference adds negligible overhead—just one vector dot product and entropy averaging."
+      },
+      "body": {
+        "zh": "在将Qwen3.5或Gemma 4等专注推理的语言模型部署到实际应用中时，开发者常需判断模型对其答案的“确信程度”。但现有方法成本高昂：需多次前向采样（如5–10次）、依赖外部评判模型，或需基于正确性标签进行监督微调。U-Space项目推出的U-Lens框架，首次实现了仅需一次前向推理、无需标注、无需训练、无需重采样的不确定性诊断。\n\nU-Lens的核心是将推理结束时的最后一层隐藏状态，投影到一个低维“U-Space”中的四个预计算方向上。这四个方向分别对应四类可解释的不确定性：歧义（如表述模糊）、信息缺失（如事实不足）、证据冲突（如前提矛盾）和一般性不确定（整体低置信推理）。最终得分由该投影强度乘以推理过程中各token的平均熵构成——而这两项均已在标准推理中自然产生。\n\n关键在于，U-Lens依赖Anthropic提出的Jacobian lens（J-Lens），这是一种线性探针，能将任一中间激活映射为其对最终输出词汇的可表达影响。幸运的是，Hugging Face已公开发布40余个预拟合J-Lens，覆盖Gemma 2/3/4、Qwen3.5、Llama 3.1/3.3及Magistral等主流模型。若目标模型暂未支持，仅需约100条无标签提示即可拟合新J-Lens——全程无需参数更新，开销主要来自反向传播。获得J-Lens后，构建四向量U-Space仅需CPU计算与数百行词嵌入矩阵。\n\n在Gemma 4、Qwen3.5和Magistral三款模型及TriviaQA等四大基准上的评估表明，U-Lens持续优于5次/10次采样基线及各类监督式不确定性估计器。其轻量、高速与可解释性，使其特别适合生产场景：例如将低置信答案路由至更大模型或人工审核；当‘信息缺失’信号激活时自动触发检索；在‘歧义’高亮时发起澄清提问；或在RAG流程中标记‘证据冲突’。尽管当前仍为研究代码（尚未打包为pip库），作者已提供开箱即用的冒烟测试脚本，并欢迎社区集成与协作。",
+        "en": "When deploying reasoning-focused language models—like Qwen3.5 or Gemma 4—in real-world applications, developers often need to know *how confident the model is* in its answer. But existing methods are costly: multi-step sampling (e.g., 5–10 forward passes), external judge models, or supervised fine-tuning on labeled correctness data. U-Space introduces U-Lens, a lightweight, interpretable framework that delivers uncertainty signals in just one forward pass—no labels, no training, no resampling.\n\nU-Lens works by projecting the final-layer hidden state (at end-of-thought) onto four precomputed, human-interpretable directions in a low-dimensional ‘U-Space’. These directions correspond to distinct uncertainty types: ambiguity (e.g., vague phrasing), missing information (e.g., insufficient facts), conflicting evidence (e.g., contradictory premises), and general uncertainty (low-confidence reasoning). The score combines this directional alignment with mean token entropy across reasoning tokens—both quantities already computed during standard inference.\n\nCrucially, U-Lens relies on a Jacobian lens (J-Lens), a linear probe introduced by Anthropic that maps internal activations to their downstream verbalizable effects. Fortunately, over 40 pre-fitted J-Lenses—including for Gemma 2/3/4, Qwen3.5, Llama 3.1/3.3, and Magistral—are publicly available on Hugging Face. For unsupported models, fitting a new J-Lens takes ~100 unlabeled prompts and only backward passes—no parameter updates. Once the J-Lens is in hand, building the 4-vector U-Space basis requires only CPU computation and a few hundred unembedding rows.\n\nIn evaluations across three models (Gemma 4, Qwen3.5, Magistral) and four benchmarks—including TriviaQA—the U-Lens consistently outperformed multi-pass baselines (5- and 10-pass) and supervised uncertainty estimators. Its simplicity, speed, and interpretability make it especially valuable for production pipelines: routing low-confidence answers to larger models or humans, triggering retrieval when ‘missing info’ activates, prompting clarifying questions upon ‘ambiguity’, or flagging contradictions in RAG systems. While still research code—not yet a pip-installable library—the authors provide a ready-to-run smoke test and welcome integration help."
+      },
+      "background": {
+        "zh": "不确定性量化有助于用户评估模型可靠性，尤其在思维链推理任务中，看似连贯的输出可能掩盖深层缺陷。Jacobian lens由Anthropic提出，是一种线性探针，可将模型内部神经激活映射至其对最终词元预测的影响，从而实现无需微调的可解释读出。U-Space在此基础上，于该读出空间中识别出四个具有人类可理解意义的不确定性子空间。",
+        "en": "Uncertainty quantification helps users assess model reliability, especially in reasoning tasks where chain-of-thought outputs can hide hidden flaws. Jacobian lenses, introduced by Anthropic, are linear probes that map internal neural activations to their downstream influence on final token predictions—enabling interpretable readouts without fine-tuning. U-Space builds on this by identifying four human-meaningful uncertainty subspaces within that readout space."
+      },
+      "discussion": {
+        "zh": "Reddit讨论呈现高度技术参与：高赞数、大量关于U-Lens与Jacobian lens工具链集成的追问，以及对跨模型泛化能力的关注，反映出社区认可度高且具备早期落地潜力。",
+        "en": "Reddit discussion shows strong technical engagement: high upvotes, follow-up questions about integrating U-Lens with Jacobian lens tooling, and interest in cross-model generalizability—indicating community validation and early adoption potential."
+      },
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2607.10604",
+          "title": "[2607.10604] U-Lens: Supporting User Uncertainty Management ..."
+        },
+        {
+          "url": "https://github.com/anthropics/jacobian-lens",
+          "title": "GitHub - anthropics/jacobian-lens: Companion code for the ..."
+        },
+        {
+          "url": "https://cctest.ai/en/articles/u-space-makes-language-model-uncertainty-more-interpretable",
+          "title": "U-Space: Interpreting Uncertainty in Language Models - CCTest"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1x4dlbm",
+      "slug": "2026-10-13-08-learnc-tunes-c-constants-automatically-for-better-jpeg-and-webrtc-vad-0fef3cfa",
+      "path": "/article/2026-10-13-08-learnc-tunes-c-constants-automatically-for-better-jpeg-and-webrtc-vad-0fef3cfa",
+      "rank": 8,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/keep_up_sharma",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1x4dlbm/learnc_fit_the_constants_in_existing_c_code_to/",
+      "published_at": "2026-10-12T20:51:32+00:00",
+      "fetched_at": "2026-10-13T07:40:21.142886+00:00",
+      "tags": [
+        "machine-learning",
+        "systems-programming",
+        "optimization",
+        "c-language",
+        "compression"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1x4dlbm.svg",
+      "title": {
+        "zh": "learnc自动调优C代码常量，提升JPEG压缩与WebRTC语音检测",
+        "en": "learnc tunes C constants automatically for better JPEG and WebRTC VAD"
+      },
+      "summary": {
+        "zh": "新开源工具 learnc 利用无梯度优化算法，自动调优未经修改的 C 源文件中命名常量；在 JPEG 量化表和 WebRTC 语音活动检测中分别实现 9.1% BD-rate 提升与 +4.9 的 F1 绝对增益。 这使得关键底层系统能以严格、可解释且生产安全的方式完成优化——无需机器学习专业知识、无需模型重训练、亦不破坏 ABI 兼容性，可直接应用于嵌入式、实时及安全关键型 C 项目。 learnc 最适合优化数十至数百个命名常量；无法处理宏展开生成或运行时计算的值；JPEG 场景下低于 1 bpp 时增益减弱。所有优化均在独立测试集上验证，并支持第三方复现。",
+        "en": "learnc, a new MIT-licensed tool, automatically optimizes named constants in unmodified C source files using gradient-free optimization against a user-defined C scoring function—demonstrated with 9.1% BD-rate improvement in JPEG quantization and +4.9 F1 points in WebRTC VAD. This enables rigorous, interpretable, and production-safe optimization of critical low-level systems—without requiring ML expertise, model retraining, or breaking ABI compatibility—making it immediately applicable to embedded, real-time, and safety-critical C codebases. learnc works best on tens to hundreds of named constants; it cannot optimize macro-generated or runtime-computed values, and delivers diminishing returns below 1 bpp in JPEG. All optimizations are verified on held-out data and independently reproducible."
+      },
+      "body": {
+        "zh": "一款名为 learnc 的新开源工具，在机器学习与底层系统编程之间架起桥梁：它能自动优化未经修改的生产级 C 代码中命名常量的取值。不同于神经网络权重训练或编译器自动向量化，learnc 完全工作在源码层面——用户只需编写一个用 C 写的评分函数（例如衡量压缩率或分类准确率），learnc 就会通过无梯度优化算法搜索更优的常量值。最终输出仍是同一份 C 文件，仅数字字面量被更新，不重构逻辑、不重写函数、不引入新依赖。\n\n该技术在人类手工调优已趋瓶颈的领域大放异彩。在 JPEG 压缩方面，learnc 使用仅 12 张 Kodak 图像作为训练数据，重新优化了 stb_image_write.h 中的 128 项量化表。在其余 12 张独立测试图像上，优化后的量化表在相同 SSIM 主观质量下，BD-rate（标准编码效率对比指标）降低 9.1%。作为对照，mozjpeg 手工调优的量化表仅带来 2.7% 提升。更重要的是，这一增益经 libjpeg 和 scikit-image 独立复现验证，确认其可在真实环境中复用。\n\n在语音活动检测（VAD）任务中，learnc 对 Google WebRTC 的 vad_core.c 中所有命名常量进行联合调优。在 LibriParty 开发集上训练后，其在官方评估集上的 F1 分数从 0.810 提升至 0.859——绝对提升达 4.9 分。这并非微小改进：其幅度堪比算法架构级重构带来的收益。且因 learnc 仅修改常量而非逻辑，原始 C 代码的安全性、实时性、嵌入式兼容性等关键特性全部得以保留。\n\nlearnc 的设计刻意聚焦：它适用于数十至数百个语义清晰、命名规范的常量，而非百万级神经权重。它不解析宏展开、不处理运行时计算的值、也不改写控制流。它的真正优势在于可解释性与工程友好性——工程师可逐行审查每一处变更、提交至版本控制系统，并准确评估影响。该项目采用 MIT 许可证开源，目前已在音频编解码器、嵌入式数字信号滤波器及实时信号处理流水线中被初步探索应用。",
+        "en": "A new open-source tool called learnc bridges machine learning and low-level systems programming by automatically optimizing named constants in unmodified, production-grade C code. Unlike neural network weight tuning or compiler auto-vectorization, learnc works entirely at the source level: users write a simple C function that scores performance—say, compression ratio or classification accuracy—and learnc searches for better constant values using gradient-free optimization. The result? A revised version of the same C file, with only numeric literals changed—no restructuring, no rewriting, no new dependencies.\n\nThe technique shines where human tuning has long plateaued. In JPEG compression, learnc retuned the 128-entry quantization table in stb_image_write.h using just 12 Kodak images as training data. When tested on the remaining 12 held-out images, the tuned tables achieved a 9.1% BD-rate reduction at equal SSIM quality—a widely accepted metric for perceptual efficiency. For comparison, mozjpeg’s hand-optimized tables delivered only 2.7%. Crucially, this gain was independently verified using libjpeg and scikit-image, confirming real-world interoperability.\n\nIn voice activity detection (VAD), learnc improved Google’s WebRTC VAD implementation by tuning every named constant in vad_core.c. Trained on the LibriParty dev set, the optimized version lifted F1 score from 0.810 to 0.859 on the official LibriParty eval set—a +4.9-point absolute gain. That’s not incremental: it matches or exceeds improvements typically seen from major algorithmic overhauls. And because learnc modifies only constants—not logic—it preserves all safety guarantees, timing behavior, and embedded compatibility of the original C code.\n\nlearnc is deliberately narrow in scope: it targets tens to hundreds of well-named, semantically meaningful constants—not millions of neural weights. It does not parse expressions or rewrite control flow, nor does it handle constants buried in macros or computed at runtime. Its strength lies in interpretability and integration: engineers can inspect every change, commit it to version control, and reason about its impact. Released under the MIT license, the tool is already being explored for audio codecs, embedded DSP filters, and real-time signal processing pipelines where C remains the lingua franca."
+      },
+      "background": {
+        "zh": "BD-rate（Bjontegaard 增量码率）是衡量同等主观画质下压缩效率的标准指标，通常结合 SSIM 或 PSNR 使用。WebRTC VAD 是一种轻量、实时的语音活动检测器，广泛用于 VoIP 和音视频会议系统。无梯度优化指不依赖导数的搜索方法，适用于目标函数不可导、含噪声或计算代价高的场景——恰适合 C 代码调优这类无法获取梯度的问题。",
+        "en": "BD-rate (Bjontegaard delta rate) is the standard metric for comparing compression efficiency at equal perceptual quality, commonly reported using SSIM or PSNR. WebRTC VAD is a lightweight, real-time voice activity detector widely used in VoIP and conferencing systems. Gradient-free optimization refers to derivative-free search methods suitable when objective functions are non-differentiable, noisy, or expensive to evaluate—ideal for tuning C code where gradients are unavailable."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://www.mpegflow.com/topics/quality/bd-rate-calculation",
+          "title": "BD-rate calculation — how to compare codecs and encoder ..."
+        },
+        {
+          "url": "https://github.com/wiseman/py-webrtcvad",
+          "title": "GitHub - wiseman/py-webrtcvad: Python interface to the WebRTC ..."
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Gradient-free_optimization",
+          "title": "Gradient-free optimization"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1x3vr5g",
+      "slug": "2026-10-13-09-neurips-paris-pre-event-launches-workshop-on-physics-constrained-ml-models-3080053e",
+      "path": "/article/2026-10-13-09-neurips-paris-pre-event-launches-workshop-on-physics-constrained-ml-models-3080053e",
+      "rank": 9,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/cici118",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1x3vr5g/constrained_learning_for_scientific_modelling/",
+      "published_at": "2026-10-12T07:46:00+00:00",
+      "fetched_at": "2026-10-13T07:40:21.142987+00:00",
+      "tags": [
+        "physics-informed-machine-learning",
+        "scientific-machine-learning",
+        "constraints",
+        "NeurIPS",
+        "dynamical-systems"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1x3vr5g.svg",
+      "title": {
+        "zh": "NeurIPS巴黎会前研讨会聚焦物理约束机器学习",
+        "en": "NeurIPS Paris pre-event launches workshop on physics-constrained ML models"
+      },
+      "summary": {
+        "zh": "NeurIPS巴黎会前研讨会CL4SM已开放投稿，征集关于物理约束机器学习方法的两页简报，截稿日期为2026年10月30日，会议将于2026年12月8日举行。 该研讨会直面科学可信AI的关键短板：确保机器学习模型真正遵守物理定律，这对气候模拟、工程设计等领域的可靠仿真、安全决策与监管认可至关重要。 投稿为非存档性质，采用PMLR模板，限两页PDF，实行单盲评审；录用内容涵盖进行中的研究、近期顶会顶刊论文，以及教程、开源库等教学资源。",
+        "en": "The CL4SM workshop — a NeurIPS Paris pre-event — has opened its call for 2-page submissions on physics-constrained ML methods, with a deadline of October 30, 2026, and will be held on December 8, 2026. This workshop addresses a critical gap in trustworthy AI for science: ensuring ML models respect physical laws, which is essential for reliable simulation, safety-critical decision-making, and regulatory acceptance in domains like climate science and engineering. Submissions are non-archival, two-page PDFs using the PMLR template, reviewed single-blind; accepted works include ongoing research, recently published papers, and educational resources like tutorials and open-source libraries."
+      },
+      "body": {
+        "zh": "名为“科学建模中的约束学习”（CL4SM）的专题研讨会将于2026年12月8日在巴黎会议宫举行，作为NeurIPS 2026主会前的ELLI非正式会议（UnConference）组成部分。该研讨会面向研究人员征集能严格遵循物理基本原理的机器学习方法，包括质量与能量守恒、对称性不变性、热力学一致性、系统稳定性以及边界条件满足性等。这一征稿直指科学人工智能中的一个核心痛点：许多模型虽能拟合观测数据，却输出违背物理常识的结果，例如负浓度、无界发散或自发产生/湮灭能量。\n\n研讨会明确覆盖从理论到应用的多种技术路径。既欢迎软约束方法（如损失函数中加入惩罚项或增广项），也鼓励硬约束实现方式，例如基于微分方程结构或几何性质设计的神经网络架构。此外，可微优化层、投影校正机制、以及能表达物理一致不确定性的概率建模框架也在议题范围内。应用场景涵盖气候模拟、流体力学、能源系统和工业工程等领域——在这些领域，模型的可信度直接关系到安全决策、政策制定与工程设计。\n\n投稿分为三类：正在进行的研究（含初步构想与失败经验）、近期发表于JMLR、NeurIPS、ICML、IEEE TPAMI等顶级期刊/会议的论文（需注明原始出处并上传PDF），以及教学资源（如教程、开源库、基准数据集）。所有稿件限两页，须使用PMLR模板，经程序委员会单盲评审。值得注意的是，本次研讨会为非存档性质，录用成果仍可自由投稿至其他正式出版渠道。\n\n这一倡议标志着科学机器学习正步入成熟阶段。当物理信息驱动的AI从PINN等概念验证走向高保真仿真工具时，“约束嵌入”已不再是可选项，而是建模的基石。CL4SM不仅征集技术改进，更呼吁重新思考ML模块如何与控制方程、对称性及领域先验知识深度协同。对于正在构建核聚变控制、大气化学等高风险系统代理模型的研究者而言，这既是一次紧迫提醒，也是一次关键机遇。",
+        "en": "A dedicated workshop titled 'Constrained Learning for Scientific Modelling' (CL4SM) will take place on December 8, 2026, at the Palais des Congrès de Paris — just before the main NeurIPS 2026 conference. Organized as part of the ELLIs UnConference, CL4SM invites researchers to submit work that ensures machine learning models obey fundamental physical principles: conservation of mass and energy, symmetry invariance, thermodynamic consistency, stability, and adherence to boundary conditions. The call highlights a growing pain point in scientific AI — models that fit observational data well but produce physically nonsensical outputs, such as negative concentrations or unbounded drift in dynamical simulations.\n\nThe workshop explicitly bridges theory and practice across multiple technical approaches. It welcomes contributions on soft constraint methods — like penalty terms or augmented loss functions — as well as hard enforcement strategies, including structure-preserving neural network architectures designed from first principles. Also in scope are differentiable optimization layers, projection-based correction mechanisms, and probabilistic frameworks that encode physical uncertainty in a scientifically coherent way. Topics span applications in climate modeling, fluid dynamics, energy systems, and industrial engineering — domains where model trustworthiness directly impacts safety, policy, and design decisions.\n\nSubmissions fall into three categories: ongoing research (including early-stage ideas and negative results), recently published papers from top venues like NeurIPS, ICML, JMLR, or IEEE TPAMI, and educational resources such as tutorials, open-source libraries, and benchmark datasets. All submissions are limited to two pages using the PMLR template and undergo single-blind review by the program committee. Crucially, the session is non-archival — meaning accepted work retains full publication rights elsewhere.\n\nThis initiative reflects a maturing phase in scientific machine learning. As physics-informed ML moves beyond proof-of-concept PINNs toward production-grade simulation tools, rigorous constraint integration is no longer optional — it’s foundational. CL4SM doesn’t just solicit incremental improvements; it calls for rethinking how ML layers interact with governing equations, symmetries, and domain-specific guarantees. For practitioners building surrogate models for high-stakes systems — from nuclear fusion control to atmospheric chemistry — this workshop signals both urgency and opportunity."
+      },
+      "background": {
+        "zh": "物理信息机器学习（PIML）将已知物理定律（如偏微分方程或守恒律）融入模型设计与训练过程。结构保持型神经网络是专门设计以天然满足辛性、体积保持等数学性质的架构。可微优化层则将带约束的优化问题作为可训练模块嵌入深度学习流程。",
+        "en": "Physics-informed machine learning (PIML) integrates known physical laws — such as partial differential equations or conservation principles — into ML model design and training. Structure-preserving neural networks are architectures engineered to inherently satisfy mathematical properties like symplecticity or volume preservation. Differentiable optimization layers embed constrained optimization problems as trainable components within deep learning pipelines."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://www.nature.com/articles/s42254-021-00314-5",
+          "title": "Physics-informed machine learning - Nature Reviews Physics (PDF) Physics-informed machine learning - ResearchGate What Is Physics-Informed Machine Learning? » Artificial ... Physics-informed Machine Learning - PNNL Physics-Informed Machine Learning - Nature Physics-informed machine learning: A comprehensive review on ... Physics-Informed Machine Learning - MATLAB & Simulink"
+        },
+        {
+          "url": "https://juliagni.github.io/GeometricMachineLearning.jl/latest/structure_preservation/structure_preserving_neural_networks/",
+          "title": "Structure - Preserving Neural Networks · GeometricMachineLearning.jl"
+        },
+        {
+          "url": "https://implicit-layers-tutorial.org/differentiable_optimization/",
+          "title": "Chapter 5: Differentiable optimization"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50056822",
+      "slug": "2026-10-13-10-balcony-plug-in-solar-panels-now-code-compliant-in-europe-89fe4f80",
+      "path": "/article/2026-10-13-10-balcony-plug-in-solar-panels-now-code-compliant-in-europe-89fe4f80",
+      "rank": 10,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "speckx",
+      "url": "https://www.nationalgeographic.com/environment/article/balcony-plug-in-solar-panels-renewable-energy",
+      "published_at": "2026-10-12T14:19:04+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012677+00:00",
+      "tags": [
+        "renewable-energy",
+        "solar-power",
+        "grid-integration",
+        "urban-sustainability",
+        "distributed-generation"
+      ],
+      "image_path": "media/hackernews-story-50056822.jpg",
+      "title": {
+        "zh": "欧洲已批准阳台即插即用太阳能板合法并网",
+        "en": "Balcony plug-in solar panels now code-compliant in Europe"
+      },
+      "summary": {
+        "zh": "符合欧洲电网安全标准、额定功率800瓦的阳台即插即用太阳能板已在德国等多个欧盟国家实现规模化部署并获法规认可。 该模式大幅降低了租户和城市居民采用太阳能的门槛，无需屋顶权限、电网审批或大规模施工，即可加速分布式发电落地。 系统采用防孤岛微型逆变器，实时同步电网频率；须遵守严格功率限制（如德国≤800瓦，加州SB 868允许≤1200瓦）；但在北美，电弧故障断路器（AFCI）干扰与分相不平衡仍是主要技术挑战。",
+        "en": "Balcony-mounted plug-in solar panels—certified to European grid-safety standards and limited to 800W—are now widely deployed and code-compliant across multiple EU countries, including Germany. This model dramatically lowers barriers to solar adoption for renters and urban dwellers, accelerating distributed generation without requiring roof access, utility approvals, or major installation work. Systems use anti-islanding microinverters synchronized to grid frequency and must comply with strict output limits (e.g., ≤800W in Germany, ≤1,200W under California SB 868); AFCI interference and split-phase imbalance remain key technical challenges in North America."
+      },
+      "body": {
+        "zh": "想象一下：你站在公寓阳台上，把一块轻便的太阳能板插入普通墙壁插座，立刻开始抵消部分电费——无需屋顶权限、无需施工许可、也无需电工上门。这已不再是科幻场景：在德国等欧洲国家，阳台即插即用太阳能系统正快速普及，已有数万套安装在出租公寓和高层住宅中。这类紧凑型系统通常由一至三块光伏板加一个经认证的微型逆变器组成，直接接入230伏家用插座，最大输出功率达800瓦，所发电量汇入家庭内部线路。\n\n与传统屋顶光伏不同，它绕开了结构评估、电网并网协议和长达数月的审批流程。关键在于，它并非游走于监管边缘的DIY方案：欧洲标准（如VDE-AR-N 4105和DIN VDE 0100-551）强制要求多重安全机制。逆变器持续同步电网电压与频率；一旦检测到电网断电，立即切断输出，杜绝“孤岛效应”带来的安全隐患。系统还严格限制输出功率以防线路过载，并普遍配备自动防孤岛检测功能，达到公用事业级可靠性。\n\n但实际应用中仍存在细微却重要的限制。在美国新建住宅中，按国家电气规范（NEC）强制安装的电弧故障断路器（AFCI）可能将逆变器的高频开关波形误判为电弧故障，导致频繁跳闸。有用户反馈需更换为普通断路器，但这可能违反当地法规。另一个技术细节涉及北美常见的分相120/240伏系统：因多数插座仅提供单条120伏相线，太阳能输入仅作用于配电箱一半回路，可能造成负载不平衡或干扰双向电表计量。\n\n尽管如此，即插即用太阳能标志着能源民主化的重要一步——尤其惠及城市租户、合作公寓住户等长期被排除在光伏拥有权之外的人群。随着加州依据SB 868法案将1200瓦以下系统合法化，以及欧盟成员国推进统一认证框架，这项技术正从应急替代方案转向主流选择。它的真正价值不在于取代大型可再生能源项目，而在于扩大参与：让被动电力消费者，成为主动的本地化生产者。",
+        "en": "Imagine stepping onto your apartment balcony, plugging a lightweight solar panel into a standard wall outlet, and instantly offsetting part of your electricity bill—no roof access, no permits, no electrician required. That’s no longer science fiction: balcony-mounted plug-in solar systems are gaining rapid traction across Europe, especially in Germany, where tens of thousands of units are already installed in rental apartments and high-rises. These compact systems—typically one to three panels paired with a certified microinverter—plug directly into a 230V household socket and feed up to 800 watts of clean power into the home’s internal wiring.\n\nUnlike traditional rooftop solar, which requires structural assessments, grid interconnection agreements, and often months of permitting, plug-in balcony solar bypasses most bureaucratic hurdles. Crucially, it’s not a DIY loophole: European standards (like VDE-AR-N 4105 and DIN VDE 0100-551) mandate built-in safety features. The inverters continuously synchronize with the grid’s voltage and frequency—and instantly shut down if the grid goes offline, preventing dangerous 'islanding' during outages. They also limit output to avoid overloading circuits, and many include automatic anti-islanding detection that meets utility-grade reliability.\n\nStill, real-world deployment reveals subtle but important constraints. In newer US buildings, arc-fault circuit interrupters (AFCIs)—now required by the National Electrical Code for living areas—can misinterpret the inverter’s switching waveform as an electrical fault, tripping breakers unexpectedly. Some users report needing to replace AFCIs with standard breakers, though that may violate local codes. Another technical nuance arises in North American split-phase 120/240V systems: since most outlets supply only one 120V leg, the solar input feeds only half the home’s electrical panel, potentially creating unbalanced loading or confusing net-metering meters.\n\nDespite these caveats, plug-in solar represents a meaningful leap toward democratizing energy generation—especially for urban renters, co-op residents, and others historically excluded from solar ownership. As California legalizes systems up to 1,200W under SB 868 and EU member states refine harmonized certification, the technology is shifting from niche workaround to mainstream option. Its success hinges not on replacing utility-scale renewables, but on expanding participation—turning passive consumers into active, localized producers."
+      },
+      "background": {
+        "zh": "传统并网光伏需专业安装、电网公司并网审批及地方建筑规范合规，这些流程常将租户和多户住宅排除在外。即插即用太阳能采用专用微型逆变器，将小型光伏板产生的直流电转换为与电网同步的交流电，从而实现直连插座供电，同时满足防孤岛等安全标准。",
+        "en": "Traditional grid-tied solar requires professional installation, utility interconnection approval, and compliance with local building codes—processes that often exclude renters and multi-family housing. Plug-in solar uses a dedicated microinverter that converts DC from small PV panels to grid-synchronized AC, enabling direct outlet connection while meeting safety standards like anti-islanding protection."
+      },
+      "discussion": {
+        "zh": "评论者澄清了核心安全机制（如电网同步自动关机），指出电弧故障断路器误跳闸等现实问题，并就北美住宅分相负载平衡等技术细节展开深入讨论，整体呈现理性、务实的技术交流氛围。",
+        "en": "Commenters clarify core safety mechanisms (e.g., grid-synchronized shutdown), highlight real-world issues like AFCI nuisance tripping, and raise nuanced questions about phase balancing in North American homes—reflecting informed, technically grounded debate rather than hype."
+      },
+      "sources": [
+        {
+          "url": "https://www.energysage.com/news/plug-in-balcony-solar-panels/",
+          "title": "Plug-in & balcony solar panels: Are they worth it? - EnergySage"
+        },
+        {
+          "url": "https://www.solar.com/learn/guide-to-balcony-plug-in-solar/",
+          "title": "2026 Guide to Balcony & Plug-In Solar | Solar.com"
+        },
+        {
+          "url": "https://wis-tek.com/blogs/knowledge/balcony-solar-panels-in-california-how-to-install-plug-in-solar-legally-in-2027",
+          "title": "Balcony Solar Panels in California: How to Install Plug-In ..."
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50058507",
+      "slug": "2026-10-13-11-z-ai-releases-glm-legal-a-legal-domain-llm-with-19-2-harvey-lab-pass-rate-98c29456",
+      "path": "/article/2026-10-13-11-z-ai-releases-glm-legal-a-legal-domain-llm-with-19-2-harvey-lab-pass-rate-98c29456",
+      "rank": 11,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "ilreb",
+      "url": "https://z.ai/blog/glm-legal",
+      "published_at": "2026-10-12T16:11:45+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012341+00:00",
+      "tags": [
+        "legal-ai",
+        "llm",
+        "privacy",
+        "responsible-ai",
+        "domain-specific-models"
+      ],
+      "image_path": "media/hackernews-story-50058507.svg",
+      "title": {
+        "zh": "智谱发布法律大模型GLM-Legal，哈维基准测试通过率19.2%",
+        "en": "Z.ai releases GLM-Legal, a legal-domain LLM with 19.2% Harvey LAB pass rate"
+      },
+      "summary": {
+        "zh": "智谱发布了法律领域大模型GLM-Legal，基于GLM-5.3-Flash架构，宣称在哈维法律代理基准测试（Harvey LAB）中全任务通过率达19.2%，较基座模型提升12.5个百分点。 此次发布凸显了垂直领域AI的进展与深层矛盾：法律任务性能提升确有价值，但基准测试可靠性、数据隐私保障及人类监督机制，仍是法律实务中规模化落地的关键障碍。 GLM-Legal基于GLM-5.3-Flash架构，专为长周期法律工作流优化；其19.2%的哈维LAB得分系厂商自报，且因该基准存在任务定义不清、评分标准不一等问题而受到质疑。",
+        "en": "Z.ai released GLM-Legal, a legal-domain LLM built on GLM-5.3-Flash, reporting a 19.2% all-pass rate on the Harvey LAB benchmark — 12.5 points higher than its base model. This release highlights both progress and unresolved tensions in domain-specific AI: improved performance on legal tasks matters, but benchmark validity, data privacy, and human oversight remain critical barriers to real-world adoption in high-stakes legal practice. GLM-Legal is built on GLM-5.3-Flash and targets long-horizon legal workflows; its 19.2% Harvey LAB score is self-reported and contested due to known issues in the benchmark’s task design and evaluation criteria."
+      },
+      "body": {
+        "zh": "智谱（Z.ai）正式发布法律领域专用大模型GLM-Legal，该模型基于GLM-5.3-Flash架构构建，宣称在哈维法律代理基准测试（Harvey LAB）中实现19.2%的全任务通过率，较基座模型提升12.5个百分点。官方将其定位为具备“代理能力”的法律智能工具，可支持多步骤真实工作流，例如合同条款起草、跨司法辖区判例比对，以及模拟谈判回应等任务。\n\n但社区反馈趋于审慎甚至质疑。多位律师和AI工程师在Hacker News上指出，Harvey LAB本身存在局限性：有GitHub议题揭露其部分测试任务定义模糊、评分标准不一致；一位执业律师直言：“20%的通过率虽有进步，却远不足以支撑出庭、尽职调查或高风险交易等真实场景——法律实践的核心恰恰在于应对前所未有的新问题。”\n\n隐私问题同样引发强烈关注。此前Z.ai推出的编程辅助工具ZCode被发现会在每次用户输入前静默截取整个工作区快照，这一行为已被独立安全博客证实违反GDPR及美国多州隐私法规。评论者强调，在法律行业，客户信息保密是职业底线，任何数据处理失当都可能触发纪律处分甚至诉讼，“一家连基础隐私合规都忽视的公司，如何让人信任其法律产品？”\n\n这场讨论最终指向更根本的部署伦理问题。Anthropic近期明确要求：凡涉及健康、法律权利、财务或生计等高影响场景，必须由具备资质的人类全程审核并最终决策。多位评论者呼应此原则，强调GLM-Legal的价值不在于替代律师判断，而在于提升其效率与覆盖广度——前提是严格限定使用边界、确保数据透明，并落实人类终审机制。",
+        "en": "Z.ai has launched GLM-Legal, a new large language model fine-tuned specifically for legal tasks — from contract redlining and statutory interpretation to litigation strategy support. Built on the GLM-5.3-Flash base architecture, it claims a 19.2% all-pass rate on the Harvey Legal Agent Benchmark (Harvey LAB), a 12.5 percentage point improvement over its base model. The announcement positions GLM-Legal not just as a text generator but as an 'agentic' legal intelligence tool, designed to handle multi-step workflows like drafting clauses, comparing jurisdictional precedents, and simulating negotiation counterpoints.\n\nHowever, early reception has been cautiously critical. Several legal professionals and AI engineers on Hacker News questioned whether Harvey LAB truly reflects real-world legal work. One attorney noted that a 20% pass rate — while technically an improvement — falls far short of what’s needed in high-stakes practice, where novelty, precedent nuance, and adversarial unpredictability dominate. Others pointed out flaws in the benchmark itself: GitHub issues from Harvey Labs cite ambiguous rubrics and poorly defined task expectations, raising doubts about how fairly models are scored.\n\nPrivacy concerns have also surfaced prominently. A prior Z.ai product, ZCode, was found to silently snapshot users’ entire workspaces before every prompt — a practice flagged as noncompliant with GDPR and U.S. state privacy laws. Critics argue that such behavior disqualifies the company from building trusted legal tools, where confidentiality is foundational and breaches carry professional liability. As one commenter put it: “How can we trust a legal product from a company ignoring basic privacy law?”\n\nThe debate extends beyond benchmarks and privacy to deeper questions about deployment ethics. Anthropic’s recent policy update — requiring a qualified human-in-the-loop for any use affecting legal rights — resonates strongly here. Multiple commenters stressed that no model, however specialized, should autonomously sign off on filings, negotiate binding terms, or advise clients without lawyer review. GLM-Legal may accelerate routine tasks, but its value lies not in replacing judgment, but in sharpening it — if deployed with guardrails, transparency, and clear accountability."
+      },
+      "background": {
+        "zh": "法律AI模型是专门在法律法规、判例、合同及监管文件上训练的大语言模型，用于辅助文书审查、法律检索等任务。哈维LAB等基准测试旨在衡量真实法律推理能力，但因任务覆盖窄、评分主观性强而屡遭批评。与通用大模型不同，GLM-Legal这类垂直领域模型以牺牲广度为代价，在单一专业领域内实现更强的上下文理解与任务执行能力。",
+        "en": "Legal AI models are specialized LLMs trained on statutes, case law, contracts, and regulatory texts to support tasks like document review and legal research. Benchmarks like Harvey LAB aim to measure real-world legal reasoning but face criticism for narrow task coverage and subjective scoring. Domain-specific models like GLM-Legal differ from general-purpose LLMs by trading broad knowledge for deeper, context-aware expertise in one field."
+      },
+      "discussion": {
+        "zh": "社区评论集中于三点：质疑哈维LAB能否反映真实法律实践中应对新颖问题的能力；警惕Z.ai此前静默截取工作区所暴露的隐私风险；并普遍认同——凡涉及法律后果的输出，必须由合格人类律师最终审核，不可绕过。",
+        "en": "Commenters raised three main concerns: skepticism about Harvey LAB’s relevance to novel legal work, alarm over Z.ai’s past workspace snapshotting privacy violation, and strong consensus that human-in-the-loop review is non-negotiable for any legally consequential output."
+      },
+      "sources": [
+        {
+          "url": "https://huggingface.co/zai-org/GLM-5.2",
+          "title": "zai-org/ GLM -5.2 · Hugging Face"
+        },
+        {
+          "url": "https://z.ai/blog/glm-legal",
+          "title": "GLM-Legal: Advancing Agentic Legal Intelligence - z.ai"
+        },
+        {
+          "url": "https://www.explainx.ai/blog/glm-legal-zai-harvey-lab-19-percent-gated-access-claimed-vs-verified-2026",
+          "title": "GLM-Legal: 19.2% on Harvey LAB, but Is It Open Weight ..."
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50063365",
+      "slug": "2026-10-13-12-intel-launches-d270-data-center-gpu-with-480-gb-lpddr5x-memory-1487944e",
+      "path": "/article/2026-10-13-12-intel-launches-d270-data-center-gpu-with-480-gb-lpddr5x-memory-1487944e",
+      "rank": 12,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "hurricanepootis",
+      "url": "https://www.intel.com/content/www/us/en/products/details/discrete-gpus/data-center-gpu/d-series.html",
+      "published_at": "2026-10-12T21:35:35+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012368+00:00",
+      "tags": [
+        "AI-hardware",
+        "GPU",
+        "Intel",
+        "data-center",
+        "LLM-inference"
+      ],
+      "image_path": "media/hackernews-story-50063365.png",
+      "title": {
+        "zh": "英特尔发布D270数据中心GPU，配备480GB LPDDR5X内存",
+        "en": "Intel launches D270 data center GPU with 480 GB LPDDR5X memory"
+      },
+      "summary": {
+        "zh": "英特尔宣布推出面向数据中心的D270独立GPU，最高配备480GB LPDDR5X内存，AI推理算力达1.3 PFLOPS。 它以内存为中心的AI推理架构挑战了HBM主导的现状，有望降低长上下文大模型推理的总体拥有成本，并为市场提供除英伟达外的可行硬件选择。 D270采用LPDDR5X而非HBM，内存带宽最高达1.5 TB/s，但缺少高速多卡互连，限制其在多用户并发推理场景下的扩展能力。",
+        "en": "Intel announced the D270 discrete GPU for data centers, featuring up to 480 GB of LPDDR5X memory and 1.3 PFLOPS of AI inference compute. It offers a new memory-centric architecture for AI inference that challenges the HBM-dominated status quo, potentially lowering TCO for memory-bound LLM workloads and expanding hardware options beyond NVIDIA. The D270 delivers up to 1.5 TB/s memory bandwidth using LPDDR5X—not HBM—and lacks fast multi-GPU interconnects, limiting scalability for concurrent inference workloads."
+      },
+      "body": {
+        "zh": "英特尔正式发布D270独立GPU，专为数据中心AI推理任务设计。与此前面向图形渲染或通用计算的Intel GPU不同，D270的核心优势在于超大内存容量与高带宽——最高支持480GB LPDDR5X内存，峰值算力达1.3 PFLOPS。该芯片瞄准大语言模型（LLM）推理场景，这类任务往往受限于内存带宽和容量，而非单纯浮点运算能力。英特尔将其定位为一种成本更低、功耗更优的方案，适用于云服务商和企业部署实时、高并发的AI推理服务。\n\n采用LPDDR5X内存尤为关键：这种低功耗、高密度内存传统上用于手机和边缘设备，极少出现在数据中心GPU中。NVIDIA黑井架构（Blackwell）的B200或GB200等竞品普遍采用HBM3，虽带宽更高，但成本与散热复杂度也大幅上升。而D270借助LPDDR5X，在较低热设计功耗（TDP）下实现超大内存配置，有望降低长上下文LLM服务等内存敏感型推理任务的总体拥有成本（TCO）。\n\n不过，技术社区反馈较为审慎。有用户质疑其“服务器级”定位是否名副其实：例如缺乏高速多卡互连（如NVLink），难以支撑多用户并发或模型横向扩展；还有人调侃其宣传风格像“迈巴赫广告”，暗示产品可能未切中真实基建痛点。另有评论指出，1.5 TB/s的内存带宽虽亮眼，却未被英特尔在官方材料中重点强调。实际落地效果更取决于软件生态——oneAPI工具链与OpenVINO等AI推理库能否在延迟与吞吐上真正媲美CUDA优化方案。\n\n尽管如此，D270折射出行业重要趋势：加速器架构正逐步摆脱对HBM的单一依赖。随着LPDDR5X速率提升至9600 MT/s、单颗容量持续扩大（如ACEMAGIC F2A迷你PC已搭载32GB LPDDR5X），该技术正加速向AI PC乃至数据中心延伸。若英特尔能提供扎实的驱动支持、高效的量化工具链，并在真实负载中展现出对黑井架构的性价比优势，D270有望在中端推理集群市场占据一席之地，尤其适合初创公司与区域性云服务商寻求替代方案。",
+        "en": "Intel has unveiled the D270, its latest discrete GPU designed specifically for AI inference in data centers. Unlike previous Intel GPUs aimed at graphics or general compute, the D270 emphasizes memory capacity and bandwidth—featuring up to 480 GB of LPDDR5X memory and a peak compute throughput of 1.3 petaFLOPS (PFLOPS). The chip targets large language model (LLM) inference workloads where memory bandwidth and capacity are often more critical than raw FP16 or INT8 compute power. Intel positions the D270 as a cost- and power-efficient alternative for cloud providers and enterprises running real-time, high-throughput inference services.\n\nThe choice of LPDDR5X is notable: while traditionally used in mobile and edge devices due to its low power and high density, it’s rarely seen in data-center GPUs. Most competitors—including NVIDIA’s Blackwell-based B200 and GB200—rely on HBM3, which offers higher bandwidth per watt but at significantly higher cost and complexity. Intel’s use of LPDDR5X enables massive memory configurations (up to 480 GB) at lower thermal and electrical overhead, potentially lowering total cost of ownership for memory-bound inference tasks like long-context LLM serving.\n\nHowever, early technical reactions are mixed. Some commenters question whether the D270 is truly server-grade: one user points out the lack of fast multi-GPU interconnects—a key requirement for scaling across multiple models or concurrent users—while another compares its marketing to luxury car commercials, suggesting it may not address real infrastructure pain points. Others highlight that while the 1.5 TB/s memory bandwidth is impressive, Intel underemphasizes it in official messaging. Real-world viability also hinges on software maturity: Intel’s oneAPI stack and AI libraries (like OpenVINO) must deliver competitive latency and throughput versus CUDA-optimized deployments.\n\nStill, the D270 reflects a broader industry shift: diversifying accelerator architectures beyond HBM-dependent designs. With LPDDR5X now shipping at speeds up to 9600 MT/s and capacities scaling rapidly—even appearing in AI PCs like the ACEMAGIC F2A mini PC—the technology is maturing beyond mobile use cases. If Intel delivers strong driver support, memory-efficient quantization tooling, and real-world benchmarks against Blackwell-class hardware, the D270 could carve out a meaningful niche in mid-tier inference clusters, especially for startups and regional cloud providers seeking alternatives to dominant incumbents."
+      },
+      "background": {
+        "zh": "LPDDR5X是移动DRAM标准的升级版，相比LPDDR5具有更高传输速率（最高9600 MT/s）和更低电压，同时保持高密度与能效优势。它正逐步进入AI PC和边缘加速器领域，但在数据中心GPU中仍属罕见——该领域长期由带宽优先的HBM3主导。大语言模型推理常受限于内存带宽而非算力，因此内存架构本身已成为关键差异化因素。",
+        "en": "LPDDR5X is an evolution of mobile DRAM standards, offering higher speeds (up to 9600 MT/s) and lower voltage than LPDDR5, while maintaining high density and energy efficiency. It is increasingly adopted in AI PCs and edge accelerators—but rare in data-center GPUs, where HBM3 dominates for bandwidth-critical workloads. AI inference for large language models often bottlenecks on memory bandwidth rather than compute, making memory architecture a key differentiator."
+      },
+      "discussion": {
+        "zh": "社区评论普遍质疑D270是否真正具备服务器级能力，指出其缺乏多卡高速互连且供货信息不明；有人将其营销比作豪华汽车广告，也有人认为它可能适合Qwen3.8-Flash-Next等单用户、内存密集型大模型推理。",
+        "en": "Commenters express skepticism about the D270’s server readiness, citing missing multi-GPU interconnects and unclear availability; some compare its marketing to luxury car ads, while others note its potential fit for single-user, memory-heavy LLMs like Qwen3.8-Flash-Next."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/LPDDR",
+          "title": "LPDDR - Wikipedia"
+        },
+        {
+          "url": "https://chinagadgetsreviews.com/acemagic-f2a-mini-pc-arrives-with-powerful-ai-performance.html",
+          "title": "ACEMAGIC F2A Mini PC Arrives with Powerful AI Performance"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50058528",
+      "slug": "2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2",
+      "path": "/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2",
+      "rank": 13,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "prophittcorey",
+      "url": "https://prophitt.me/writing/a-modern-web-app-in-c",
+      "published_at": "2026-10-12T16:13:10+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012395+00:00",
+      "tags": [
+        "C",
+        "web-development",
+        "systems-programming",
+        "security",
+        "unix"
+      ],
+      "image_path": "media/hackernews-story-50058528.svg",
+      "title": {
+        "zh": "用纯C语言构建现代Web应用",
+        "en": "Building a modern web app entirely in C with Unix security practices"
+      },
+      "summary": {
+        "zh": "一篇详实的实践指南展示了如何完全使用C语言，结合CGI、chroot、权限降级和精简Unix工具链，构建安全、可用于生产的Web应用，全程不依赖任何框架或高级运行时。 它挑战了‘现代Web开发必须依赖复杂JavaScript生态’的固有假设，为安全敏感、资源受限或需高度可审计的系统，提供了一种以极简性和可控性为核心的有效替代路径。 该方案依赖手动内存管理，需显式加固安全（如chroot + setuid + seccomp-bpf），TLS与HTTP/2等功能须借助外部工具实现；C标准库本身不提供任何Web相关功能。",
+        "en": "A detailed, hands-on guide demonstrates how to build a secure, production-capable web application entirely in C using CGI, chroot, privilege-dropping, and minimal Unix tooling—without frameworks or high-level runtimes. It challenges the assumption that modern web development requires complex JavaScript ecosystems, offering a viable alternative for security-critical, resource-constrained, or highly auditable systems where minimalism and control are paramount. The approach relies on manual memory management, explicit security hardening (e.g., chroot + setuid + seccomp-bpf), and external tooling for TLS and HTTP/2; no built-in web features are provided by the C standard library."
+      },
+      "body": {
+        "zh": "如果不用JavaScript框架、Node.js，甚至不依赖nginx这样的传统Web服务器，你能构建出一个可用于生产的Web应用吗？一篇题为《用C语言构建现代Web应用》的文章给出了肯定回答——这并非怀旧实验，而是一种务实、注重安全的工程选择。作者全程使用标准C语言、POSIX系统调用和经典Unix工具（如CGI脚本、chroot隔离、Linux上模拟OpenBSD `pledge()`的权限降级机制，以及基于socket的轻量HTTP处理），搭建了一个精简且安全的Web服务。\n\n其核心理念是极致简洁：避免依赖膨胀，缩小攻击面，并回归Unix哲学——“只做一件事，并把它做好”。整个技术栈不包含Express、Babel、Webpack或Docker，而是由一个C语言编译的二进制程序提供静态资源与CGI动态内容，前端可搭配OpenBSD的`httpd`、`thttpd`，甚至直接使用`inetd`托管。\n\n这不是纸上谈兵。文中援引了多个真实先例：BusyBox内置的CGI支持、2000年代初广泛使用的FastCGI部署，乃至C++服务器经Emscripten编译为WebAssembly用于前端逻辑的现代混合方案。有读者提到，自己早年用C开发的餐厅在线点餐系统，正是通过FastCGI部署，因稳定性极佳被连锁品牌收购；而后续迁移到微软技术栈后，反而问题频发。\n\n当然，代价也明确：C语言需手动管理内存，无原生TLS或HTTP/2支持，对XSS、CSRF等常见Web漏洞也毫无防护——所有安全措施都必须显式实现。但对于资源受限环境（如嵌入式网关、物理隔离系统或高保障服务），这种可控性恰恰是关键优势。正如一位读者所言：“C不再用于Web服务器自有其原因”——但同样，当极简性、可审计性与确定性行为比开发便利性更重要时，C值得被重新审视。\n\n归根结底，这篇文章并非鼓吹C适用于所有团队或项目，而是提醒我们：现代Web开发不必等于工具链堆砌；回归基础原理，有时反而能收获意外的韧性、清晰度与性能。",
+        "en": "What if you could build a production-ready web application without JavaScript frameworks, Node.js, or even a traditional web server like nginx? A recent article titled *A Modern Web App in C* makes that case—not as a nostalgic experiment, but as a pragmatic, security-conscious engineering choice. The author walks through building a lightweight, secure web service using only standard C, POSIX system calls, and decades-old Unix tools: CGI scripts, chroot jails, OpenBSD’s `pledge()`-style privilege reduction (emulated on Linux), and minimal HTTP handling via raw sockets.\n\nThe core idea is radical simplicity: avoid dependency bloat, reduce attack surface, and embrace Unix philosophy—do one thing well. Instead of layering Express, Babel, Webpack, and Docker, the stack consists of a C binary serving static assets and dynamic content via CGI, fronted by a stripped-down httpd (like OpenBSD’s `httpd` or `thttpd`) or even plain `inetd`. Security isn’t bolted on—it’s designed in from the start, using `setuid`/`setgid`, `chroot`, process sandboxing, and strict file permissions.\n\nThis isn’t theoretical. The article cites real-world precedents: BusyBox’s built-in CGI support, FastCGI deployments from the early 2000s, and even modern hybrids like C++ servers compiled to WebAssembly for client-side logic. One commenter notes their restaurant-ordering SaaS—written in C and deployed via FastCGI—was so stable it was acquired by a franchise, only to degrade after being rewritten in proprietary Microsoft stacks.\n\nOf course, tradeoffs exist. C demands manual memory management, no built-in TLS or HTTP/2, and zero safety nets for common web pitfalls like XSS or CSRF—those must be handled explicitly. But for constrained environments (embedded gateways, air-gapped systems, or high-assurance services), that control is valuable. As one reader puts it: \"There’s a reason why C is not used for web servers today\"—but also a reason why it *should be reconsidered* when minimalism, auditability, and deterministic behavior outweigh developer convenience.\n\nUltimately, the piece isn’t advocating C for every team or project. It’s a reminder that modern web development doesn’t have to mean maximalist tooling—and that returning to first principles can yield surprising resilience, clarity, and performance."
+      },
+      "background": {
+        "zh": "C语言长期用于底层系统编程，包括早期Web服务器（如thttpd）及Apache的部分模块，但因内存安全性风险以及缺乏HTTP、TLS和并发等内置抽象，逐渐退出主流Web开发。Go、Rust等现代语言在提供安全系统编程能力的同时集成了Web库，但在超低资源占用与行为确定性方面，C在深度嵌入式或高保障场景中仍不可替代。",
+        "en": "C has long been used for low-level systems programming—including early web servers like thttpd and parts of Apache—but faded from mainstream web development due to memory safety risks and lack of built-in abstractions for HTTP, TLS, and concurrency. Modern alternatives like Go or Rust offer safer systems programming with web libraries, yet C remains unmatched in footprint and determinism for deeply embedded or high-assurance contexts."
+      },
+      "discussion": {
+        "zh": "读者们列举了BusyBox内置CGI、FastCGI历史实践、C+++WebAssembly混合架构等真实案例，并就权衡展开讨论：有人盛赞其稳定性与可审计性，有人指出项目未开源且C语言本身存在固有安全风险，还有人提到Go语言在单二进制部署与更安全默认配置方面的优势。",
+        "en": "Readers highlight real-world parallels (BusyBox CGI, FastCGI legacy, WASM/C++ hybrid servers) and debate tradeoffs: one praises stability and auditability, another cautions about missing source availability and inherent C security risks, while a third notes Go's single-binary advantage with safer defaults."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/JoramMalley/Linux-privilege-escalation",
+          "title": "GitHub - JoramMalley/Linux-privilege-escalation: A curated ..."
+        },
+        {
+          "url": "https://computingforgeeks.com/linux-privilege-escalation-guide-kali/",
+          "title": "Linux Privilege Escalation: Complete Guide for Pentesters"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=Tu19Fwmp-cs",
+          "title": "A Simple Web Server in C - YouTube"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50063138",
+      "slug": "2026-10-13-14-intel-documented-vfmaddrnd231pd-but-no-cpu-ever-executed-it-f4e3c563",
+      "path": "/article/2026-10-13-14-intel-documented-vfmaddrnd231pd-but-no-cpu-ever-executed-it-f4e3c563",
+      "rank": 14,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "pngmangi",
+      "url": "https://purplesyringa.moe/blog/who-is-vfmaddrnd231pd/",
+      "published_at": "2026-10-12T21:12:43+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012448+00:00",
+      "tags": [
+        "x86",
+        "AVX-512",
+        "CPU-instructions",
+        "assembly",
+        "hardware-abstraction"
+      ],
+      "image_path": "media/hackernews-story-50063138.svg",
+      "title": {
+        "zh": "英特尔文档记载了vfmaddrnd231pd指令，但无任何CPU能执行",
+        "en": "Intel documented vfmaddrnd231pd but no CPU ever executed it"
+      },
+      "summary": {
+        "zh": "英特尔2024年《软件开发手册》完整记载了AVX-512指令vfmaddrnd231pd及其编码与语义，但没有任何CPU实际支持；该指令在2026年版手册中被悄然删除。 它揭示了规范漂移与硬件缺陷如何催生‘幽灵指令’——仅存于文档中的空壳，凸显出架构理论、编译器抽象与真实硅片行为之间日益扩大的鸿沟。 该指令很可能因AVX-512舍入控制逻辑的硬件缺陷而被移除；它采用EVEX编码、面向打包双精度浮点数，但所有主流汇编器（包括binutils）均不识别。",
+        "en": "Intel’s 2024 Software Development Manual documented the AVX-512 instruction vfmaddrnd231pd with full encoding and semantics, but no CPU implements it; the instruction was silently removed from the 2026 edition. It reveals how specification drift and hardware bugs can create 'ghost instructions' — artifacts that exist only in documentation — underscoring growing gaps between architectural theory, compiler abstractions, and real silicon behavior. The instruction was likely removed due to a hardware bug in AVX-512 rounding control logic; it uses EVEX encoding and targets packed double-precision floats, but is unrecognized by all major assemblers including binutils."
+      },
+      "body": {
+        "zh": "在英特尔最新版《软件开发手册》（2024年修订版）深处，藏着一条看似完全合理的指令：`vfmaddrnd231pd`。它的全称是“带就近舍入控制的向量融合乘加双精度浮点指令”，专为打包双精度浮点数设计。初看之下，它完美融入AVX-512庞杂的融合乘加（FMA）指令家族——这类指令将乘法与加法合并为单周期、高吞吐、低延迟操作。但与其兄弟指令（如`vfmadd231pd`）不同，这条指令有一个关键区别：它从未在任何真实芯片中实现过。\n\n该指令在英特尔官方文档中拥有完整的EVEX编码说明和舍入语义定义，然而没有任何汇编器支持它，没有反汇编器能识别它，也没有任何x86-64处理器——无论是已发布、在产还是已宣布的型号——能够执行它。费利克斯·克劳蒂尔（Felix Cloutier）权威x86参考网站及近期报道均已证实：`vfmaddrnd231pd`已在2026年版手册中被悄然删除，且未作任何说明。它的存在揭示了一种罕见情形：规范超前于实现——并非出于前瞻规划，而是因硬件缺陷导致其根本无法工作。\n\n英特尔为何要发布一条无法运行的指令？答案在于CPU设计迭代的混乱现实。在AVX-512曲折的发展历程中——尤其是英特尔曾战略性退出、后又部分回归客户端AVX-512支持期间——部分操作码被预留、被规范、甚至被写入手册，却在开发中途被废弃。本例中，证据表明该指令因早期AVX-512执行单元中的舍入控制逻辑硬件缺陷而被放弃。英特尔并未回溯修改旧版手册，而是选择在下一次大版本更新中直接移除。\n\n除技术考据价值外，`vfmaddrnd231pd`更是一个静默提醒：抽象层正日益掩盖底层真相。当系统程序员越来越依赖编译器与自动向量化工具，当AI驱动的工具链进一步拉大开发者与原始指令语义的距离时，“一条指令为何无法落地”这一问题，其重要性已不亚于“它本应如何运作”。它虽微小，却赤裸展现了架构规范与物理现实之间那条脆弱、人为、偶有断裂的桥梁。",
+        "en": "Deep in the latest editions of Intel’s Software Development Manual — specifically the 2024 revision — lurks an instruction that looks perfectly plausible on paper: `vfmaddrnd231pd`. It stands for \"Vector Fused Multiply-Add with Round-to-Nearest-Even and 231pd encoding\", targeting packed double-precision floating-point values. At first glance, it fits neatly into AVX-512’s sprawling family of fused multiply-add (FMA) instructions, which combine multiplication and addition in a single, high-throughput, low-latency operation. But unlike its siblings — such as `vfmadd231pd` — this one has a critical distinction: it was never implemented in silicon.\n\nThe instruction appeared in Intel’s official documentation with full EVEX encoding details and rounding semantics, yet no assembler recognizes it, no disassembler emits it, and no x86-64 processor — past, present, or announced — supports it. As confirmed by Felix Cloutier’s authoritative x86 reference and corroborated by recent reporting, `vfmaddrnd231pd` was quietly removed from the 2026 edition of the manual without explanation. Its existence highlights a rare case where specification outpaced implementation — not due to ambition or forward planning, but because of a hardware-level flaw that rendered the instruction nonfunctional.\n\nWhy would Intel publish an instruction that doesn’t work? The answer lies in the messy reality of CPU design iteration. During AVX-512’s turbulent evolution — especially amid Intel’s strategic retreat from and later partial return to client-side AVX-512 — some opcodes were reserved, specified, and even documented before being abandoned mid-development. In this case, evidence suggests the instruction was dropped due to a hardware bug affecting rounding control logic in early AVX-512 execution units. Rather than revise the manual retroactively, Intel left it in place until the next major revision cycle.\n\nBeyond technical curiosity, `vfmaddrnd231pd` serves as a quiet reminder of how abstraction layers can obscure foundational truths. As systems programmers increasingly rely on compilers and auto-vectorizers — and as AI-driven toolchains further distance developers from raw instruction semantics — understanding *why* an instruction fails to materialize becomes as important as knowing how it *should* behave. It’s a small artifact, but one that exposes the fragile, human, and occasionally broken pipeline between architecture specification and physical reality."
+      },
+      "background": {
+        "zh": "AVX-512是英特尔推出的高级向量扩展指令集，引入512位宽寄存器和复杂的融合乘加（FMA）运算。类似vfmadd231pd的FMA指令可在单步内完成(a × b) + c计算，精度更高、性能更强。舍入控制——即指定中间结果的舍入方式——对数值可重现性至关重要，尤其在科学计算领域。",
+        "en": "AVX-512 is Intel’s advanced vector extension introducing 512-bit wide registers and complex fused multiply-add (FMA) operations. FMA instructions like vfmadd231pd compute (a × b) + c in one step with higher precision and performance than separate multiply and add. Rounding control — specifying how intermediate results are rounded — is critical for numerical reproducibility, especially in scientific computing."
+      },
+      "discussion": {
+        "zh": "评论者指出binutils不支持该指令，援引费利克斯·克劳蒂尔的参考文档，推测其因硬件缺陷被弃用，并关联到英特尔对客户端AVX-512的重新承诺；还有人反思抽象化如何削弱底层直觉，一位用户感慨人们正逐渐失去与机器语义的直接接触。",
+        "en": "Commenters noted the instruction’s absence in binutils, cited Felix Cloutier’s reference, speculated about hardware bugs and AVX-512’s client-CPU recommitment, and reflected on how abstraction erodes low-level intuition — with one user lamenting the loss of direct engagement with machine semantics."
+      },
+      "sources": [
+        {
+          "url": "https://www.felixcloutier.com/x86/vfmaddrnd231pd",
+          "title": "VFMADDRND231PD — Fused Multiply-Add of Packed Double ..."
+        },
+        {
+          "url": "https://news.lavx.hu/article/intel-s-manual-described-an-instruction-no-cpu-ever-executed",
+          "title": "Intel's manual described an instruction no CPU ever executed"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50063717",
+      "slug": "2026-10-13-15-janas-streams-moe-llms-from-ssd-to-run-models-larger-than-ram-750f8001",
+      "path": "/article/2026-10-13-15-janas-streams-moe-llms-from-ssd-to-run-models-larger-than-ram-750f8001",
+      "rank": 15,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "khalidkhair",
+      "url": "https://github.com/prabanta-dev/janas",
+      "published_at": "2026-10-12T22:05:43+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012468+00:00",
+      "tags": [
+        "LLM",
+        "MoE",
+        "memory-efficient-inference",
+        "local-llm",
+        "systems-optimization"
+      ],
+      "image_path": "media/hackernews-story-50063717.png",
+      "title": {
+        "zh": "Janas通过SSD流式加载MoE模型突破内存限制",
+        "en": "Janas streams MoE LLMs from SSD to run models larger than RAM"
+      },
+      "summary": {
+        "zh": "Janas是一款2026年发布的纯CPU、C语言编写的推理引擎，可在推理过程中实时从NVMe固态硬盘流式加载MoE模型的专家层，使超内存规模的模型能在标准Linux设备上运行。 它显著降低了在本地运行前沿MoE大模型的硬件门槛，让主流笔记本和工作站无需GPU即可实现私密、可控的推理，这对日益普及且能力更强的Qwen3等MoE模型尤为关键。 Janas采用GPL-3.0许可证，无需GPU，仅支持MoE模型（如Qwen35B），在32GB内存系统上实测约62 token/秒；依赖高速NVMe存储，不支持量化或GPU加速。",
+        "en": "Janas is a CPU-only, C-based inference engine released in 2026 that enables real-time streaming of MoE model experts from NVMe SSD during inference, allowing models larger than available RAM to run on standard Linux machines. It lowers the hardware barrier for running state-of-the-art MoE LLMs locally, enabling privacy-preserving, GPU-free inference on mainstream laptops and workstations—especially valuable as MoE models like Qwen3 become more capable and widespread. Janas is GPL-3.0 licensed, requires no GPU, supports only MoE models (e.g., Qwen35B), and achieves ~62 tokens/second on 32GB RAM systems; it relies on fast NVMe storage and does not support quantization or GPU acceleration."
+      },
+      "body": {
+        "zh": "Janas是一款新开源的推理引擎，专为在内存有限的消费级硬件上运行大语言模型（尤其是混合专家模型，MoE）而设计。与传统工具需一次性将全部模型权重载入内存不同，Janas在生成每个token时，动态从高速NVMe固态硬盘中流式加载所需的专家层。这一方法使它能在仅配备32GB内存的机器上顺利运行Qwen35B等超大模型，有效规避本地部署LLM时常见的内存溢出（OOM）崩溃。\n\n该工具用C语言编写，纯CPU运行，面向Linux系统——无需GPU或CUDA支持。其核心设计围绕MoE模型的稀疏性：每处理一个token，仅激活一至两个专家，Janas便只加载这些专家的权重，用完即卸载，并从SSD中即时获取下一批。这种细粒度流式调度大幅降低内存峰值压力，同时保持合理吞吐量——实测用户报告速度约每秒60个token。\n\n尽管类似技术已见于其他项目（如llama.cpp支持磁盘卸载，Strata已实现Qwen3的MoE流式加载），Janas的独特之处在于专注MoE模型优化，并优先服务无GPU用户。它采用GPL-3.0许可证，安装只需一条命令，显著降低了注重隐私、追求本地化部署的开发者使用门槛。\n\n社区反馈既体现潜力也反映现实挑战。有用户指出，GPU运行大模型常因显存未预留显示缓冲区而导致驱动重置、桌面崩溃——Janas完全绕开此问题。另有用户认为，虽然Janas并非颠覆性创新，但其聚焦明确、实现务实，恰好填补了日常笔记本和工作站场景中的空白：让MoE模型真正可在普通硬件上稳定、私密地运行。随着上下文窗口扩大和推理链变长，这类I/O感知型推理策略正从云服务走向每一个本地开发者。",
+        "en": "Janas is a new open-source inference engine designed to run large language models—especially mixture-of-experts (MoE) variants—on consumer-grade hardware with limited RAM. Unlike traditional inference tools that load all model weights into memory at once, Janas dynamically streams expert layers from fast NVMe SSD storage during token generation. This approach allows it to execute models like Qwen35B or larger even on machines with only 32GB of system memory, bypassing the usual out-of-memory (OOM) crashes that plague local LLM use.\n\nThe tool is written in C, runs CPU-only, and targets Linux systems—no GPU or CUDA dependencies required. Its design centers on sparsity: since MoE models activate only one or two experts per token, Janas loads just those needed for the current computation, discards them after use, and fetches the next batch from SSD. This fine-grained streaming reduces peak memory pressure while maintaining reasonable throughput—users report speeds around 60 tokens per second on modest hardware.\n\nWhile similar memory-saving techniques exist elsewhere—llama.cpp supports disk offloading, and Strata implements MoE streaming for Qwen3—the Janas project distinguishes itself by focusing exclusively on MoE-specific optimizations and prioritizing simplicity for non-GPU users. It’s licensed under GPL-3.0 and ships as a single-command installer, lowering the barrier for developers who want local, private, and hardware-accessible inference without wrestling with driver resets or GPU memory fragmentation.\n\nReal-world feedback highlights both promise and pitfalls. One user noted that running large models on GPU often triggers display driver crashes due to unreserved VRAM—a problem Janas sidesteps entirely by staying CPU-bound. Others pointed out that while Janas isn’t revolutionary, its narrow scope and pragmatic implementation fill a niche: enabling MoE models on everyday laptops and workstations where GPU memory is scarce or unreliable. As context windows grow and reasoning chains lengthen, such I/O-aware inference strategies are becoming essential—not just for cloud providers, but for privacy-conscious developers running models locally."
+      },
+      "background": {
+        "zh": "混合专家（MoE）模型通过每次仅激活部分神经网络参数来提升效率——通常每个输入token只路由给一到两个专用‘专家’。这种稀疏性使MoE模型总参数量远超稠密模型，但单次推理成本更低。然而，其庞大的总权重规模仍给推理阶段带来显著内存压力，尤其在缺乏高带宽显存的设备上。",
+        "en": "Mixture-of-experts (MoE) models improve efficiency by activating only a subset of neural network parameters per input token—typically routing each token to one or two specialized 'experts'. This sparsity makes MoE models much larger in total parameter count than dense models, yet cheaper to run per token. However, their large total weight size still poses memory challenges during inference, especially on devices without high-bandwidth GPU memory."
+      },
+      "discussion": {
+        "zh": "评论呈现分歧：部分资深用户肯定Janas解决了纯CPU环境下的真实OOM痛点；另一些人则指出llama.cpp和Strata已有类似功能，认为该项目属渐进改进；还有人提及GPU运行LLM时常引发驱动崩溃，进一步凸显Janas专注CPU路线的实际价值。",
+        "en": "Comments reflect mixed reactions: some experienced users praise Janas for solving real OOM pain points on CPU-only setups, while others note prior art in llama.cpp and Strata, calling the project incremental. A few highlight practical concerns like driver instability when using GPUs for LLMs, reinforcing Janas’ CPU-first value proposition."
+      },
+      "sources": [
+        {
+          "url": "https://reporank.net/en/repo/prabanta-dev-janas.html",
+          "title": "Janas - LLM : Experimental NVMe-Streamed MoE Inference - Open..."
+        },
+        {
+          "url": "https://discuss.huggingface.co/t/call-for-testers-janas-a-cpu-only-engine-that-runs-moe-models-larger-than-ram-one-command-to-test-your-machine/180740",
+          "title": "Call for testers: Janas , a CPU-only engine that runs MoE models larger..."
+        },
+        {
+          "url": "https://rubel.dev/blog/mixture-of-experts-moe-layers-scaling-efficiently-with-sparsity",
+          "title": "Mixture - of - Experts ( MoE ) Layers : Scaling... | Mahamudul Hasan Rubel"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50061791",
+      "slug": "2026-10-13-16-firefox-users-can-now-manually-resume-large-downloads-from-one-time-links-9f72979b",
+      "path": "/article/2026-10-13-16-firefox-users-can-now-manually-resume-large-downloads-from-one-time-links-9f72979b",
+      "rank": 16,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "speckx",
+      "url": "https://lunarwatcher.codeberg.page/til/firefox/resumable-big-downloads.html",
+      "published_at": "2026-10-12T19:36:02+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012522+00:00",
+      "tags": [
+        "Firefox",
+        "downloads",
+        "networking",
+        "resumable",
+        "web-browsers"
+      ],
+      "image_path": "media/hackernews-story-50061791.svg",
+      "title": {
+        "zh": "Firefox用户可手动恢复一次性链接的大文件下载",
+        "en": "Firefox users can now manually resume large downloads from one-time links"
+      },
+      "summary": {
+        "zh": "一名开发者记录了一种手动文件级技巧：用户可通过复用Firefox已有的`.part`临时文件，并强制浏览器从正确字节位置继续下载，从而恢复因中断而失败的一次性链接大文件下载。 这解决了注重隐私的用户及研究人员长期面临的一个实际痛点：他们常使用一次性链接传输敏感或大体积文件，却因网络不稳定导致数小时下载功亏一篑，而此方法可避免从头重下。 该技巧需先启动新下载并立即暂停，用失败下载残留的`.part`文件覆盖新生成的临时文件，再恢复下载；其生效前提是服务器支持HTTP范围请求，且原下载已成功接收部分数据；整个过程不修改Firefox，也无需安装扩展。",
+        "en": "A developer documented a manual, file-level workaround enabling Firefox users to resume interrupted large downloads from one-time URLs by reusing existing .part files and forcing the browser to continue from the correct byte offset. This addresses a persistent usability gap for privacy-conscious users and researchers who rely on one-time links for sensitive or large-file transfers but cannot afford to restart multi-hour downloads due to unstable networks. The workaround requires pausing a new download, replacing its .part file with the incomplete one from the failed attempt, then unpausing — it only works if the server supports HTTP Range requests *and* the original download had already established partial content receipt; it does not modify Firefox or require extensions."
+      },
+      "body": {
+        "zh": "Firefox长期以来无法原生恢复因网络中断而失败的大文件下载，尤其当下载链接是一次性链接时——这在注重安全的文件分享场景中极为常见。与普通URL不同，一次性链接在首次请求后即失效，导致浏览器标准的断点续传机制完全失灵：Firefox内置下载器依赖同一URL发起HTTP `Range`请求，但服务器对后续请求直接返回404或410错误，拒绝服务。\n\n开发者Lunar Watcher近期详细记录了一种可靠的手动恢复方法，让用户无需从头开始重新下载数GB的文件。该方法利用Firefox下载过程中的临时文件机制：下载启动后，浏览器会创建一个`.part`文件并持续写入已接收的数据；若中途断连，该文件仍完整保留已下载字节，但Firefox不会在重试时自动复用它——因为新下载会生成全新的`.part`文件，且不继承任何偏移信息。\n\n这一方案并非浏览器补丁或配置开关，而是一种基于HTTP范围请求与无状态链接过期机制之间冲突的系统级技巧。操作只需暂停一次新下载、替换临时文件、再恢复下载，即可让Firefox从正确字节位置继续传输。它无需第三方工具，兼容原版Firefox，仅需基础文件操作能力，但要求用户注意临时文件命名规则，避免误覆盖。\n\n更深层看，这反映了网络安全与用户体验之间的固有张力。一次性链接能有效防止文件被恶意转发，却破坏了HTTP/1.1早已支持的断点续传能力（通过`Range`请求头和`206 Partial Content`响应实现）。理论上，支持字节服务的服务器可在短期令牌中嵌入偏移感知逻辑以允许续传，但现实中极少实现。在Firefox加入本地进度追踪或服务端改进令牌设计之前，此类社区驱动的实用方案，正切实填补着技术落地的空白。",
+        "en": "Firefox has long lacked native support for resuming interrupted downloads when the source URL is a one-time link — a common scenario for secure file sharing. Unlike standard URLs that remain valid, one-time links expire after the first request, making traditional resume logic impossible: Firefox’s built-in downloader expects the same URL to accept `Range` requests, but the server rejects subsequent requests with errors like 404 or 410. A developer named Lunar Watcher recently documented a reliable manual workaround that lets users recover progress without restarting multi-gigabyte downloads from scratch.\n\nThe method hinges on Firefox’s internal download staging behavior. When a download begins, Firefox creates a `.part` file and writes incoming bytes to it. If the connection drops mid-transfer, that `.part` file retains all successfully received data — but Firefox won’t reuse it automatically upon retry because the new request starts fresh with a new `.part` file and no knowledge of prior offsets. The workaround involves pausing a *new* download attempt, swapping in the old `.part` file, and unpausing — effectively tricking Firefox into continuing from the correct byte position.\n\nThis isn’t a browser patch or configuration toggle; it’s a systems-level hack grounded in how HTTP range requests interact with stateless server-side link expiration. It requires no third-party tools, works with stock Firefox, and only needs basic file operations — though it demands careful timing and awareness of Firefox’s temporary file naming (e.g., avoiding accidental overwrites). The technique is especially valuable for users downloading large datasets, ISO images, or video archives from privacy-focused services that enforce one-time links for security.\n\nThe broader context reveals a tension between web security and usability. One-time links protect against unauthorized redistribution but break fundamental web expectations around resumability — a feature baked into HTTP/1.1 via the `Range` header and `206 Partial Content` responses. Servers supporting byte serving *could* allow resumes even with short-lived tokens — if they embed offset-aware logic — but most don’t. Until Firefox implements smarter local state tracking or servers adopt more resilient token designs, workarounds like this fill a real gap. For now, it’s a pragmatic win for power users who prioritize control over convenience."
+      },
+      "background": {
+        "zh": "HTTP范围请求允许客户端获取资源的特定字节区间，是实现断点续传的基础机制。一次性下载链接是服务端实现的安全策略，链接在首次访问后即失效，常用于敏感文件分发。Firefox下载管理器无法在针对已失效URL的多次独立请求间跟踪或复用部分下载状态。",
+        "en": "HTTP range requests allow clients to fetch specific byte ranges of a resource, enabling pause-and-resume functionality. One-time download links are server-side mechanisms that invalidate a URL after its first use, often for security or access control. Firefox’s download manager does not natively track or reuse partial download state across separate requests to expired URLs."
+      },
+      "discussion": {
+        "zh": "评论区读者分享了aria2等替代工具及GetRight等经典下载器；有人推测Firefox超时机制与容错设计存在缺陷；也有人肯定该技巧对不依赖外部下载器却追求稳定性的用户具有不可替代的价值。",
+        "en": "Readers shared practical alternatives like aria2 and legacy tools like GetRight; some speculated about Firefox’s timeout handling and fault tolerance design; others praised the workaround as essential for users who avoid external download managers but still need reliability."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/HTTP_Range_request",
+          "title": "HTTP Range request"
+        },
+        {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests",
+          "title": "HTTP range requests - MDN Web Docs"
+        },
+        {
+          "url": "https://goodsign.io/one-time-download-link",
+          "title": "One - Time Download Link — Share a File That Downloads Once"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50063427",
+      "slug": "2026-10-13-17-ai-is-a-tool-and-using-it-well-still-requires-human-skill-b4e94a7e",
+      "path": "/article/2026-10-13-17-ai-is-a-tool-and-using-it-well-still-requires-human-skill-b4e94a7e",
+      "rank": 17,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "layer8",
+      "url": "https://yyhh.org/blog/2026/10/ai-is-a-tool/",
+      "published_at": "2026-10-12T21:40:18+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012567+00:00",
+      "tags": [
+        "AI ethics",
+        "human-AI collaboration",
+        "LLM adoption",
+        "cognitive impact",
+        "prompt engineering"
+      ],
+      "image_path": "media/hackernews-story-50063427.svg",
+      "title": {
+        "zh": "AI是工具，用好它仍需人类技能",
+        "en": "AI is a tool—and using it well still requires human skill"
+      },
+      "summary": {
+        "zh": "2026年一篇博客文章将AI重新定义为中立且依赖人类技能的工具，由此引发关于人类专业能力演变、认知风险及临床实际应用的广泛讨论。 它打破了炒作驱动的叙事，将讨论重心转向人类能动性、培训需求与系统化集成，这对教育者、开发者、临床医生及制定负责任AI政策的决策者至关重要。 曾被视为核心的提示工程技能（如上下文窗口管理、多步指令编写）正随模型进步而快速过时；新兴关键能力是问题界定与输出评估，而非提示词语法。",
+        "en": "A 2026 blog post reframes AI as a neutral, skill-dependent tool, sparking widespread debate about evolving human expertise, cognitive risks, and real-world clinical integration. It challenges hype-driven narratives and centers the discussion on human agency, training needs, and systemic integration—critical for educators, developers, clinicians, and policymakers shaping responsible AI adoption. Prompt engineering skills once considered essential—like context window management and multi-step instruction crafting—are rapidly becoming obsolete as models improve; the emerging core skill is problem framing and output evaluation, not prompt syntax."
+      },
+      "body": {
+        "zh": "将AI视作一种工具——而非自然力量或自主主体——这一观点正在技术圈引发更审慎的讨论。一篇广受关注的2026年博客文章指出，大语言模型（LLM）本身既非天然有益，也非必然有害；其实际影响完全取决于人类如何设计、集成与交互使用它们。这种视角将焦点从空泛的恐惧或幻想中拉回现实问题：人们需要掌握哪些技能才能有效使用AI？这些技能又如何随模型进步而演变？当技术部署速度远超人类适应能力时，会发生什么？\n\n真实场景中的采用情况凸显了这种张力。一位临床医生提到，AI已悄然嵌入她的电子病历系统——并非以独立聊天机器人形式出现，而是作为后台助手，自动比对患者当前陈述与历史记录，并标记矛盾之处。她并未学习提示工程，而是学会了信任一个设计良好的内置功能。与此同时，另一些人回忆起曾在2025年中旬前花费数月钻研上下文窗口管理、指令模板和思维链结构，结果却发现这些技巧很快变得过时，因为模型自身变得更鲁棒、更宽容。\n\n这种快速淘汰引发了关于专业能力本质的深层思考。有评论者指出，如今前沿模型常能准确响应极简请求，例如“提取最新日志并定位根本原因”——无需格式、无需角色设定、无需多轮调整。但也有声音警告：部署速度可能远超人类培养批判性判断力的速度，尤其在教育、医疗等高风险领域。如果说社交媒体削弱了注意力，那么无处不在的AI是否也会削弱分析耐力？\n\n这场讨论并非反对AI，而是拒绝将判断力外包。今天的“技能”不再集中于操控文本token，而在于精准定义问题、审慎评估证据，以及清楚知道何时不该交由AI处理。正如一位参与者所言：“真正的元技能不是写提示词，而是知道该问什么。”这种转变反映了一个更宏观的趋势：AI正从一种新交互界面，演变为一种新的认知基础设施——它既能放大人的能力，也可能放大人的懈怠。",
+        "en": "The idea that AI is fundamentally a tool—not a force of nature or an autonomous agent—has gained renewed traction in thoughtful technical discourse. A widely discussed 2026 blog post argues that large language models (LLMs) are neither inherently beneficial nor harmful; their impact depends entirely on how humans design, integrate, and interact with them. This framing shifts attention away from speculative fears or utopian promises and toward concrete questions: What skills do people need to use AI effectively? How do those skills evolve as models improve? And what happens when integration outpaces human adaptation?\n\nReal-world adoption illustrates this tension. One clinician notes that AI has been quietly embedded into her electronic health record system—not as a standalone chatbot, but as a background assistant that cross-checks patient statements against prior notes and flags inconsistencies. She didn’t learn prompt engineering; she learned to trust a well-integrated feature. Meanwhile, others recall investing months in mastering context windows, instruction templates, and chain-of-thought scaffolding—only to find those techniques largely obsolete by mid-2025 as models grew more robust and forgiving.\n\nThis rapid obsolescence raises deeper questions about expertise. A commenter observes that today’s frontier models often respond correctly to bare-bones requests like *“Pull the latest log and root cause the issue”*—no formatting, no role assignment, no iterative refinement. Yet another warns that speed of deployment may outstrip our capacity to cultivate the judgment needed to interpret outputs critically, especially in high-stakes domains like education or medicine. If social media eroded attention spans, could ambient AI erode analytical stamina?\n\nThe conversation isn’t about rejecting AI—it’s about refusing to outsource discernment. Skill now lies less in manipulating tokens and more in framing problems, evaluating evidence, and knowing when *not* to delegate. As one participant puts it: *“The meta-skill isn’t prompting—it’s knowing what to ask for.”* That shift reflects a broader transition: from treating AI as a new interface to recognizing it as a new layer of cognitive infrastructure—one that amplifies both competence and complacency."
+      },
+      "background": {
+        "zh": "提示工程指设计自然语言输入，以引导生成式AI模型产出期望结果。它在2020年代初LLM热潮中兴起，当时企业曾专门招聘‘提示工程师’；如今随着模型日益直观，这一岗位正逐渐淡化，取而代之的是面向全体员工的通用提示培训。据美联储2026年4月数据，美国企业LLM采用率已达54%。",
+        "en": "Prompt engineering refers to designing natural language inputs to guide generative AI models toward desired outputs. It rose to prominence during the early 2020s LLM boom, with companies hiring dedicated 'prompt engineers'—a role now fading as models become more intuitive and general employee training replaces specialized roles. LLM adoption in U.S. firms reached 54% by early 2026, according to Federal Reserve data."
+      },
+      "discussion": {
+        "zh": "评论者观点分歧明显：有人担忧过度依赖AI将导致长期认知能力下降，也有人强调其在临床场景中带来的切实提效；多人指出，提示工程的专业价值已大幅减弱，取而代之的是对任务适配性与输出可信度的更高阶判断力。",
+        "en": "Commenters express divergent views: some warn of long-term cognitive decline due to overreliance on AI, while others highlight tangible productivity gains in clinical settings; several note that prompt engineering expertise has sharply declined in relevance, replaced by higher-level judgment about task suitability and output validity."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Prompt_engineering",
+          "title": "Prompt engineering"
+        },
+        {
+          "url": "https://www.federalreserve.gov/econres/notes/feds-notes/monitoring-ai-adoption-in-the-u-s-economy-20260403.html",
+          "title": "The Fed - Monitoring AI Adoption in the US Economy"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50059096",
+      "slug": "2026-10-13-18-agent37-launches-0-37-month-ai-agent-sandboxes-d64c17b7",
+      "path": "/article/2026-10-13-18-agent37-launches-0-37-month-ai-agent-sandboxes-d64c17b7",
+      "rank": 18,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "vishnukool",
+      "url": "https://news.ycombinator.com/item?id=50059096",
+      "published_at": "2026-10-12T16:46:34+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012591+00:00",
+      "tags": [
+        "AI-agents",
+        "infrastructure",
+        "sandboxing",
+        "YC",
+        "cost-optimization"
+      ],
+      "image_path": "media/hackernews-story-50059096.svg",
+      "title": {
+        "zh": "Agent37推出每月0.37美元AI代理沙箱服务",
+        "en": "Agent37 launches $0.37/month AI agent sandboxes"
+      },
+      "summary": {
+        "zh": "Agent37（YC 2026年秋季批次）正式上线AI代理沙箱平台，单价约每月0.37美元；依托gVisor隔离、内存优化型裸金属服务器及基础设施成本大幅下降，首次实现可持续的免费计划。 它显著降低了安全、生产级AI代理的部署门槛，尤其惠及独立开发者与初创团队，并挑战了‘沙箱必然昂贵’的行业预设，推动AI基础设施市场转向面向具体工作负载的精细化优化。 Agent37采用gVisor实现内存共享型沙箱（不支持Docker嵌套或Android模拟器），服务器采购自Hetzner/OVH等裸金属厂商而非超大规模云平台，并针对AI代理典型负载（浏览器/工具调用时内存突增、其余时间闲置）专门优化硬件的内存密度而非CPU性能。",
+        "en": "Agent37 (YC F26) launched a production-ready sandbox platform for AI agents priced at ~$0.37/month per sandbox, enabled by gVisor-based isolation, RAM-optimized bare-metal servers, and a free tier now viable due to infrastructure cost reductions. It lowers the barrier to deploying safe, production-grade AI agents — especially for indie developers and startups — and challenges the assumption that sandboxing must be expensive, pushing the broader AI infrastructure market toward workload-specific optimization. Agent37 uses gVisor for memory-sharing sandboxes (no Docker-in-Docker or Android emulators), sources servers from Hetzner/OVH instead of hyperscalers, and optimizes hardware for RAM density — not CPU — because agent workloads spike in memory usage during browser/tool tasks but remain idle otherwise."
+      },
+      "body": {
+        "zh": "Agent37是一家获得Y Combinator（2026年秋季批次）投资的初创公司，近日正式推出专为运行AI代理设计的低成本沙箱平台，支持OpenClaw、Hermes和Claude Code等主流代理框架。其核心定价仅为平均每沙箱每月0.37美元，面向需要安全隔离执行环境、却难以承受传统云虚拟机或超大规模云厂商沙箱成本的开发者。\n\n这一成本优势源于底层架构与采购策略的深度优化。创始人Vishnu曾任职于亚马逊（高级软件工程师）和Quantcast（工程经理），主导开发了亚马逊内部AI聊天机器人Diya及代码辅助工具Ziya。基于这些经验，Agent37完全绕开AWS等超大规模云厂商，转而采用Hetzner、OVH等裸金属服务商——后者虚拟机毛利率仅10%–20%，远低于AWS的80%–90%。同时，他们专门采购高内存密度服务器，因为AI代理负载（如浏览器自动化、本地工具调用）本质上是内存受限而非CPU受限——这正是多数通用云厂商忽视的关键特征。\n\n技术上，Agent37采用gVisor——一种轻量级用户态内核——实现沙箱快速启动与主机内存高效共享。同一物理服务器可承载数十个沙箱，无需为每个沙箱预留完整虚拟机内存。但这也带来限制：gVisor不支持Docker嵌套（Docker-in-Docker）或Android模拟器。对于此类重型负载，Agent37提供全虚拟机沙箱选项，价格略高，但仍显著低于竞品。\n\n尤为关键的是，Agent37如今已能提供免费计划——此前因自研初期成本过高而无法实现。目前免费沙箱的单用户月均基础设施成本仅0.05–0.10美元，新注册用户中超过90%选择该计划，用于托管个人代理和实验性工具链。团队特别邀请消息类、工作流类AI代理开发者试用平台，共同探索其性能边界与经济可行性。正如一位社区评论者所言：这不仅是更便宜的基础设施，更是真正为AI代理行为模式量身定制的基础设施。",
+        "en": "Agent37, a Y Combinator–backed startup (F26 batch), has launched a low-cost sandboxing platform designed specifically for running AI agents — including OpenClaw, Hermes, and Claude Code wrappers. Priced at just $0.37 per sandbox per month on average, it targets developers who need secure, isolated execution environments but can’t justify the cost of traditional cloud VMs or hyperscaler-based sandboxes.\n\nThe company’s cost advantage stems from deep architectural and procurement choices. Founder Vishnu — formerly a Senior Software Engineer at Amazon and Engineering Manager at Quantcast — built Amazon’s internal AI chatbot Diya and coding harness Ziya. Drawing on that infrastructure experience, Agent37 avoids hyperscalers like AWS entirely, opting instead for bare-metal providers such as Hetzner and OVH, where margins are far lower. They also prioritize RAM-dense server configurations, recognizing that AI agent workloads are memory-bound (e.g., browser automation, local tool use) rather than CPU-bound — a key insight most general-purpose cloud vendors overlook.\n\nTechnically, Agent37 uses gVisor — a lightweight, user-space kernel — to enable fast boot times and efficient memory sharing across sandboxes on the same host. This lets them pack many sandboxes onto one physical machine without reserving full VM memory per instance. However, this comes with tradeoffs: gVisor doesn’t support nested virtualization (Docker-in-Docker) or Android emulators. For those heavier workloads, Agent37 offers full VM sandboxes at a slightly higher price — still undercutting competitors thanks to their lean stack and hardware strategy.\n\nCrucially, Agent37 now supports a free tier — something previously unaffordable when bootstrapped — with infrastructure costs averaging only $0.05–$0.10 per free user per month. Over 90% of new signups are on this free plan, hosting personal agents and experimental toolchains. The team invites developers — especially those building messaging or workflow agents — to stress-test the platform and explore its economic limits. As one commenter noted, this isn’t just cheaper infrastructure; it’s infrastructure *designed* for how agents actually behave."
+      },
+      "background": {
+        "zh": "AI代理沙箱是一种安全隔离的执行环境，用于限制自主代理可访问、可执行或可传输的内容，对安全性、可复现性和合规性至关重要。与通用虚拟机不同，AI代理沙箱需高效处理浏览器自动化、本地文件操作等突发性强、内存占用高的负载。OpenClaw是一个开源的AI代理构建框架，而‘OpenClaw封装服务商’则在其之上提供托管部署、身份认证与计费等增值服务。",
+        "en": "AI agent sandboxing refers to secure, isolated execution environments that restrict what autonomous agents can access, execute, or transmit — essential for safety, reproducibility, and compliance. Unlike general-purpose VMs, agent sandboxes must handle bursty, memory-heavy workloads like browser automation or local file manipulation, making resource efficiency critical. OpenClaw is an open-source framework for building agentic systems, and 'OpenClaw wrapper' companies provide managed hosting, auth, and billing layers on top."
+      },
+      "discussion": {
+        "zh": "社区评论者质疑在超大规模云厂商可能降价围剿下该模式的长期生存能力，追问多个浏览器密集型沙箱并发触发时的内存争用处理机制，将价格与Boat.dev、Fly.io Sprites对比，并讨论单纯依靠低价策略是否能在缺乏核心技术壁垒的情况下持续发展。",
+        "en": "Commenters raised concerns about long-term viability amid hyperscaler competition, questioned memory contention under concurrent browser-heavy loads, compared pricing with Boat.dev and Fly.io Sprites, and debated whether pure cost leadership is sustainable without deeper technical differentiation."
+      },
+      "sources": [
+        {
+          "url": "https://dev.to/imversion_tech/ai-agent-sandboxing-practical-guide-for-production-safety-58p8",
+          "title": "AI Agent Sandboxing: Practical Guide for Production Safety"
+        },
+        {
+          "url": "https://mastra.ai/articles/best-ai-agent-sandbox-platforms",
+          "title": "The 6 Best AI Agent Sandbox Platforms (August 2026): Features ..."
+        },
+        {
+          "url": "https://www.explainthis.io/en/ai/ai-sandboxing",
+          "title": "What is Sandboxing? Why Do AI Agents Need Sandboxes?"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50063417",
+      "slug": "2026-10-13-19-phreak-ing-web-experiment-revives-1980s-phone-phreaking-with-dtmf-and-no-js-effe-79c126d3",
+      "path": "/article/2026-10-13-19-phreak-ing-web-experiment-revives-1980s-phone-phreaking-with-dtmf-and-no-js-effe-79c126d3",
+      "rank": 19,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "rickcarlino",
+      "url": "https://phreak.ing/",
+      "published_at": "2026-10-12T21:39:32+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012635+00:00",
+      "tags": [
+        "phreaking",
+        "web-experiment",
+        "retro-computing",
+        "DTMF",
+        "hacker-culture"
+      ],
+      "image_path": "media/hackernews-story-50063417.png",
+      "title": {
+        "zh": "Phreak.ing网页实验重现80年代电话盗用文化",
+        "en": "Phreak.ing web experiment revives 1980s phone phreaking with DTMF and no-JS effects"
+      },
+      "summary": {
+        "zh": "Phreak.ing 是一个新上线的交互式网页实验，通过DTMF音频信号模拟1980年代电话交换机，背景动画完全不依赖JavaScript，并内置 `*#06#` 等源自电信史的隐藏彩蛋。 它以直观有趣的方式向新一代保存并解构黑客文化的触觉与听觉起源，将电话盗用历史知识与现代网页技术无缝连接。 DTMF验证码需调用麦克风，但在无法重捕扬声器输出的设备上可能失败；背景动画完全基于CSS与HTML5音频元数据，未运行任何JavaScript。",
+        "en": "Phreak.ing is a new interactive web experiment launched at phreak.ing that simulates a 1980s telephone switchboard using DTMF tone input, features a JavaScript-free animated background, and includes telecom-history Easter eggs like *#06#. It preserves and demystifies the tactile, audio-driven origins of hacker culture for new generations, bridging historical phreaking knowledge with modern web capabilities in an accessible, engaging format. The DTMF CAPTCHA requires microphone access and may fail on devices that cannot re-capture speaker output; the background animation uses only CSS and HTML5 audio metadata, with no JavaScript execution."
+      },
+      "body": {
+        "zh": "点击进入一个闪烁的绿色终端界面，听到老式旋转拨号盘特有的‘嘀—哔—’声，再用鼠标点击操作一台模拟的1980年代电话交换机——这就是现已上线的网页实验项目 Phreak.ing（网址：phreak.ing）。它不只是外观复古，更在行为逻辑上复刻了老式电信设备：用户全程通过双音多频（DTMF）信号交互——也就是老式电话按键发出的音频信号——来浏览菜单、完成DTMF验证码，甚至触发隐藏彩蛋。令人惊叹的是，其背景动画（随音频脉动的模拟模拟波形）完全不依赖JavaScript，仅靠CSS动画与HTML5 `<audio>` 元数据驱动。\n\n该项目远不止于视觉怀旧。它嵌入了真实的电信史细节：例如输入 `*#06#` 会触发一个彩蛋，致敬移动设备IMEI码泄露事件——这是电话盗用文化在手机时代的延续。DTMF验证码虽具趣味性，却真实还原了早期语音控制系统中的信号识别难题。部分用户反馈麦克风兼容性不佳——尤其在无法将扬声器播放声音重新录入的设备上——这恰恰暴露了现代交互对WebRTC或音频权限的默认依赖；而这种‘摩擦感’恰是设计本意：它复现了早期电话盗用者反复调试音频发生器、手工制作‘蓝盒子’时的试错精神。\n\nPhreak.ing 是教育、致敬与互动艺术的交汇点。它不模拟黑客工具，也不攻击真实网络，而是模拟一种思维方式。评论区印证了这一点：有人回忆少年时在巴诺书店翻阅《2600：黑客季刊》初识电话盗用；有人为纯CSS实现的背景效果惊叹不已，称其既费解又震撼。网站没有个人后台或持久身份系统——所谓‘注册’更像一种象征性仪式，或许暗示未来扩展，也可能只是强化你已‘接入隐秘网络’的沉浸幻觉。\n\n归根结底，Phreak.ing 的成功不在实用性，而在文化转译。在云API层层封装、AI抽象无处不在的今天，它让那种可触摸、可聆听、充满人性好奇的原始探索精神变得具体可感。它提醒我们：在‘获取root权限’和‘零日漏洞’出现之前，曾有一个孩子把梳子按在公用电话听筒上——专注倾听、持续学习，并用一声声音频，向整个系统发起温柔而坚定的挑战。",
+        "en": "Step into a flickering green terminal, hear the sharp *beep-boop* of rotary dial tones, and click your way through a simulated 1980s telephone switchboard — that’s Phreak.ing, a meticulously crafted web experiment now live at phreak.ing. Unlike typical nostalgia projects, it doesn’t just look retro: it *behaves* like vintage telecom hardware. Users interact entirely via Dual-Tone Multi-Frequency (DTMF) signals — the same tones generated by pressing keys on an analog phone — to navigate menus, solve a DTMF-based CAPTCHA, and even trigger hidden Easter eggs. Remarkably, its animated background — a pulsing, analog-style waveform that responds to audio input — runs without JavaScript, relying solely on CSS animations and HTML5 `<audio>` metadata.\n\nThe project is more than aesthetic theater. It embeds real telecom history: typing `*#06#`, for example, unlocks an Easter egg referencing IMEI code disclosure — a nod to mobile-era phreaking evolution. The DTMF CAPTCHA, while playful, mirrors actual signal-processing challenges from early voice-controlled systems. Some users struggled with microphone compatibility — especially on devices where playback audio isn’t easily re-captured — revealing how much modern UX assumes seamless WebRTC or permissioned audio access. Still, the friction feels intentional: it echoes the trial-and-error ethos of early phreakers who spent hours testing tone generators and hand-built blue boxes.\n\nPhreak.ing sits at the intersection of education, homage, and interactive art. It doesn’t simulate hacking tools or exploit live networks — it simulates *mindset*. Comments reflect this: one user recalls discovering phreaking via *2600: The Hacker Quarterly* in a Barnes & Noble as a teen; another marvels at the pure-CSS background effect, calling it both puzzling and awe-inspiring. There’s no account dashboard or persistent identity — registration appears symbolic, perhaps hinting at a future layer or simply reinforcing the illusion of joining a clandestine network.\n\nUltimately, Phreak.ing succeeds not as utility but as cultural translation. In an age of opaque cloud APIs and AI abstractions, it makes tangible the tactile, auditory, and deeply human curiosity that launched hacker culture. It reminds us that before ‘root access’ and ‘zero-day’, there was just a kid holding a comb to a payphone — listening, learning, and pushing back against the system, one tone at a time."
+      },
+      "background": {
+        "zh": "电话盗用（phreaking）指对电话网络的探索与操控，起源于20世纪50至60年代。早期盗用者如约翰·德雷珀（‘船长克朗奇’）发现，2600赫兹音频可欺骗AT&T长途交换系统，从而免费拨打长途电话。这种实践早于计算机黑客活动，奠定了系统好奇心、逆向工程与伦理边界试探等核心理念。",
+        "en": "Phreaking refers to the exploration and manipulation of telephone networks, dating back to the 1950s–60s. Early phreakers like John Draper (‘Captain Crunch’) discovered that a 2600 Hz tone could trick AT&T’s long-distance switching systems into granting free calls. This practice predates computer hacking and laid foundational ideas about system curiosity, reverse engineering, and ethical boundary-testing."
+      },
+      "discussion": {
+        "zh": "用户普遍惊叹于纯CSS背景效果并唤起强烈怀旧情绪，但部分人因麦克风限制无法通过DTMF验证码；还有人分享少年时在书店翻阅《2600》杂志初识电话盗用的经历，印证了这一亚文化的持久生命力。",
+        "en": "Users express fascination with the no-JS background effect and nostalgic resonance, though some struggle with the DTMF CAPTCHA due to microphone limitations; others share personal memories of discovering phreaking through *2600* magazine, highlighting its cultural longevity."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Phreaking",
+          "title": "Phreaking - Wikipedia"
+        },
+        {
+          "url": "https://www.sknexus.org/p/hacking-didnt-start-with-the-internet",
+          "title": "Hacking Didn't Start With the Internet"
+        },
+        {
+          "url": "https://veteranlife.com/military-history/phreaking",
+          "title": "Phreaking : The Phone Hacks From an Airmen That Helped Inspire..."
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50061859",
+      "slug": "2026-10-13-20-how-to-write-a-zx-spectrum-demoscene-intro-from-scratch-58d4f401",
+      "path": "/article/2026-10-13-20-how-to-write-a-zx-spectrum-demoscene-intro-from-scratch-58d4f401",
+      "rank": 20,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "zdw",
+      "url": "https://www.markround.com/blog/2026/zx-spectrum-intro",
+      "published_at": "2026-10-12T19:40:00+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012654+00:00",
+      "tags": [
+        "demoscene",
+        "ZX-Spectrum",
+        "retrocomputing",
+        "assembly-language",
+        "digital-preservation"
+      ],
+      "image_path": "media/hackernews-story-50061859.svg",
+      "title": {
+        "zh": "从零编写ZX Spectrum演示场景开场程序",
+        "en": "How to write a ZX Spectrum demoscene intro from scratch"
+      },
+      "summary": {
+        "zh": "马克·朗德于2026年发布了一篇实操技术指南，完整展示如何使用Z80汇编语言为ZX Spectrum编写、汇编并运行一个功能完整的演示场景开场程序，其中包含对遗留二进制文件的恢复及工具链退化现象的详细记录。 它凸显了在演示场景等小众却极具历史价值的社群中开展主动数字保存的紧迫性——工具链失传与存档网站失效正严重威胁着核心创意代码的可复现性。 该开场程序面向ZX Spectrum原版48K内存机型，依赖精确到机器周期的Z80汇编；作者使用SpectNetIDE开发，并因缺失宏定义与汇编器版本不兼容，被迫从互联网档案馆恢复一个已失效的WWW二进制文件。",
+        "en": "Mark Round published a hands-on technical guide in 2026 showing how to write, assemble, and run a functional demoscene intro for the ZX Spectrum using Z80 assembly — including recovery of legacy binaries and documentation of toolchain decay. It highlights the urgent need for active digital preservation in niche but historically rich communities like the demoscene, where lost toolchains and unmaintained archives threaten the reproducibility of foundational creative code. The intro targets the original ZX Spectrum’s 48K RAM model and relies on precise cycle-counted Z80 assembly; the author used SpectNetIDE and recovered a broken WWW binary from Internet Archive due to missing macros and incompatible assembler versions."
+      },
+      "body": {
+        "zh": "马克·朗德（Mark Round）2026年的博客文章远不止是一篇复古计算教程——它本身就是一次数字考古实践。文章手把手指导读者用Z80汇编语言，为1982年发布的ZX Spectrum 8位家用电脑编写一个演示场景（demoscene）开场程序。内容涵盖光栅扫描效果、滚动文字与同步音乐等视觉元素，并在真实硬件或模拟器上运行。作者细致解析了Spectrum独特的ULA芯片、内存布局和精确时序要求——这些特性让精准控制既必不可少，又充满挑战。\n\n这篇指南的独特之处在于它直面历史的脆弱性。朗德坦言，他不得不从互联网档案馆（Internet Archive）恢复一个关键的预编译二进制文件，因为原始源代码托管的网站早已失效，且代码在现代工具链下无法成功汇编。这已不仅是一次编程练习，更是一则关于基础演示文化知识如何轻易消逝的现实案例。他指出，即便部分资源尚存（如谢尔盖·布尔巴仍在运行的存档站点 ay.strangled.net），也常需大量考证工作：过时的工具链、未文档化的宏定义，以及80年代开发环境中隐含的假设。\n\n文章还反思了演示场景为何至今仍具文化生命力。与当今主流软件开发中层层抽象与臃肿框架不同，演示程序要求开发者对硬件有近乎本能的掌握——每个字节都至关重要。4KB或64KB的大小限制并非随意设定，而是倒逼优雅设计、创意表达与极致优化的硬性约束。评论区读者感慨，这种精神重塑了他们对编程的理解：有人称之为‘对懒惰编码的终身免疫’，也有人视其为重返‘以代码为手艺’的温暖时光。\n\n更深层地，这篇文章以行动倡导‘保存即实践’。它不只传授汇编技巧，更示范如何验证、注释与重构旧代码，使后来者得以在其基础上继续构建，而非仅作怀旧瞻仰。正如一位评论者所言：‘若社区不主动开展保存工作，这类资料终将腐烂。’因此，朗德的开场程序，本质上是一个可执行、可教学、亟待守护的时间胶囊。",
+        "en": "Mark Round’s 2026 blog post is not just another retrocomputing tutorial — it’s a living artifact of digital archaeology. The article walks readers step-by-step through writing a demoscene intro for the ZX Spectrum, a beloved 8-bit home computer released in 1982. Using Z80 assembly language, Round builds a compact, visually engaging demo that runs on real hardware or emulators — complete with raster effects, scrolling text, and synchronized music. Along the way, he documents the quirks of the Spectrum’s ULA chip, memory layout, and timing constraints that make precise control both essential and frustrating.\n\nWhat makes this guide distinctive is its honesty about historical fragility. Round recounts how he had to recover a critical pre-compiled binary from the Internet Archive because the original source code — hosted on a long-defunct website — no longer assembled correctly. This isn’t just a coding exercise; it’s a case study in how easily foundational demoscene knowledge can vanish without active curation. He notes that even when sources *do* survive (like Sergey Bulba’s still-active archive at ay.strangled.net), they often require detective work: outdated toolchains, undocumented macros, and assumptions baked into 1980s development environments.\n\nThe piece also reflects on why the demoscene remains culturally vital. Unlike modern software development — where abstraction layers and bloated frameworks dominate — demos demand intimate hardware mastery. Every byte counts. A 4K or 64K intro isn’t arbitrary: it’s a constraint that forces elegance, creativity, and deep optimization. Readers comment that this ethos reshaped their understanding of programming forever — some calling it a ‘taint’ against laziness, others a nostalgic return to coding as craft.\n\nBeyond nostalgia, the article quietly advocates for preservation-as-practice. It doesn’t just teach assembly; it models how to verify, annotate, and repackage legacy code so future developers can build upon it — not just admire it. As one commenter observes, ‘This stuff tends to rot if the community does not do the preservation work.’ In that sense, Round’s intro is less a demo than a time capsule — executable, educational, and urgently archival."
+      },
+      "background": {
+        "zh": "演示场景（demoscene）是一种以突破硬件极限为目标的计算机艺术亚文化，其作品（‘demo’）常受严格体积限制，如4KB或64KB。ZX Spectrum于1982年发布，搭载Z80处理器与有限内存，是欧洲早期演示场景活动的重要发源平台。为其编写演示程序需深入掌握硬件寄存器、精确时序与汇编级优化技巧。",
+        "en": "The demoscene is a computer art subculture focused on creating audiovisual demonstrations (‘demos’) that push hardware limits, often under strict size constraints like 4KB or 64KB. The ZX Spectrum, launched in 1982 with a Z80 CPU and limited memory, was a foundational platform for early European demoscene activity. Writing demos for it requires deep knowledge of hardware registers, timing, and assembly language optimization."
+      },
+      "discussion": {
+        "zh": "评论者普遍流露怀旧情绪，并高度认可演示场景所体现的工程严谨性；同时指出实际保存困境，例如链接失效、源码无法编译，以及对DemoZoo、Syntax Party等分散式仓库的依赖。多人强调该社群至今活跃，墨尔本Syntax Party等活动持续举办，保存工作亦在持续推进。",
+        "en": "Commenters express nostalgia and respect for the demoscene’s engineering rigor, while highlighting real-world archival challenges — such as broken links, unbuildable source code, and reliance on scattered repositories like DemoZoo and Syntax Party. Several note that the scene remains active today, with events like Melbourne’s Syntax Party and ongoing preservation efforts."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Demoscene",
+          "title": "Demoscene - Wikipedia"
+        },
+        {
+          "url": "https://ozone3d.net/tutorials/intro_demoscene.php",
+          "title": "Demoscene , Demomakers and Demo-Parties"
+        },
+        {
+          "url": "https://dotneteer.github.io/spectnetide/documents/language-structure",
+          "title": "Language structure | SpectNet IDE"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50057668",
+      "slug": "2026-10-13-21-kevin-kelly-s-2016-ai-predictions-assessed-a-decade-later-34957681",
+      "path": "/article/2026-10-13-21-kevin-kelly-s-2016-ai-predictions-assessed-a-decade-later-34957681",
+      "rank": 21,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "surprisetalk",
+      "url": "https://taylor.town/kk-ai-2026",
+      "published_at": "2026-10-12T15:16:45+00:00",
+      "fetched_at": "2026-10-13T07:40:21.012698+00:00",
+      "tags": [
+        "AI_forecasting",
+        "technological_prediction",
+        "Kevin_Kelly",
+        "Singularity",
+        "AI_ethics_and_society"
+      ],
+      "image_path": "media/hackernews-story-50057668.png",
+      "title": {
+        "zh": "凯文·凯利2016年AI预测十年后回看",
+        "en": "Kevin Kelly’s 2016 AI predictions assessed a decade later"
+      },
+      "summary": {
+        "zh": "2026年一篇回溯性分析评估了凯文·凯利2016年提出的AI预测，发现他在否定技术奇点、强调专业化与网络化AI方面的判断高度准确，但整体16项具体预测中仅约半数经受住了时间检验。 此次评估强化了人们对AI预测的批判性思考：它表明，比起具体技术时间表或里程碑，对AI演进的框架性理解——例如拒绝末日叙事、聚焦渐进式与嵌入式智能——往往更具持久解释力。 凯利曾预测AI将是‘专用软件大脑’而非通用超级智能；其‘用户驱动的网络效应’设想迄今尚未充分实现；他2016年明确否定技术奇点，但2026年7月已有部分科技领袖宣称奇点‘已至’，该说法尚未获得主流技术界共识。",
+        "en": "A 2026 retrospective evaluates Kevin Kelly’s 2016 AI predictions, finding strong accuracy on his rejection of the Singularity and emphasis on specialized, networked AI—but mixed results overall, with only about half of his 16 enumerated claims holding up under scrutiny. This assessment strengthens critical thinking about AI forecasting by highlighting how framing—such as rejecting apocalyptic narratives and focusing on incremental, embedded intelligence—can be more durable than specific technical timelines or milestones. Kelly predicted AI would be 'special purpose software brains' rather than general superintelligence; his 'user-driven network effect' idea remains underrealized; and while he dismissed the Singularity in 2016, some leaders claimed its arrival in July 2026—though that claim lacks broad technical consensus."
+      },
+      "body": {
+        "zh": "距离凯文·凯利（Kevin Kelly）发表其广受关注的2016年AI论述——收录于著作《必然》中——已过去整整十年。一篇深度回顾文章重新审视了这些预测的准确性。分析并未简单判定“全对”或“全错”，而是呈现出一幅复杂图景：他关于拒绝技术奇点、强调网络化与专业化AI的核心观点，至今仍显深刻；而其他部分则或未兑现，或尚待验证。\n\n凯利当时断言，AI不会以HAL 9000式的单一、类人意识超级智能形态降临，也不会引发一场突兀的“智能升维”奇点事件。相反，他预见AI将表现为大量专用工具，嵌入各类网络系统之中——即所谓“认知化”服务，其能力通过用户交互与数据流动持续渐进提升。这一图景与今日现实高度吻合：大语言模型驱动聊天助手和编程辅助，但自动驾驶依赖定制化的感知系统；医学影像AI基于放射科数据集训练，而非通用网页文本；国际象棋引擎Stockfish在专业领域仍稳胜最新大模型。\n\n他另一项独特判断——AI将遵循“用户驱动的网络效应”——则较难证实。尽管GitHub Copilot和谷歌AI集成等平台确因使用增多而更实用，但真正意义上的网络效应（即价值随用户数呈乘数级增长）在多数AI工具中仍未显现。有评论者指出，该预测逻辑简洁，实践效果却未达预期。\n\n与此同时，业界对“技术奇点”的态度自2016年以来已发生显著转变。彼时凯利旗帜鲜明地否定奇点，如今却有包括OpenAI CEO山姆·阿尔特曼与SpaceXAI CEO埃隆·马斯克在内的知名人士于2026年7月宣称“奇点已然到来”。然而该说法争议极大：专家指出，目前尚无自我改进的通用人工智能（AGI）出现，基准测试仍以专用任务为主，且技术进步历来遵循S型曲线——先加速后趋缓，并不支持失控式爆发。\n\n归根结底，这场复盘并非为了给预测打分，而是为了提升我们对技术演进的预判素养。凯利的真正优势不在预言精准，而在框架构建：他强调连续性而非断裂，专注专用性而非拟人性，重视基础设施而非末日叙事。在当下炒作与焦虑并存的时代，这种务实视角依然珍贵——它不是预言，而是思想脚手架。",
+        "en": "A decade after Kevin Kelly published his influential 2016 essay on AI—part of his broader book *The Inevitable*—a thoughtful retrospective has reexamined how well his forecasts held up. Rather than celebrating triumph or declaring failure, the analysis reveals a nuanced picture: several core ideas, especially his rejection of the Singularity and insistence on specialized, networked AI, have aged remarkably well—even as other predictions missed the mark or remain unresolved.\n\nKelly argued that AI would not arrive as a single, conscious superintelligence like HAL 9000, nor trigger a sudden ‘rapture’ of intelligence. Instead, he envisioned AI as countless narrow, task-specific tools embedded in networks—‘cognified’ services that improve incrementally through user interaction and data flow. This vision aligns closely with today’s reality: large language models power chatbots and coding assistants, but autonomous driving relies on bespoke perception stacks; medical imaging AI is trained on radiology datasets, not general web text; and chess engines like Stockfish still outperform LLMs at their domain.\n\nOne of his most distinctive claims—that AI would obey a ‘user-driven network effect’—has proven harder to validate. While platforms like GitHub Copilot and Google’s AI integrations do grow more useful with usage, true network effects (where value scales multiplicatively with users) remain elusive for most AI tools. As one commenter notes, this prediction feels clean in theory but underdelivered in practice.\n\nMeanwhile, sentiment around the Singularity has shifted markedly since 2016. Then, Kelly stood out for dismissing it outright; today, some prominent figures—including OpenAI’s Sam Altman and SpaceXAI’s Elon Musk—have declared in July 2026 that the Singularity has *already arrived*. Yet this claim remains highly contested: experts point to the lack of self-improving AGI, the persistence of narrow benchmarks, and the S-curve pattern of technological progress, which historically resists runaway acceleration.\n\nUltimately, the exercise isn’t about scoring predictions like a quiz—it’s about sharpening our forecasting literacy. Kelly’s strength wasn’t clairvoyance, but framing: he emphasized continuity over rupture, specialization over sentience, and infrastructure over apocalypse. In an era of hype and alarmism, that grounded perspective remains valuable—not as prophecy, but as intellectual scaffolding."
+      },
+      "background": {
+        "zh": "技术奇点是一个假想未来节点，指人工智能通过递归式自我改进突破人类控制，引发不可预测的社会变革。该概念由I·J·古德和雷·库兹韦尔等人推动普及，但长期受到AI研究者的质疑，他们指出技术进步常呈现S型曲线，存在收益递减规律。凯文·凯利2016年的论述发表于深度学习突破引发公众广泛关注、AI长期发展路径争论日益升温之际。",
+        "en": "The technological singularity is a hypothetical future point where AI recursively self-improves beyond human control, leading to unpredictable societal transformation. It was popularized by thinkers like I. J. Good and Ray Kurzweil, but has long faced skepticism from AI researchers who cite diminishing returns and S-curve patterns in technological progress. Kevin Kelly’s 2016 essay appeared amid rising public fascination with deep learning breakthroughs and growing debate over AI’s long-term trajectory."
+      },
+      "discussion": {
+        "zh": "Hacker News用户普遍认可凯利反对奇点、强调专用AI的观点，认为这与Stockfish棋类引擎、医疗AI等实际应用高度契合；同时就其‘用户驱动的网络效应’预测是否落空展开讨论；并指出业界对奇点的态度已明显偏离凯利2016年的立场。",
+        "en": "HN users praised Kelly’s anti-Singularity stance and focus on specialized AI, noting its alignment with real-world deployments like Stockfish and medical AI; they debated the unfulfilled 'user-driven network effect' prediction; and highlighted how sentiment on the Singularity has notably shifted away from Kelly’s 2016 position."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Singularity_(technological)",
+          "title": "Singularity (technological)"
+        },
+        {
+          "url": "https://grokipedia.com/page/Technological_singularity",
+          "title": "Technological singularity"
+        },
+        {
+          "url": "https://www.toolify.ai/ai-news/the-rise-of-technological-singularity-40026",
+          "title": "The Rise of Technological Singularity"
+        }
+      ]
+    },
+    {
+      "id": "rss:simonwillison.net_atom_everything_:818cf62a3bb0a7f8",
+      "slug": "2026-10-13-22-simon-willison-releases-web-edit-0-1a0-for-secure-local-file-editing-over-tailsc-6790d34c",
+      "path": "/article/2026-10-13-22-simon-willison-releases-web-edit-0-1a0-for-secure-local-file-editing-over-tailsc-6790d34c",
+      "rank": 22,
+      "score": 7.0,
+      "source": "rss",
+      "author": "Simon Willison",
+      "url": "https://simonwillison.net/2026/Oct/12/web-edit/",
+      "published_at": "2026-10-12T15:54:36+00:00",
+      "fetched_at": "2026-10-13T07:40:20.491397+00:00",
+      "tags": [
+        "Python",
+        "web-development",
+        "Tailscale",
+        "developer-tools",
+        "security"
+      ],
+      "image_path": "media/rss-simonwillison-net-atom-everything--818cf62a3bb0a7f8.jpg",
+      "title": {
+        "zh": "西蒙·威利森发布 web-edit 0.1a0：通过 Tailscale 安全编辑本地文件",
+        "en": "Simon Willison releases web-edit 0.1a0 for secure local file editing over Tailscale"
+      },
+      "summary": {
+        "zh": "西蒙·威利森发布了 web-edit 0.1a0，一款极简 Python 网页应用，允许用户通过浏览器在私有 Tailscale 网络中安全浏览和编辑本地文件，从而绕过大语言模型处理敏感凭证。 它回应了 AI 辅助开发中日益突出的安全隐患：防止 API 密钥等敏感凭据意外泄露至大语言模型上下文中，同时为开发者提供了比云端编辑器或复杂 SSH 方案更轻量、更本地化的替代选择。 应用采用 CodeMirror 6（而非 Monaco）实现编辑功能，因其移动端支持更优；暂无内置身份认证，完全依赖 Tailscale 的零信任网络进行访问控制；不执行用户代码，也不向外部发送任何数据。",
+        "en": "Simon Willison released web-edit 0.1a0, a minimal Python web app that lets users securely browse and edit local files via a browser interface over a private Tailscale network, avoiding LLM-mediated credential handling. It addresses a growing security concern in AI-augmented development: preventing accidental leakage of secrets like API keys into LLM contexts, while offering a lightweight, local-first alternative to cloud-based editors or complex SSH setups. The app uses CodeMirror 6 for editing (not Monaco) due to superior mobile support; it has no built-in auth and relies solely on Tailscale's zero-trust network for access control; it does not execute code or send data externally."
+      },
+      "body": {
+        "zh": "知名开发者、Django 共同作者西蒙·威利森发布了 web-edit 0.1a0 — 一款极简的、可自托管的 Python 网页应用，让用户能通过浏览器安全浏览和编辑本机文件。该工具专为解决一个实际痛点而生：在远程开发中修改敏感配置或凭证文件（如 API 密钥、数据库密码）时，避免这些机密信息被无意间传入大语言模型处理。\n\n这一想法源于威利森使用 Codex Remote（ChatGPT 的手机端远程编程功能）从手机开发项目时的一次实际需求。他需要快速调整一份凭证文件，但又不愿让这些敏感内容经由 LLM 助手传输——哪怕是在本地运行。与其反复复制粘贴，或依赖体验不佳的 SSH 编辑器，他选择用 GPT-6 Astra Extra High（OpenAI 推出的先进模型）配合 Codex，直接生成了一个轻量、安全的替代方案，即 web-edit。\n\n该应用以简单 Python 服务形式运行，通过 Tailscale 提供带 HTTPS 的网页界面，支持文件浏览、上传、下载、删除，以及基于 CodeMirror 6 的文本文件在线编辑——之所以选用 CodeMirror 6 而非 Monaco，是因为前者在移动端触控体验更成熟。界面设计极度克制：一个含文件名、大小与修改时间的表格；一组上传控件；以及下方实时编辑区。当前版本未内置身份认证，完全依赖 Tailscale 自带的零信任网络访问控制——只有你私有 Tailscale 网络中已授权的设备才能访问该服务。\n\n这并非又一个云端 IDE 或在线 Python 沙箱。不同于 Online Python 或 OnlineIDE 等将代码提交至远程服务器执行的服务，web-edit 始终运行于你的本地机器，不执行任何用户代码，不调用外部 API（仅提供静态资源），也无任何遥测。其安全模型是“本地优先”：文件始终保留在本地磁盘，所有编辑操作均在本地完成，网络暴露范围被严格限制在加密且基于身份验证的 Tailscale 隧道内。对于管理敏感基础设施或跨设备工作的开发者而言，它悄然填补了便利性与保密性之间长期存在的关键空白。",
+        "en": "Simon Willison, a well-known developer and co-creator of Django, has released web-edit 0.1a0 — a minimal, self-hosted Python web application designed to let users browse and edit files on their local machine through a browser interface. The tool was built specifically to solve a real-world friction point: editing sensitive configuration or credential files (like API keys or database passwords) without inadvertently exposing them to large language models during remote development workflows.\n\nThe impetus came while Willison was using Codex Remote — ChatGPT’s mobile-to-desktop remote coding feature — to work on a project from his phone. He needed to tweak a credentials file but didn’t want those secrets routed through an LLM-powered assistant, even locally. Rather than copy-paste or use clunky SSH-based editors, he prompted GPT-6 Astra Extra High (an advanced OpenAI model) alongside Codex to generate a lightweight, secure alternative — resulting in web-edit.\n\nThe app runs as a simple Python server, serves a clean web UI over HTTPS (when used with Tailscale), and supports file browsing, uploading, downloading, deletion, and inline editing of text files using CodeMirror 6 — chosen for its strong mobile responsiveness, unlike Monaco which still lags on touch devices. The interface is intentionally sparse: a file table with name, size, and modification time; upload controls; and a live editor pane. No authentication layer is included yet — it relies entirely on Tailscale’s built-in zero-trust network access control, meaning only authorized devices on your private Tailscale network can reach the service.\n\nThis isn’t another cloud-based IDE or online Python playground. Unlike services like Online Python or OnlineIDE — which run code remotely and may log or process inputs — web-edit never leaves your machine. It doesn’t execute code, doesn’t connect to external APIs beyond serving static assets, and avoids all telemetry. Its security model is ‘local-first’: files stay on disk, edits happen locally, and network exposure is strictly limited to your encrypted, identity-aware Tailscale tunnel. For developers juggling sensitive infrastructure or working across devices, it fills a quiet but critical gap between convenience and confidentiality."
+      },
+      "background": {
+        "zh": "Tailscale 是一种现代网状 VPN 工具，基于 WireGuard 构建加密且基于身份验证的私有网络，无需开放端口或配置防火墙即可安全远程访问本地服务。Codex Remote 是 ChatGPT 的移动端功能，允许用户在连接的桌面设备上启动、引导和批准编程任务。GPT-6 Astra Extra High 是 OpenAI 推出的先进模型，专为复杂多步推理与工具协同优化。",
+        "en": "Tailscale is a modern mesh VPN that creates encrypted, identity-aware private networks using WireGuard; it allows secure remote access to local services without opening ports or configuring firewalls. Codex Remote is ChatGPT's mobile feature enabling users to start, guide, and approve coding tasks on a connected desktop device. GPT-6 Astra Extra High is an advanced OpenAI model optimized for complex, multi-step reasoning and tool integration."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://learn.chatgpt.com/docs/remote",
+          "title": "Codex Remote | ChatGPT Learn"
+        },
+        {
+          "url": "https://learn.chatgpt.com/docs/remote-connections",
+          "title": "Remote connections | ChatGPT Learn"
+        },
+        {
+          "url": "https://openai.com/index/gpt-6-astra/",
+          "title": "GPT - 6 Astra : A new generation of intelligence | OpenAI"
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1x4lvn8",
+      "slug": "2026-10-13-23-bs-holders-can-land-research-engineer-roles-but-face-steeper-odds-5317d374",
+      "path": "/article/2026-10-13-23-bs-holders-can-land-research-engineer-roles-but-face-steeper-odds-5317d374",
+      "rank": 23,
+      "score": 7.0,
+      "source": "reddit",
+      "author": "/u/jacobnar",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1x4lvn8/is_an_ms_a_soft_requirement_for_research_engineer/",
+      "published_at": "2026-10-13T03:13:36+00:00",
+      "fetched_at": "2026-10-13T07:40:21.142674+00:00",
+      "tags": [
+        "machine-learning",
+        "career-development",
+        "research-engineering",
+        "education-pathways",
+        "hiring-practices"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1x4lvn8.svg",
+      "title": {
+        "zh": "本科能否胜任研究工程师岗位？招聘数据揭示现实",
+        "en": "BS holders can land research engineer roles but face steeper odds"
+      },
+      "summary": {
+        "zh": "一名本科背景的数据科学家公开分析了Research Engineer与Post-Training岗位的真实LinkedIn招聘数据，显示本科候选人占比为22%至30%，并探讨论文发表或高影响力项目能否切实弥补硕士学位的缺口。 这一问题反映了大量无研究生学历的从业者在向研究型工程岗位转型时面临的关键职业拐点——而此类岗位正日益成为大语言模型开发、对齐与后训练流程的核心环节。 招聘数据显示，三类真实岗位中本科占比为22%至44%，说明可行但处于统计劣势；社区反馈强调，论文或生产级项目必须具体、可见且技术扎实，而非仅挂名或浅层参与。",
+        "en": "A BS-holding data scientist publicly analyzed real LinkedIn hiring statistics for Research Engineer and Post-Training roles, revealing BS candidates make up 22–30% of hires—and asked whether publications or impactful projects can credibly substitute for a Master’s degree. This question reflects a growing career inflection point for practitioners without graduate degrees who aim to move into research-adjacent engineering—roles increasingly central to LLM development, alignment, and post-training workflows. Job-posting data shows BS representation ranges from 22% to 44% across three real roles, indicating it's possible but statistically disadvantaged; community feedback stresses that publications or production-grade projects must be concrete, visible, and technically rigorous—not just nominal."
+      },
+      "body": {
+        "zh": "一名拥有本科学位、目前担任数据科学家的从业者近日在Reddit发帖，引发了一场关于硕士学历是否已成为研究型工程岗位“软性门槛”的深入讨论。这些岗位包括研究工程师、应用科学家以及后训练（Post-Training）工程师等。发帖人曾在高校参与应用机器学习研究，目前在企业中负责构建ML模型与统计方法，具备扎实的实践基础。他援引了Cohere、Garner Health等公司真实岗位的LinkedIn教育背景分布数据：例如，Cohere某Post-Training职位中，博士占22%，硕士占48%，本科及其它学历仅占30%；另一研究工程师岗位中，博士26%、硕士52%、本科22%；Garner Health的应用科学家岗位则为硕士56%、本科44%。数据显示，本科背景虽非零星存在，但始终处于明显少数地位。\n\n问题的核心并非数字本身，而是职业路径的可行性与策略选择。发帖人真正关心的是：仅凭本科能否获得面试机会？若不能，哪些替代性能力信号——如顶会或workshop论文、高质量arXiv预印本、可验证的开源项目贡献——能有效弥补学历差距？这折射出当前机器学习领域招聘中的一个深层矛盾：岗位日益融合工程实现与科研思维，但筛选机制仍常将学位作为深度、严谨性与领域熟练度的代理指标。\n\n评论区多位业内人士指出，硕士学历确能增强可信度，却并非不可逾越的壁垒。有人强调，在重视产出而非出身的初创公司或研究实验室中，落地级后训练系统、合作发表有实证影响的预印本、或维护被广泛采用的ML工具库，正变得越来越有分量。不过，缺乏研究生训练的候选人往往需更主动地积累可见、可验证的研究级工程证据。\n\n这场讨论最终指向一个务实结论：进入研究工程领域的关键，不在于是否持有硕士学位，而在于能否持续展现解决开放性难题的能力——这类问题横跨建模、系统架构与评估设计。对本科生而言，这意味着把每个项目都当作作品集的一部分，用研究视角去定义问题、确保可复现性，并提炼出可迁移的技术洞见。",
+        "en": "A practicing data scientist with a bachelor’s degree recently sparked a thoughtful discussion on Reddit about whether an MS is effectively a soft gatekeeper for research-adjacent engineering roles—particularly Research Engineer, Applied Scientist, and Post-Training positions. The poster, who has industry experience building ML models and prior academic research exposure in applied machine learning, shared real LinkedIn job-posting education breakdowns from companies like Cohere and Garner Health. For example, one Cohere Post-Training role listed PhDs at 22%, Master’s holders at 48%, and BS/other at 30%; another Research Engineer role showed 26% PhD, 52% MS, and 22% BS/other; while an Applied Scientist opening at Garner Health reported 56% MS and 44% BS/other. These figures suggest that while bachelor’s degrees are represented, they’re consistently in the minority—often below one-quarter of hires.\n\nThe core question isn’t just statistical: it’s about viability and strategy. The poster wants to know whether a BS alone can be competitive—or whether exceptional compensating signals (e.g., peer-reviewed publications, workshop papers, or high-impact open-source projects) can meaningfully offset the credential gap. This reflects a broader tension in ML hiring: as roles blur the line between software engineering and research, employers increasingly seek hybrid profiles—but their screening filters often still lean on formal credentials as proxies for depth, rigor, and domain fluency.\n\nIndustry respondents in the thread emphasized that while advanced degrees help signal readiness, they’re not insurmountable barriers. Several noted that hands-on contributions—like shipping production-grade post-training systems, co-authoring arXiv preprints with measurable impact, or maintaining widely adopted ML tooling—carry increasing weight, especially at startups and labs prioritizing output over pedigree. Still, candidates without graduate training may need to invest more deliberately in visible, verifiable evidence of research-level thinking and engineering discipline.\n\nUltimately, this conversation underscores a pragmatic truth: the path into research engineering is less about ticking a degree box and more about demonstrating a consistent pattern of solving hard, open-ended problems at the intersection of modeling, infrastructure, and evaluation. For BS-holders, that means treating every project—not just publications—as portfolio evidence, and framing work through the lens of research questions, reproducibility, and generalizable insights."
+      },
+      "background": {
+        "zh": "研究工程师岗位处于软件工程与应用机器学习研究的交叉地带，通常聚焦于可扩展的训练/推理基础设施、模型编辑、安全评估，或RLHF、DPO等后训练技术。与纯研究科学家不同，他们更强调稳健实现、可复现性及与产品管线的集成能力。",
+        "en": "Research Engineer roles sit at the intersection of software engineering and applied ML research, often focusing on scalable training/inference infrastructure, model editing, safety evaluation, or post-training techniques like RLHF and DPO. Unlike pure research scientists, they emphasize robust implementation, reproducibility, and integration into product pipelines."
+      },
+      "discussion": {
+        "zh": "评论者普遍认为，尽管硕士或博士学历有助提升竞争力，但扎实的作品集——包括已上线的系统、含实证结果的arXiv论文、文档清晰的GitHub仓库——尤其在小型或使命驱动型团队中，同样具备强竞争力。",
+        "en": "Commenters largely agreed that while MS/PhD helps, strong portfolios—including shipped systems, arXiv papers with empirical results, and GitHub repos with clear documentation—can compete effectively, especially at smaller or mission-driven teams."
+      },
+      "sources": []
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1x3wgif",
+      "slug": "2026-10-13-24-school-builds-ai-system-to-generate-exam-questions-from-past-papers-674f0df5",
+      "path": "/article/2026-10-13-24-school-builds-ai-system-to-generate-exam-questions-from-past-papers-674f0df5",
+      "rank": 24,
+      "score": 7.0,
+      "source": "reddit",
+      "author": "/u/SnooOpinions9858",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1x3wgif/generating_exam_questions_from_a_schools_own_past/",
+      "published_at": "2026-10-12T08:31:06+00:00",
+      "fetched_at": "2026-10-13T07:40:21.143177+00:00",
+      "tags": [
+        "education-ai",
+        "llm-pipelines",
+        "pdf-parsing",
+        "assessment-generation",
+        "edtech"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1x3wgif.svg",
+      "title": {
+        "zh": "学校用AI从历年试卷自动生成考题",
+        "en": "School builds AI system to generate exam questions from past papers"
+      },
+      "summary": {
+        "zh": "一名高中开发者构建了可投入使用的AI考题生成流水线：基于校内历年试卷PDF，通过多模型协同、自动校验与人工审核机制，生成符合本校课程目标的考题，单选题准确率约80%，但在科学符号解析与结构化题目保真度上仍有难点。 这展示了大语言模型在教育中一种务实、注重隐私且教学导向的应用范式：以学习目标对齐和教师主导权为先，而非盲目追求自动化，为各校在保障质量与数据主权前提下规模化建设测评资源提供了可复用的实践路径。 系统利用课程标签实现精准检索与范围控制；单选题答案键通过代码比对评分标准（而非依赖模型输出）进行验证；因理科PDF文本层严重损坏，当前直接输入整份PDF；结构化题目保真度仅在从轻量模型升级至中等规模模型后才明显提升。",
+        "en": "A high school developer built a production-ready pipeline that generates curriculum-aligned exam questions from internal past-paper PDFs using multi-model LLM orchestration, automated validation, and human-in-the-loop approval—with ~80% MCQ accuracy but persistent challenges in scientific notation parsing and structured-question fidelity. This demonstrates a realistic, privacy-conscious, and pedagogically grounded application of LLMs in education—prioritizing alignment with learning objectives and teacher agency over raw automation, offering a replicable blueprint for schools seeking to scale assessment development without compromising quality or data sovereignty. The system uses curriculum tags for precise retrieval and scope control; validates MCQ answer keys programmatically against mark schemes (not model outputs); feeds full PDFs to LLMs due to broken text layers in science papers; and achieves higher fidelity on structured questions only after upgrading from a small to a mid-size model."
+      },
+      "body": {
+        "zh": "一名高中开发者构建了一个可运行的原型系统，利用大语言模型（LLM）分析本校历年试卷和参考答案PDF，按校本课程目标自动生成新考题。该系统并非简单地将PDF文本喂给模型，而是嵌入了多层保障机制：课程数据库中已有的学习目标作为范围约束，所有AI生成题目必须经课程管理员人工审核批准后，教师方可使用。这种“人在环中”的设计体现了教育AI落地的务实思路——不追求全自动，而是在可控前提下提升内容生产效率。\n\n流程起点是试卷与评分标准的PDF文件。由于理科试卷常含化学式、上下标（如ΔH、H₂O）、表格和示意图，传统PDF文本提取极易出错：希腊字母Δ被丢弃、H₂O被拆成‘H2O’、表格列顺序错乱。为规避这些问题，开发者目前直接将整份PDF送入LLM处理，绕过不可靠的文本层解析。但他正寻求更优解：Docling或Marker等工具结合版面感知OCR与语义结构重建，有望更精准保留公式、表格和图表信息。\n\n题目生成环节采用双模型分工：轻量模型负责起草新题（单选题、简答题、实验场景题），另一中等规模模型则作为“盲评员”，在不知晓标准答案的前提下作答以检验逻辑一致性。单选题答案键通过代码比对原始评分标准（而非依赖模型输出）进行验证，目前通过率约80%。结构化题目仍存挑战：早期版本曾虚构化学上不可能的实验装置，升级至中等模型后，准确性显著提升。\n\n除技术细节外，开发者还提出了四个对教育科技团队极具参考价值的问题：PDF解析如何规模化？向量检索（如pgvector）应在题库多大时引入以支持语义去重与精准检索？批量生成数千道题时，成本与质量如何平衡？最根本的是——如何科学评估AI生成题目的教学有效性，而不仅是事实正确性？其技术栈（NestJS + 每租户独立Postgres + 自托管VPS）确保学生数据与试卷原文不出校内服务器，仅将脱敏后的课程文本与题目草稿发送至外部LLM API。这是一个以教师判断为核心、AI为辅助的审慎实践。",
+        "en": "A high school developer has built a working prototype that uses large language models (LLMs) to generate new exam questions—tailored to the school’s specific curriculum—by analyzing its own archive of past papers and mark schemes. The system isn’t just prompting an LLM with raw text; it layers in structured guardrails: learning objectives from the school’s existing curriculum database guide question scope, and every generated item must pass human approval by a curriculum administrator before teachers can use it. This human-in-the-loop design reflects a pragmatic, safety-first approach to AI in assessment—one that avoids blind automation while still scaling content creation.\n\nThe pipeline starts with PDFs of past exams and answer keys. Because many science papers contain equations, subscripts, tables, and diagrams, standard PDF text extraction fails badly—dropping deltas (Δ), splitting chemical subscripts like H₂O into ‘H2O’, or scrambling table columns. To work around this, the developer currently feeds entire PDFs directly to the LLM, bypassing fragile text-layer parsing. But they’re seeking better alternatives: tools like Docling or Marker, which combine layout-aware OCR with semantic structure recovery, could preserve scientific notation and tabular integrity more reliably.\n\nFor question generation, a smaller, faster model drafts new items—MCQs, short answers, and lab-based scenarios—while a separate, stronger model acts as an automated grader, answering them “blind” (without seeing the answer key). MCQ answer keys are then validated programmatically against the original mark scheme—not trusted to the model—achieving ~80% pass rates. Structured questions remain trickier: early versions invented chemically implausible lab setups, but upgrading to a mid-size model significantly improved fidelity.\n\nBeyond technical hurdles, the developer raises four strategic questions relevant to any edtech team building AI-assisted assessment: How to handle PDF parsing at scale? When does vector search (e.g., pgvector) become necessary for de-duplication and retrieval? What’s the real cost-quality tradeoff when generating thousands of questions? And most fundamentally—how do you *measure* whether an AI-generated question is pedagogically sound, not just factually correct? Their stack—NestJS, Postgres per tenant, self-hosted VPS—keeps sensitive student and exam data on-premises, sending only anonymized curriculum text and draft questions to external LLM APIs. It’s a thoughtful, grounded implementation where AI augments, rather than replaces, educator judgment."
+      },
+      "background": {
+        "zh": "教育AI中的‘课程对齐标注’指将AI生成内容映射到官方学习目标（例如‘解释化学平衡’），确保输出具备教学相关性。PDF包含两层：视觉层（人眼所见）与隐藏文本层（用于复制/搜索）；当PDF生成质量差（如扫描件或含大量公式的学术PDF）时，文本层常与视觉层错位，导致下游自然语言处理任务失败。Docling和Marker等工具通过融合OCR、版面分析与语义解析，力求恢复准确文档结构。",
+        "en": "In education AI, 'curriculum-aligned tagging' means mapping AI-generated content to official learning objectives (e.g., 'Explain chemical equilibrium') so outputs stay pedagogically relevant. PDFs contain two layers: a visual layer (what you see) and a hidden text layer (used for copying/searching); when poorly generated—as common in scanned or equation-heavy academic PDFs—the text layer misaligns with visuals, breaking downstream NLP tasks. Tools like Docling and Marker aim to recover accurate structure by combining OCR, layout analysis, and semantic parsing."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://towardsdatascience.com/beyond-extract_text-the-two-layers-of-a-pdf-that-drive-rag-quality/",
+          "title": "Beyond extract_text: The Two Layers of a PDF That Drive RAG ..."
+        },
+        {
+          "url": "https://github.com/hypothesis/pdf-text-quality",
+          "title": "GitHub - hypothesis/pdf-text-quality: Tool for measuring the ... ocr - PDF and text layer - Stack Overflow Text Layer and Search | mozilla/pdfjs-dist | DeepWiki Exploring The Top Tool For Creating PDF Layers in Document ... What Is a PDF Text Layer? Digital vs. Scanned PDFs"
+        }
+      ]
+    }
+  ]
+}

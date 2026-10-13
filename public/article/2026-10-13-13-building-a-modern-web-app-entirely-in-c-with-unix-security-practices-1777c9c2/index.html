@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>用纯C语言构建现代Web应用 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="一篇详实的实践指南展示了如何完全使用C语言，结合CGI、chroot、权限降级和精简Unix工具链，构建安全、可用于生产的Web应用，全程不依赖任何框架或高级运行时。 它挑战了‘现代Web开发必须依赖复杂JavaScript生态’的固有假设，为安全敏感、资源受限或需高度可审计的系统，提供了一种以极简性和可控性为核心的有效替代路径。 该方案依赖手动内存管理，需" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="用纯C语言构建现代Web应用" />
+  <meta property="og:description" content="一篇详实的实践指南展示了如何完全使用C语言，结合CGI、chroot、权限降级和精简Unix工具链，构建安全、可用于生产的Web应用，全程不依赖任何框架或高级运行时。 它挑战了‘现代Web开发必须依赖复杂JavaScript生态’的固有假设，为安全敏感、资源受限或需高度可审计的系统，提供了一种以极简性和可控性为核心的有效替代路径。 该方案依赖手动内存管理，需" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50058528.svg" />
+  <meta property="article:published_time" content="2026-10-12T16:13:10+00:00" />
+  <meta property="article:modified_time" content="2026-10-13T08:00:05.730867+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="用纯C语言构建现代Web应用" />
+  <meta name="twitter:description" content="一篇详实的实践指南展示了如何完全使用C语言，结合CGI、chroot、权限降级和精简Unix工具链，构建安全、可用于生产的Web应用，全程不依赖任何框架或高级运行时。 它挑战了‘现代Web开发必须依赖复杂JavaScript生态’的固有假设，为安全敏感、资源受限或需高度可审计的系统，提供了一种以极简性和可控性为核心的有效替代路径。 该方案依赖手动内存管理，需" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50058528.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-10-13-13-building-a-modern-web-app-entirely-in-c-with-unix-security-practices-1777c9c2"}, "headline": "用纯C语言构建现代Web应用", "description": "一篇详实的实践指南展示了如何完全使用C语言，结合CGI、chroot、权限降级和精简Unix工具链，构建安全、可用于生产的Web应用，全程不依赖任何框架或高级运行时。 它挑战了‘现代Web开发必须依赖复杂JavaScript生态’的固有假设，为安全敏感、资源受限或需高度可审计的系统，提供了一种以极简性和可控性为核心的有效替代路径。 该方案依赖手动内存管理，需", "image": ["https://nowainews.com/media/hackernews-story-50058528.svg"], "datePublished": "2026-10-12T16:13:10+00:00", "dateModified": "2026-10-13T08:00:05.730867+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50058528.svg" alt="用纯C语言构建现代Web应用" />
+    <div class="article-page-tags"><span>#C</span> <span>#web-development</span> <span>#systems-programming</span> <span>#security</span> <span>#unix</span></div>
+    <h1>用纯C语言构建现代Web应用</h1>
+    <p class="article-page-meta">新闻时间: 2026-10-13T07:40:21.012395+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>如果不用JavaScript框架、Node.js，甚至不依赖nginx这样的传统Web服务器，你能构建出一个可用于生产的Web应用吗？一篇题为《用C语言构建现代Web应用》的文章给出了肯定回答——这并非怀旧实验，而是一种务实、注重安全的工程选择。作者全程使用标准C语言、POSIX系统调用和经典Unix工具（如CGI脚本、chroot隔离、Linux上模拟OpenBSD <code>pledge()</code>的权限降级机制，以及基于socket的轻量HTTP处理），搭建了一个精简且安全的Web服务。</p>
+<p>其核心理念是极致简洁：避免依赖膨胀，缩小攻击面，并回归Unix哲学——“只做一件事，并把它做好”。整个技术栈不包含Express、Babel、Webpack或Docker，而是由一个C语言编译的二进制程序提供静态资源与CGI动态内容，前端可搭配OpenBSD的<code>httpd</code>、<code>thttpd</code>，甚至直接使用<code>inetd</code>托管。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>这不是纸上谈兵。文中援引了多个真实先例：BusyBox内置的CGI支持、2000年代初广泛使用的FastCGI部署，乃至C++服务器经Emscripten编译为WebAssembly用于前端逻辑的现代混合方案。有读者提到，自己早年用C开发的餐厅在线点餐系统，正是通过FastCGI部署，因稳定性极佳被连锁品牌收购；而后续迁移到微软技术栈后，反而问题频发。</p>
+<p>当然，代价也明确：C语言需手动管理内存，无原生TLS或HTTP/2支持，对XSS、CSRF等常见Web漏洞也毫无防护——所有安全措施都必须显式实现。但对于资源受限环境（如嵌入式网关、物理隔离系统或高保障服务），这种可控性恰恰是关键优势。正如一位读者所言：“C不再用于Web服务器自有其原因”——但同样，当极简性、可审计性与确定性行为比开发便利性更重要时，C值得被重新审视。</p>
+<p>归根结底，这篇文章并非鼓吹C适用于所有团队或项目，而是提醒我们：现代Web开发不必等于工具链堆砌；回归基础原理，有时反而能收获意外的韧性、清晰度与性能。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://prophitt.me/writing/a-modern-web-app-in-c" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://github.com/JoramMalley/Linux-privilege-escalation" target="_blank" rel="noopener">GitHub - JoramMalley/Linux-privilege-escalation: A curated ...</a><a href="https://computingforgeeks.com/linux-privilege-escalation-guide-kali/" target="_blank" rel="noopener">Linux Privilege Escalation: Complete Guide for Pentesters</a><a href="https://www.youtube.com/watch?v=Tu19Fwmp-cs" target="_blank" rel="noopener">A Simple Web Server in C - YouTube</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
