@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Aggressive consistency weighting degrades temporal precision in AST-CRNN noise classifier - Now AI News</title>
+  <meta name="description" content="A researcher identified overly aggressive consistency weighting in a Mean Teacher–enhanced AST-CRNN model as the primary cause of degraded onset/offset localization in binary noise" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-14-18-aggressive-consistency-weighting-degrades-temporal-precision-in-ast-crnn-noise-c-52f1d801" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-14-18-aggressive-consistency-weighting-degrades-temporal-precision-in-ast-crnn-noise-c-52f1d801" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-14-18-aggressive-consistency-weighting-degrades-temporal-precision-in-ast-crnn-noise-c-52f1d801" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-14-18-aggressive-consistency-weighting-degrades-temporal-precision-in-ast-crnn-noise-c-52f1d801" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Aggressive consistency weighting degrades temporal precision in AST-CRNN noise classifier" />
+  <meta property="og:description" content="A researcher identified overly aggressive consistency weighting in a Mean Teacher–enhanced AST-CRNN model as the primary cause of degraded onset/offset localization in binary noise" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-14-18-aggressive-consistency-weighting-degrades-temporal-precision-in-ast-crnn-noise-c-52f1d801" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1x5jm7g.svg" />
+  <meta property="article:published_time" content="2026-10-14T06:05:41+00:00" />
+  <meta property="article:modified_time" content="2026-10-14T06:23:21.296673+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Aggressive consistency weighting degrades temporal precision in AST-CRNN noise classifier" />
+  <meta name="twitter:description" content="A researcher identified overly aggressive consistency weighting in a Mean Teacher–enhanced AST-CRNN model as the primary cause of degraded onset/offset localization in binary noise" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1x5jm7g.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-14-18-aggressive-consistency-weighting-degrades-temporal-precision-in-ast-crnn-noise-c-52f1d801"}, "headline": "Aggressive consistency weighting degrades temporal precision in AST-CRNN noise classifier", "description": "A researcher identified overly aggressive consistency weighting in a Mean Teacher–enhanced AST-CRNN model as the primary cause of degraded onset/offset localization in binary noise", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1x5jm7g.svg"], "datePublished": "2026-10-14T06:05:41+00:00", "dateModified": "2026-10-14T06:23:21.296673+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1x5jm7g.svg" alt="Aggressive consistency weighting degrades temporal precision in AST-CRNN noise classifier" />
+    <div class="article-page-tags"><span>#audio-event-detection</span> <span>#semi-supervised-learning</span> <span>#mean-teacher</span> <span>#temporal-localization</span> <span>#ast-model</span></div>
+    <h1>Aggressive consistency weighting degrades temporal precision in AST-CRNN noise classifier</h1>
+    <p class="article-page-meta">News time: 2026-10-14T06:06:19.823392+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A researcher developing a binary noise classification system has hit a subtle but critical roadblock: while overall detection accuracy is acceptable, the model consistently misplaces the start and end times of noise events—often by more than 14% of the event duration. The architecture combines an Audio Spectrogram Transformer (AST) backbone with a CRNN head and employs Mean Teacher for semi-supervised learning, leveraging both labeled and unlabeled audio segments. In early training stages, the AST is frozen and the CRNN head is trained; later, the AST is unfrozen and Mean Teacher is introduced to stabilize predictions across noisy or unverified timestamps.</p>
+<p>The core issue emerges during the semi-supervised phase. To enforce consistency between student and teacher networks, the researcher applied a high and inflexible consistency weight schedule. Instead of improving robustness, this caused the model’s output boundaries to blur—especially at onsets and offsets—because the teacher’s exponentially smoothed predictions suppressed sharp temporal transitions. As a result, even correctly classified events were temporally smeared, dragging down both F1 (0.284) and Dice (0.635) scores—particularly their combined metric (0.919), far short of the 1.5 target.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>This isn’t just a tuning problem—it reflects a known tension in semi-supervised sound event detection (SED): strong consistency regularization improves label efficiency but risks sacrificing temporal fidelity. Prior work, such as Couple Learning (arXiv:2110.05809), explicitly addresses this limitation of Mean Teacher + CRNN by introducing auxiliary supervision to preserve boundary sharpness. Similarly, DCASE 2022 submissions using Mean Teacher reported careful annealing of consistency weights—not fixed high values—to avoid over-smoothing.</p>
+<p>For this researcher, practical fixes include ramping up consistency weight gradually (e.g., cosine or sigmoid scheduling), adding boundary-aware loss terms (like onset/offset focal loss), or switching to a task-aware Mean Teacher variant that decouples consistency enforcement for coarse classification versus fine-grained localization. Since the AST backbone itself is capable of high-fidelity reasoning—as shown in recent test-time scaling studies—preserving its temporal sensitivity through gentler regularization may be more effective than brute-force consistency.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1x5jm7g/binary_noise_classification_using_crnn_mean/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://arxiv.org/pdf/2110.05809" target="_blank" rel="noopener">Couple learning for semi - supervised sound event detection</a><a href="https://dcase.community/documents/challenge2022/technical_reports/DCASE2022_deBenito_61_t4.pdf" target="_blank" rel="noopener">Multi-resolution combination of crnn and conformers for dcase 2022</a><a href="https://aiwiki.ai/wiki/audio_classification_models" target="_blank" rel="noopener">Audio Classification Models | AI Wiki</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
