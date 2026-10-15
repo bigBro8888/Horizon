@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>研究定位大模型‘糊弄体’源头：监督微调与DPO强化 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="研究者在Qwen3和OLMo 2模型中间层残差状态中定位到‘糊弄体’的神经表征方向，证实其在监督微调（SFT）阶段出现、在直接偏好优化（DPO）阶段加剧，并通过方向性消融与LoRA蒸馏实现有效抑制。 这是首次从机制上解释大模型为何默认输出刻板助理腔，证明它并非不可避免，而是训练选择导致的、可几何定位的学习产物，为对齐优化与可控文本生成提供了靶向干预依据。 糊" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-10-15-07-researchers-trace-llm-slop-style-to-sft-and-dpo-training-stages-8a3bb98c" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-15-07-researchers-trace-llm-slop-style-to-sft-and-dpo-training-stages-8a3bb98c" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-15-07-researchers-trace-llm-slop-style-to-sft-and-dpo-training-stages-8a3bb98c" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-15-07-researchers-trace-llm-slop-style-to-sft-and-dpo-training-stages-8a3bb98c" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="研究定位大模型‘糊弄体’源头：监督微调与DPO强化" />
+  <meta property="og:description" content="研究者在Qwen3和OLMo 2模型中间层残差状态中定位到‘糊弄体’的神经表征方向，证实其在监督微调（SFT）阶段出现、在直接偏好优化（DPO）阶段加剧，并通过方向性消融与LoRA蒸馏实现有效抑制。 这是首次从机制上解释大模型为何默认输出刻板助理腔，证明它并非不可避免，而是训练选择导致的、可几何定位的学习产物，为对齐优化与可控文本生成提供了靶向干预依据。 糊" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-10-15-07-researchers-trace-llm-slop-style-to-sft-and-dpo-training-stages-8a3bb98c" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1x64lbk.svg" />
+  <meta property="article:published_time" content="2026-10-14T22:08:02+00:00" />
+  <meta property="article:modified_time" content="2026-10-15T06:08:03.178033+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="研究定位大模型‘糊弄体’源头：监督微调与DPO强化" />
+  <meta name="twitter:description" content="研究者在Qwen3和OLMo 2模型中间层残差状态中定位到‘糊弄体’的神经表征方向，证实其在监督微调（SFT）阶段出现、在直接偏好优化（DPO）阶段加剧，并通过方向性消融与LoRA蒸馏实现有效抑制。 这是首次从机制上解释大模型为何默认输出刻板助理腔，证明它并非不可避免，而是训练选择导致的、可几何定位的学习产物，为对齐优化与可控文本生成提供了靶向干预依据。 糊" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1x64lbk.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-10-15-07-researchers-trace-llm-slop-style-to-sft-and-dpo-training-stages-8a3bb98c"}, "headline": "研究定位大模型‘糊弄体’源头：监督微调与DPO强化", "description": "研究者在Qwen3和OLMo 2模型中间层残差状态中定位到‘糊弄体’的神经表征方向，证实其在监督微调（SFT）阶段出现、在直接偏好优化（DPO）阶段加剧，并通过方向性消融与LoRA蒸馏实现有效抑制。 这是首次从机制上解释大模型为何默认输出刻板助理腔，证明它并非不可避免，而是训练选择导致的、可几何定位的学习产物，为对齐优化与可控文本生成提供了靶向干预依据。 糊", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1x64lbk.svg"], "datePublished": "2026-10-14T22:08:02+00:00", "dateModified": "2026-10-15T06:08:03.178033+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1x64lbk.svg" alt="研究定位大模型‘糊弄体’源头：监督微调与DPO强化" />
+    <div class="article-page-tags"><span>#LLM interpretability</span> <span>#instruction tuning</span> <span>#model alignment</span> <span>#training dynamics</span> <span>#style control</span></div>
+    <h1>研究定位大模型‘糊弄体’源头：监督微调与DPO强化</h1>
+    <p class="article-page-meta">新闻时间: 2026-10-15T05:52:02.419408+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一项新的可解释性研究首次精确定位了大语言模型‘糊弄体’的来源——那种充斥着破折号、三段式列举、流行词和‘不是X，而是Y’等修辞套路的过度 polished 助理腔。研究人员使用Qwen3-4B-Instruct和OLMo 2 1B模型，在隐藏状态中发现了一条稳定存在的方向向量，专门编码这种风格特征。该方向并非微调阶段凭空生成：基础模型已具备高度相似的方向（中间层余弦相似度达0.90–0.97），但其输出天然偏向‘朴素端’；真正的风格偏移始于监督微调（SFT），它植入了核心修辞结构；而直接偏好优化（DPO）则进一步放大该倾向——通过推广Markdown格式和填充词，使糊弄分翻倍。</p>
+<p>分析采用多重严谨方法交叉验证：基于模型自身夸张输出与朴素输出计算出的‘均值差方向’，能清晰区分64组人工构造的最小对立对，且与自建的套路计分器相关性高达0.82。Logit-lens读出结果显示残差状态中存在一条明确的‘语域轴’：一端对应宏大抽象词汇，另一端对应‘真的’‘基本上’‘ stuff ’等口语化缓和词。尤为关键的是，该方向具有跨语言一致性：英文‘不是X，而是Y’会显著激活中文‘而是’对应的方向，证实修辞套路在表征层面实现了跨语言语义对齐。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>去除糊弄体不靠禁用词——而靠表征干预。在第12至23层固定减去一个向量，即可有效削弱正则表达式无法触及的结构性套路，同时将KL散度严格控制在约0.4纳特/词以内。将该干预蒸馏为秩16的LoRA后，糊弄分下降83%，无需系统提示，KL开销反而低于原始干预，且小型问答测试无性能损失。但需注意：糊弄评分器基于正则表达式，尚未经人类评估验证；结果仅覆盖两个模型；尚无真实用户感知实验。</p>
+<p>这项工作连接了模型可解释性与对齐实践。它不再把糊弄体视为输出层的表面问题，而是将其建模为内部表征中可测量、可定位的几何属性——且该属性由训练选择主动塑造。这使其具备可操作性：开发者如今能诊断、量化并精准调控风格偏差，为可控生成、去偏处理与更忠实的指令遵循开辟新路径。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1x64lbk/tracing_where_llm_slop_style_comes_from_in_the/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://www.lesswrong.com/posts/yBM2rQ6AJY6MoRGFQ/llm-style-slop-is-absolutely-everywhere" target="_blank" rel="noopener">LLM Style Slop is Absolutely Everywhere — LessWrong</a><a href="https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens" target="_blank" rel="noopener">interpreting GPT: the logit lens — LessWrong</a><a href="https://www.gocodeo.com/post/dpo-in-llm-training-optimizing-models-for-aligned-behavior" target="_blank" rel="noopener">DPO in LLM Training: Optimizing Models for Aligned Behavior</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
