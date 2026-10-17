@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Claude reverse-engineers NIST ECDSA curve seeds to lrand48 timestamps - Now AI News</title>
+  <meta name="description" content="Claude identified that NIST&#x27;s P-192 through P-521 ECDSA curve seeds were generated using the non-cryptographic lrand48() function seeded with Unix timestamps — not cryptographic ha" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-17-02-claude-reverse-engineers-nist-ecdsa-curve-seeds-to-lrand48-timestamps-bcd75474" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-17-02-claude-reverse-engineers-nist-ecdsa-curve-seeds-to-lrand48-timestamps-bcd75474" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-17-02-claude-reverse-engineers-nist-ecdsa-curve-seeds-to-lrand48-timestamps-bcd75474" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-17-02-claude-reverse-engineers-nist-ecdsa-curve-seeds-to-lrand48-timestamps-bcd75474" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Claude reverse-engineers NIST ECDSA curve seeds to lrand48 timestamps" />
+  <meta property="og:description" content="Claude identified that NIST&#x27;s P-192 through P-521 ECDSA curve seeds were generated using the non-cryptographic lrand48() function seeded with Unix timestamps — not cryptographic ha" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-17-02-claude-reverse-engineers-nist-ecdsa-curve-seeds-to-lrand48-timestamps-bcd75474" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50122800.jpg" />
+  <meta property="article:published_time" content="2026-10-16T18:55:59+00:00" />
+  <meta property="article:modified_time" content="2026-10-17T05:45:47.757935+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Claude reverse-engineers NIST ECDSA curve seeds to lrand48 timestamps" />
+  <meta name="twitter:description" content="Claude identified that NIST&#x27;s P-192 through P-521 ECDSA curve seeds were generated using the non-cryptographic lrand48() function seeded with Unix timestamps — not cryptographic ha" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50122800.jpg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-17-02-claude-reverse-engineers-nist-ecdsa-curve-seeds-to-lrand48-timestamps-bcd75474"}, "headline": "Claude reverse-engineers NIST ECDSA curve seeds to lrand48 timestamps", "description": "Claude identified that NIST's P-192 through P-521 ECDSA curve seeds were generated using the non-cryptographic lrand48() function seeded with Unix timestamps — not cryptographic ha", "image": ["https://nowainews.com/media/hackernews-story-50122800.jpg"], "datePublished": "2026-10-16T18:55:59+00:00", "dateModified": "2026-10-17T05:45:47.757935+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50122800.jpg" alt="Claude reverse-engineers NIST ECDSA curve seeds to lrand48 timestamps" />
+    <div class="article-page-tags"><span>#cryptography</span> <span>#ecdsa</span> <span>#nist</span> <span>#random-number-generation</span> <span>#crypto-standards</span></div>
+    <h1>Claude reverse-engineers NIST ECDSA curve seeds to lrand48 timestamps</h1>
+    <p class="article-page-meta">News time: 2026-10-17T05:33:27.819374+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>In a striking demonstration of AI-assisted cryptanalysis, Anthropic’s Claude model has reverse-engineered the origin of the seed values used to generate NIST’s widely deployed ECDSA curves — P-192, P-224, P-256, P-384, and P-521. Rather than being derived from cryptographic hash functions as long assumed (and as NIST’s documentation implied), these seeds were produced by the non-cryptographic C library function <code>lrand48()</code>, seeded with Unix timestamps — essentially ordinary wall-clock time values from the late 1990s.</p>
+<p>This finding resolves a decades-old mystery that fueled skepticism about potential NSA manipulation. Since the curves’ publication in FIPS 186-1 (1994) and subsequent standards, the opaque origin of their ‘random’ seeds invited speculation: Were they backdoored? Chosen to enable hidden weaknesses? A public bounty launched in 2023 by cryptographer Bruce Schneier underscored how little was known — and how urgently the question needed answering. Now, Claude identified the exact generation method in under thirty minutes, matching each published seed to an <code>lrand48()</code> output given a timestamp-based seed.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The discovery doesn’t prove the curves are insecure — all five remain mathematically sound and widely trusted in practice — but it does expose a profound procedural lapse. Using <code>lrand48()</code>, a linear congruential generator with no cryptographic guarantees, violates modern best practices for randomness in standardization. As security expert Thomas Ptacek noted, the result is ‘devastating news… for an entire generation of NIST cryptography conspiracy theories’ — not because the curves are compromised, but because the supposed evidence of malice evaporated, replaced by something arguably worse: bureaucratic carelessness.</p>
+<p>One outlier remains unexplained: the B-163 binary seed (used in the Koblitz curve). It resists all timestamp-based <code>lrand48()</code> matches, leading researchers to hypothesize a transcription error during publication — a single mistyped digit could break the correspondence. Meanwhile, the broader implication is clear: foundational cryptographic standards can rest on astonishingly thin technical foundations. This episode underscores why transparency, reproducibility, and rigorous entropy sourcing aren’t optional — they’re prerequisites for trust.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.anthropic.com/research/ecdsa-curve-origins" target="_blank" rel="noopener">Read original</a>
+      
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

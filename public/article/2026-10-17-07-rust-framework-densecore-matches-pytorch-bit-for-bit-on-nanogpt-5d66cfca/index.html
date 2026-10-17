@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Rust框架DenseCore实现与PyTorch在nanoGPT上逐位完全一致 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="全新Rust深度学习框架DenseCore在nanoGPT训练中实现了与PyTorch完全逐位一致的输出（含权重、损失、梯度和参数），并在50步内全程验证；同时揭示PyTorch自身存在严重跨平台非确定性（macOS与Linux间仅26个算子中有1个结果一致）。 这标志着框架间数值保真度达到新高度，同时揭示了深层非确定性对可复现性的实质性威胁，直接影响科研验" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="Rust框架DenseCore实现与PyTorch在nanoGPT上逐位完全一致" />
+  <meta property="og:description" content="全新Rust深度学习框架DenseCore在nanoGPT训练中实现了与PyTorch完全逐位一致的输出（含权重、损失、梯度和参数），并在50步内全程验证；同时揭示PyTorch自身存在严重跨平台非确定性（macOS与Linux间仅26个算子中有1个结果一致）。 这标志着框架间数值保真度达到新高度，同时揭示了深层非确定性对可复现性的实质性威胁，直接影响科研验" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1x7ojxo.svg" />
+  <meta property="article:published_time" content="2026-10-16T18:49:12+00:00" />
+  <meta property="article:modified_time" content="2026-10-17T05:45:47.757935+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rust框架DenseCore实现与PyTorch在nanoGPT上逐位完全一致" />
+  <meta name="twitter:description" content="全新Rust深度学习框架DenseCore在nanoGPT训练中实现了与PyTorch完全逐位一致的输出（含权重、损失、梯度和参数），并在50步内全程验证；同时揭示PyTorch自身存在严重跨平台非确定性（macOS与Linux间仅26个算子中有1个结果一致）。 这标志着框架间数值保真度达到新高度，同时揭示了深层非确定性对可复现性的实质性威胁，直接影响科研验" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1x7ojxo.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca"}, "headline": "Rust框架DenseCore实现与PyTorch在nanoGPT上逐位完全一致", "description": "全新Rust深度学习框架DenseCore在nanoGPT训练中实现了与PyTorch完全逐位一致的输出（含权重、损失、梯度和参数），并在50步内全程验证；同时揭示PyTorch自身存在严重跨平台非确定性（macOS与Linux间仅26个算子中有1个结果一致）。 这标志着框架间数值保真度达到新高度，同时揭示了深层非确定性对可复现性的实质性威胁，直接影响科研验", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1x7ojxo.svg"], "datePublished": "2026-10-16T18:49:12+00:00", "dateModified": "2026-10-17T05:45:47.757935+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1x7ojxo.svg" alt="Rust框架DenseCore实现与PyTorch在nanoGPT上逐位完全一致" />
+    <div class="article-page-tags"><span>#Rust</span> <span>#PyTorch</span> <span>#numerical-reproducibility</span> <span>#deep-learning-frameworks</span> <span>#nanoGPT</span></div>
+    <h1>Rust框架DenseCore实现与PyTorch在nanoGPT上逐位完全一致</h1>
+    <p class="article-page-meta">新闻时间: 2026-10-17T05:33:28.244895+00:00 · 来源: reddit</p>
+    <article class="article-page-body"><p>一名计算机科学专业学生开发了DenseCore——一个用Rust编写的极简深度学习框架——它在训练nanoGPT时实现了与PyTorch完全逐位一致的数值行为。这意味着：手动设置随机种子后生成的初始权重、每一步的损失值、梯度、参数更新结果，甚至启用dropout时的全部中间计算，都在50个训练步内严格二进制等价。这不是“足够接近”，而是真正的比特级完全相同，通过原始字节比对验证。</p>
+<p>达成这一目标的过程堪比底层数字取证。开发者挖掘出PyTorch中大量被忽略的实现细节：其CPU注意力机制并非教科书式softmax，而是Flash Attention内核，且在启用dropout时会切换至不同计算路径；Adam优化器因编译器对循环尾部的融合策略，在每个线程分块的末尾采用不一致的舍入方式；<code>clip_grad_norm_</code>函数内部使用<code>reciprocal() * max_norm</code>而非直接除法——这些看似微小的选择，都会在浮点运算中引发可测量的差异。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>更令人惊讶的是，该项目意外揭示了PyTorch自身存在跨平台非确定性：同一版本在macOS（Apple Silicon）和Linux（x86-64）上运行，26个测试算子中仅有1个能产生完全相同的比特结果。因此DenseCore目前仅保证在Apple Silicon Mac上与PyTorch逐位匹配——并非硬件绑定，而是将PyTorch在该平台上的实际行为作为“事实标准”进行精确复现。整个框架体积仅2 MB，远小于PyTorch约580 MB的发行版，凸显了生产级框架中累积的冗余开销。</p>
+<p>作者坦率发问：这项工作是否具备实用价值？还是仅是一次高难度的学习实践？后续方向包括：扩展为轻量级PyTorch替代品，专用于CI流水线或无服务器环境等纯CPU小规模场景；或转型为诊断工具，精准定位两次PyTorch运行结果不同的根本原因——把数值差异转化为可解释的调试信号。对将可复现性视为底线的研究者与工程师而言，DenseCore不只是一个炫技项目，更是透视现代深度学习底层数值逻辑的一台显微镜。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1x7ojxo/p_my_rust_framework_trains_nanogpt_with_the_exact/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://grokipedia.com/page/nanoGPT" target="_blank" rel="noopener">nanoGPT</a><a href="https://alexdremov.me/understanding-flash-attention-writing-the-algorithm-from-scratch-in-triton/" target="_blank" rel="noopener">Flash Attention Explained: Build It From Scratch in Triton</a><a href="https://discuss.pytorch.org/t/why-is-torch-mm-non-deterministic/157735" target="_blank" rel="noopener">Why is torch.mm non deterministic ? - PyTorch Forums</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

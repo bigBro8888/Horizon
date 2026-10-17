@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Rust framework DenseCore matches PyTorch bit for bit on nanoGPT - Now AI News</title>
+  <meta name="description" content="DenseCore, a new Rust-based deep learning framework, achieves exact bit-for-bit identical training outputs with PyTorch on nanoGPT — including identical weights, losses, gradients," />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Rust framework DenseCore matches PyTorch bit for bit on nanoGPT" />
+  <meta property="og:description" content="DenseCore, a new Rust-based deep learning framework, achieves exact bit-for-bit identical training outputs with PyTorch on nanoGPT — including identical weights, losses, gradients," />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1x7ojxo.svg" />
+  <meta property="article:published_time" content="2026-10-16T18:49:12+00:00" />
+  <meta property="article:modified_time" content="2026-10-17T05:45:47.757935+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rust framework DenseCore matches PyTorch bit for bit on nanoGPT" />
+  <meta name="twitter:description" content="DenseCore, a new Rust-based deep learning framework, achieves exact bit-for-bit identical training outputs with PyTorch on nanoGPT — including identical weights, losses, gradients," />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1x7ojxo.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-17-07-rust-framework-densecore-matches-pytorch-bit-for-bit-on-nanogpt-5d66cfca"}, "headline": "Rust framework DenseCore matches PyTorch bit for bit on nanoGPT", "description": "DenseCore, a new Rust-based deep learning framework, achieves exact bit-for-bit identical training outputs with PyTorch on nanoGPT — including identical weights, losses, gradients,", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1x7ojxo.svg"], "datePublished": "2026-10-16T18:49:12+00:00", "dateModified": "2026-10-17T05:45:47.757935+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1x7ojxo.svg" alt="Rust framework DenseCore matches PyTorch bit for bit on nanoGPT" />
+    <div class="article-page-tags"><span>#Rust</span> <span>#PyTorch</span> <span>#numerical-reproducibility</span> <span>#deep-learning-frameworks</span> <span>#nanoGPT</span></div>
+    <h1>Rust framework DenseCore matches PyTorch bit for bit on nanoGPT</h1>
+    <p class="article-page-meta">News time: 2026-10-17T05:33:28.244895+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A computer science student has built DenseCore — a tiny, experimental deep learning framework in Rust — that achieves exact bit-for-bit numerical equivalence with PyTorch when training nanoGPT. That means identical initial weights (down to the last bit), identical loss values, gradients, and updated parameters across all 50 training steps — even with stochastic components like dropout enabled. This isn’t approximate reproducibility; it’s bitwise identity, verified by comparing raw binary outputs.</p>
+<p>Reaching this level of fidelity turned out to be an intense forensic exercise. The developer uncovered subtle but consequential implementation choices buried deep in PyTorch: its CPU attention kernel isn’t textbook softmax-based attention but a Flash Attention variant that changes behavior when dropout is active; its Adam optimizer applies rounding inconsistently at thread boundaries due to compiler loop-fusion artifacts; and <code>clip_grad_norm_</code> computes norms using reciprocal multiplication instead of division — a seemingly minor detail that alters floating-point outcomes. These aren’t bugs per se, but low-level engineering trade-offs that accumulate into observable numerical divergence.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Even more strikingly, the project revealed that PyTorch itself isn’t cross-platform deterministic: the same version running on macOS (Apple Silicon) versus Linux (x86-64) produced identical results in only 1 out of 26 tested operations. DenseCore therefore only guarantees bit-exact matching on Apple Silicon — not because it’s inherently tied to that hardware, but because it deliberately replicates PyTorch’s <em>observed</em> macOS behavior as ground truth. At just 2 MB, DenseCore is dramatically smaller than PyTorch’s ~580 MB distribution — highlighting how much bloat accumulates in production frameworks.</p>
+<p>The creator openly questions whether this effort has practical utility beyond being a rigorous learning exercise. Potential paths forward include expanding DenseCore into a full PyTorch-compatible drop-in for lightweight CPU-only use cases (e.g., CI pipelines or serverless inference), or pivoting it into a debugging tool that pinpoints <em>why</em> two PyTorch runs diverge — essentially turning numerical mismatch into a diagnosable signal. For researchers and engineers who treat reproducibility as non-negotiable, DenseCore isn’t just a curiosity — it’s a microscope for the hidden numerics underpinning modern deep learning.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1x7ojxo/p_my_rust_framework_trains_nanogpt_with_the_exact/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://grokipedia.com/page/nanoGPT" target="_blank" rel="noopener">nanoGPT</a><a href="https://alexdremov.me/understanding-flash-attention-writing-the-algorithm-from-scratch-in-triton/" target="_blank" rel="noopener">Flash Attention Explained: Build It From Scratch in Triton</a><a href="https://discuss.pytorch.org/t/why-is-torch-mm-non-deterministic/157735" target="_blank" rel="noopener">Why is torch.mm non deterministic ? - PyTorch Forums</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
