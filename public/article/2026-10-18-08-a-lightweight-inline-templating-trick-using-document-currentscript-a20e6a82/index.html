@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>用 document.currentScript 实现轻量级内联模板渲染 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="Lean Rada 展示了一种利用 document.currentScript 在 HTML 解析时原地替换内联 script 标签的简洁模式，并可选配单字符辅助函数 $() 提升可读性。 它为文档站点、落地页和教学示例提供了一种零依赖、零打包的动态内容注入方式，特别适合重视简洁性与即时执行、而非扩展性的场景。 该技巧仅适用于传统脚本（不支持 ES 模块）" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="用 document.currentScript 实现轻量级内联模板渲染" />
+  <meta property="og:description" content="Lean Rada 展示了一种利用 document.currentScript 在 HTML 解析时原地替换内联 script 标签的简洁模式，并可选配单字符辅助函数 $() 提升可读性。 它为文档站点、落地页和教学示例提供了一种零依赖、零打包的动态内容注入方式，特别适合重视简洁性与即时执行、而非扩展性的场景。 该技巧仅适用于传统脚本（不支持 ES 模块）" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--cc225fa176e6c3ea.svg" />
+  <meta property="article:published_time" content="2026-10-17T21:11:12+00:00" />
+  <meta property="article:modified_time" content="2026-10-18T06:00:20.587499+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="用 document.currentScript 实现轻量级内联模板渲染" />
+  <meta name="twitter:description" content="Lean Rada 展示了一种利用 document.currentScript 在 HTML 解析时原地替换内联 script 标签的简洁模式，并可选配单字符辅助函数 $() 提升可读性。 它为文档站点、落地页和教学示例提供了一种零依赖、零打包的动态内容注入方式，特别适合重视简洁性与即时执行、而非扩展性的场景。 该技巧仅适用于传统脚本（不支持 ES 模块）" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--cc225fa176e6c3ea.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82"}, "headline": "用 document.currentScript 实现轻量级内联模板渲染", "description": "Lean Rada 展示了一种利用 document.currentScript 在 HTML 解析时原地替换内联 script 标签的简洁模式，并可选配单字符辅助函数 $() 提升可读性。 它为文档站点、落地页和教学示例提供了一种零依赖、零打包的动态内容注入方式，特别适合重视简洁性与即时执行、而非扩展性的场景。 该技巧仅适用于传统脚本（不支持 ES 模块）", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--cc225fa176e6c3ea.svg"], "datePublished": "2026-10-17T21:11:12+00:00", "dateModified": "2026-10-18T06:00:20.587499+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--cc225fa176e6c3ea.svg" alt="用 document.currentScript 实现轻量级内联模板渲染" />
+    <div class="article-page-tags"><span>#javascript</span> <span>#dom</span> <span>#templating</span> <span>#web-development</span> <span>#performance</span></div>
+    <h1>用 document.currentScript 实现轻量级内联模板渲染</h1>
+    <p class="article-page-meta">新闻时间: 2026-10-18T05:50:46.328958+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>一种巧妙、零依赖的 JavaScript 技巧正在网页开发中悄然流行：它允许在 HTML 中直接嵌入动态内容，无需框架、构建工具或外部模板。该技巧的核心是 <code>document.currentScript</code> —— 一个存在已久却常被忽视的 DOM API，它会返回当前正在执行的 <code>&lt;script&gt;</code> 元素。由于该属性仅在脚本运行期间可用（且仅适用于传统脚本，不适用于 ES 模块），因此天然支持“自替换”行为：内联脚本可以精准定位自身，并用计算结果原地替换整个 <code>&lt;script&gt;</code> 标签。</p>
+<p>其原理极其简洁。比如这段直接写在 HTML 中的代码：</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<pre><code class="language-html">今年是 &lt;script&gt;
+document.currentScript.replaceWith(new Date().getFullYear())
+&lt;/script&gt;
+</code></pre>
+<p>浏览器解析并执行时，该脚本会把自己替换成当前年份的纯文本 —— 不需要容器元素、不依赖事件监听器、甚至在 <code>DOMContentLoaded</code> 触发前就已完成。</p>
+<p>为提升可读性，开发者可定义一行辅助函数，例如 <code>$=(...n)=&gt;document.currentScript.replaceWith(...n)</code>，从而将这一模式变成极简的内联模板语言。此时上面的例子就简化为 <code>&lt;script&gt;$(new Date().getFullYear())&lt;/script&gt;</code>。你可以在其中写表达式、调用函数，甚至嵌入简单条件逻辑，全部在 HTML 解析阶段即时求值并原地替换。</p>
+<p>这当然不是现代模板引擎或组件系统的替代方案。它的适用场景非常明确：适合静态页面中少量、低交互性的动态需求，比如页脚版权年份、环境标识、调试信息等。它的价值恰恰在于“不做之事”：无需打包器、无运行时开销、也不引入额外依赖。但需注意，严格的 CSP（内容安全策略）通常默认禁止所有内联脚本 —— 因此实际使用前，必须确认站点是否允许 <code>'unsafe-inline'</code> 或已配置有效的 nonce。</p>
+<p>归根结底，这是一种兼具教学意义与微优化价值的实践。它提醒我们：Web 平台本身早已内置了足够优雅的原生能力，只待开发者发现与善用。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Oct/17/document-currentscript/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/currentScript" target="_blank" rel="noopener">Document: currentScript property - Web APIs | MDN</a><a href="https://codetofun.com/js/document/properties/current-script" target="_blank" rel="noopener">JavaScript Document currentScript Property | CodeToFun</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Codex Desktop floods disks with uncleaned Crashpad crash dumps - Now AI News</title>
+  <meta name="description" content="Codex Desktop continuously generates unuploaded Crashpad pending dumps and associated sidecar JSON files during normal operation, causing unbounded local disk growth without automa" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-18-07-codex-desktop-floods-disks-with-uncleaned-crashpad-crash-dumps-589b04a3" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-18-07-codex-desktop-floods-disks-with-uncleaned-crashpad-crash-dumps-589b04a3" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-18-07-codex-desktop-floods-disks-with-uncleaned-crashpad-crash-dumps-589b04a3" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-18-07-codex-desktop-floods-disks-with-uncleaned-crashpad-crash-dumps-589b04a3" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Codex Desktop floods disks with uncleaned Crashpad crash dumps" />
+  <meta property="og:description" content="Codex Desktop continuously generates unuploaded Crashpad pending dumps and associated sidecar JSON files during normal operation, causing unbounded local disk growth without automa" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-18-07-codex-desktop-floods-disks-with-uncleaned-crashpad-crash-dumps-589b04a3" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50133231.png" />
+  <meta property="article:published_time" content="2026-10-17T17:45:08+00:00" />
+  <meta property="article:modified_time" content="2026-10-18T06:00:20.587499+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Codex Desktop floods disks with uncleaned Crashpad crash dumps" />
+  <meta name="twitter:description" content="Codex Desktop continuously generates unuploaded Crashpad pending dumps and associated sidecar JSON files during normal operation, causing unbounded local disk growth without automa" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50133231.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-18-07-codex-desktop-floods-disks-with-uncleaned-crashpad-crash-dumps-589b04a3"}, "headline": "Codex Desktop floods disks with uncleaned Crashpad crash dumps", "description": "Codex Desktop continuously generates unuploaded Crashpad pending dumps and associated sidecar JSON files during normal operation, causing unbounded local disk growth without automa", "image": ["https://nowainews.com/media/hackernews-story-50133231.png"], "datePublished": "2026-10-17T17:45:08+00:00", "dateModified": "2026-10-18T06:00:20.587499+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50133231.png" alt="Codex Desktop floods disks with uncleaned Crashpad crash dumps" />
+    <div class="article-page-tags"><span>#AI-Developer-Tools</span> <span>#Debugging</span> <span>#Disk-Management</span> <span>#OpenAI-Codex</span> <span>#System-Performance</span></div>
+    <h1>Codex Desktop floods disks with uncleaned Crashpad crash dumps</h1>
+    <p class="article-page-meta">News time: 2026-10-18T05:50:46.692738+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Developers using OpenAI’s Codex Desktop app are reporting a serious and persistent disk space issue: the application continuously generates large volumes of Crashpad pending dump files—<code>.dmp</code> binaries paired with JSON sidecar files—even when no crashes occur. These files accumulate silently in local storage, often growing to tens or even hundreds of gigabytes over days or weeks of normal use. Users describe waking up to full disks, sluggish system performance, and unexpected failures in builds or IDE integrations—all traced back to unmanaged artifact sprawl from Codex’s background processes.</p>
+<p>The problem is not limited to edge cases. Multiple developers confirmed it across macOS and Windows, including those running Codex inside Docker containers and on Windows VMs connected via custom agents. One user reported 90 GB consumed by validation test artifacts alone during a financial automation project; another found thousands of screenshots and build artifacts littering git worktrees—none automatically cleaned up. The root cause appears tied to how Codex leverages Crashpad, Google’s open-source crash-reporting library, not just for crash diagnostics but also for on-demand process state capture during agent-driven workflows.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Crashpad itself is designed to be lightweight and reliable—but Codex’s usage pattern breaks that assumption. Instead of generating dumps only after crashes, Codex triggers them continuously during routine operations like code generation, test execution, and UI interaction. Each dump includes metadata-rich sidecar files, and because Codex doesn’t implement cleanup logic, these pending dumps remain indefinitely. This behavior contradicts Crashpad’s intended design, which expects clients to explicitly upload or discard dumps after capture.</p>
+<p>Mitigation strategies have emerged organically from the developer community—not from official documentation. Top recommendations include enabling filesystem-level compression (e.g., ZFS on Linux/macOS), archiving old sessions with tools like sessionwiki, isolating Codex in Docker containers to contain disk impact, and switching to disk-usage visualizers like DaisyDisk for rapid triage. Still, none address the underlying issue: Codex lacks built-in artifact lifecycle management. As AI coding agents become central to engineering workflows, unbounded local storage growth threatens reliability, reproducibility, and trust in production tooling.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/openai/codex/issues/25921" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://www.getsafedisks.com/codex-crashpad-pending-dumps-disk-space" target="_blank" rel="noopener">Codex Crashpad Pending Dumps Taking Disk Space</a><a href="https://github.com/openai/codex/issues/25921" target="_blank" rel="noopener">Codex Desktop continuously generates Crashpad pending dumps ...</a><a href="https://chromium.googlesource.com/crashpad/crashpad/+/main/doc/overview_design.md" target="_blank" rel="noopener">Crashpad - Crashpad Overview Design</a><a href="https://en.wikipedia.org/wiki/OpenAI_Codex" target="_blank" rel="noopener">OpenAI Codex - Wikipedia</a><a href="https://openai.com/codex/" target="_blank" rel="noopener">Codex | AI Coding Partner from OpenAI</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

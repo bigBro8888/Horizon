@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>A lightweight inline templating trick using document.currentScript - Now AI News</title>
+  <meta name="description" content="Lean Rada demonstrated a concise pattern using document.currentScript to replace inline &lt;script&gt; tags with dynamic values at parse time, optionally enhanced with a one-character he" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="A lightweight inline templating trick using document.currentScript" />
+  <meta property="og:description" content="Lean Rada demonstrated a concise pattern using document.currentScript to replace inline &lt;script&gt; tags with dynamic values at parse time, optionally enhanced with a one-character he" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--cc225fa176e6c3ea.svg" />
+  <meta property="article:published_time" content="2026-10-17T21:11:12+00:00" />
+  <meta property="article:modified_time" content="2026-10-18T06:00:20.587499+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="A lightweight inline templating trick using document.currentScript" />
+  <meta name="twitter:description" content="Lean Rada demonstrated a concise pattern using document.currentScript to replace inline &lt;script&gt; tags with dynamic values at parse time, optionally enhanced with a one-character he" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--cc225fa176e6c3ea.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-18-08-a-lightweight-inline-templating-trick-using-document-currentscript-a20e6a82"}, "headline": "A lightweight inline templating trick using document.currentScript", "description": "Lean Rada demonstrated a concise pattern using document.currentScript to replace inline <script> tags with dynamic values at parse time, optionally enhanced with a one-character he", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--cc225fa176e6c3ea.svg"], "datePublished": "2026-10-17T21:11:12+00:00", "dateModified": "2026-10-18T06:00:20.587499+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--cc225fa176e6c3ea.svg" alt="A lightweight inline templating trick using document.currentScript" />
+    <div class="article-page-tags"><span>#javascript</span> <span>#dom</span> <span>#templating</span> <span>#web-development</span> <span>#performance</span></div>
+    <h1>A lightweight inline templating trick using document.currentScript</h1>
+    <p class="article-page-meta">News time: 2026-10-18T05:50:46.328958+00:00 · Source: rss</p>
+    <article class="article-page-body"><p>A clever, dependency-free JavaScript pattern has surfaced for rendering dynamic content directly inside HTML — without frameworks, build steps, or external templates. The technique hinges on <code>document.currentScript</code>, a long-standing but often overlooked DOM API that returns the <code>&lt;script&gt;</code> element currently being executed. Because this property is only available during script execution (and only for classic scripts, not modules), it enables a uniquely simple form of self-replacement: an inline script can locate itself in the DOM and swap out its own node with computed content.</p>
+<p>The core idea is deceptively minimal. Consider this snippet embedded directly in HTML:</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<pre><code class="language-html">The year is &lt;script&gt;
+document.currentScript.replaceWith(new Date().getFullYear())
+&lt;/script&gt;
+</code></pre>
+<p>When parsed and run, the script replaces its own <code>&lt;script&gt;</code> tag with the current year as plain text — no wrapper divs, no event listeners, no hydration. It’s synchronous, zero-config, and works even before <code>DOMContentLoaded</code>.</p>
+<p>To make it more ergonomic, developers can define a one-liner helper — like <code>$=(...n)=&gt;document.currentScript.replaceWith(...n)</code> — turning the pattern into a tiny, expressive template language. Now the same example becomes <code>&lt;script&gt;$(new Date().getFullYear())&lt;/script&gt;</code>. You can embed expressions, function calls, or even small conditional logic — all evaluated at parse time and replaced in-place.</p>
+<p>This isn’t a replacement for full-featured templating engines or modern component models. It’s intentionally narrow: best suited for static pages with light dynamic needs — copyright years, environment-aware labels, or debug-mode annotations. Its elegance lies in what it avoids: no bundler, no CSP violations <em>if used carefully</em>, and no runtime overhead beyond a single DOM mutation. Still, it’s worth noting that strict Content Security Policies (CSP) often block inline scripts entirely — so real-world adoption depends on whether your site permits <code>'unsafe-inline'</code> or uses nonces.</p>
+<p>Ultimately, this pattern shines as a teaching tool and micro-optimization. It demonstrates how deeply the platform already supports declarative, lightweight interactivity — if you know where to look.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Oct/17/document-currentscript/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/currentScript" target="_blank" rel="noopener">Document: currentScript property - Web APIs | MDN</a><a href="https://codetofun.com/js/document/properties/current-script" target="_blank" rel="noopener">JavaScript Document currentScript Property | CodeToFun</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
