@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>uv 0.13.3 fixes severe export slowdown with extras - Now AI News</title>
+  <meta name="description" content="uv 0.13.3 fixes a severe performance regression in `uv export` when handling Python packages with extras, resolving an issue tracked as PR #22750. This fix restores predictable, fa" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-20-14-uv-0-13-3-fixes-severe-export-slowdown-with-extras-539fccdd" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-20-14-uv-0-13-3-fixes-severe-export-slowdown-with-extras-539fccdd" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-20-14-uv-0-13-3-fixes-severe-export-slowdown-with-extras-539fccdd" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-20-14-uv-0-13-3-fixes-severe-export-slowdown-with-extras-539fccdd" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="uv 0.13.3 fixes severe export slowdown with extras" />
+  <meta property="og:description" content="uv 0.13.3 fixes a severe performance regression in `uv export` when handling Python packages with extras, resolving an issue tracked as PR #22750. This fix restores predictable, fa" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-20-14-uv-0-13-3-fixes-severe-export-slowdown-with-extras-539fccdd" />
+  <meta property="og:image" content="https://nowainews.com/media/github-release-417904289.png" />
+  <meta property="article:published_time" content="2026-10-20T01:15:17+00:00" />
+  <meta property="article:modified_time" content="2026-10-20T06:11:10.204301+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="uv 0.13.3 fixes severe export slowdown with extras" />
+  <meta name="twitter:description" content="uv 0.13.3 fixes a severe performance regression in `uv export` when handling Python packages with extras, resolving an issue tracked as PR #22750. This fix restores predictable, fa" />
+  <meta name="twitter:image" content="https://nowainews.com/media/github-release-417904289.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-20-14-uv-0-13-3-fixes-severe-export-slowdown-with-extras-539fccdd"}, "headline": "uv 0.13.3 fixes severe export slowdown with extras", "description": "uv 0.13.3 fixes a severe performance regression in `uv export` when handling Python packages with extras, resolving an issue tracked as PR #22750. This fix restores predictable, fa", "image": ["https://nowainews.com/media/github-release-417904289.png"], "datePublished": "2026-10-20T01:15:17+00:00", "dateModified": "2026-10-20T06:11:10.204301+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/github-release-417904289.png" alt="uv 0.13.3 fixes severe export slowdown with extras" />
+    <div class="article-page-tags"><span>#python</span> <span>#package-management</span> <span>#uv</span> <span>#performance-fix</span> <span>#tooling</span></div>
+    <h1>uv 0.13.3 fixes severe export slowdown with extras</h1>
+    <p class="article-page-meta">News time: 2026-10-20T05:59:17.059789+00:00 · Source: github</p>
+    <article class="article-page-body"><p>The Rust-based Python package manager uv has released version 0.13.3, a targeted patch addressing a serious performance regression in the <code>uv export</code> command. Users working with complex dependency graphs that include optional features—known as "extras" in Python packaging—had recently experienced dramatic slowdowns when generating lock files or exporting dependencies. This issue, tracked as PR #22750, caused <code>uv export</code> to take orders of magnitude longer than expected in certain real-world projects, undermining one of uv’s core value propositions: speed.</p>
+<p>uv is widely adopted as a high-performance alternative to pip and pip-tools, often touted as 10–100× faster for dependency resolution and installation. It’s designed as a drop-in replacement for common Python tooling—including pip, pip-compile, virtualenv, and pipx—and is built by Astral, the team behind the popular Ruff linter. Its resolver uses PubGrub, and it relies on aggressive caching and native Rust performance to achieve its speed advantage. The <code>uv export</code> command specifically converts resolved dependency graphs (e.g., from <code>uv lock</code>) into formats like <code>requirements.txt</code>, often used for CI, deployment, or reproducible environments.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The regression affected workflows where packages declared extras—such as <code>requests[security]</code> or <code>django[argon2]</code>—and those extras triggered deep or overlapping transitive dependencies. In such cases, the resolver’s export logic previously re-evaluated dependency constraints repeatedly, leading to exponential time complexity in worst-case scenarios. The fix in 0.13.3 optimizes how extras are traversed and deduplicated during export, restoring linear or near-linear performance across large graphs.</p>
+<p>This release does not introduce new features or change uv’s interface—it’s strictly a correctness-and-performance patch. Prebuilt binaries are available for 13 platforms, including Apple Silicon, x86_64 and ARM64 Windows, multiple Linux architectures (x86, ARM64, RISC-V, s390x, PPC64LE), and musl-based systems. Installation remains frictionless via curl or PowerShell scripts, reinforcing uv’s goal of being a zero-dependency, single-binary tool. For developers relying on <code>uv export</code> in automation pipelines or monorepo setups, upgrading to 0.13.3 delivers immediate, tangible relief without requiring workflow changes.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/astral-sh/uv/releases/tag/0.13.3" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/astral-sh/uv" target="_blank" rel="noopener">GitHub - astral-sh/uv: An extremely fast Python package and ... uv · PyPI uv: A Complete Guide to Python&#x27;s Fastest Package Manager How to Use uv Python Package Manager (Complete 2026) Releases: astral-sh/uv - GitHub</a><a href="https://pydevtools.com/handbook/explanation/uv-complete-guide/" target="_blank" rel="noopener">uv: A Complete Guide to Python&#x27;s Fastest Package Manager</a><a href="https://itsourcecode.com/blogs/how-to-use-uv-python-package-manager-2026/" target="_blank" rel="noopener">How to Use uv Python Package Manager (Complete 2026)</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

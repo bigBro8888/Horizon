@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Wine successfully ported to OpenBSD for Windows application compatibility - Now AI News</title>
+  <meta name="description" content="Wine has been officially ported to OpenBSD, with a working implementation now available in the OpenBSD ports tree; the port uses OpenBSD-specific conditionals and avoids upstream m" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-20-12-wine-successfully-ported-to-openbsd-for-windows-application-compatibility-3b27ae69" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-20-12-wine-successfully-ported-to-openbsd-for-windows-application-compatibility-3b27ae69" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-20-12-wine-successfully-ported-to-openbsd-for-windows-application-compatibility-3b27ae69" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-20-12-wine-successfully-ported-to-openbsd-for-windows-application-compatibility-3b27ae69" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Wine successfully ported to OpenBSD for Windows application compatibility" />
+  <meta property="og:description" content="Wine has been officially ported to OpenBSD, with a working implementation now available in the OpenBSD ports tree; the port uses OpenBSD-specific conditionals and avoids upstream m" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-20-12-wine-successfully-ported-to-openbsd-for-windows-application-compatibility-3b27ae69" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50152307.svg" />
+  <meta property="article:published_time" content="2026-10-19T13:35:34+00:00" />
+  <meta property="article:modified_time" content="2026-10-20T06:11:10.204301+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Wine successfully ported to OpenBSD for Windows application compatibility" />
+  <meta name="twitter:description" content="Wine has been officially ported to OpenBSD, with a working implementation now available in the OpenBSD ports tree; the port uses OpenBSD-specific conditionals and avoids upstream m" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50152307.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-20-12-wine-successfully-ported-to-openbsd-for-windows-application-compatibility-3b27ae69"}, "headline": "Wine successfully ported to OpenBSD for Windows application compatibility", "description": "Wine has been officially ported to OpenBSD, with a working implementation now available in the OpenBSD ports tree; the port uses OpenBSD-specific conditionals and avoids upstream m", "image": ["https://nowainews.com/media/hackernews-story-50152307.svg"], "datePublished": "2026-10-19T13:35:34+00:00", "dateModified": "2026-10-20T06:11:10.204301+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50152307.svg" alt="Wine successfully ported to OpenBSD for Windows application compatibility" />
+    <div class="article-page-tags"><span>#OpenBSD</span> <span>#Wine</span> <span>#Portability</span> <span>#Systems Programming</span> <span>#Unix</span></div>
+    <h1>Wine successfully ported to OpenBSD for Windows application compatibility</h1>
+    <p class="article-page-meta">News time: 2026-10-20T05:59:16.004359+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Wine — the long-standing open-source compatibility layer that enables Windows applications to run on Unix-like systems — has been successfully ported to OpenBSD. Announced on the OpenBSD ports mailing list, this port represents more than just technical feasibility: it’s a deliberate bridge between two philosophically distinct worlds. OpenBSD is renowned for its uncompromising focus on code correctness, proactive security (e.g., <code>pledge</code> and <code>unveil</code> syscalls), and minimalism — values often at odds with the sprawling, legacy-laden Windows API surface that Wine must emulate.</p>
+<p>The port was led by developer Jan Stary, whose surname ‘Frohwein’ (German for “happy wine”) drew lighthearted commentary from the community. Rather than force upstream Wine integration, Stary adopted a pragmatic, OpenBSD-only approach: changes are cleanly isolated using conditional compilation (<code>#ifdef __OpenBSD__</code>) and avoid invasive modifications to shared code paths. This includes workarounds for OpenBSD-specific constraints — such as how thread-local storage is handled via <code>%gs</code> segment register stubs, or how signal delivery (e.g., <code>SIGUSR1</code>) is adapted without compromising correctness.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>What makes this port especially notable is not just that it works, but <em>how</em> it works within OpenBSD’s security model. Unlike Linux or FreeBSD ports, the OpenBSD version respects the OS’s sandboxing primitives: Wine processes can — and should — be wrapped with <code>pledge()</code> to restrict system calls, reducing attack surface even when running untrusted Windows binaries. This aligns with OpenBSD’s self-described role as a ‘refuge from slopcode’: now, even compatibility layers can uphold high assurance standards.</p>
+<p>Still, realism tempers enthusiasm. As one contributor noted, upstream Wine maintainers are unlikely to merge most of these changes — not due to quality, but because many adaptations are inherently non-portable (e.g., OpenBSD’s strict signal semantics or lack of certain Linux-style ABI conveniences). That said, the port is fully functional for many use cases, including gaming: community members have already shared gameplay videos of titles like <em>Disco Elysium</em>, <em>Hollow Knight</em>, and <em>The Witcher 3 Remastered</em> running under Wine on OpenBSD. It’s not about replacing virtualization — it’s about expanding what ‘secure Unix’ can do, on its own terms.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://marc.info/?l=openbsd-ports&amp;m=179236125692175" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/Wine_compatibility_layer" target="_blank" rel="noopener">Wine compatibility layer</a><a href="https://man.openbsd.org/pledge" target="_blank" rel="noopener">pledge (2) - OpenBSD manual pages</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
