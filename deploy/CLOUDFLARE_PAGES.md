@@ -1,9 +1,11 @@
 # Cloudflare Pages 免费部署说明
 
+> 完整交接（本地开发、推送远端、排障、检查表）见 **[HANDOFF.md](./HANDOFF.md)**。
+
 这个项目在 Cloudflare 免费部署时使用静态站 + Pages Functions 方案：
 
 ```text
-GitHub Actions 每天 09:00（北京时间）自动生成新闻
+GitHub Actions 每天 09:15（北京时间）自动生成新闻
 → 写入 data/issues、data/media、public
 → 提交回 GitHub
 → Cloudflare Pages 自动部署 public 目录
@@ -70,7 +72,7 @@ GitHub Actions 工作流：
 .github/workflows/daily-summary.yml
 ```
 
-默认每天北京时间 09:00 自动运行。
+默认每天北京时间 09:15 自动运行。
 
 也可以手动运行：
 
