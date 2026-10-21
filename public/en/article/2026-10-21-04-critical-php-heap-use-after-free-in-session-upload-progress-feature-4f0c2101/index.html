@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Critical PHP heap use-after-free in session upload progress feature - Now AI News</title>
+  <meta name="description" content="Two critical heap use-after-free vulnerabilities (CVE-2026-109618 and CVE-2026-109619) were disclosed in PHP&#x27;s session.upload_progress feature, enabling remote code execution via m" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-21-04-critical-php-heap-use-after-free-in-session-upload-progress-feature-4f0c2101" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-21-04-critical-php-heap-use-after-free-in-session-upload-progress-feature-4f0c2101" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-21-04-critical-php-heap-use-after-free-in-session-upload-progress-feature-4f0c2101" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-21-04-critical-php-heap-use-after-free-in-session-upload-progress-feature-4f0c2101" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Critical PHP heap use-after-free in session upload progress feature" />
+  <meta property="og:description" content="Two critical heap use-after-free vulnerabilities (CVE-2026-109618 and CVE-2026-109619) were disclosed in PHP&#x27;s session.upload_progress feature, enabling remote code execution via m" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-21-04-critical-php-heap-use-after-free-in-session-upload-progress-feature-4f0c2101" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50176077.svg" />
+  <meta property="article:published_time" content="2026-10-21T04:26:56+00:00" />
+  <meta property="article:modified_time" content="2026-10-21T06:10:59.473965+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Critical PHP heap use-after-free in session upload progress feature" />
+  <meta name="twitter:description" content="Two critical heap use-after-free vulnerabilities (CVE-2026-109618 and CVE-2026-109619) were disclosed in PHP&#x27;s session.upload_progress feature, enabling remote code execution via m" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50176077.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-21-04-critical-php-heap-use-after-free-in-session-upload-progress-feature-4f0c2101"}, "headline": "Critical PHP heap use-after-free in session upload progress feature", "description": "Two critical heap use-after-free vulnerabilities (CVE-2026-109618 and CVE-2026-109619) were disclosed in PHP's session.upload_progress feature, enabling remote code execution via m", "image": ["https://nowainews.com/media/hackernews-story-50176077.svg"], "datePublished": "2026-10-21T04:26:56+00:00", "dateModified": "2026-10-21T06:10:59.473965+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50176077.svg" alt="Critical PHP heap use-after-free in session upload progress feature" />
+    <div class="article-page-tags"><span>#PHP</span> <span>#security</span> <span>#CVE</span> <span>#use-after-free</span> <span>#web-security</span></div>
+    <h1>Critical PHP heap use-after-free in session upload progress feature</h1>
+    <p class="article-page-meta">News time: 2026-10-21T05:59:49.235106+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A critical heap use-after-free (UAF) vulnerability has been disclosed in PHP’s session.upload_progress functionality, tracked as CVE-2026-109618 and CVE-2026-109619. The flaw resides in how PHP handles multipart/form-data POST requests when the upload progress tracking feature is enabled — specifically during memory reallocation and cleanup of internal upload state structures. Attackers who can trigger specially crafted file uploads may exploit this UAF to achieve remote code execution on affected servers, making it especially dangerous for shared hosting environments or applications that accept file uploads without strict input validation.</p>
+<p>The vulnerability is not theoretical: multiple security practitioners report active investigation and mitigation efforts. One researcher confirmed they are mirroring live HTTP traffic to detect exploitation attempts, while others emphasize that the issue is <em>not</em> related to an embargoed vulnerability recently discussed by PHP core developers — clarifying confusion in early reports. According to a PHP maintainer’s public post, this is a distinct, independently discovered flaw requiring immediate attention.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Mitigation strategies vary in practicality and scope. Disabling the feature entirely via <code>session.upload_progress.enabled = Off</code> in php.ini is the most direct fix — but only viable if the application does not rely on upload progress feedback. For sites that must retain uploads, enforcing strict SELinux or AppArmor policies has emerged as a widely recommended stopgap, limiting the damage potential of any successful exploitation. Some administrators also ask whether multipart handling itself can be disabled at the web server level (e.g., via Nginx or Apache configuration), though PHP’s parser still processes the request headers before rejecting the body — meaning full prevention requires coordination across layers.</p>
+<p>What makes this vulnerability particularly urgent is its placement in a default-enabled, low-overhead feature used by many frameworks and CMSes. Unlike obscure extensions, session.upload_progress is part of PHP’s core session subsystem and often left enabled without review. With no official patch yet released (as of the latest public update), defenders are relying on configuration hardening, runtime protections, and behavioral detection — underscoring how deeply embedded features can become attack surfaces when memory safety isn’t rigorously enforced.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://jackalsyn.com/posts/php-up-2026.html" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://www.php.net/manual/en/session.upload-progress.php" target="_blank" rel="noopener">PHP: Session Upload Progress - Manual</a><a href="https://better-php.net/manual/session.upload-progress" target="_blank" rel="noopener">Session Upload Progress - Better PHP</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
