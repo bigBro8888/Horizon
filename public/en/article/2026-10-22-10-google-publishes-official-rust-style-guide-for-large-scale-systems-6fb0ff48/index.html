@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Google publishes official Rust style guide for large-scale systems - Now AI News</title>
+  <meta name="description" content="Google published its official, production-oriented Rust Style Guide covering conventions for large-scale codebases like Chromium and Fuchsia, with specific recommendations on exhau" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-22-10-google-publishes-official-rust-style-guide-for-large-scale-systems-6fb0ff48" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-22-10-google-publishes-official-rust-style-guide-for-large-scale-systems-6fb0ff48" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-22-10-google-publishes-official-rust-style-guide-for-large-scale-systems-6fb0ff48" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-22-10-google-publishes-official-rust-style-guide-for-large-scale-systems-6fb0ff48" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Google publishes official Rust style guide for large-scale systems" />
+  <meta property="og:description" content="Google published its official, production-oriented Rust Style Guide covering conventions for large-scale codebases like Chromium and Fuchsia, with specific recommendations on exhau" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-22-10-google-publishes-official-rust-style-guide-for-large-scale-systems-6fb0ff48" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50186010.svg" />
+  <meta property="article:published_time" content="2026-10-21T19:11:57+00:00" />
+  <meta property="article:modified_time" content="2026-10-22T06:16:06.109618+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Google publishes official Rust style guide for large-scale systems" />
+  <meta name="twitter:description" content="Google published its official, production-oriented Rust Style Guide covering conventions for large-scale codebases like Chromium and Fuchsia, with specific recommendations on exhau" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50186010.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-22-10-google-publishes-official-rust-style-guide-for-large-scale-systems-6fb0ff48"}, "headline": "Google publishes official Rust style guide for large-scale systems", "description": "Google published its official, production-oriented Rust Style Guide covering conventions for large-scale codebases like Chromium and Fuchsia, with specific recommendations on exhau", "image": ["https://nowainews.com/media/hackernews-story-50186010.svg"], "datePublished": "2026-10-21T19:11:57+00:00", "dateModified": "2026-10-22T06:16:06.109618+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50186010.svg" alt="Google publishes official Rust style guide for large-scale systems" />
+    <div class="article-page-tags"><span>#Rust</span> <span>#style-guide</span> <span>#systems-programming</span> <span>#software-engineering</span> <span>#Google</span></div>
+    <h1>Google publishes official Rust style guide for large-scale systems</h1>
+    <p class="article-page-meta">News time: 2026-10-22T06:05:39.885657+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Google has released an official, production-grade Rust Style Guide — now publicly available at google.github.io/styleguide/rustguide.html. Designed for use across Google’s massive internal codebases (including Chromium, Fuchsia, ChromeOS, and Android), the guide codifies conventions that prioritize long-term maintainability, team scalability, and safety-critical correctness over short-term developer convenience. Unlike community-driven or academic style resources, this document reflects real-world constraints of billion-line monorepos, where consistency, tooling integration, and onboarding velocity are as vital as correctness.</p>
+<p>The guide covers API design, module organization, naming, error handling, and formatting — with notable stances like recommending <code>#[non_exhaustive]</code> on public enums, discouraging nested modules in tiny crates, and preferring unqualified type names (e.g., <code>IoError</code> instead of <code>io::Error</code>). These choices aren’t arbitrary: they stem from Google’s experience scaling Rust adoption across teams with varying expertise, where implicit dependencies, accidental exhaustiveness breaks, and ambiguous type origins have caused costly maintenance friction.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>What makes this guide especially consequential is its grounding in Chromium — one of the largest and most security-sensitive Rust deployments outside of Mozilla. Chromium’s use of Rust for sandboxed components means every stylistic choice interacts with memory safety guarantees, FFI boundaries, and cross-language interoperability. For example, the <code>#[non_exhaustive]</code> recommendation aims to prevent downstream crates from relying on enum variants that may change across versions — a pragmatic concession to ecosystem stability, even if it sacrifices some compile-time exhaustiveness checking.</p>
+<p>The response from experienced Rust developers has been deeply engaged and technically rigorous. On Hacker News, over 140 comments dissect trade-offs: whether avoiding module nesting improves or obscures readability; whether unqualified types aid or hinder code comprehension without IDE support; and whether deferring exhaustiveness enforcement aligns with Rust’s core safety philosophy. These aren’t nitpicks — they’re evidence of a maturing language confronting the tension between ergonomics and rigor at scale. As Rust moves beyond early adopters into infrastructure-critical roles, Google’s guide serves less as dogma and more as a field report: here’s what works — and what hurts — when you ship Rust to hundreds of engineers daily.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://google.github.io/styleguide/rustguide.html" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/google/comprehensive-rust/blob/main/STYLE.md" target="_blank" rel="noopener">comprehensive-rust/STYLE.md at main · google ... - GitHub</a><a href="https://daily.dev/posts/google-s-rust-style-guide-uoc0kuidm" target="_blank" rel="noopener">Google&#x27;s Rust Style Guide - daily.dev</a><a href="https://doc.rust-lang.org/beta/style-guide/index.html" target="_blank" rel="noopener">Introduction - The Rust Style Guide</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
