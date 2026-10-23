@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Researchers boot iOS 16.5 XNU kernel on Android hardware - Now AI News</title>
+  <meta name="description" content="Researchers successfully booted the iOS 16.5 XNU kernel on real Android hardware (including POCO X5 Pro 5G) and QEMU using custom UEFI loaders and spoofed iPhone X device trees. It" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-23-13-researchers-boot-ios-16-5-xnu-kernel-on-android-hardware-5aab66d1" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-23-13-researchers-boot-ios-16-5-xnu-kernel-on-android-hardware-5aab66d1" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-23-13-researchers-boot-ios-16-5-xnu-kernel-on-android-hardware-5aab66d1" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-23-13-researchers-boot-ios-16-5-xnu-kernel-on-android-hardware-5aab66d1" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Researchers boot iOS 16.5 XNU kernel on Android hardware" />
+  <meta property="og:description" content="Researchers successfully booted the iOS 16.5 XNU kernel on real Android hardware (including POCO X5 Pro 5G) and QEMU using custom UEFI loaders and spoofed iPhone X device trees. It" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-23-13-researchers-boot-ios-16-5-xnu-kernel-on-android-hardware-5aab66d1" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50196718.png" />
+  <meta property="article:published_time" content="2026-10-22T15:26:22+00:00" />
+  <meta property="article:modified_time" content="2026-10-23T06:16:47.970003+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Researchers boot iOS 16.5 XNU kernel on Android hardware" />
+  <meta name="twitter:description" content="Researchers successfully booted the iOS 16.5 XNU kernel on real Android hardware (including POCO X5 Pro 5G) and QEMU using custom UEFI loaders and spoofed iPhone X device trees. It" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50196718.png" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-23-13-researchers-boot-ios-16-5-xnu-kernel-on-android-hardware-5aab66d1"}, "headline": "Researchers boot iOS 16.5 XNU kernel on Android hardware", "description": "Researchers successfully booted the iOS 16.5 XNU kernel on real Android hardware (including POCO X5 Pro 5G) and QEMU using custom UEFI loaders and spoofed iPhone X device trees. It", "image": ["https://nowainews.com/media/hackernews-story-50196718.png"], "datePublished": "2026-10-22T15:26:22+00:00", "dateModified": "2026-10-23T06:16:47.970003+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50196718.png" alt="Researchers boot iOS 16.5 XNU kernel on Android hardware" />
+    <div class="article-page-tags"><span>#iOS</span> <span>#XNU</span> <span>#kernel</span> <span>#reverse-engineering</span> <span>#mobile-security</span></div>
+    <h1>Researchers boot iOS 16.5 XNU kernel on Android hardware</h1>
+    <p class="article-page-meta">News time: 2026-10-23T06:00:37.664710+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A team of reverse-engineering researchers has achieved a notable technical milestone: running the iOS 16.5 XNU kernel — the core of Apple’s operating system — directly on off-the-shelf Android devices, including the POCO X5 Pro 5G and several Xiaomi models. This is not emulation in a virtual machine nor a user-facing ROM replacement; instead, it’s a low-level port that boots the actual XNU kernel binary using custom UEFI loaders and QEMU-based test environments. The project, named hackios-xnu-kernel, focuses exclusively on kernel initialization and early-stage execution — no iOS user interface, apps, or drivers are present.</p>
+<p>The approach relies on device tree spoofing: the researchers generate a fake iPhone X device tree that tricks the iOS kernel into believing it’s running on genuine Apple hardware. This bypasses early hardware checks baked into XNU, allowing the kernel to proceed past boot-time validation. The system runs for a fixed duration (e.g., 30 seconds), logs its execution state, then cleanly hands control back to the bootloader — reinforcing its role as a research benchmark rather than a functional OS.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>This effort sits squarely in the domain of kernel portability research. Unlike traditional Android custom ROMs — which replace the Linux kernel with another Linux kernel — hackios-xnu-kernel replaces Android’s Linux kernel with Apple’s hybrid XNU kernel (Mach + BSD + I/O Kit). That requires deep understanding of both kernel ABIs, memory management, interrupt handling, and platform firmware interfaces. The GitHub repository includes patched XNU source, UEFI loader code, QEMU launch scripts, and prebuilt binaries — all open for inspection and extension.</p>
+<p>Security researchers have taken particular interest. Because XNU was never designed to run outside Apple’s tightly controlled silicon ecosystem, unexpected behaviors — such as unhandled exceptions, memory corruption vectors, or firmware interaction flaws — could reveal latent vulnerabilities. As one commenter noted, this isn’t about building an iOS phone clone; it’s about stress-testing assumptions in Apple’s kernel hardening and exposing where market-driven restrictions (e.g., feature gating via software) diverge from real hardware limits. For developers and academics, it’s a rare window into how far cross-platform kernel reuse can go — and where it inevitably breaks down.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://github.com/oosexgang/hackios-xnu-kernel" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/oosexgang/hackios-xnu-kernel" target="_blank" rel="noopener">GitHub - oosexgang/hackios- xnu - kernel · GitHub</a><a href="https://en.wikipedia.org/wiki/Darwin_(operating_system)" target="_blank" rel="noopener">Darwin (operating system) - Wikipedia</a><a href="https://www.androidauthority.com/ios-on-android-phones-3726001/" target="_blank" rel="noopener">Forget custom ROMs, you can now run iOS on... - Android Authority</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
