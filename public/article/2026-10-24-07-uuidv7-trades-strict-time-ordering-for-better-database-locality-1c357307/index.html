@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>UUIDv7牺牲严格时间序换来数据库物理局部性优化 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="RFC 9562 于 2023 年正式标准化 UUIDv7，明确将物理数据局部性和分布式生成置于严格时间序之上，这是对普遍认知的有意偏离。 UUIDv7 能提升大规模数据库中时间范围查询与写入聚类的效率，但普遍存在的误解可能导致生产系统出现性能倒退、索引膨胀和隐蔽的正确性问题。 UUIDv7 使用毫秒级时间戳并允许 ±1 秒时钟偏差；它不具备密码学安全性，不" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="UUIDv7牺牲严格时间序换来数据库物理局部性优化" />
+  <meta property="og:description" content="RFC 9562 于 2023 年正式标准化 UUIDv7，明确将物理数据局部性和分布式生成置于严格时间序之上，这是对普遍认知的有意偏离。 UUIDv7 能提升大规模数据库中时间范围查询与写入聚类的效率，但普遍存在的误解可能导致生产系统出现性能倒退、索引膨胀和隐蔽的正确性问题。 UUIDv7 使用毫秒级时间戳并允许 ±1 秒时钟偏差；它不具备密码学安全性，不" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50211746.svg" />
+  <meta property="article:published_time" content="2026-10-23T16:39:45+00:00" />
+  <meta property="article:modified_time" content="2026-10-24T05:59:27.369788+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="UUIDv7牺牲严格时间序换来数据库物理局部性优化" />
+  <meta name="twitter:description" content="RFC 9562 于 2023 年正式标准化 UUIDv7，明确将物理数据局部性和分布式生成置于严格时间序之上，这是对普遍认知的有意偏离。 UUIDv7 能提升大规模数据库中时间范围查询与写入聚类的效率，但普遍存在的误解可能导致生产系统出现性能倒退、索引膨胀和隐蔽的正确性问题。 UUIDv7 使用毫秒级时间戳并允许 ±1 秒时钟偏差；它不具备密码学安全性，不" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50211746.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307"}, "headline": "UUIDv7牺牲严格时间序换来数据库物理局部性优化", "description": "RFC 9562 于 2023 年正式标准化 UUIDv7，明确将物理数据局部性和分布式生成置于严格时间序之上，这是对普遍认知的有意偏离。 UUIDv7 能提升大规模数据库中时间范围查询与写入聚类的效率，但普遍存在的误解可能导致生产系统出现性能倒退、索引膨胀和隐蔽的正确性问题。 UUIDv7 使用毫秒级时间戳并允许 ±1 秒时钟偏差；它不具备密码学安全性，不", "image": ["https://nowainews.com/media/hackernews-story-50211746.svg"], "datePublished": "2026-10-23T16:39:45+00:00", "dateModified": "2026-10-24T05:59:27.369788+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50211746.svg" alt="UUIDv7牺牲严格时间序换来数据库物理局部性优化" />
+    <div class="article-page-tags"><span>#UUID</span> <span>#database-design</span> <span>#distributed-systems</span> <span>#time-ordering</span> <span>#standards-compliance</span></div>
+    <h1>UUIDv7牺牲严格时间序换来数据库物理局部性优化</h1>
+    <p class="article-page-meta">新闻时间: 2026-10-24T05:46:59.598660+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>UUIDv7 是 RFC 9562 标准定义的最新版 UUID，但它并非许多开发者想象中的“时间有序ID”。尽管其结构包含时间戳，它<strong>并不保证单调递增，甚至不保证全局时间顺序</strong>。它的核心设计目标是提升<strong>物理数据局部性</strong>：让时间上相近的记录在磁盘或数据库索引页中尽可能靠近存放。这能显著提升写入性能和时间范围查询效率——尤其在超大规模场景下——通过减少随机I/O、加快跨分片的顺序扫描来实现。</p>
+<p>误解往往源于对 ULID 或 Snowflake 等旧有时间有序ID的惯性认知。但 UUIDv7 的 48 位时间戳仅精确到毫秒，并且<strong>刻意允许 ±1 秒的时钟偏差容忍度</strong>，以支持无需中心协调的高吞吐分布式生成。因此，毫秒级先后生成的两个 UUIDv7 可能排序相反——这不是缺陷，而是为实现数据聚类所作的主动取舍。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>这一权衡在现代分布式数据库中带来切实收益。当时间相近的记录落在同一索引页或同一分片内，按创建时间过滤的查询就无需额外二级索引或跨分片连接。正如一位工程师指出：这种优化在每小时处理数十亿写入时才真正凸显价值——此时降低磁盘寻道与网络跳转的开销，远比完美时间排序更重要。然而误用仍很普遍：有些团队将 UUIDv7 当作 <code>created_at</code> 时间戳的替代品，或直接暴露为公开ID，却忽略了它既无加密安全性，也不具备单调性。</p>
+<p>实现陷阱进一步加剧问题。多个早期 Python 和 JavaScript 库（包括 PyPI 上广为人知的 <code>uuid7</code> 包）基于过时草案开发，生成的值不符合 RFC 9562。开发者在调试异常排序或复制不一致问题时，常发现根源正在于此。目前推荐的合规方案包括 Python 的 <code>uuid-utils</code> 和 Node.js 的 <code>@kstawinski/uuidv7</code>，它们严格遵循最终标准。归根结底，UUIDv7 关注的不是“时间”，而是“局部性、可扩展性与务实的唯一性”——善用它的前提，是真正理解这一本质。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://alexsci.com/blog/uuidv7-is-weird/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://docs.python.org/3/library/uuid.html" target="_blank" rel="noopener">uuid — UUID objects according to RFC 9562 — Python...</a><a href="https://alexsci.com/blog/uuidv7-is-weird/" target="_blank" rel="noopener">UUIDv 7 doesn&#x27;t have the properties you think it does</a><a href="https://www.npmjs.com/package/@kstawinski/uuidv7" target="_blank" rel="noopener">kstawinski/ uuidv 7 - npm</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

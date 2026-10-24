@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Twelve years of building distributed SQLite systems - Now AI News</title>
+  <meta name="description" content="Philip O&#x27;Toole published a reflective, twelve-year retrospective on designing, building, and maintaining distributed SQLite systems, sharing practical insights, recurring challenge" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Twelve years of building distributed SQLite systems" />
+  <meta property="og:description" content="Philip O&#x27;Toole published a reflective, twelve-year retrospective on designing, building, and maintaining distributed SQLite systems, sharing practical insights, recurring challenge" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50217500.svg" />
+  <meta property="article:published_time" content="2026-10-24T01:16:58+00:00" />
+  <meta property="article:modified_time" content="2026-10-24T05:59:27.369788+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Twelve years of building distributed SQLite systems" />
+  <meta name="twitter:description" content="Philip O&#x27;Toole published a reflective, twelve-year retrospective on designing, building, and maintaining distributed SQLite systems, sharing practical insights, recurring challenge" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50217500.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c"}, "headline": "Twelve years of building distributed SQLite systems", "description": "Philip O'Toole published a reflective, twelve-year retrospective on designing, building, and maintaining distributed SQLite systems, sharing practical insights, recurring challenge", "image": ["https://nowainews.com/media/hackernews-story-50217500.svg"], "datePublished": "2026-10-24T01:16:58+00:00", "dateModified": "2026-10-24T05:59:27.369788+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50217500.svg" alt="Twelve years of building distributed SQLite systems" />
+    <div class="article-page-tags"><span>#distributed-systems</span> <span>#sqlite</span> <span>#database</span> <span>#rqlite</span> <span>#consensus</span></div>
+    <h1>Twelve years of building distributed SQLite systems</h1>
+    <p class="article-page-meta">News time: 2026-10-24T05:46:59.598491+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>Philip O'Toole’s reflective blog post marks a rare milestone: twelve years of sustained engineering effort to extend SQLite — a famously embedded, single-file, serverless database — into distributed environments. Rather than replacing SQLite, the work embraces its simplicity and reliability while layering on coordination mechanisms for replication, consensus, and fault tolerance. The article isn’t a technical spec or product launch; it’s a candid retrospective — full of hard-won lessons about what <em>doesn’t</em> scale, where abstractions break down, and why certain trade-offs (like sacrificing strict serializability for availability) became unavoidable in real deployments.</p>
+<p>O'Toole traces how early attempts leaned on application-level sharding and manual WAL file synchronization — approaches that worked for small teams but collapsed under concurrency pressure or network partitions. Over time, the focus shifted toward integrating proven consensus protocols like Raft, borrowing from systems such as etcd and Consul. This evolution mirrors broader industry trends: instead of reinventing consensus, modern distributed SQLite projects build <em>on top</em> of battle-tested log replication, using SQLite as the durable, ACID-compliant state machine at each node.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>The post highlights rqlite as a mature, open-source embodiment of this philosophy — a lightweight, Raft-backed cluster that exposes a familiar HTTP API and SQLite semantics. It also nods to hctree, an alternative SQLite storage engine designed for high-concurrency write workloads, showing how even the core engine itself is evolving to better suit distributed patterns. Crucially, O'Toole stresses that ‘distributed SQLite’ isn’t about turning SQLite into PostgreSQL — it’s about finding the narrow, pragmatic path where SQLite’s strengths (simplicity, zero-config, deterministic behavior) remain intact despite distribution.</p>
+<p>Readers responded with grounded curiosity: some questioned how Rails’ built-in SQLite support could possibly handle production concurrency without external coordination; others compared trade-offs against rqlite and asked for concrete benchmarks. One comment wryly noted the author’s self-awareness in ‘ensuring history records who drew the blueprint’ — a nod to both the rarity of long-term infrastructure stewardship and the quiet influence such work exerts on adjacent tools and mental models. Ultimately, the piece stands as a reminder that distributed systems progress not only through breakthrough papers, but through thousands of hours of debugging edge cases, rewriting failure handlers, and choosing the right compromise — again and again.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://philipotoole.com/twelve-years-of-distributed-sqlite/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://github.com/rqlite/rqlite" target="_blank" rel="noopener">GitHub - rqlite/rqlite: The lightweight, fault-tolerant ...</a><a href="https://rqlite.io/" target="_blank" rel="noopener">rqlite</a><a href="https://www.systemdesignhandbook.com/guides/distributed-consensus/" target="_blank" rel="noopener">Distributed Consensus : A Complete Guide | System Design Handbook</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

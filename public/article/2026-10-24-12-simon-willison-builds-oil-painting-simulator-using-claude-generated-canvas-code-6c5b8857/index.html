@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>西蒙·威利森用Claude生成的Canvas代码实现网页端油画效果模拟 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="西蒙·威利森发布了Quick Study，一款完全由Claude Opus 5.5生成的网页端油画效果模拟工具，仅依赖Canvas API与Sobel边缘检测算法，无需任何外部库。 它展示了大语言模型如何快速生成轻量、无依赖、可直接使用的创意工具，弥合了生成式AI与实操型网页开发之间的鸿沟，无需抽象层介入。 该工具通过Sobel算子计算图像水平与垂直方向梯度" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-10-24-12-simon-willison-builds-oil-painting-simulator-using-claude-generated-canvas-code-6c5b8857" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-24-12-simon-willison-builds-oil-painting-simulator-using-claude-generated-canvas-code-6c5b8857" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-24-12-simon-willison-builds-oil-painting-simulator-using-claude-generated-canvas-code-6c5b8857" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-24-12-simon-willison-builds-oil-painting-simulator-using-claude-generated-canvas-code-6c5b8857" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="西蒙·威利森用Claude生成的Canvas代码实现网页端油画效果模拟" />
+  <meta property="og:description" content="西蒙·威利森发布了Quick Study，一款完全由Claude Opus 5.5生成的网页端油画效果模拟工具，仅依赖Canvas API与Sobel边缘检测算法，无需任何外部库。 它展示了大语言模型如何快速生成轻量、无依赖、可直接使用的创意工具，弥合了生成式AI与实操型网页开发之间的鸿沟，无需抽象层介入。 该工具通过Sobel算子计算图像水平与垂直方向梯度" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-10-24-12-simon-willison-builds-oil-painting-simulator-using-claude-generated-canvas-code-6c5b8857" />
+  <meta property="og:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--1560ea04dee0e58a.webp" />
+  <meta property="article:published_time" content="2026-10-23T21:35:13+00:00" />
+  <meta property="article:modified_time" content="2026-10-24T05:59:27.369788+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="西蒙·威利森用Claude生成的Canvas代码实现网页端油画效果模拟" />
+  <meta name="twitter:description" content="西蒙·威利森发布了Quick Study，一款完全由Claude Opus 5.5生成的网页端油画效果模拟工具，仅依赖Canvas API与Sobel边缘检测算法，无需任何外部库。 它展示了大语言模型如何快速生成轻量、无依赖、可直接使用的创意工具，弥合了生成式AI与实操型网页开发之间的鸿沟，无需抽象层介入。 该工具通过Sobel算子计算图像水平与垂直方向梯度" />
+  <meta name="twitter:image" content="https://nowainews.com/media/rss-simonwillison-net-atom-everything--1560ea04dee0e58a.webp" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-10-24-12-simon-willison-builds-oil-painting-simulator-using-claude-generated-canvas-code-6c5b8857"}, "headline": "西蒙·威利森用Claude生成的Canvas代码实现网页端油画效果模拟", "description": "西蒙·威利森发布了Quick Study，一款完全由Claude Opus 5.5生成的网页端油画效果模拟工具，仅依赖Canvas API与Sobel边缘检测算法，无需任何外部库。 它展示了大语言模型如何快速生成轻量、无依赖、可直接使用的创意工具，弥合了生成式AI与实操型网页开发之间的鸿沟，无需抽象层介入。 该工具通过Sobel算子计算图像水平与垂直方向梯度", "image": ["https://nowainews.com/media/rss-simonwillison-net-atom-everything--1560ea04dee0e58a.webp"], "datePublished": "2026-10-23T21:35:13+00:00", "dateModified": "2026-10-24T05:59:27.369788+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/rss-simonwillison-net-atom-everything--1560ea04dee0e58a.webp" alt="西蒙·威利森用Claude生成的Canvas代码实现网页端油画效果模拟" />
+    <div class="article-page-tags"><span>#generative-ai</span> <span>#web-development</span> <span>#computer-vision</span> <span>#creative-coding</span> <span>#llm-tooling</span></div>
+    <h1>西蒙·威利森用Claude生成的Canvas代码实现网页端油画效果模拟</h1>
+    <p class="article-page-meta">新闻时间: 2026-10-24T05:46:59.324644+00:00 · 来源: rss</p>
+    <article class="article-page-body"><p>西蒙·威利森发布了名为Quick Study的极简网络工具：它能在浏览器中直接将用户上传的照片实时转换为模拟油画效果。与依赖服务器端AI模型或大型前端库的传统图像生成工具不同，Quick Study完全运行于前端，仅使用原生HTML、CSS和JavaScript。它加载图片后，先用Sobel边缘检测识别轮廓与纹理边界，再在原始像素上逐层绘制类似画笔笔触的效果——整个过程都在单个<code>&lt;canvas&gt;</code>元素内完成。</p>
+<p>该工具的核心创新并非来自前沿计算机视觉研究，而在于巧妙地借助大语言模型（LLM）协同实现经典技术。威利森向Claude Opus 5.5提交了一条简洁明确的指令：“构建一个网页功能：用户上传照片后，几秒内即可用Canvas元素模拟画笔效果生成油画风格图像。”Claude一次性生成的代码无需任何外部依赖，纯靠浏览器原生API就实现了像素级实时处理、梯度幅值估算和方向性笔触模拟。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>这延续了威利森此前的“鹈鹕水彩”实验——当时他用Claude Fable生成P5.js草图模拟水彩晕染效果。但Quick Study更进一步：不使用任何框架、打包器或npm包，仅引入Google Fonts用于排版，全部视觉逻辑均由Canvas 2D原生渲染完成。演示中的苍鹭图像清晰展示了算法如何在保留结构细节的同时，沿Sobel检测出的高对比度边缘自然叠加富有表现力的笔触纹理。</p>
+<p>Quick Study真正值得关注之处，在于它展现了LLM作为“精准开发协作者”的潜力——而非黑箱式内容生成器。它证明：结合领域知识的提示词工程，能高效产出紧凑、高性能且逻辑透明的代码。对网页开发者与创意编码者而言，它既是一个实用小工具，也是一堂关于如何用AI加速实现特定视觉效果的实践课。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://simonwillison.net/2026/Oct/23/quick-study-painter/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://en.wikipedia.org/wiki/Sobel_operator" target="_blank" rel="noopener">Sobel operator - Wikipedia</a><a href="https://www.geeksforgeeks.org/computer-vision/comprehensive-guide-to-edge-detection-algorithms/" target="_blank" rel="noopener">Edge Detection Algorithms - GeeksforGeeks</a><a href="https://aidiscoverydigest.com/ai-for-business/how-to-use-claude-code-for-web-development-complete-guide/" target="_blank" rel="noopener">How to Use Claude Code for Web Development (Complete Guide)</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

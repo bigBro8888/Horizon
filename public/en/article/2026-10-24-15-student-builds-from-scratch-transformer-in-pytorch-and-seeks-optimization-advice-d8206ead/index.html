@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Student builds from-scratch Transformer in PyTorch and seeks optimization advice - Now AI News</title>
+  <meta name="description" content="A developer implemented the full 2017 Transformer architecture from scratch in PyTorch with two encoder-decoder layers and a 1,000-word vocabulary, and publicly shared the code see" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-24-15-student-builds-from-scratch-transformer-in-pytorch-and-seeks-optimization-advice-d8206ead" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-24-15-student-builds-from-scratch-transformer-in-pytorch-and-seeks-optimization-advice-d8206ead" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-24-15-student-builds-from-scratch-transformer-in-pytorch-and-seeks-optimization-advice-d8206ead" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-24-15-student-builds-from-scratch-transformer-in-pytorch-and-seeks-optimization-advice-d8206ead" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Student builds from-scratch Transformer in PyTorch and seeks optimization advice" />
+  <meta property="og:description" content="A developer implemented the full 2017 Transformer architecture from scratch in PyTorch with two encoder-decoder layers and a 1,000-word vocabulary, and publicly shared the code see" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-24-15-student-builds-from-scratch-transformer-in-pytorch-and-seeks-optimization-advice-d8206ead" />
+  <meta property="og:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1xdctou.svg" />
+  <meta property="article:published_time" content="2026-10-23T12:36:12+00:00" />
+  <meta property="article:modified_time" content="2026-10-24T05:59:27.369788+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Student builds from-scratch Transformer in PyTorch and seeks optimization advice" />
+  <meta name="twitter:description" content="A developer implemented the full 2017 Transformer architecture from scratch in PyTorch with two encoder-decoder layers and a 1,000-word vocabulary, and publicly shared the code see" />
+  <meta name="twitter:image" content="https://nowainews.com/media/reddit-subreddit-rss-t3-1xdctou.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-24-15-student-builds-from-scratch-transformer-in-pytorch-and-seeks-optimization-advice-d8206ead"}, "headline": "Student builds from-scratch Transformer in PyTorch and seeks optimization advice", "description": "A developer implemented the full 2017 Transformer architecture from scratch in PyTorch with two encoder-decoder layers and a 1,000-word vocabulary, and publicly shared the code see", "image": ["https://nowainews.com/media/reddit-subreddit-rss-t3-1xdctou.svg"], "datePublished": "2026-10-23T12:36:12+00:00", "dateModified": "2026-10-24T05:59:27.369788+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/reddit-subreddit-rss-t3-1xdctou.svg" alt="Student builds from-scratch Transformer in PyTorch and seeks optimization advice" />
+    <div class="article-page-tags"><span>#Transformer</span> <span>#PyTorch</span> <span>#Deep Learning</span> <span>#Model Training</span> <span>#Educational Implementation</span></div>
+    <h1>Student builds from-scratch Transformer in PyTorch and seeks optimization advice</h1>
+    <p class="article-page-meta">News time: 2026-10-24T05:46:59.826178+00:00 · Source: reddit</p>
+    <article class="article-page-body"><p>A Reddit user named u/Jumbledsaturn52 shared a hands-on implementation of the original 2017 Transformer architecture—described in the landmark paper 'Attention Is All You Need'—built entirely from scratch in PyTorch. Unlike high-level library abstractions, this version explicitly constructs core components: multi-head self-attention, positional encoding, layer normalization, feed-forward blocks, and encoder-decoder stacks. The model currently uses just two encoder and two decoder layers, trained on a tiny vocabulary of only 1,000 words—a deliberate trade-off to keep training feasible on limited hardware, but one that severely constrains its expressive power and generalization.</p>
+<p>The author openly acknowledges the model’s weak predictive performance—not due to conceptual errors, but because scaling up is computationally prohibitive with their current setup. Training is slow, memory usage is high per batch, and convergence is sluggish. This transparency invites targeted, practical feedback rather than theoretical critique. It reflects a common learning bottleneck: understanding <em>how</em> Transformers work conceptually is one thing; making them train efficiently on real hardware is another.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Several well-established techniques could meaningfully accelerate this implementation. First, replacing manual loops over sequence positions with vectorized attention computations (e.g., using <code>torch.einsum</code> or fused <code>scaled_dot_product_attention</code>) would unlock GPU parallelism. Second, enabling mixed-precision training (<code>torch.cuda.amp</code>) reduces memory footprint and speeds up matrix operations without sacrificing stability. Third, even modest optimizations—like caching positional encodings, avoiding redundant <code>.clone()</code> calls, or using <code>nn.Transformer</code>’s built-in <code>batch_first=True</code>—can yield measurable gains. Crucially, none require changing the architecture’s logic—just how it’s expressed in PyTorch.</p>
+<p>What makes this post especially valuable is its pedagogical honesty: it doesn’t hide complexity behind wrappers, nor does it claim production readiness. Instead, it surfaces real engineering trade-offs—between clarity, correctness, and efficiency—that every practitioner eventually confronts. For learners, it’s a rare chance to see the gap between textbook equations and runnable code—and how bridging that gap demands both deep understanding and pragmatic tooling knowledge.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://www.reddit.com/r/MachineLearning/comments/1xdctou/i_made_transformer_architecture_from_scratch_p/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://pub.towardsai.net/the-transformer-architecture-a1caa330ddc6" target="_blank" rel="noopener">The Transformer Architecture . What the “Attention Is All... | Towards AI</a><a href="https://docs.pytorch.org/tutorials/recipes/recipes/tuning_guide.html" target="_blank" rel="noopener">Performance Tuning Guide — PyTorch Tutorials 2.14.0+cu130 ...</a><a href="https://arxiv.org/pdf/2302.01107" target="_blank" rel="noopener">A Survey on Efficient Training of Transformers - arXiv.org</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>分布式SQLite实践十二年回顾 - Now AI News 今日科技前沿</title>
+  <meta name="description" content="菲利普·奥图尔发布了一篇回顾性长文，系统总结了过去十二年间设计、构建和维护分布式SQLite系统的实践经验、反复出现的挑战以及实际部署中的架构权衡。 这篇回顾提供了关于分布式数据领域一种技术上精巧但日益重要的路径的罕见长期视角：它优先考虑简洁性、开发者体验和运维轻量性，而非传统数据库的复杂堆叠，深刻影响了rqlite等工具的设计，并为边缘计算和嵌入式场景设定" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta property="og:title" content="分布式SQLite实践十二年回顾" />
+  <meta property="og:description" content="菲利普·奥图尔发布了一篇回顾性长文，系统总结了过去十二年间设计、构建和维护分布式SQLite系统的实践经验、反复出现的挑战以及实际部署中的架构权衡。 这篇回顾提供了关于分布式数据领域一种技术上精巧但日益重要的路径的罕见长期视角：它优先考虑简洁性、开发者体验和运维轻量性，而非传统数据库的复杂堆叠，深刻影响了rqlite等工具的设计，并为边缘计算和嵌入式场景设定" />
+  <meta property="og:url" content="https://nowainews.com/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50217500.svg" />
+  <meta property="article:published_time" content="2026-10-24T01:16:58+00:00" />
+  <meta property="article:modified_time" content="2026-10-24T05:59:27.369788+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="分布式SQLite实践十二年回顾" />
+  <meta name="twitter:description" content="菲利普·奥图尔发布了一篇回顾性长文，系统总结了过去十二年间设计、构建和维护分布式SQLite系统的实践经验、反复出现的挑战以及实际部署中的架构权衡。 这篇回顾提供了关于分布式数据领域一种技术上精巧但日益重要的路径的罕见长期视角：它优先考虑简洁性、开发者体验和运维轻量性，而非传统数据库的复杂堆叠，深刻影响了rqlite等工具的设计，并为边缘计算和嵌入式场景设定" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50217500.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/article/2026-10-24-10-twelve-years-of-building-distributed-sqlite-systems-ed8de35c"}, "headline": "分布式SQLite实践十二年回顾", "description": "菲利普·奥图尔发布了一篇回顾性长文，系统总结了过去十二年间设计、构建和维护分布式SQLite系统的实践经验、反复出现的挑战以及实际部署中的架构权衡。 这篇回顾提供了关于分布式数据领域一种技术上精巧但日益重要的路径的罕见长期视角：它优先考虑简洁性、开发者体验和运维轻量性，而非传统数据库的复杂堆叠，深刻影响了rqlite等工具的设计，并为边缘计算和嵌入式场景设定", "image": ["https://nowainews.com/media/hackernews-story-50217500.svg"], "datePublished": "2026-10-24T01:16:58+00:00", "dateModified": "2026-10-24T05:59:27.369788+00:00", "inLanguage": "zh-CN", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← 返回首页</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50217500.svg" alt="分布式SQLite实践十二年回顾" />
+    <div class="article-page-tags"><span>#distributed-systems</span> <span>#sqlite</span> <span>#database</span> <span>#rqlite</span> <span>#consensus</span></div>
+    <h1>分布式SQLite实践十二年回顾</h1>
+    <p class="article-page-meta">新闻时间: 2026-10-24T05:46:59.598491+00:00 · 来源: hackernews</p>
+    <article class="article-page-body"><p>菲利普·奥图尔（Philip O'Toole）的博客文章是一次难得的工程回溯：他持续十二年致力于将SQLite——这个以嵌入式、单文件、无服务端著称的轻量数据库——拓展至分布式场景。这项工作并非取代SQLite，而是尊重其简洁性与可靠性，再在其之上叠加复制、共识与容错机制。文章不是技术白皮书或产品发布稿，而是一篇坦诚的复盘：详述哪些设计在实践中无法伸缩，抽象层在何处失效，以及为何某些权衡（例如为可用性而放宽严格可串行化）在真实部署中不可避免。</p>
+<p>作者梳理了演进路径：早期尝试依赖应用层分片和手动WAL文件同步——这类方法在小团队中可行，却在并发压力或网络分区下迅速崩溃。随后重心转向集成经过验证的共识协议（如Raft），借鉴etcd、Consul等系统的设计思路。这种演进也映射出行业共性：现代分布式SQLite项目不再重复造轮子，而是将SQLite作为每个节点上持久、ACID兼容的状态机，再依托成熟的日志复制基础设施构建集群。</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>文中重点提及rqlite——一个成熟开源项目，它基于Raft实现轻量级高可用集群，提供HTTP接口并完全兼容SQLite语义；同时也提到hctree，一种专为高并发写入优化的SQLite存储引擎，表明SQLite内核自身也在适应分布式需求。尤为关键的是，作者强调“分布式SQLite”并非要把SQLite改造成PostgreSQL，而是寻找一条狭窄而务实的路径：让SQLite最核心的优势（简洁、零配置、行为确定）在分布环境下依然成立。</p>
+<p>读者评论体现出务实的好奇心：有人质疑Rails内置的SQLite支持如何应对生产环境中的并发访问；有人对比rqlite等方案，并追问具体性能基准；还有人幽默指出作者“确保历史记住蓝图绘制者”的自我意识——既感慨长期基础设施维护之稀有，也点出这类工作对周边工具与工程思维的潜移默化影响。归根结底，这篇文章提醒我们：分布式系统的进步，不仅来自突破性论文，更来自成千上万小时调试边界情况、重写故障处理逻辑，以及一次又一次选择恰到好处的妥协。</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://philipotoole.com/twelve-years-of-distributed-sqlite/" target="_blank" rel="noopener">阅读原文</a>
+      <h2>参考链接</h2><a href="https://github.com/rqlite/rqlite" target="_blank" rel="noopener">GitHub - rqlite/rqlite: The lightweight, fault-tolerant ...</a><a href="https://rqlite.io/" target="_blank" rel="noopener">rqlite</a><a href="https://www.systemdesignhandbook.com/guides/distributed-consensus/" target="_blank" rel="noopener">Distributed Consensus : A Complete Guide | System Design Handbook</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

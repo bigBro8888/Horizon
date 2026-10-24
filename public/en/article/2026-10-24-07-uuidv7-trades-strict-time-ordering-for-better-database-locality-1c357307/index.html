@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>UUIDv7 trades strict time ordering for better database locality - Now AI News</title>
+  <meta name="description" content="RFC 9562 officially standardized UUIDv7 in 2023, emphasizing physical data locality and distributed generation over strict time ordering — a deliberate departure from common assump" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="UUIDv7 trades strict time ordering for better database locality" />
+  <meta property="og:description" content="RFC 9562 officially standardized UUIDv7 in 2023, emphasizing physical data locality and distributed generation over strict time ordering — a deliberate departure from common assump" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50211746.svg" />
+  <meta property="article:published_time" content="2026-10-23T16:39:45+00:00" />
+  <meta property="article:modified_time" content="2026-10-24T05:59:27.369788+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="UUIDv7 trades strict time ordering for better database locality" />
+  <meta name="twitter:description" content="RFC 9562 officially standardized UUIDv7 in 2023, emphasizing physical data locality and distributed generation over strict time ordering — a deliberate departure from common assump" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50211746.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-24-07-uuidv7-trades-strict-time-ordering-for-better-database-locality-1c357307"}, "headline": "UUIDv7 trades strict time ordering for better database locality", "description": "RFC 9562 officially standardized UUIDv7 in 2023, emphasizing physical data locality and distributed generation over strict time ordering — a deliberate departure from common assump", "image": ["https://nowainews.com/media/hackernews-story-50211746.svg"], "datePublished": "2026-10-23T16:39:45+00:00", "dateModified": "2026-10-24T05:59:27.369788+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50211746.svg" alt="UUIDv7 trades strict time ordering for better database locality" />
+    <div class="article-page-tags"><span>#UUID</span> <span>#database-design</span> <span>#distributed-systems</span> <span>#time-ordering</span> <span>#standards-compliance</span></div>
+    <h1>UUIDv7 trades strict time ordering for better database locality</h1>
+    <p class="article-page-meta">News time: 2026-10-24T05:46:59.598660+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>UUIDv7 — the newest standardized UUID version defined in RFC 9562 — is not what many developers assume it to be. Despite its timestamp-based structure, it does <em>not</em> guarantee monotonic or even globally consistent time ordering. Instead, its design prioritizes physical data locality: grouping temporally related records close together on disk or within database index pages. This improves write performance and read efficiency for time-range queries — especially at massive scale — by reducing random I/O and enabling faster sequential scans across shards.</p>
+<p>The confusion stems from expectations inherited from older time-ordered identifiers like ULIDs or Snowflake IDs. But UUIDv7’s 48-bit timestamp is truncated to millisecond precision and deliberately allows clock skew tolerance (up to ±1 second) to support decentralized, high-throughput generation without coordination. As a result, two UUIDv7s created milliseconds apart may sort in reverse order — a feature, not a bug, when the goal is clustering over strict chronology.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>This trade-off delivers real benefits for modern distributed databases. When rows with nearby timestamps land on the same index page or shard, queries filtering by creation time avoid expensive secondary indexes and cross-shard joins. As one engineer notes, this matters most when handling billions of writes per hour — where minimizing disk seeks and network hops outweighs the convenience of perfect time sorting. Still, misuse is common: some teams treat UUIDv7 as a drop-in replacement for <code>created_at</code> timestamps or public-facing IDs, ignoring its lack of cryptographic security and non-monotonic behavior.</p>
+<p>Implementation pitfalls compound the issue. Several early Python and JavaScript libraries — including the popular <code>uuid7</code> PyPI package — shipped implementations based on obsolete drafts of the spec, producing non-RFC-9562-compliant values. Developers debugging unexpected sort orders or replication mismatches have traced failures back to these incompatible versions. The correct alternatives — like <code>uuid-utils</code> for Python or <code>@kstawinski/uuidv7</code> for Node.js — now enforce the final RFC precisely. Ultimately, UUIDv7 isn’t about time; it’s about locality, scalability, and pragmatic uniqueness — and using it well means understanding that distinction deeply.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://alexsci.com/blog/uuidv7-is-weird/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://docs.python.org/3/library/uuid.html" target="_blank" rel="noopener">uuid — UUID objects according to RFC 9562 — Python...</a><a href="https://alexsci.com/blog/uuidv7-is-weird/" target="_blank" rel="noopener">UUIDv 7 doesn&#x27;t have the properties you think it does</a><a href="https://www.npmjs.com/package/@kstawinski/uuidv7" target="_blank" rel="noopener">kstawinski/ uuidv 7 - npm</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>
