@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/static/icon.png?v=1" />
+  <link rel="apple-touch-icon" href="/static/icon.png?v=1" />
+  <title>Researcher hosts $502 Bitcoin prize on deliberately vulnerable PHP server - Now AI News</title>
+  <meta name="description" content="A security researcher deployed a live, non-trivially exploitable PHP server hosting a $502 Bitcoin wallet to test real-world exploitation of the PHP2SHELL RCE vulnerabilities (CVE-" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://nowainews.com/en/article/2026-10-25-06-researcher-hosts-502-bitcoin-prize-on-deliberately-vulnerable-php-server-d782040f" />
+  <link rel="alternate" hreflang="zh-CN" href="https://nowainews.com/article/2026-10-25-06-researcher-hosts-502-bitcoin-prize-on-deliberately-vulnerable-php-server-d782040f" />
+  <link rel="alternate" hreflang="en" href="https://nowainews.com/en/article/2026-10-25-06-researcher-hosts-502-bitcoin-prize-on-deliberately-vulnerable-php-server-d782040f" />
+  <link rel="alternate" hreflang="x-default" href="https://nowainews.com/article/2026-10-25-06-researcher-hosts-502-bitcoin-prize-on-deliberately-vulnerable-php-server-d782040f" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Now AI News" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Researcher hosts $502 Bitcoin prize on deliberately vulnerable PHP server" />
+  <meta property="og:description" content="A security researcher deployed a live, non-trivially exploitable PHP server hosting a $502 Bitcoin wallet to test real-world exploitation of the PHP2SHELL RCE vulnerabilities (CVE-" />
+  <meta property="og:url" content="https://nowainews.com/en/article/2026-10-25-06-researcher-hosts-502-bitcoin-prize-on-deliberately-vulnerable-php-server-d782040f" />
+  <meta property="og:image" content="https://nowainews.com/media/hackernews-story-50224916.svg" />
+  <meta property="article:published_time" content="2026-10-24T20:30:31+00:00" />
+  <meta property="article:modified_time" content="2026-10-25T06:14:49.523274+00:00" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Researcher hosts $502 Bitcoin prize on deliberately vulnerable PHP server" />
+  <meta name="twitter:description" content="A security researcher deployed a live, non-trivially exploitable PHP server hosting a $502 Bitcoin wallet to test real-world exploitation of the PHP2SHELL RCE vulnerabilities (CVE-" />
+  <meta name="twitter:image" content="https://nowainews.com/media/hackernews-story-50224916.svg" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "NewsArticle", "mainEntityOfPage": {"@type": "WebPage", "@id": "https://nowainews.com/en/article/2026-10-25-06-researcher-hosts-502-bitcoin-prize-on-deliberately-vulnerable-php-server-d782040f"}, "headline": "Researcher hosts $502 Bitcoin prize on deliberately vulnerable PHP server", "description": "A security researcher deployed a live, non-trivially exploitable PHP server hosting a $502 Bitcoin wallet to test real-world exploitation of the PHP2SHELL RCE vulnerabilities (CVE-", "image": ["https://nowainews.com/media/hackernews-story-50224916.svg"], "datePublished": "2026-10-24T20:30:31+00:00", "dateModified": "2026-10-25T06:14:49.523274+00:00", "inLanguage": "en", "author": {"@type": "Organization", "name": "Now AI News", "url": "https://nowainews.com"}, "publisher": {"@type": "Organization", "name": "Now AI News", "logo": {"@type": "ImageObject", "url": "https://img.alicdn.com/imgextra/i4/52311814/O1CN01dDR31m1PGrcDo5YjK_!!52311814.png"}}}</script>
+  <link rel="stylesheet" href="/static/styles.css?v=26" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+  <main class="article-page">
+    <a class="article-back" href="/" data-smart-back>← Back to home</a>
+    <img class="article-page-cover" src="https://nowainews.com/media/hackernews-story-50224916.svg" alt="Researcher hosts $502 Bitcoin prize on deliberately vulnerable PHP server" />
+    <div class="article-page-tags"><span>#PHP</span> <span>#RCE</span> <span>#CVE-2024-6387</span> <span>#security-research</span> <span>#responsible-disclosure</span></div>
+    <h1>Researcher hosts $502 Bitcoin prize on deliberately vulnerable PHP server</h1>
+    <p class="article-page-meta">News time: 2026-10-25T06:02:51.045260+00:00 · Source: hackernews</p>
+    <article class="article-page-body"><p>A security researcher has launched a live, publicly accessible experiment titled 'Steal My Bitcoin' — a deliberately vulnerable PHP web server hosting a real $502 Bitcoin wallet key. The goal is not to invite malicious exploitation, but to empirically test whether the recently disclosed PHP2SHELL remote code execution (RCE) vulnerabilities are already being weaponized in the wild. Unlike typical bug bounty programs or theoretical PoCs, this setup runs a real, constrained PHP environment — with memory limits, CLI-only execution, and no external network access — designed to be <em>just</em> exploitable <em>if</em> an attacker has a working, reliable PHP2SHELL exploit.</p>
+<p>The server was configured using a pre-patch version of PHP known to be affected by the PHP2SHELL flaws (CVE-2026-109618 and CVE-2026-109619), which stem from memory-safety failures during fatal error handling — especially out-of-memory conditions. Crucially, the researcher did not expose a generic web shell; instead, the flag (the private key) is only retrievable via a custom <code>print-flag</code> binary executable by the PHP user. This forces attackers to achieve full RCE <em>and</em> correctly pivot to local file access — a higher bar than many automated scanners clear.</p><aside class="managed-ad" data-ad-placement="article_inline" hidden></aside>
+<p>Within hours, the experiment sparked intense technical debate across Hacker News and Twitter. Some participants reported server overload due to traffic spikes, while others — including AI-assisted teams — began systematic attempts. Notably, respected security researcher Dan Guido declined to attempt exploitation, citing responsible disclosure ethics: he confirmed possessing a working RCE but refused to demonstrate it publicly, fearing premature exposure before patching windows close. Others, like hpone91, argued the specific configuration isn’t actually vulnerable to PHP2SHELL as advertised — pointing to architectural constraints (CLI mode, 1 MiB cap, inert page) that neutralize the core attack vectors.</p>
+<p>Beyond the Bitcoin prize, the experiment serves as a rare real-world stress test for threat intelligence claims. It challenges sensational narratives about autonomous bot swarms instantly compromising every unpatched site — revealing instead a gap between theoretical exploitability and operational reliability. As one commenter observed, the fact that the server remained uncompromised after several hours suggests that even high-profile, actively discussed RCEs require significant manual effort or tailored tooling to deploy at scale. For defenders, it underscores that timely patching remains effective — but only if exploits aren’t already circulating in private channels.</p></article>
+    <aside class="managed-ad" data-ad-placement="article_end" hidden></aside>
+    <section class="article-page-links">
+      <a class="source-primary" href="https://stealmybitcoin.com/" target="_blank" rel="noopener">Read original</a>
+      <h2>References</h2><a href="https://en.wikipedia.org/wiki/PHP2Shell" target="_blank" rel="noopener">PHP2Shell - Wikipedia</a><a href="https://www.criticalstart.com/resources/php2shell-rce-vulnerabilities" target="_blank" rel="noopener">PHP2SHELL RCE Vulnerabilities - criticalstart.com</a><a href="https://www.wiz.io/blog/php2shell-php-rce" target="_blank" rel="noopener">PHP2Shell: AI uncovers critical RCE vulnerabilities affecting ...</a>
+    </section>
+  </main>
+  <script src="/static/site-runtime.js?v=1"></script>
+  <script>
+    document.querySelector("[data-smart-back]").addEventListener("click", function (event) {
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) {
+        event.preventDefault();
+        history.back();
+      }
+    });
+  </script>
+</body>
+</html>

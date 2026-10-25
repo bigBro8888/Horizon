@@ -1,0 +1,775 @@
+{
+  "date": "2026-10-25",
+  "generated_at": "2026-10-25T06:14:49.523274+00:00",
+  "total_fetched": 18,
+  "count": 15,
+  "articles": [
+    {
+      "id": "hackernews:story:50219177",
+      "slug": "2026-10-25-01-critical-brotli-rce-flaw-cve-2026-111497-affects-http-libraries-and-apps-cfa0fd25",
+      "path": "/article/2026-10-25-01-critical-brotli-rce-flaw-cve-2026-111497-affects-http-libraries-and-apps-cfa0fd25",
+      "rank": 1,
+      "score": 9.0,
+      "source": "hackernews",
+      "author": "theanonymousone",
+      "url": "https://www.aikido.dev/blog/python-packages-vulnerable-node2shell-brotli-cve-2026-111497",
+      "published_at": "2026-10-24T08:06:39+00:00",
+      "fetched_at": "2026-10-25T06:02:51.045275+00:00",
+      "tags": [
+        "security",
+        "vulnerability",
+        "brotli",
+        "RCE",
+        "HTTP"
+      ],
+      "image_path": "media/hackernews-story-50219177.jpg",
+      "title": {
+        "zh": "Brotli解压漏洞CVE-2026-111497引发远程代码执行风险",
+        "en": "Critical Brotli RCE flaw CVE-2026-111497 affects HTTP libraries and apps"
+      },
+      "summary": {
+        "zh": "CVE-2026-111497是Google Brotli C解码器中的越界写漏洞，已确认为无需认证、支持双向利用的远程代码执行漏洞，影响Node.js、Python、Bun等所有使用上游C版Brotli解码器的运行时；Node.js于2026年10月21日通过22.23.4/24.22.1/26.12.1版本完成修复。 这是Web技术栈基础组件中极为罕见的高危RCE漏洞，无需用户交互或身份验证即可静默利用，波及海量服务，也暴露出业界长期忽视压缩库安全性的系统性短板。 漏洞根植于Brotli解压过程中环形缓冲区的内存管理缺陷，可触发堆上代码执行；同时影响请求体与响应体解压，但请求体解压本身极少见，一旦启用则显著扩大风险；禁用Brotli解压是当前最有效的即时缓解手段。",
+        "en": "CVE-2026-111497, an out-of-bounds write in Google's Brotli C decoder, was confirmed as an unauthenticated, bidirectional remote code execution vulnerability affecting Node.js, Python, Bun, and other runtimes using the upstream C library; patched in Node.js 22.23.4/24.22.1/26.12.1 on October 21, 2026. This is a rare, high-severity RCE in foundational infrastructure used across the web stack—exposing countless services to silent exploitation without user interaction or authentication, and highlighting systemic under-prioritization of compression library security. The flaw resides in Brotli’s ring buffer handling during decompression, enabling heap-based code execution; it affects both request and response bodies, though request-body decompression is uncommon and significantly increases risk; disabling Brotli decoding is an effective immediate mitigation."
+      },
+      "body": {
+        "zh": "一个严重的远程代码执行（RCE）漏洞——编号CVE-2026-111497——已在广泛使用的Brotli压缩库中被确认。该漏洞源于解压过程中的越界写入，攻击者无需身份验证即可执行任意代码。它不仅影响Web服务器，还波及所有处理不可信Brotli压缩数据的应用程序，包括HTTP客户端、代理、API网关，甚至一些解析压缩载荷的命令行工具。\n\n该漏洞因传播路径和社区反应获得了多个绰号：“Node2Shell”（突出其在Node.js中的首次公开利用）、“HTTP2Shell”（强调常见HTTP传输场景），以及更受部分开发者青睐的“Broccoli2Shell”（谐音双关，更准确反映Brotli本质）。Imperva安全团队在漏洞公开后数小时内，即成功在官方Node.js 24.22.0 Linux arm64镜像上实现完整代码执行。Python生态的`brotli`与`brotlicffi`包、Bun运行时，以及多个基于C版Brotli解码器的Rust HTTP栈同样受影响。\n\n各生态修复进度不一：Node.js于2026年10月21日发布22.23.4、24.22.1和26.12.1版本完成修复；Python社区同步上线`brotli` 1.1.5与`brotlicffi` 1.1.4。但大量下游应用（如主流框架与反向代理）仍使用未更新的内嵌或静态链接Brotli解码器。临时缓解措施之一是全局禁用Brotli解压功能，尤其应优先关闭请求体（request body）的Brotli解压——该功能实际极少启用，却极大扩展了攻击面。\n\n此漏洞的特殊危险性在于其双向性：既可攻击入站（请求）也可攻击出站（响应）的Brotli流；且完全无需服务端逻辑缺陷或用户登录。不同于多数内存破坏漏洞，它在特定配置下能绕过ASLR等防护机制，原因在于解码器内部环形缓冲区的堆布局具有可预测性。而该漏洞早在2026年2月已被报告，却迟至10月才被正式定为高危——反映出业界对底层压缩库这类‘基础设施’组件的安全评估存在系统性盲区。",
+        "en": "A severe remote code execution (RCE) vulnerability—tracked as CVE-2026-111497—has been confirmed in the widely used Brotli compression library. The flaw stems from an out-of-bounds write during decompression, allowing attackers to execute arbitrary code without authentication. It impacts not only web servers but also any application that parses untrusted Brotli-compressed data—including HTTP clients, proxies, API gateways, and even CLI tools that handle compressed payloads.\n\nThe vulnerability earned multiple nicknames reflecting its scope and confusion: 'Node2Shell' (highlighting its initial demonstration in Node.js), 'HTTP2Shell' (emphasizing common delivery via HTTP), and 'Broccoli2Shell' (a playful, more precise alternative). Researchers at Imperva successfully exploited it against official Node.js 24.22.0 binaries, achieving full code execution on Linux arm64 systems within hours of public disclosure. Python packages like `brotli` and `brotlicffi`, as well as Bun and several Rust-based HTTP stacks using the C Brotli decoder, are also affected.\n\nPatch availability varies across ecosystems. Node.js released fixes in versions 22.23.4, 24.22.1, and 26.12.1 on October 21, 2026. Python maintainers shipped updated `brotli` 1.1.5 and `brotlicffi` 1.1.4. However, many downstream applications—including popular frameworks and reverse proxies—still rely on vulnerable bundled or statically linked Brotli decoders. Disabling Brotli decoding entirely remains a viable short-term mitigation, especially for request-body decompression, which is rarely used in practice but dramatically expands the attack surface.\n\nWhat makes this bug unusually dangerous is its bidirectional nature: it works against both incoming (request) and outgoing (response) Brotli streams—and crucially, does not require server-side logic flaws or authentication. Unlike typical memory corruption bugs, this one bypasses common mitigations like ASLR in certain configurations due to predictable heap layout patterns in the decoder’s internal ring buffer. The delay between initial reporting (as early as February 2026) and formal recognition as critical underscores systemic gaps in vulnerability triage, particularly for low-level compression libraries treated as ‘infrastructure’ rather than attack surface."
+      },
+      "background": {
+        "zh": "Brotli是由Google开发、RFC 7932标准化的无损数据压缩算法，广泛用于HTTP协议中压缩网页资源（如HTML、CSS、JS），并深度集成于浏览器、服务器及各类语言运行时中。与zlib或gzip不同，Brotli采用预定义静态字典和复杂上下文建模，使其解码器结构更精密，但也相应增加了实现复杂度与潜在脆弱性。",
+        "en": "Brotli is a lossless data compression algorithm developed by Google and standardized as RFC 7932. It is widely adopted in HTTP for compressing web resources (e.g., HTML, CSS, JS) and is built into browsers, servers, and language runtimes. Unlike zlib or gzip, Brotli uses a pre-defined static dictionary and complex context modeling, making its decoder more intricate—and potentially more fragile—than simpler compression libraries."
+      },
+      "discussion": {
+        "zh": "开发者批评‘HTTP2Shell’等名称耸人听闻且技术失准，更倾向使用‘Broccoli2Shell’；有人指出Google曾因JPEG XL漏洞谨慎推迟其在Chrome中启用，却长期默认启用自身开发的Brotli，暴露安全标准不一致；还有人担忧漏洞早期报告未被及时重视，且过度聚焦HTTP传输路径，忽视了非HTTP场景下的Brotli使用风险。",
+        "en": "Developers criticized the sensational naming ('HTTP2Shell') as misleading and technically inaccurate, preferring 'Broccoli2Shell'; others noted irony in Google’s past caution around JPEG XL versus its long-standing use of Brotli despite similar risks; concerns were raised about delayed triage and overemphasis on HTTP delivery while overlooking non-HTTP Brotli usage."
+      },
+      "sources": [
+        {
+          "url": "https://andraxpentester.in/articles/node2shell-http2shell-brotli-vulnerability-what-to-patch-2026",
+          "title": "Node2Shell / HTTP2Shell CVE-2026-111497: What to Patch"
+        },
+        {
+          "url": "https://securityarsenal.com/blog/cve-2026-111497-node2shell-rce-in-nodejs-brotli-decoder-detection-and-remediation-guide",
+          "title": "CVE-2026-111497: Node2Shell RCE in Node.js Brotli Decoder ..."
+        },
+        {
+          "url": "https://broccoli2shell.com/",
+          "title": "Broccoli2Shell: Brotli decoder RCE (CVE-2026-111497) in Node ..."
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1xeu0ht",
+      "slug": "2026-10-25-02-memt-1-0-cuts-agent-memory-storage-by-66x-with-gated-deltanet-2-and-mixture-of-s-eaf0fa12",
+      "path": "/article/2026-10-25-02-memt-1-0-cuts-agent-memory-storage-by-66x-with-gated-deltanet-2-and-mixture-of-s-eaf0fa12",
+      "rank": 2,
+      "score": 9.0,
+      "source": "reddit",
+      "author": "/u/Mrs-Grumpy23",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1xeu0ht/memt10_architecture_breakdown_gated_deltanet2/",
+      "published_at": "2026-10-25T05:31:19+00:00",
+      "fetched_at": "2026-10-25T06:02:50.692002+00:00",
+      "tags": [
+        "LLM Architecture",
+        "Agent Memory",
+        "KV Cache Optimization",
+        "Mixture-of-Storage",
+        "Delta Networks"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1xeu0ht.jpg",
+      "title": {
+        "zh": "memt-1.0架构将智能体记忆存储压缩66倍",
+        "en": "memt-1.0 cuts agent memory storage by 66x with gated DeltaNet-2 and mixture-of-storage"
+      },
+      "summary": {
+        "zh": "memt-1.0 提出一种原生支持记忆的LLM架构，采用gated DeltaNet-2实现稳定的逐词记忆更新，并引入混合式存储（MoS）实现可扩展的参数化记忆，在128k上下文长度下将持久化存储缩小66倍、推理速度提升1.86倍。 这一转变推动智能体设计从脆弱的外部记忆系统（如RAG、KV缓存）转向紧凑、可训练且硬件友好的内部记忆，有望催生成本更低、响应更快、自主性更强的长周期AI智能体。 memt-1.0 采用两阶段训练流程（持续预训练+后训练，共340亿token），在内化程序性经验的同时保持通用推理能力；它借助gated DeltaNet-2的解耦擦除/写入门，在每轮交互中以参数化方式更新记忆，完全规避全量KV缓存。",
+        "en": "memt-1.0 introduces a memory-native LLM architecture using gated DeltaNet-2 for stable token-level memory updates and mixture-of-storage (MoS) for scalable parametric memory, achieving 66× smaller persistent storage and 1.86× faster inference at 128k context length. This shifts agent design from brittle external memory systems (e.g., RAG, KV caching) toward compact, trainable, and hardware-efficient internal memory—potentially enabling cheaper, faster, and more autonomous long-horizon AI agents. memt-1.0 uses a two-stage training pipeline (continued pre-training + post-training on 34B tokens) to preserve general reasoning while internalizing procedural experience; it avoids full KV caching by updating memory parametrically within each turn using gated DeltaNet-2’s decoupled erase/write gates."
+      },
+      "body": {
+        "zh": "memt-1.0 并非又一个LLM优化方案，而是对语言模型‘如何记忆’的根本性重构。它不再将记忆视为外部附加组件——比如检索增强生成（RAG）或不断膨胀的键值（KV）缓存——而是将记忆直接嵌入模型计算层。其核心是 gated DeltaNet-2：这是一种第二代线性注意力架构，通过独立的擦除门与写入门，解耦记忆更新过程，从而在每次交互中实现稳定、逐词级的内部状态更新，彻底避免每轮都重处理全部历史上下文。与之协同的是混合式存储（MoS）层：一种参数化、可扩展容量的记忆机制，用选择性压缩的记忆保留替代暴力式的KV持久化——更接近人类对程序性知识的优先存储，而非原始日志堆砌。\n\n在长上下文场景下，效果极为显著。当上下文长度达128k时——这是长周期智能体任务的典型门槛——memt-1.0-nano 实现了1.86倍的端到端推理加速，并将持久化存储需求降低66倍，远优于标准全量KV缓存方案。尤为关键的是，这种效率提升并未以牺牲通用能力为代价：通过两阶段训练流程（持续预训练+后训练，共覆盖340亿token），memt-1.0 在保持强推理能力的同时，全面超越现有参数化记忆基线模型。\n\nmemt-1.0 的真正突破在于摆脱了‘打补丁式’架构设计。当前多数智能体依赖LLM、向量数据库与提示工程的拼接——脆弱且延迟高。而memt-1.0 将记忆视为头等计算资源：动态更新、参数化存储、与语言建模联合优化。其 gated DeltaNet-2 模块保障跨轮次记忆稳定性，MoS 则让记忆容量可独立于上下文窗口扩展——彻底告别KV缓存的二次方增长困境。\n\n对构建自主智能体的开发者而言，这可能标志着一个拐点：从依赖‘外部’记忆支架，转向‘内生’、可训练的记忆层。若被广泛采用，此类架构有望简化智能体基础设施、大幅降低云存储开销，并在边缘设备或多步骤企业工作流等资源受限场景中实现实时自适应。",
+        "en": "memt-1.0 is not just another LLM optimization—it’s a rethinking of how language models *remember*. Instead of treating memory as an external add-on—like retrieval-augmented generation (RAG) or ever-growing key-value (KV) caches—memt-1.0 embeds memory directly into the model’s computation. At its core lies gated DeltaNet-2, a second-generation linear attention architecture that decouples memory erasure and writing via separate gates, enabling stable, token-level updates to internal state during each interaction. This eliminates the need to reprocess full historical context on every turn. Complementing this is the mixture-of-storage (MoS) layer: a parametric, capacity-scalable mechanism that replaces brute-force KV persistence with selective, compressed memory retention—akin to how humans prioritize procedural knowledge over raw logs.\n\nThe payoff is dramatic at scale. At 128k context length—a common target for long-horizon agentic workflows—memt-1.0-nano achieves a 1.86× end-to-end inference speedup and slashes persistent storage requirements by 66× compared to standard full-KV caching. Crucially, this isn’t achieved by sacrificing general capability: through a two-stage training regimen (continued pre-training + post-training across 34 billion tokens), memt-1.0 preserves strong reasoning performance while outperforming prior parametric memory baselines. That balance—efficiency without degradation—is rare in memory-augmented LLMs.\n\nWhat makes memt-1.0 especially notable is its departure from architectural band-aids. Most current agents rely on stitching together LLMs, vector databases, and prompt engineering—a fragile, latency-prone stack. memt-1.0 instead treats memory as first-class compute: updated dynamically, stored parametrically, and optimized jointly with language modeling. Its gated DeltaNet-2 block ensures memory remains stable across turns, while MoS allows memory capacity to scale independently of context window size—no more quadratic KV growth.\n\nFor developers building autonomous agents, this signals a potential inflection point: moving from *external* memory scaffolding toward *internalized*, trainable memory layers. If widely adopted, architectures like memt-1.0 could simplify agent infrastructure, reduce cloud storage costs, and enable real-time adaptation in resource-constrained environments—from edge devices to multi-step enterprise workflows."
+      },
+      "background": {
+        "zh": "传统大语言模型缺乏持久记忆：要么重复处理全部历史（长上下文下开销巨大），要么依赖RAG或KV缓存等外部系统。gated DeltaNet-2 通过解耦记忆擦除与写入，改进线性注意力机制，实现稳定的循环状态更新。混合式存储（MoS）则将‘专家混合’（MoE）思想延伸至记忆管理——根据需求自适应分配不同记忆模块的存储资源，而非均匀保存所有KV对。",
+        "en": "Traditional LLMs lack persistent memory: they either reprocess full history (costly at long contexts) or rely on external systems like RAG or KV caches. Gated DeltaNet-2 improves linear attention by separating memory erasure and writing, enabling stable recurrent state updates. Mixture-of-storage extends the mixture-of-experts concept to memory management—allocating storage resources adaptively across memory modules rather than storing all KV pairs uniformly."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.22791",
+          "title": "Gated DeltaNet - 2 : Decoupling Erase and Write in Linear Attention"
+        },
+        {
+          "url": "https://www.emergentmind.com/topics/gated-deltanet-2-architecture",
+          "title": "Gated DeltaNet - 2 : Advanced Memory Architecture"
+        },
+        {
+          "url": "https://arxiv.org/html/2505.06252",
+          "title": "ZipLLM: Efficient LLM Storage via Model-Aware Synergistic Data..."
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50225695",
+      "slug": "2026-10-25-03-engineers-should-aim-higher-than-incremental-software-improvements-05c2297a",
+      "path": "/article/2026-10-25-03-engineers-should-aim-higher-than-incremental-software-improvements-05c2297a",
+      "rank": 3,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "ltratt",
+      "url": "https://danluu.com/ambitious/",
+      "published_at": "2026-10-24T21:47:31+00:00",
+      "fetched_at": "2026-10-25T06:02:51.045097+00:00",
+      "tags": [
+        "software-engineering",
+        "AI-development",
+        "engineering-culture",
+        "LLM-applications",
+        "product-development"
+      ],
+      "image_path": "media/hackernews-story-50225695.svg",
+      "title": {
+        "zh": "工程师应超越渐进式优化，追求更有意义的软件目标",
+        "en": "Engineers should aim higher than incremental software improvements"
+      },
+      "summary": {
+        "zh": "Dan Luu 发表了一篇有影响力的文章，主张软件工程师应优先解决更有意义、更具挑战性的问题，而非执着于狭窄的渐进式优化；该文在 Hacker News 上引发超 250 条高质量评论的热烈讨论。 这场讨论至关重要，因为它直面现代软件开发中的核心张力：AI 降低了构建产品的门槛，却可能让浅层、短视的思维成为常态；此时，有意识地追求雄心，已成为一种关键的文化与技术分水岭。 文章批评了业内常见现象，例如为特定小众工作负载做优化，却忽视对基础抽象的重构；并强调真正的雄心包含主动承担 MVP 上线后的复杂性，而不仅是快速发布。",
+        "en": "Dan Luu published an influential essay arguing that software engineers should prioritize ambitious, meaningful problems over narrow, incremental optimizations—and this perspective sparked a high-engagement Hacker News discussion with over 250 comments. This debate matters because it confronts a growing tension in modern software development: AI lowers entry barriers to building, but risks normalizing shallow, short-term thinking—making intentional ambition a critical cultural and technical differentiator. The essay critiques common industry patterns like optimizing for niche workloads instead of rethinking fundamental abstractions, and emphasizes that true ambition includes owning post-MVP complexity—not just launching quickly."
+      },
+      "body": {
+        "zh": "在一篇引发广泛讨论的反思性文章中，Dan Luu 向软件工程界发出呼吁：重新定义“雄心”的含义。他并不反对性能调优，而是质疑当前普遍存在的狭隘目标——比如为某个特定工作负载微调 ripgrep 的速度，或优化某层缓存的毫秒级延迟。相反，他鼓励工程师直面更具技术深度、社会价值或人文意义的问题：构建能重塑人们理解代码库方式的工具，开发可交互探索地理信息的轻量引擎，或设计真正降低复杂系统认知负荷的界面。\n\n这种主张恰逢其时。大语言模型（LLM）正大幅降低原型开发门槛，却也悄然助长了“先上线再完善”的短视文化。一位评论者指出，AI 让人“用一条提示词就能从零做出 MVP”，但 MVP 之后才是真正的挑战：保障长期稳定性、处理真实系统集成、权衡功能取舍、服务真实用户而非演示场景。因此，“有雄心”不是盲目追求规模或噱头，而是愿意为整个产品生命周期负责——包括那些无人喝彩、却决定成败的后续工作。\n\n社区讨论进一步丰富了这一视角。有开发者分享自己耗时数月打造的低多边形地球引擎、支持无限缩放的二维代码可视化工具；也有声音提醒：AI 赋予我们快速验证想法的能力，却无法替代对问题本质的理解、对用户需求的体察，以及对工程长期成本的清醒判断。当写一行代码变得越来越容易，最难的反而成了选择——选择什么值得投入时间，选择什么值得坚持到底。",
+        "en": "In a reflective and widely discussed essay, Dan Luu challenges the software engineering community to rethink its ambitions. Rather than focusing on narrow optimizations—like shaving milliseconds off a CLI tool or tweaking a caching layer—he urges engineers to tackle problems with deeper technical, social, or human impact: building tools that reshape how people understand codebases, navigate geographic data, or interact with complex systems. The piece arrives at a pivotal moment, as AI—especially large language models—lowers the barrier to prototyping but also risks reinforcing shallow, MVP-first habits.\n\nLuu’s argument isn’t anti-optimization; it’s pro-intentionality. He observes that many teams spend disproportionate energy on performance tweaks for edge cases while neglecting foundational questions: *What problem truly matters? Who is underserved? What would feel like progress five years from now?* This tension echoes across the HN discussion, where developers share personal experiments—like a Rust-based Python interpreter or an infinite-zoom code visualization—that prioritize learning, expressiveness, and long-term insight over shipping speed or metrics.\n\nThe rise of LLMs adds urgency to this call. As one commenter notes, AI lets someone ‘go from 0 to MVP in a prompt,’ collapsing early-stage development. But that ease masks the harder work that follows: sustaining reliability, managing integrations, making product tradeoffs, and designing for real users—not just demo appeal. Ambition, then, isn’t about scale or novelty alone; it’s about committing to the full lifecycle, including the messy, unglamorous parts after launch.\n\nUltimately, Luu’s essay invites a cultural reset—not toward grandiose moonshots, but toward grounded, thoughtful scope. It asks engineers to treat software not as a series of tactical wins, but as a medium for durable, human-centered solutions. In an era where anyone can generate a working prototype in minutes, the rarest skill may no longer be coding—it’s choosing what’s worth building, and seeing it through."
+      },
+      "background": {
+        "zh": "Dan Luu 是一名资深软件工程师和知名技术作家，长期专注于系统性能、可靠性及工程权衡的深度分析。他的文章常探讨工程文化如何影响技术决策，并基于其在 Google、Dropbox 等公司的一线基础设施经验展开论述。",
+        "en": "Dan Luu is a software engineer and writer known for deep technical analysis of systems performance, reliability, and engineering tradeoffs. His essays often examine how engineering culture shapes technical outcomes, and he frequently draws from real-world infrastructure experience at companies like Google and Dropbox."
+      },
+      "discussion": {
+        "zh": "评论者普遍认同需要更高远的工程志向，但在实现路径上观点各异：有人强调通过个人项目突破技术边界，有人主张用 AI 增强产品思维，还有人提醒切勿将原型开发速度等同于实际影响力深度。",
+        "en": "Commenters broadly agree on the need for greater ambition but diverge on how to achieve it: some emphasize personal projects that push technical boundaries, others stress AI-augmented product thinking, and several warn against conflating speed of prototyping with depth of impact."
+      },
+      "sources": []
+    },
+    {
+      "id": "hackernews:story:50224100",
+      "slug": "2026-10-25-04-goose-language-introduces-multiple-resizable-stacks-for-zero-copy-binary-data-3205e6b0",
+      "path": "/article/2026-10-25-04-goose-language-introduces-multiple-resizable-stacks-for-zero-copy-binary-data-3205e6b0",
+      "rank": 4,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "bobbydigitales",
+      "url": "https://aardappel.github.io/goose/",
+      "published_at": "2026-10-24T19:06:55+00:00",
+      "fetched_at": "2026-10-25T06:02:51.045122+00:00",
+      "tags": [
+        "systems-programming",
+        "memory-model",
+        "language-design",
+        "zero-copy",
+        "static-analysis"
+      ],
+      "image_path": "media/hackernews-story-50224100.svg",
+      "title": {
+        "zh": "Goose编程语言用多可调栈实现零拷贝二进制数据处理",
+        "en": "Goose language introduces multiple resizable stacks for zero-copy binary data"
+      },
+      "summary": {
+        "zh": "全新堆栈式系统编程语言Goose正式发布，支持多个可动态调整大小的内存栈、相对内存引用以及编译期二进制结构校验，从而实现内存映射数据的零拷贝解析。 Goose直击系统软件长期存在的瓶颈：二进制格式解析开销大、CPU占用高。它通过静态安全保证下的直接内存访问，为网络、存储和嵌入式等场景带来更快、更确定、更安全的底层代码新路径。 Goose禁止堆分配，仅使用一组编译期声明的可调栈；所有字段偏移量和大小均在编译时确定，相对引用机制支持安全的指针运算且不会产生悬垂指针。",
+        "en": "Goose, a new stack-based systems language, was publicly released with support for multiple resizable memory stacks, relative memory references, and compile-time binary structure validation—enabling zero-copy interpretation of memory-mapped data. Goose addresses a persistent bottleneck in systems software: costly, CPU-intensive parsing of binary formats. By enabling direct memory access with static safety guarantees, it opens paths to faster, more deterministic, and more secure low-level code—especially for networking, storage, and embedded applications. Goose forbids heap allocation and instead uses a fixed set of compile-time-declared resizable stacks; all field offsets and sizes are resolved at compile time, and relative references allow safe pointer arithmetic without dangling pointers."
+      },
+      "body": {
+        "zh": "Goose是一种全新的系统编程语言，专为消除二进制数据（如文件、网络包或内存映射结构）处理中的解析开销而设计。与传统语言需将字节反序列化为堆分配对象不同，Goose采用基于栈的执行模型，并引入*多个可动态调整大小的内存栈*——每个栈可在运行时增长或收缩，且无需堆分配。这使得二进制布局能被直接原位解释：一个Goose定义的结构体可直接映射到原始内存上，字段通过相对偏移访问——无需拷贝、无需运行时校验、也无需垃圾回收器。\n\n该语言提供*编译期结构保证*：每个字段的大小、对齐方式和嵌套关系在编译时即完全确定，编译器可静态验证内存安全与布局正确性。这使Goose特别适合网络协议栈、嵌入式系统和高吞吐I/O等对性能极度敏感的场景，因为哪怕微秒级的序列化或边界检查延迟，在高频操作中都会显著累积。其设计刻意回避动态堆分配，转而依赖预声明、有界、可伸缩的栈，以确保延迟可预测、内存用量可控。\n\n著名游戏引擎架构师、前Oculus首席技术官约翰·卡马克（John Carmack）在推特上公开称赞Goose，指出其特性支持“数据结构的直接内存映射”，并将文件与网络数据的“解析”开销降低至常规方法的百分之一。这一背书印证了业界正转向更强调编译期推理与零拷贝体验的趋势——不仅为了速度，更为了确定性与安全性。语言作者Aardappel（LÖVE游戏框架开发者）已通过AMA积极回应早期用户，澄清了诸如栈生命周期管理、扩容上限等关键权衡。\n\n社区讨论既充满热情，也保持审慎。部分开发者质疑：在固定数量可调栈的前提下，Goose如何表示无界动态集合（例如键值为任意长度字符串的哈希表）？另一些人则联想到早年“区域内存”（region-based memory）研究——该方向曾因长期运行程序内存膨胀问题而受限。但多数人认同：Goose并非要取代Rust或C++，而是为二进制密集、延迟敏感的任务提供一种目的明确的新工具。",
+        "en": "Goose is a new systems programming language designed from the ground up to eliminate parsing overhead when working with binary data—such as files, network packets, or memory-mapped structures. Unlike traditional languages that require deserializing bytes into heap-allocated objects, Goose uses a stack-based execution model combined with *multiple resizable memory stacks*, each of which can grow or shrink at runtime without heap allocation. This enables direct in-place interpretation of binary layouts: a struct defined in Goose can be mapped directly onto raw memory, and its fields accessed via relative offsets—no copying, no runtime validation, no garbage collector.\n\nThe language enforces *compile-time structural guarantees*: every field’s size, alignment, and nesting is known before runtime, allowing the compiler to verify memory safety and layout correctness statically. This makes Goose especially suited for performance-critical domains like networking, embedded systems, and high-throughput I/O, where even microsecond delays from serialization or bounds checking add up. Its design deliberately avoids dynamic heap allocation—instead relying on bounded, pre-declared stacks—to ensure predictable latency and memory usage.\n\nJohn Carmack, renowned game engine architect and CTO at Oculus, praised Goose on Twitter, highlighting how its features enable ‘direct memory mapping of data structures’ and reduce parsing costs by up to 100× compared to conventional approaches. His endorsement underscores a growing industry shift toward compile-time reasoning and zero-copy ergonomics—not just for speed, but for determinism and security. The language’s creator, Aardappel (developer of the LÖVE game framework), has actively engaged with early adopters through an AMA, clarifying trade-offs like stack lifetime management and growth limits.\n\nCommunity discussion reveals both enthusiasm and healthy skepticism. Some developers question how Goose handles unbounded dynamic collections—like hash tables with arbitrary string insertions—given its fixed number of resizable stacks. Others note parallels with older region-based memory management research, which struggled with memory bloat in long-running programs. Still, many agree that Goose carves out a valuable niche: not as a general-purpose replacement for Rust or C++, but as a purpose-built tool for binary-heavy, latency-sensitive tasks where static analysis and zero-copy are non-negotiable."
+      },
+      "background": {
+        "zh": "基于栈的语言使用后进先出（LIFO）数据结构执行操作，简化指令编码并形成紧凑、可预测的内存访问模式。零拷贝技术通过让应用程序直接操作共享内存区域，避免内核与用户空间之间或缓冲区之间的冗余数据拷贝。编译期结构保证指编译器在程序运行前即证明内存布局、对齐方式及未定义行为缺失等属性。",
+        "en": "Stack-based languages execute operations using a last-in-first-out (LIFO) data structure, simplifying instruction encoding and enabling compact, predictable memory access patterns. Zero-copy techniques avoid redundant data copying between kernel and user space—or between buffers—by letting applications operate directly on shared memory regions. Compile-time structural guarantees mean the compiler proves properties like memory layout, alignment, and absence of undefined behavior before the program runs."
+      },
+      "discussion": {
+        "zh": "开发者就实际限制展开讨论：例如哈希表中任意长度字符串的插入如何适配Goose的固定栈模型；并将其与早期区域内存系统作对比。有人指出若栈持续增长却未复用旧空间，可能存在内存膨胀风险；也有人强调Goose的价值在于专注特定任务，而非成为通用语言。",
+        "en": "Developers debated practical limits—especially how hash tables with arbitrary string insertions fit into Goose’s fixed-stack model—and drew comparisons to historical region-based memory systems. Some noted memory bloat risks if stacks grow without reuse, while others emphasized Goose’s value as a purpose-built tool rather than a general-purpose language."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Stack-oriented_programming",
+          "title": "Stack -oriented programming - Wikipedia"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Zero-copy",
+          "title": "Zero-copy - Wikipedia"
+        },
+        {
+          "url": "https://cpelsser.github.io/rust-mdbook/why-rust/compile-time.html",
+          "title": "Compile Time Guarantees - Rust-LINFO2315 (adapted from ..."
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50226419",
+      "slug": "2026-10-25-05-ai-isn-t-the-main-cause-of-200-000-creative-jobs-lost-in-us-media-ddfb644d",
+      "path": "/article/2026-10-25-05-ai-isn-t-the-main-cause-of-200-000-creative-jobs-lost-in-us-media-ddfb644d",
+      "rank": 5,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "gnabgib",
+      "url": "https://www.apricitas.io/p/ai-and-the-fall-of-the-creative-class",
+      "published_at": "2026-10-24T23:11:54+00:00",
+      "fetched_at": "2026-10-25T06:02:51.045158+00:00",
+      "tags": [
+        "AI ethics",
+        "creative economy",
+        "labor economics",
+        "media industry",
+        "automation"
+      ],
+      "image_path": "media/hackernews-story-50226419.jpg",
+      "title": {
+        "zh": "美国创意行业20万岗位流失，主因并非AI",
+        "en": "AI isn’t the main cause of 200,000 creative jobs lost in US media"
+      },
+      "summary": {
+        "zh": "Apricitas网站一篇高分文章挑战了‘AI是美国创意行业20万岗位流失主因’的流行叙事，指出外包转移、注意力经济饱和及企业补贴模式转变才是更根本的推手。 这种重新归因可避免政策失误——例如过度监管AI工具，却忽视对创意劳动的系统性投入不足——并将关注点转向构建媒体行业的可持续商业模式与劳动者保障机制。 许多领域的岗位流失早于AI大规模应用；AI自动化主要集中于商业美术（如广告插画），而非高端叙事类制作；注意力饱和源于平台为推广其他业务而补贴内容，而非单纯由AI生成内容激增所致。",
+        "en": "A high-scoring Apricitas article challenges the narrative that AI is primarily responsible for 200,000 U.S. creative-sector job losses, identifying offshoring, attention economy saturation, and corporate subsidy shifts as more fundamental drivers. This reframing prevents policy missteps — such as over-regulating AI tools while ignoring systemic underinvestment in creative labor — and redirects focus toward sustainable business models and labor protections in media industries. Job losses predate widespread AI adoption in many segments; AI automation is most pronounced in commercial art (e.g., ad illustrations), not high-end narrative production; attention saturation stems from platform-driven content subsidies, not just AI-generated volume."
+      },
+      "body": {
+        "zh": "美国媒体、影视和艺术行业已流失约20万个就业岗位——这一严峻趋势引发广泛关注，许多人将矛头直指人工智能。但Apricitas网站的一篇深度分析指出：AI确有影响，却既非唯一原因，也非主要推手。真正起决定性作用的是更深层的结构性力量：为追求效率而持续数十年的外包转移、注意力经济的全面饱和，以及企业补贴模式的根本性转变。\n\n先看注意力经济：数字内容呈爆炸式增长，但人类注意力总量始终有限。评论者援引的一份2025年联合国报告指出，娱乐内容供给已远超真实需求——这并非因为人们不再消费，而是因为亚马逊、谷歌、电信公司等平台开始以补贴方式生产内容，目的并非传播文化，而是为自家电商、广告或硬件业务引流。媒体由此沦为基础设施，而非独立创作领域，预算随之变得高度不稳定。\n\n与此同时，企业早已开始将制作基地从洛杉矶迁往佐治亚州、加拿大甚至匈牙利——这类成本驱动型迁移，在Stable Diffusion等生成式AI工具普及前就已大幅削弱本地创意生态。此举虽压低了单部作品成本，却也割裂了协作流程、削弱了工会力量，并掏空了剪辑、美术设计、后期制作等中游岗位。正如一位评论者所言，单纯“为省钱而搬迁”，会波及餐饮、设备租赁等整条支持产业链。\n\nAI的影响真实存在，但范围有限且分布不均：商业插画、产品摄影、基础动态图形等领域正被快速自动化——尤其在广告业，AI工具因迭代快、成本低而成为标配。但高端电影、叙事剧集和定制化创意工作仍高度依赖人类。此外，岗位流失的时间线往往早于主流AI工具落地，更多与流媒体平台整合及疫情期预算削减同步，而非大模型或扩散模型发布节点。\n\n归根结底，将责任全推给AI，反而掩盖了更棘手的现实：创意劳动的价值已被系统性低估多年；注意力被资本高效变现，却牺牲了行业可持续性；而企业逻辑正将文化视为可随时削减的运营成本。看清这一复杂图景，才是制定有效政策（如强化反垄断、增加公共媒体投入）的前提。",
+        "en": "The U.S. media, film, and arts sectors have shed roughly 200,000 jobs — a stark decline that has sparked widespread concern and finger-pointing at artificial intelligence. But a nuanced analysis from Apricitas argues that while AI plays a role, it is neither the sole nor even the primary driver. Instead, deeper structural forces — decades-long offshoring for cost efficiency, the saturation of the attention economy, and shifting corporate subsidy models — are doing far more heavy lifting in reshaping creative labor.\n\nConsider the attention economy: as digital content exploded, human attention remained finite. A 2025 UN report cited by commenters noted that supply of entertainment vastly outstripped demand — not because people stopped consuming, but because platforms like Amazon, Google, and telecoms began subsidizing content not for its own sake, but to drive engagement with other products. This turned media into infrastructure, not art — and made budgets increasingly volatile.\n\nMeanwhile, corporate decisions to relocate production — from Los Angeles to Georgia, Canada, or Hungary — were already eroding local creative ecosystems long before generative AI tools like Stable Diffusion launched. These moves cut costs but also fragmented workflows, weakened unions, and hollowed out mid-tier roles in editing, design, and post-production. As one commenter observed, moving production ‘to save money’ triggers cascading effects across support industries, from catering to equipment rental.\n\nAI’s impact is real but narrow and uneven: commercial illustration, product photography, and basic motion graphics are now routinely automated — especially in advertising, where rapid iteration and low margins make AI tools irresistible. Yet high-end film, narrative TV, and bespoke creative work remain largely human-led. The timing of job losses also predates mainstream AI adoption in many cases, aligning more closely with streaming consolidation and pandemic-era budget cuts than with LLM or diffusion model releases.\n\nUltimately, blaming AI alone risks obscuring harder truths: that creative labor has been devalued for years, that attention is monetized at the expense of sustainability, and that corporate logic treats culture as expendable overhead. Recognizing this complexity is the first step toward building policies — from antitrust enforcement to public media investment — that protect both workers and the cultural commons."
+      },
+      "background": {
+        "zh": "注意力经济将人类注意力视为稀缺资源，促使平台大量推送内容以争夺用户停留时间——这些内容常由非媒体企业（如科技巨头、电信商）出资补贴。企业补贴模式指科技公司或电信商资助媒体内容，并非出于文化价值考量，而是为了导流、拉动订阅或促进硬件销售。影视行业的外包转移自2000年代起加速，主因是海外税收优惠与更低的人力成本。",
+        "en": "The attention economy treats human attention as a scarce resource, leading platforms to flood users with content to capture engagement — often subsidized by non-media businesses. Corporate subsidy models refer to how tech giants and telecoms fund media not for cultural value, but to drive traffic, subscriptions, or hardware sales. Offshoring in film/TV has accelerated since the 2000s due to tax incentives and lower labor costs abroad."
+      },
+      "discussion": {
+        "zh": "评论者普遍认为AI正被当作替罪羊，指出注意力饱和、外包转移和订阅疲劳才是更深层原因；有人强调AI的实际影响集中于商业美术领域，也有人指出裁员主因是企业降本逻辑，而非技术本身。",
+        "en": "Commenters broadly agree AI is being scapegoated, citing attention saturation, offshoring, and subscription fatigue as deeper causes; some note AI’s real impact is concentrated in commercial art, while others stress that corporate cost-cutting — not technology — drives layoffs."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Attention_economy",
+          "title": "Attention economy - Wikipedia"
+        },
+        {
+          "url": "https://agencyreporter.com/the-attention-economy-after-saturation-quality-over-quantity/",
+          "title": "The Attention Economy After Saturation : Quality Over Quantity"
+        },
+        {
+          "url": "https://www.law.georgetown.edu/denny-center/blog/the-attention-economy/",
+          "title": "The Attention Economy and the Collapse of Cognitive Autonomy"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50224916",
+      "slug": "2026-10-25-06-researcher-hosts-502-bitcoin-prize-on-deliberately-vulnerable-php-server-d782040f",
+      "path": "/article/2026-10-25-06-researcher-hosts-502-bitcoin-prize-on-deliberately-vulnerable-php-server-d782040f",
+      "rank": 6,
+      "score": 8.0,
+      "source": "hackernews",
+      "author": "cloudlandsdev",
+      "url": "https://stealmybitcoin.com/",
+      "published_at": "2026-10-24T20:30:31+00:00",
+      "fetched_at": "2026-10-25T06:02:51.045260+00:00",
+      "tags": [
+        "PHP",
+        "RCE",
+        "CVE-2024-6387",
+        "security-research",
+        "responsible-disclosure"
+      ],
+      "image_path": "media/hackernews-story-50224916.svg",
+      "title": {
+        "zh": "研究员部署含502美元比特币的故意漏洞PHP服务器",
+        "en": "Researcher hosts $502 Bitcoin prize on deliberately vulnerable PHP server"
+      },
+      "summary": {
+        "zh": "一名安全研究员上线了一台真实运行的、具备非平凡可利用性的PHP服务器，托管一个价值502美元的比特币钱包，用于实测PHP2SHELL远程代码执行漏洞（CVE-2026-109618/CVE-2026-109619）是否已被实战利用，而非CVE-2024-6387。 它提供了关于高危RCE漏洞实际武器化时间线的实证数据，驳斥了夸大其词的威胁叙事，并凸显了理论可利用性与真实攻击中操作可靠性之间的巨大差距。 服务器使用了未修复PHP2SHELL漏洞的PHP旧版本，但设置了严格限制：仅支持命令行模式、1 MiB内存上限、且私钥需通过定制的'print-flag'二进制程序获取——使攻击变得非平凡，需同时实现精确RCE和本地二进制执行。",
+        "en": "A security researcher deployed a live, non-trivially exploitable PHP server hosting a $502 Bitcoin wallet to test real-world exploitation of the PHP2SHELL RCE vulnerabilities (CVE-2026-109618/CVE-2026-109619), not CVE-2024-6387. It provides empirical evidence about the actual weaponization timeline of critical RCE flaws, counters hype-driven threat narratives, and highlights the gap between theoretical exploitability and operational reliability in real-world attacks. The server uses a pre-patch PHP version vulnerable to PHP2SHELL, but enforces strict constraints: CLI-only mode, 1 MiB memory cap, and a custom 'print-flag' binary — making exploitation nontrivial and requiring precise RCE + local binary execution."
+      },
+      "body": {
+        "zh": "一名安全研究员上线了一个名为“偷走我的比特币”的公开实验：一台故意配置为存在漏洞的PHP服务器，托管着一个真实价值502美元的比特币钱包私钥。此举目的并非鼓励恶意攻击，而是实证检验近期披露的PHP2SHELL远程代码执行（RCE）漏洞是否已在现实中被主动利用。与常规漏洞赏金计划或理论性概念验证不同，该服务器运行一个真实但受控的PHP环境——仅支持命令行模式、内存上限1 MiB、无外网连接——其设计目标是：**仅当攻击者已掌握稳定可靠的PHP2SHELL利用链时，才可能成功突破**。\n\n服务器使用了已知受PHP2SHELL漏洞（CVE-2026-109618和CVE-2026-109619）影响的PHP旧版本。这些漏洞源于PHP在处理致命错误（尤其是内存溢出）时的内存安全缺陷。关键在于，研究者并未开放通用Web Shell；私钥（即flag）只能通过一个名为`print-flag`的定制二进制程序读取，且该程序仅允许PHP用户执行。这意味着攻击者必须先实现完整RCE，再精准完成本地提权或文件读取——这一门槛远高于多数自动化扫描器的能力。\n\n数小时内，该项目在Hacker News和Twitter上引发激烈技术讨论。有参与者报告服务器因流量激增而过载；也有团队（包括AI辅助团队）开始系统性尝试。值得注意的是，知名安全研究员Dan Guido明确拒绝参与攻击，理由是恪守负责任披露原则：他确认自己已掌握可用RCE，但拒绝公开展示，以免在补丁窗口关闭前泄露利用细节。另一些评论者（如hpone91）则指出，该服务器实际**并不符合PHP2SHELL的典型攻击条件**——命令行模式、1 MiB内存限制及静态页面等架构设计，恰恰规避了漏洞的核心触发路径。\n\n除比特币奖励外，该实验更是一次罕见的真实世界威胁压力测试。它直接挑战了“成千上万自动化机器人正瞬间攻陷所有未修复网站”这类耸人听闻的说法，揭示出理论可利用性与实战可靠性之间存在显著鸿沟。正如一位评论者所言：服务器在数小时后仍未被攻破，说明即使高关注度、高危害性的RCE漏洞，仍需大量人工调试或定制化工具才能规模化利用。对防御方而言，这再次印证及时打补丁依然有效——前提是漏洞利用代码尚未在地下渠道广泛流通。",
+        "en": "A security researcher has launched a live, publicly accessible experiment titled 'Steal My Bitcoin' — a deliberately vulnerable PHP web server hosting a real $502 Bitcoin wallet key. The goal is not to invite malicious exploitation, but to empirically test whether the recently disclosed PHP2SHELL remote code execution (RCE) vulnerabilities are already being weaponized in the wild. Unlike typical bug bounty programs or theoretical PoCs, this setup runs a real, constrained PHP environment — with memory limits, CLI-only execution, and no external network access — designed to be *just* exploitable *if* an attacker has a working, reliable PHP2SHELL exploit.\n\nThe server was configured using a pre-patch version of PHP known to be affected by the PHP2SHELL flaws (CVE-2026-109618 and CVE-2026-109619), which stem from memory-safety failures during fatal error handling — especially out-of-memory conditions. Crucially, the researcher did not expose a generic web shell; instead, the flag (the private key) is only retrievable via a custom `print-flag` binary executable by the PHP user. This forces attackers to achieve full RCE *and* correctly pivot to local file access — a higher bar than many automated scanners clear.\n\nWithin hours, the experiment sparked intense technical debate across Hacker News and Twitter. Some participants reported server overload due to traffic spikes, while others — including AI-assisted teams — began systematic attempts. Notably, respected security researcher Dan Guido declined to attempt exploitation, citing responsible disclosure ethics: he confirmed possessing a working RCE but refused to demonstrate it publicly, fearing premature exposure before patching windows close. Others, like hpone91, argued the specific configuration isn’t actually vulnerable to PHP2SHELL as advertised — pointing to architectural constraints (CLI mode, 1 MiB cap, inert page) that neutralize the core attack vectors.\n\nBeyond the Bitcoin prize, the experiment serves as a rare real-world stress test for threat intelligence claims. It challenges sensational narratives about autonomous bot swarms instantly compromising every unpatched site — revealing instead a gap between theoretical exploitability and operational reliability. As one commenter observed, the fact that the server remained uncompromised after several hours suggests that even high-profile, actively discussed RCEs require significant manual effort or tailored tooling to deploy at scale. For defenders, it underscores that timely patching remains effective — but only if exploits aren’t already circulating in private channels."
+      },
+      "background": {
+        "zh": "PHP2SHELL指两个高危内存安全型远程代码执行漏洞（CVE-2026-109618和CVE-2026-109619），于2026年10月21日披露，影响PHP 5.4至8.5所有版本。它们利用PHP在HTTP请求处理过程中对致命错误（尤其是内存溢出）的异常处理机制，实现未经身份验证的远程代码执行。CVE-2024-6387（'RegreSSHion'）是OpenSSH相关漏洞，与此实验无关。",
+        "en": "PHP2SHELL refers to two critical memory-safety RCE vulnerabilities (CVE-2026-109618 and CVE-2026-109619) disclosed on October 21, 2026, affecting PHP versions 5.4 through 8.5. They exploit how PHP handles fatal errors—especially out-of-memory conditions—during HTTP request processing, allowing unauthenticated remote code execution. CVE-2024-6387 ('RegreSSHion') is an unrelated OpenSSH vulnerability and is not involved in this experiment."
+      },
+      "discussion": {
+        "zh": "专家就伦理与技术有效性展开辩论：dguido出于避免泄露其RCE工具链的考虑拒绝攻击；hpone91指出该配置因架构限制（如CLI模式、内存限制）实际无法被PHP2SHELL利用；technion则以服务器数小时未被攻破为据，质疑‘大规模自动化攻击’说法的真实性。",
+        "en": "Experts debated both ethics and technical validity: dguido declined to exploit it to avoid leaking his RCE tooling; hpone91 argued the setup wasn't actually vulnerable to PHP2SHELL due to architectural constraints; technion cited the lack of compromise after hours as evidence against widespread autonomous exploitation."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/PHP2Shell",
+          "title": "PHP2Shell - Wikipedia"
+        },
+        {
+          "url": "https://www.criticalstart.com/resources/php2shell-rce-vulnerabilities",
+          "title": "PHP2SHELL RCE Vulnerabilities - criticalstart.com"
+        },
+        {
+          "url": "https://www.wiz.io/blog/php2shell-php-rce",
+          "title": "PHP2Shell: AI uncovers critical RCE vulnerabilities affecting ..."
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1xer72h",
+      "slug": "2026-10-25-07-asrn-enables-exact-long-range-copying-with-linear-memory-48de7ccd",
+      "path": "/article/2026-10-25-07-asrn-enables-exact-long-range-copying-with-linear-memory-48de7ccd",
+      "rank": 7,
+      "score": 8.0,
+      "source": "reddit",
+      "author": "/u/Mean-Disaster8380",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1xer72h/asrn_linearmemory_longrange_copying_with_learned/",
+      "published_at": "2026-10-25T02:57:16+00:00",
+      "fetched_at": "2026-10-25T06:02:50.691940+00:00",
+      "tags": [
+        "language-models",
+        "recurrent-networks",
+        "long-range-dependencies",
+        "memory-efficient-ml",
+        "neural-architectures"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1xer72h.svg",
+      "title": {
+        "zh": "ASRN实现线性内存下的精确长程复制",
+        "en": "ASRN enables exact long-range copying with linear memory"
+      },
+      "summary": {
+        "zh": "ASRN提出一种线性内存的语言模型层，通过自适应稀疏循环、学习型符号哈希、受物理学启发的固有时钟，以及基于霍克斯过程的自激重复强度建模，实现精确长程复制。 ASRN解决了长上下文复制任务中注意力机制平方级内存瓶颈这一根本问题，可在不引发内存爆炸的前提下实现数千词元尺度的逐字重复，有望显著提升法律文本、编程代码和科研文献等对精确性要求极高的语言建模任务性能。 每个词元仅在其学习到的符号哈希桶内关注最近C个邻居；复制决策由一个非单调门控函数控制，该函数读取霍克斯过程生成的重复强度与局部重复连续次数；固有时钟Bₜ = Σᵤ≤ₜ βᵤ同时调控检索分数衰减与自激强度。",
+        "en": "ASRN introduces a linear-memory language model layer that performs exact long-range copying using adaptive sparse recurrence, learned sign-hashing, a physics-inspired learned proper-time clock, and Hawkes-process-based self-exciting repetition intensity modeling. ASRN addresses the fundamental scalability bottleneck of quadratic attention for long-context copying tasks, enabling verbatim repetition over kilo-token sequences without memory explosion—potentially benefiting legal, coding, and scientific language modeling where exact fidelity matters. Each token attends only to its C most recent neighbors within learned sign-hash buckets; copying decisions are gated by a non-monotonic function reading Hawkes-derived repetition intensity and local repetition streaks; the proper-time clock Bₜ = Σᵤ≤ₜ βᵤ controls both retrieval decay and self-excitation intensity."
+      },
+      "body": {
+        "zh": "一种名为ASRN（自适应稀疏循环网络）的新型神经架构，为语言建模中的长距离精确复制提供了一种原理清晰、内存高效的新方案。与标准注意力层随序列长度呈平方级增长的内存和计算开销不同，ASRN采用自适应稀疏循环机制：每个词元仅在学习到的符号哈希桶内关注其最近的C个邻居，并精确复制每个匹配位置之后的那个词元。该设计确保单个词元的计算量恒定——无论输入多长——从而在内存和时间上均实现真正的线性复杂度。\n\nASRN的独特之处不仅在于稀疏性，更在于它如何建模“何时复制”与“以多强强度复制”。它引入了一个学习得到的“固有时钟”（proper-time clock）——即累积和Bₜ = Σᵤ≤ₜ βᵤ——灵感源自相对论物理：固有时描述物体沿自身世界线所经历的真实时间。在ASRN中，该时钟同时调控两个关键动态：检索分数的衰减（αₛ e⁻κ(Bₜ−Bₛ)）以及重复n元组群组的自激强度，后者采用霍克斯过程（Hawkes process）建模。这意味着重复事件本身会增强后续复制行为的概率，且这种增强具有时间感知与历史依赖特性。\n\n最终是否执行复制，由一个学习得到的非单调门控函数决定，该函数同时读取霍克斯过程生成的重复强度和局部重复连续次数。这避免了硬编码规则，使模型能学会更精细的复制策略——例如在连续出现三次后触发复制，但在五次后主动抑制，或等待上下文稳定后再执行。整个架构完全可微，支持端到端训练；代码与权重已开源发布于GitHub和Zenodo。\n\nASRN直击序列建模中的长期痛点：在数千词元长程上下文中高效处理精确重复——如法律条文、代码片段或科学定义。虽然Transformer可通过注意力“记住”这些模式，但需付出平方级成本，且常产生模糊或幻觉式复制。ASRN从设计上绕开了这些权衡，在不牺牲可扩展性的前提下，实现逐字精准复现。其融合物理学时间建模与事件驱动自激机制的理念，标志着高效语言模型正迈向更具可解释性与机理意识的新阶段。",
+        "en": "A new neural architecture called ASRN—Adaptive Sparse Recurrence Network—offers a principled, memory-efficient way to copy tokens across arbitrarily long distances in language modeling. Unlike standard attention layers whose memory and compute scale quadratically with sequence length, ASRN uses adaptive sparse recurrence: each token only attends to its C most recent neighbors within learned sign-hash buckets, then copies the token that immediately followed each match. This design ensures per-token computation remains bounded—no matter how long the input—making it truly linear in both memory and time.\n\nWhat makes ASRN distinctive is not just sparsity, but how it models *when* and *how strongly* to copy. It introduces a learned ‘proper-time clock’—a cumulative sum Bₜ = Σᵤ≤ₜ βᵤ—that draws inspiration from relativistic physics, where proper time measures elapsed time along an object’s worldline. In ASRN, this clock governs two key dynamics: the decay of retrieval scores (αₛ e⁻κ(Bₜ−Bₛ)) and the self-exciting intensity of repeated n-gram groups, modeled via a Hawkes process. That means repetitions don’t just trigger copying—they amplify future copying likelihood in a temporally grounded, history-aware way.\n\nThe final decision to copy is made by a learned non-monotonic gating function that reads both the Hawkes-derived repetition intensity and the local repetition streak. This avoids rigid heuristics and allows the model to learn nuanced copying policies—e.g., copying after three repeats but suppressing it after five, or delaying copy actions until context stabilizes. The architecture is fully differentiable and trained end-to-end, with open-source code and weights released on GitHub and Zenodo.\n\nASRN targets a persistent pain point in sequence modeling: efficient handling of exact repetitions over kilo-token contexts—think legal clauses, code snippets, or scientific definitions. While transformers can memorize such patterns, they do so at quadratic cost and often with blurry or hallucinated copies. ASRN sidesteps those trade-offs by design, offering verbatim reproduction without sacrificing scalability. Its fusion of ideas—from physics-inspired time modeling to event-driven self-excitation—signals a shift toward more interpretable, mechanism-aware architectures in efficient LMs."
+      },
+      "background": {
+        "zh": "标准Transformer注意力需计算所有词元对之间的两两交互，导致内存与计算开销为O(n²)。长程复制——即远距离精确复现子串——在代码生成、文档摘要等任务中至关重要，但在密集注意力模型中效率低下。霍克斯过程用于建模自激型时序事件，即过去事件会提高未来同类事件发生的概率；物理学中的固有时指沿世界线测得的本征时间，为神经网络中建模非均匀时间感知提供了自然框架。",
+        "en": "Standard transformer attention computes pairwise interactions between all token pairs, leading to O(n²) memory and compute cost. Long-range copying—reproducing exact substrings far apart—is critical for tasks like code generation or document summarization but remains inefficient in dense attention models. Hawkes processes model self-exciting temporal events, where past events increase the probability of future ones; proper time in physics measures elapsed time along a worldline, offering a natural way to model non-uniform temporal perception in neural systems."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Hawkes_process",
+          "title": "Hawkes process - Wikipedia"
+        },
+        {
+          "url": "https://arxiv.org/pdf/2011.13073",
+          "title": "Hawkes Processes Modeling, Inference and Control: An Overview"
+        },
+        {
+          "url": "https://www.nature.com/articles/s41598-023-30894-4",
+          "title": "Cognitive and plastic recurrent neural network clock model ..."
+        }
+      ]
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1xe4pex",
+      "slug": "2026-10-25-08-developer-jams-live-with-pretrained-music-transformer-using-logit-steering-e86a442f",
+      "path": "/article/2026-10-25-08-developer-jams-live-with-pretrained-music-transformer-using-logit-steering-e86a442f",
+      "rank": 8,
+      "score": 8.0,
+      "source": "reddit",
+      "author": "/u/GGAllin43",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1xe4pex/got_a_pretrained_music_transformer_to_jam_with_me/",
+      "published_at": "2026-10-24T09:58:29+00:00",
+      "fetched_at": "2026-10-25T06:02:50.692056+00:00",
+      "tags": [
+        "music-generation",
+        "logit-steering",
+        "interactive-ai",
+        "transformer-sampling",
+        "zero-shot-control"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1xe4pex.svg",
+      "title": {
+        "zh": "开发者用logit引导让预训练音乐Transformer实时即兴合奏",
+        "en": "Developer jams live with pretrained music transformer using logit steering"
+      },
+      "summary": {
+        "zh": "开发者利用手工调校的logit偏置，基于实时MIDI输入（包括调性、和弦、速度与手位）驱动预训练的Anticipatory Music Transformer，首次实现无需微调的实时即兴合奏。 这为消费级硬件上的高响应度人机音乐协作提供了切实可行的轻量路径，推动零样本可控生成技术从文本领域拓展至富有表现力的符号音乐领域。 系统运行于Jetson Orin Nano，提前约1秒采样；和弦变更时即时丢弃并重采；全部logit偏置均为手工调校，不涉及梯度计算、微调或额外前向传播。",
+        "en": "A developer achieved real-time live jamming with the pretrained Anticipatory Music Transformer by applying hand-tuned logit biases based on live MIDI input—including key, chord, tempo, and hand position—without fine-tuning or additional training. This demonstrates a practical, lightweight path toward responsive human-AI musical collaboration on consumer-grade hardware, advancing zero-shot controllable generation beyond text to expressive symbolic domains. The system runs on a Jetson Orin Nano, samples ~1 second ahead, discards and resamples on chord changes, and uses purely hand-tuned logit offsets—no gradients, no fine-tuning, no extra forward passes."
+      },
+      "body": {
+        "zh": "一名开发者成功实现了人类钢琴家与预训练符号音乐模型之间的实时、零样本即兴合奏——全程无需任何微调。该系统基于Anticipatory Music Transformer（在Lakh MIDI数据集上训练），通过监听键盘输入的实时MIDI信号，在采样前动态调整模型输出词元（token）的logits（未归一化预测分数）。这种“logit引导”采用直观的音乐规则：压制调外音、提升和弦内音与张力音、降低演奏者双手附近琴键的概率（避免声部冲突），并轻微鼓励延续用户上一句乐句的音程走向，使AI听感更具回应性与对话感。\n\n整个系统运行于边缘设备Jetson Orin Nano之上——这是一款常用于机器人和嵌入式AI的紧凑型加速器。硬件限制反而凸显了该方法的轻量与实用：无需云端API，不依赖服务器GPU，仅靠本地推理加智能采样控制即可完成。模型提前约一秒生成音符，但一旦用户更换和弦，系统立即丢弃原有计划，依据新和声上下文重新采样。所有偏置参数均凭听觉手工调节——这是一种有意为之的低门槛设计，将音乐表现力置于自动化之上。\n\n这项工作之所以引人注目，在于它跳出了可控音乐生成的常见范式：既未训练新适配器或条件头，也未引入强化学习奖励模型，而是直接在logits层面进行干预——与语言模型领域新兴的logit引导技术（如SWAI、基于语料统计的logit偏置）思路一致。这呼应了生成式AI的一个重要趋势：*推理时控制*（sampling-time control），即不修改模型权重，而是在生成过程中实时塑造行为。开源代码与演示视频已发布于GitHub，便于复现与拓展。\n\n尽管当前版本依赖人工调参，作者在文末抛出一个开放问题：能否用小型可学习模块或类似引导（guidance）的技术替代手工偏置，同时保持响应速度？这个问题触及创意AI的核心：我们如何构建真正能倾听、适应并协同创作的系统，而非仅按指令生成？这项工作虽未解决作曲本身，却重新确立了人在AI辅助音乐中的主体地位，将模型从静态工具转变为动态搭档。",
+        "en": "A developer has demonstrated real-time, zero-shot musical collaboration between a human pianist and a pretrained symbolic music model—without any fine-tuning. Using an Anticipatory Music Transformer (trained on the Lakh MIDI dataset), the system listens to live MIDI input from a keyboard and dynamically adjusts the model’s next-token logits before sampling. This ‘steering’ applies intuitive musical biases: suppressing out-of-key notes, boosting chord tones and tensions, lowering probabilities for keys physically near the player’s hands (to avoid clashing), and gently encouraging melodic continuation of the player’s last phrase—making the AI sound responsive, even conversational.\n\nThe implementation runs entirely on edge hardware: a Jetson Orin Nano, a compact AI accelerator often used in robotics and embedded systems. That constraint underscores how lightweight and practical this approach is—no cloud API, no GPU server, just local inference with clever sampling control. The model samples about one second ahead, but discards its plan instantly when the user changes chords, then resamples using updated harmonic context. All bias values are hand-tuned by ear—a deliberate, low-barrier design choice that prioritizes musicality over automation.\n\nWhat makes this especially notable is its departure from common paradigms in controllable music generation. Instead of training new adapters, conditioning heads, or reinforcement learning reward models, the developer manipulates logits directly—similar to techniques emerging in language model steering (e.g., SWAI, corpus-based logit biasing). This aligns with a broader shift toward *sampling-time control*: modifying behavior at inference, not through weight updates. The open-source code and demo video on GitHub make it reproducible and invite further experimentation.\n\nWhile the current version relies on manual tuning, the post ends with an open question: could small learned modules—or guidance-style interventions—replace hand-crafted biases while preserving responsiveness? That question resonates across creative AI: how do we build systems that listen, adapt, and co-create—not just generate on command? This work doesn’t solve composition, but it re-centers human agency in AI-assisted music, turning the model into a reactive partner rather than a static tool."
+      },
+      "background": {
+        "zh": "Anticipatory Music Transformer是一种基于Lakh MIDI数据集训练的符号音乐模型，具备‘插值填充’能力：不同于标准自回归模型，它可在已有乐谱片段中补全空白，或根据部分上下文生成伴奏。Logit引导指在softmax归一化前直接调整模型原始输出分数，从而影响下一个音符的选择——无需修改模型权重即可实现可控生成。",
+        "en": "The Anticipatory Music Transformer is an infilling-capable symbolic music model trained on the Lakh MIDI dataset; unlike standard autoregressive models, it can fill gaps in existing music or generate accompaniments conditioned on partial context. Logit steering refers to modifying the model's raw output scores before softmax to bias token selection—enabling controllable generation without altering model weights."
+      },
+      "discussion": {
+        "zh": "尽管源帖评论被截断，已有留言显示社区对logit操控在交互式音乐中的应用抱有浓厚兴趣，用户讨论其与语言模型引导技术的共通性，并对开源代码及硬件配置表示高度认可。",
+        "en": "Comments (though cut off in the source) indicate strong community interest in logit manipulation for interactive music, with users discussing parallels to language model steering and expressing enthusiasm for open-sourcing the code and hardware setup."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/jthickstun/anticipation",
+          "title": "GitHub - jthickstun/anticipation: Anticipatory Autoregressive ..."
+        },
+        {
+          "url": "https://arxiv.org/abs/2306.08620",
+          "title": "[2306.08620] Anticipatory Music Transformer - arXiv.org"
+        },
+        {
+          "url": "https://github.com/hsannn/swai/",
+          "title": "hsannn/swai: Official code for controllable generation via logit ..."
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50228167",
+      "slug": "2026-10-25-09-five-qwen3-8-27b-variants-match-fable-5-on-outdated-coding-benchmark-eafd35b4",
+      "path": "/article/2026-10-25-09-five-qwen3-8-27b-variants-match-fable-5-on-outdated-coding-benchmark-eafd35b4",
+      "rank": 9,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "rzk",
+      "url": "https://github.com/slee-persis/GVS5H",
+      "published_at": "2026-10-25T03:56:01+00:00",
+      "fetched_at": "2026-10-25T06:02:51.045058+00:00",
+      "tags": [
+        "LLM-benchmarking",
+        "agentic-ai",
+        "Qwen",
+        "Fable",
+        "GVS5H"
+      ],
+      "image_path": "media/hackernews-story-50228167.png",
+      "title": {
+        "zh": "五个Qwen3.8-27B模型在过时编码基准上追平Fable 5",
+        "en": "Five Qwen3.8-27B variants match Fable 5 on outdated coding benchmark"
+      },
+      "summary": {
+        "zh": "五个Qwen3.8-27B变体在GVS5H智能体框架下，使用截至2025年初便已停更的过时编码基准，与Claude Fable 5达成性能持平。 这凸显了智能体AI领域对基准相关性的日益关注：依赖过时或狭窄的评测，可能夸大实际部署能力，并误导开源模型的研发方向。 GVS5H依赖共享磁盘协调与静态角色分配，不支持非阻塞子智能体或长延迟工具调用，且所用基准数据集截止于2023年5月。",
+        "en": "Five Qwen3.8-27B variants achieved performance parity with Claude Fable 5 on the GVS5H agentic harness using an outdated, saturated coding benchmark last updated in early 2025. This highlights growing scrutiny around benchmark relevance in agentic AI — using obsolete or narrow evaluations risks overstating real-world readiness and misguiding open-model development priorities. GVS5H relies on shared-disk coordination and static role assignment, lacks support for non-blocking sub-agents or long-latency tool calls, and uses a benchmark dataset frozen as of May 2023."
+      },
+      "body": {
+        "zh": "最新基准测试报告显示，五个微调版本的开源权重模型Qwen3.8-27B，在GVS5H智能体评估框架下，编码任务表现与Anthropic闭源模型Claude Fable 5持平——但仅限于一个早在2025年初就已停更、且长期饱和的旧编码基准。该测试采用GVS5H框架，其核心是“零样本自编排”：所有角色（除验证器外）均由同一模型实例在独立上下文中运行，并通过共享磁盘文件（如`task.md`、`plan.md`和`solution.py`）协调协作。\n\n这一结果在技术上值得肯定——它表明经过精细调优的开源模型，确能在特定受限条件下媲美顶尖闭源模型。然而，该基准本身已被业界普遍视为过时：其题目集截止于2023年5月，设计范式停留在早期智能体阶段——角色固定、顺序执行、无动态子智能体生成，也未模拟真实环境中的工具轮询或中断恢复。\n\n更关键的是，评测完全未纳入同期主流模型对比，例如Fable 5.1、Astra 6.1或Opus 5.5——这些模型自2025年中起已在智能体编码、长周期工作流和知识密集型任务上实现显著跃升。同时，评测也跳过了AgentBench、SWE-Agent、CodeAct等新一代基准，后者重点考察多轮工具调用、环境交互与容错能力。因此，该“持平”结论更像一种方法论局限下的巧合，而非生态级突破。\n\n其深层意义不在于Qwen是否够强，而在于基准本身的可信度。随着智能体技术快速演进，沿用陈旧、狭窄或确定性过强的测试环境，极易扭曲对真实部署能力的判断。社区讨论印证了这一点：开发者指出GVS5H的共享磁盘机制易引发竞态条件；静态角色分配扼杀智能体自主分工；而对超30秒延迟任务（如完整测试套件）的不可靠支持，更暴露其工程鲁棒性缺陷。简言之，在GVS5H上追平Fable 5，如同用卡丁车赛道圈速对标F1赛车——局部可观，却无法反映真实道路表现。",
+        "en": "A recent benchmarking report shows that five fine-tuned variants of the open-weight Qwen3.8-27B model achieve performance parity with Anthropic’s proprietary Claude Fable 5 on the GVS5H agentic harness — but only on a coding benchmark last updated in early 2025 and saturated for over a year. The evaluation uses the GVS5H framework, which implements zero-shot self-orchestration via a shared disk workspace: models coordinate through static files like `task.md`, `plan.md`, and `solution.py`, with all roles except the verifier running identical model instances in fresh contexts.\n\nThis result is technically notable — it demonstrates that carefully tuned open models can rival top-tier closed ones *under specific, constrained conditions*. However, the benchmark itself is widely recognized as outdated: its problem set stops at May 2023, and its design reflects early-stage agentic patterns — sequential role execution, no dynamic agent spawning, and no real-time tool polling. As one commenter notes, modern agentic workflows emphasize long-running, non-blocking sub-agents, adaptive task decomposition, and robust error recovery — none of which GVS5H tests.\n\nCritically, the evaluation omits comparisons to contemporaneous models like Fable 5.1, Astra 6.1, or Opus 5.5 — all of which show marked improvements in agentic coding and workflow resilience since mid-2025. It also skips newer benchmarks such as AgentBench, SWE-Agent, or CodeAct, which stress multi-turn tool use, environment interaction, and failure recovery. That absence makes the headline result more of a methodological artifact than an ecosystem milestone.\n\nThe broader implication isn’t about Qwen’s capability — it’s about benchmark hygiene. As AI agents evolve rapidly, using stale, narrow, or overly deterministic testbeds risks misrepresenting real-world readiness. The community discussion underscores this: developers point out GVS5H’s shared-disk coordination introduces race conditions; its static role assignment prevents emergent specialization; and its inability to handle long-latency tasks (e.g., test suites >30 seconds) undermines reliability claims. In short, matching Fable 5 on GVS5H is like matching a Formula 1 car’s lap time on a karting track — impressive within bounds, but not predictive of highway performance."
+      },
+      "background": {
+        "zh": "GVS5H是2026年8月提出的免训练智能体框架，通过基于文件的账本机制实现单模型自编排。Claude Fable 5是Anthropic主推的通用大模型，专为编码与知识工作优化；其升级版Fable 5.1于后续发布，重点提升智能体工作流鲁棒性。而AgentBench、SWE-Agent等现代智能体基准更强调动态工具调用、环境交互与容错恢复能力，与旧式静态编码基准有本质区别。",
+        "en": "GVS5H is a training-free agentic harness introduced in August 2026 that enables single-model self-orchestration via file-based ledger coordination. Claude Fable 5 is Anthropic’s flagship general-purpose model optimized for coding and knowledge work, with Fable 5.1 released later to improve agentic workflow robustness. Modern agentic benchmarks like AgentBench and SWE-Agent emphasize dynamic tool use, environment interaction, and failure recovery — unlike older static coding benchmarks."
+      },
+      "discussion": {
+        "zh": "社区评论者提出实质性质疑：基准过时且饱和，削弱结果有效性；GVS5H的共享磁盘设计导致协调脆弱；而对长延迟任务支持差、角色静态化等问题，严重制约真实场景下的智能体可靠性。",
+        "en": "Commenters raised substantive concerns: the benchmark’s age and saturation undermine validity; GVS5H’s shared-disk design introduces coordination fragility; and real-world agent reliability suffers from poor handling of long-latency tasks and static role constraints."
+      },
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2608.26480v2",
+          "title": "[2608.26480v2] GVS5H: Zero-Shot Self-Orchestration with ..."
+        },
+        {
+          "url": "https://www.anthropic.com/claude-fable-and-mythos-5-1",
+          "title": "Introducing Claude Fable 5 .1 and Claude Mythos 5 .1 \\ Anthropic"
+        },
+        {
+          "url": "https://openrouter.ai/anthropic/claude-fable-5.1",
+          "title": "Claude Fable 5 .1 - API Pricing & Benchmarks | OpenRouter"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50224210",
+      "slug": "2026-10-25-10-speedcrunch-1-1-releases-after-ten-years-with-math-fixes-and-ui-trade-offs-217374fb",
+      "path": "/article/2026-10-25-10-speedcrunch-1-1-releases-after-ten-years-with-math-fixes-and-ui-trade-offs-217374fb",
+      "rank": 10,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "LordNibbler",
+      "url": "https://www.speedcrunch.org/",
+      "published_at": "2026-10-24T19:19:43+00:00",
+      "fetched_at": "2026-10-25T06:02:51.045139+00:00",
+      "tags": [
+        "calculator",
+        "open-source",
+        "numerical-computing",
+        "desktop-app",
+        "math-software"
+      ],
+      "image_path": "media/hackernews-story-50224210.png",
+      "title": {
+        "zh": "SpeedCrunch 1.1 十年磨一剑：修复运算错误但引发界面争议",
+        "en": "SpeedCrunch 1.1 releases after ten years with math fixes and UI trade-offs"
+      },
+      "summary": {
+        "zh": "SpeedCrunch 1.1 在停更十年后发布，修复了长期存在的运算顺序错误（例如 `1/2(-9.8)` 现在正确计算为 -4.9），并新增带显式乘号的数学表达式可视化渲染。 此次发布重启了一款被技术从业者长期信赖的数值计算工具的开发，不仅带来数学上更准确的结果，也凸显了现代界面设计与传统性能预期之间的真实取舍。 该修复确保了 `a/b(c)` 类隐式乘法表达式的正确解析，符合标准代数运算优先级；但部分用户实测发现输入延迟增加、内存占用上升，且当前版本未提供恢复紧凑界面的设置选项。",
+        "en": "SpeedCrunch 1.1, released a decade after version 0.12, fixes a long-standing order-of-operations bug (e.g., `1/2(-9.8)` now correctly evaluates to -4.9) and adds visual expression rendering with explicit multiplication symbols. This release restores active development of a trusted numerical tool used daily by technical professionals, delivering mathematically correct results while highlighting real trade-offs between modern UI design and legacy performance expectations. The fix ensures proper handling of implicit multiplication in expressions like `a/b(c)`, aligning with standard algebraic precedence; however, some users report measurable input lag and increased memory usage compared to 0.12, with no built-in option to revert to the compact UI."
+      },
+      "body": {
+        "zh": "沉寂十年后，开源科学计算器 SpeedCrunch 正式发布 1.1 版本。这款曾被工程师、学生和开发者广泛使用的桌面工具，以响应迅速、精度高达 50 位小数、支持复数与单位换算而闻名，却自 2014 年的 0.12 版起长期停滞。此次更新并非例行维护：它修复了一个关键的运算顺序缺陷——例如表达式 `1/2(-9.8)`，旧版错误地计算为约 `-0.051`，而新版正确得出 `-4.9`，并以显式的乘号（`×`）在界面上清晰呈现为 `1 / 2 × (−9.8)`，显著提升数学可读性。\n\n除计算逻辑外，1.1 还优化了表达式渲染效果，使括号嵌套、分数结构和函数调用更易辨识。它仍保留变量存储、历史滚动、键盘直输等核心功能。但多位长期用户反馈了明显退步：输入延迟变长、输入框尺寸无故翻倍、边框与留白过度冗余，整体操作不如 0.12 版轻快。有用户直言，新界面“堆砌了不必要的视觉元素”，与其最初倡导的极简、高效理念背道而驰。\n\n这种矛盾折射出成熟开源桌面软件的典型困境：如何在适配现代系统（如高分屏缩放、无障碍支持）的同时，不牺牲老用户珍视的响应速度与界面克制？SpeedCrunch 从来不是炫技型工具，它的价值在于“敲下即得”的确定性。而 1.1 的改动暗示了一次向视觉完善倾斜的转向，也引发用户对设计优先级的反思。\n\n对依赖快速草稿演算的技术人员而言，1.1 在数学正确性与表达清晰度上的提升是切实可用的进步。但它也迫使用户权衡：是否愿意以轻微卡顿和界面臃肿为代价，换取更规范的公式呈现？后续版本能否提供可选配置（如还原紧凑模式），或将决定这次十年重启，究竟是可持续的复兴，还是一次值得纪念却难以延续的回响。",
+        "en": "After a decade of silence, SpeedCrunch—the beloved open-source scientific calculator—has released version 1.1. Long cherished by engineers, students, and developers for its speed, precision (up to 50 decimal places), and clean keyboard-driven interface, the app had remained frozen at version 0.12 since 2014. This new release isn’t just symbolic: it ships with a critical fix for order-of-operations evaluation—most notably correcting how expressions like `1/2(-9.8)` are parsed. Where older versions incorrectly returned approximately `-0.051`, 1.1 now correctly computes `-4.9`, matching standard mathematical convention and clarifying intent with an explicit multiplication symbol (`×`) in the rendered display.\n\nBeyond correctness, the update introduces visual improvements to expression rendering—making nested parentheses, fractions, and functions easier to read on screen. The calculator still supports complex numbers, unit conversion, variables, and history navigation—but users report tangible downsides. Several longtime users describe noticeable input lag, a bloated input field with excessive padding and borders, and an overall heavier feel compared to the lean 0.12 build they’d relied on daily for years. One commenter noted the input box is now “unnecessarily doubled in size” and surrounded by “unnecessary dead space”—a stark contrast to the minimalist ethos that originally attracted many to the tool.\n\nThe tension reflects a broader challenge in mature open-source desktop apps: balancing modern UI expectations (e.g., high-DPI scaling, accessibility cues, visual feedback) against decades-old performance and usability norms. SpeedCrunch was never meant to be flashy—it prioritized responsiveness and fidelity to mathematical semantics. Yet 1.1’s changes suggest a shift toward polish over raw efficiency, raising questions about whether such evolution serves its core audience. Still, the fact that the project resumed active development—and shipped a mathematically consequential fix—is itself significant.\n\nFor technical users who depend on quick, trustworthy scratchpad calculations, SpeedCrunch 1.1 delivers real value where it counts most: correctness and clarity. But it also asks users to weigh those gains against subtle but perceptible regressions in fluidity and restraint. Whether future updates refine the UI without sacrificing speed—or offer configuration options to restore the old behavior—will determine if this revival becomes sustainable or remains a bittersweet milestone."
+      },
+      "background": {
+        "zh": "SpeedCrunch 是一款跨平台开源科学计算器，主打高速响应、高精度（最高 50 位小数）和键盘优先操作。它原生支持 Windows、macOS 和 Linux，一贯以极简主义和低延迟为设计核心，而非追求图形特效。与 Pari/GP 或 Wolfram Alpha 等通用数学系统不同，SpeedCrunch 专为日常桌面端快速数值演算而设计。",
+        "en": "SpeedCrunch is a cross-platform, open-source scientific calculator emphasizing speed, high precision (up to 50 digits), and keyboard-first interaction. It runs natively on Windows, macOS, and Linux, and has historically prioritized minimalism and responsiveness over graphical flourishes. Unlike general-purpose tools like Pari/GP or Wolfram Alpha, SpeedCrunch targets quick, reliable desktop-based numeric scratch work."
+      },
+      "discussion": {
+        "zh": "用户反馈两极分化：老用户肯定数学修正与表达式可视化改进，但普遍批评界面臃肿和输入延迟；也有用户质疑其在 Pari/GP 等更强工具面前的存在必要性；多人证实了从 0.12 到 1.1 确实相隔整整十年。",
+        "en": "Users express mixed reactions: longtime fans praise the math fix and visual clarity but criticize UI bloat and input lag; others question its relevance amid more powerful alternatives like Pari/GP; several confirm the decade-long gap between 0.12 and 1.1."
+      },
+      "sources": [
+        {
+          "url": "https://www.speedcrunch.org/",
+          "title": "SpeedCrunch — Free High-Precision Scientific Calculator"
+        },
+        {
+          "url": "https://www.linuxlinks.com/speedcrunch/",
+          "title": "SpeedCrunch - high-precision scientific calculator - LinuxLinks"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50224422",
+      "slug": "2026-10-25-11-public-can-now-stream-live-us-nuclear-command-radio-broadcasts-51495364",
+      "path": "/article/2026-10-25-11-public-can-now-stream-live-us-nuclear-command-radio-broadcasts-51495364",
+      "rank": 11,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "liotier",
+      "url": "https://missileer.watch/",
+      "published_at": "2026-10-24T19:43:27+00:00",
+      "fetched_at": "2026-10-25T06:02:51.045197+00:00",
+      "tags": [
+        "signals-intelligence",
+        "nuclear-command-and-control",
+        "OSINT",
+        "military-communications",
+        "Cold-War-legacy"
+      ],
+      "image_path": "media/hackernews-story-50224422.png",
+      "title": {
+        "zh": "公众可实时收听美军核指挥短波广播",
+        "en": "Public can now stream live US nuclear command radio broadcasts"
+      },
+      "summary": {
+        "zh": "网站 missileer.watch 现已上线，提供美军在 11175 千赫广播的应急行动消息（EAM）实时音频流与可检索存档，使公众能观测其发送时间、频次与结构，但无法解密内容。 此举将冷战遗留的核指挥基础设施与当代开源情报实践相连接，首次让公众得以观察美国战略指挥系统的实际运行节律，在不危及安全的前提下，促进核风险教育、监督与理性公共讨论。 EAM 为 48 字符预设格式消息，经高频全球通信系统（HFGCS）播发；11175 千赫信号发射功率达 100 千瓦，全天候运行，日间为主用频点；历史上测试消息曾包含‘治疗乐队’‘匆忙乐队’等流行文化代号。",
+        "en": "The website missileer.watch now provides live audio streaming and searchable archives of U.S. Emergency Action Messages broadcast on 11175 kHz, enabling public observation of timing, frequency, and structure — but not decryption — of these nuclear command signals. This bridges Cold War-era nuclear infrastructure with modern OSINT practice, offering unprecedented public visibility into the operational rhythms of U.S. strategic command — supporting education, accountability, and informed discourse about nuclear risk without compromising security. EAMs are 48-character preformatted messages transmitted via the HFGCS; the 11175 kHz signal operates at 100 kW power and is active 24/7, with daytime priority; test messages have historically included pop-culture references like 'THE CURE' and 'RUSH'."
+      },
+      "body": {
+        "zh": "一个名为 missileer.watch 的开源情报（OSINT）项目，首次向公众提供美国核指挥控制系统中“应急行动消息”（EAM）的实时音频流与历史存档。这些高度结构化的军事通信通过短波频率 11175 千赫持续广播，属于美国空军运营的高频全球通信系统（HFGCS），该系统源自冷战时期，至今仍是战略威慑基础设施的关键部分。网站不破解、不翻译内容，仅对原始音频进行捕获、打时间戳与归档——让长期隐于幕后的核指挥链路，第一次以可听、可查、可比的方式呈现在公众面前。\n\nEAM 并非普通无线电通信。它们遵循严格格式：通常为 48 字符长度，采用抗误码编码，专为快速、可靠传输设计，用于触发核力量的具体行动指令，例如战备升级或打击执行，依据现行作战计划 OPLAN 8010-12。尽管对外完全加密、无法理解语义，但其节奏、时长与发送时机本身即具操作含义。正如一位监听者所言：“一天自有其节奏”——长时间静默后，突然出现合成语音的短促播报，常伴有自动呼叫与三字母认证序列。\n\n11175 千赫信道功率强劲、全天候运行：一座 100 千瓦发射机日间主用此频点（夜间切换至 4724 千赫等备用频率），为军机、地面站及海军舰艇提供通信服务，并作为接入 SIPRNet 等涉密网络的高频网关。多数通信为常规语音或 ALE（自动链路建立）握手信号，而 EAM 因其固定结构与罕见性格外突出——有时数日无声，却在重大地缘事件前突发活跃，有用户曾记录到克里米亚刻赤大桥遭袭前一日的消息量异常上升。\n\nmissileer.watch 的真正价值，不在于解密能力（目前公开领域尚无实现），而在于可观测性带来的透明度。它将一个黑箱系统转化为可听、可计、可比的对象：消息次数、发送时刻、持续时间，甚至历史趣闻——例如“Skyking”测试期间使用的流行文化代号（‘铁娘子’‘治疗乐队’‘匆忙乐队’）。这些细节提醒我们：最严肃的系统，仍由人设计、由人维护，偶尔也带点人的幽默。对研究者、教育者与普通公民而言，它提供了一扇罕见的实时窗口——不是理论中的核威慑，而是真实可闻的威慑之声。",
+        "en": "A new open-source intelligence (OSINT) project called missileer.watch offers live audio streaming and archival access to Emergency Action Messages (EAMs) — highly structured, preformatted military communications used by the U.S. nuclear command-and-control system. These messages are broadcast around the clock on the high-frequency (HF) radio frequency 11175 kHz, part of the High Frequency Global Communications System (HFGCS), a legacy network operated by the U.S. Air Force since the Cold War. The site does not decrypt or interpret the content; it simply captures, timestamps, and archives the raw audio — making visible what has long been an invisible but critical layer of strategic deterrence infrastructure.\n\nEAMs are not ordinary radio traffic. They follow strict formatting rules: typically 48 characters long, encoded for error resistance and rapid transmission, and designed to trigger specific nuclear force actions — from readiness alerts to execution orders — under OPLAN 8010-12, the current U.S. nuclear war plan. Though encrypted and unintelligible to outsiders, their cadence, duration, and timing carry operational meaning. As one observer noted, \"The day has a shape\" — quiet stretches punctuated by brief, unmistakable bursts of synthesized voice, often preceded by automated call-ups and authentication sequences.\n\nThe 11175 kHz channel is powerful and persistent: a 100 kW transmitter broadcasting 24/7, primarily during daylight hours (with fallback frequencies like 4724 kHz at night). It serves aircraft, ground stations, and naval assets, acting as an HF gateway into classified networks like SIPRNet. While most transmissions are routine voice or ALE (Automatic Link Establishment) handshakes, EAMs stand out due to their rigid structure and infrequency — sometimes going days without activity, then spiking before major geopolitical events, as users reported ahead of the Kerch Bridge incident in Ukraine.\n\nWhat makes missileer.watch notable isn’t decryption capability — none exists publicly — but transparency through observation. It turns a black-box system into something audibly measurable: message count, timing, duration, and even historical quirks, like pop-culture test messages ('THE CURE', 'RUSH') sent during Skyking exercises. These anomalies remind us that even the most solemn systems rely on human-designed protocols — and occasionally, human humor. For researchers, educators, and concerned citizens, the site offers a rare, real-time window into the enduring architecture of nuclear deterrence — not as theory, but as sound."
+      },
+      "background": {
+        "zh": "应急行动消息（EAM）是美国战略司令部用于授权或指挥核力量的标准化加密指令。它们通过高频全球通信系统（HFGCS）以短波方式播发，该系统是一种具备强韧性的远程通信网络，旨在卫星链路失效时仍能维持指挥能力。EAM 遵循严格的格式规范以确保传输速度与可靠性，区别于常规军用语音通信或 MIL-STD-188-110A 等数据模式。",
+        "en": "Emergency Action Messages are standardized, encrypted directives used by U.S. Strategic Command to authorize or direct nuclear forces. They are transmitted over HF radio as part of the High Frequency Global Communications System (HFGCS), a resilient, long-range network designed to function even when satellite links fail. EAMs follow strict formatting rules for speed and reliability, and are distinct from routine military voice traffic or data modes like MIL-STD-188-110A."
+      },
+      "discussion": {
+        "zh": "社区评论指出 EAM 呈现‘静默—突发’的规律性节奏，提及历史上使用‘治疗乐队’等流行文化代号的测试消息（如‘忽略‘治疗乐队’’），并观察到克里米亚刻赤大桥事件前的消息量激增；同时强调，收听仅能揭示发送时机与数量，无法获知内容含义。",
+        "en": "Commenters highlight EAMs' rhythmic silence-and-spike pattern, note historical pop-culture test messages (e.g., 'DISREGARD THE CURE'), and observe correlation between message spikes and real-world events like the Kerch Bridge strike — while emphasizing that listening reveals timing and volume, not meaning."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Emergency_Action_Message",
+          "title": "Emergency Action Message - Wikipedia"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/High_Frequency_Global_Communications_System",
+          "title": "High Frequency Global Communications System - Wikipedia"
+        },
+        {
+          "url": "https://priyom.org/military-stations/united-states/hfgcs",
+          "title": "HFGCS › Priyom.org The HF-GCS and Emergency Action Messages - Numbers Stations 11175 kHz (11.175 MHz) — 2 stations · FreqBuddy HF Military Communications - The RadioReference Wiki How to Listen to Live US Nuclear Command Radio - YouTube"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50222133",
+      "slug": "2026-10-25-12-freedns-remains-a-trusted-free-dynamic-dns-service-after-two-decades-bc74330f",
+      "path": "/article/2026-10-25-12-freedns-remains-a-trusted-free-dynamic-dns-service-after-two-decades-bc74330f",
+      "rank": 12,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "esher",
+      "url": "https://freedns.afraid.org/",
+      "published_at": "2026-10-24T15:20:01+00:00",
+      "fetched_at": "2026-10-25T06:02:51.045217+00:00",
+      "tags": [
+        "DNS",
+        "devops",
+        "web-infrastructure",
+        "security",
+        "open-internet-tools"
+      ],
+      "image_path": "media/hackernews-story-50222133.svg",
+      "title": {
+        "zh": "FreeDNS 运行二十年仍被开发者信赖的免费动态DNS服务",
+        "en": "FreeDNS remains a trusted free dynamic DNS service after two decades"
+      },
+      "summary": {
+        "zh": "FreeDNS 仍在持续运营，作为一项长期存在的免费动态DNS托管服务；虽未发布重大更新，但其持久可靠性与尚未加入公共后缀列表（PSL）的问题仍是社区讨论焦点。 FreeDNS 为开发者、学生和爱好者提供了低门槛的基于域名的网络接入能力，是学习、原型开发和开放互联网实验的基础性基础设施，尤其适用于预算或技术资源受限的场景。 FreeDNS 的子域名（例如 'example.freemyip.com'）未列入公共后缀列表（PSL），导致浏览器错误应用 Cookie 作用域规则，可能引发跨子域名 Cookie 泄露；该服务支持备用 DNS 配置，且自约 2003 年起持续运行。",
+        "en": "FreeDNS continues operating as a free, long-standing dynamic DNS hosting service; no major change or update was announced, but its enduring reliability and unresolved PSL inclusion issue remain central to community discussion. FreeDNS enables low-barrier access to domain-based networking for developers, students, and hobbyists — making it foundational infrastructure for learning, prototyping, and open-internet experimentation, especially where budgets or technical resources are limited. FreeDNS subdomains (e.g., 'example.freemyip.com') are not in the Public Suffix List, causing browsers to misapply cookie scoping rules and potentially allow cross-subdomain cookie leakage; the service supports backup DNS configuration and has operated continuously since ~2003."
+      },
+      "body": {
+        "zh": "二十多年来，FreeDNS（freedns.afraid.org）始终默默支撑着无数开发实验、家庭实验室和低成本网页项目——它不靠华丽营销或风投资本，而靠稳定运行、操作简单和完全免费。与许多昙花一现的免费工具不同，FreeDNS 经历了网络基础设施变迁、浏览器安全模型演进和开发者工具迭代，却从未消失。\n\n它的持久性也体现在实用性上。开发者用它在测试中暴露本地服务器，爱好者用它在家庭宽带后托管个人仪表盘或物联网接口，教育者则用它为学生作业分配临时域名。正如一位资深用户所言，这项服务曾帮助一位囊中羞涩的二十多岁年轻人开启整个网页开发生涯——这印证了可及的基础设施对技术成长何其重要。其可靠性并非偶然：FreeDNS 提供可选的备用 DNS 服务器，允许用户以自建主 DNS 为主、FreeDNS 为辅，这种功能在免费服务中极为罕见。\n\n但它的“老资格”也带来了技术摩擦点。多位用户反复指出一个关键问题：FreeDNS 未被列入公共后缀列表（PSL），而该列表是浏览器判断 Cookie 作用域和域名隔离的核心依据。由于 FreeDNS 的子域名（如 `test.freemyip.com`）未被识别为独立可注册域名，浏览器可能将其视为共享后缀的一部分，导致一个子域名设置的 Cookie 意外泄露至其他子域名。这会破坏现代 Web 应用（尤其是涉及身份认证或敏感数据的应用）所依赖的安全假设。\n\n这一限制并未否定 FreeDNS 的价值，但要求使用者保持警惕。它折射出互联网基础设施中的普遍张力：长期运行的社区维护工具常滞后于新兴标准，并非因为疏忽，而是因更新需协调维护者、浏览器厂商与标准组织。与此同时，nic.eu.org（提供免费域名）或 dns.he.net（提供 DNS 托管）等替代方案各有优势，却无一能复刻 FreeDNS 在简易性、稳定性与零成本之间的独特平衡。在订阅泛滥与厂商锁定盛行的时代，FreeDNS 并非过时遗物，而是开放网络中一根沉默却关键的脚手架。",
+        "en": "For over 20 years, FreeDNS (freedns.afraid.org) has quietly powered countless development experiments, home labs, and low-budget web projects — not with flashy marketing or venture capital, but with uptime, simplicity, and zero cost. Unlike many ephemeral free tools that vanish after a year or two, FreeDNS has persisted through shifts in web infrastructure, browser security models, and developer tooling. Its interface remains deliberately minimal: users register subdomains like `myproject.freemyip.com`, configure automatic IP updates via HTTP requests or client scripts, and point devices or services to those names — all without paying a cent.\n\nThe service’s longevity is matched by its utility. Developers use it to expose local servers during testing, hobbyists host personal dashboards or IoT interfaces behind residential ISPs, and educators deploy temporary domains for student assignments. As one longtime user noted, it helped launch an entire web career for a broke early-20s developer — a testament to how foundational accessible infrastructure can be. Its reliability isn’t accidental: FreeDNS offers optional backup DNS servers, enabling users to run their own primary DNS while relying on FreeDNS as a fallback — a rare feature among free offerings.\n\nYet its age also reveals technical friction points. A recurring concern raised by users is FreeDNS’s absence from the Public Suffix List (PSL), a critical dataset used by browsers to determine cookie scoping and domain isolation. Because FreeDNS subdomains (e.g., `test.freemyip.com`) aren’t recognized as independent registrable domains, browsers may treat them as part of a shared suffix — allowing cookies set on one subdomain to leak to others. This undermines security assumptions baked into modern web applications, especially those handling authentication or sensitive data.\n\nThat limitation doesn’t invalidate FreeDNS — but it does require awareness. It reflects a broader tension in internet infrastructure: long-standing, community-run tools often lag behind evolving standards not due to negligence, but because updating such systems demands coordination across maintainers, browsers, and standards bodies. Meanwhile, alternatives like nic.eu.org (for free domains) or dns.he.net (for DNS hosting) offer complementary capabilities — yet none replicate FreeDNS’s combination of simplicity, stability, and zero-cost accessibility. In an era of subscription fatigue and vendor lock-in, FreeDNS endures not as a relic, but as a quietly vital piece of the open web’s scaffolding."
+      },
+      "background": {
+        "zh": "动态DNS（DDNS）可将家庭或小型企业网络中频繁变动的IP地址，自动映射到固定的域名上。公共后缀列表（PSL）是由Mozilla维护的注册表，浏览器用它区分公共顶级域（如.com）与私有或共享后缀（如github.io），从而影响Cookie安全性、同站策略和证书验证。",
+        "en": "Dynamic DNS (DDNS) automatically maps changing IP addresses — common on home or small-business networks — to consistent domain names. The Public Suffix List (PSL) is a Mozilla-maintained registry used by browsers to distinguish between public top-level domains (like .com) and private or shared suffixes (like github.io), which affects cookie security, same-site policies, and certificate validation."
+      },
+      "discussion": {
+        "zh": "用户高度赞赏FreeDNS的长期稳定性和实用价值，尤其对初入行的开发者和爱好者意义重大；同时，他们也提出细致的技术关切，指出其未被列入公共后缀列表会影响Cookie隔离与安全性。部分用户注意到其界面与dns.he.net相似，另有用户推荐nic.eu.org等工具作为免费域名补充方案。",
+        "en": "Users express deep appreciation for FreeDNS’s longevity and utility, especially for early-career developers and hobbyists, while raising nuanced concerns about PSL omission impacting cookie isolation and security. Some compare its UI to dns.he.net, and others highlight complementary tools like nic.eu.org for free domains."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Public_Suffix_List",
+          "title": "Public Suffix List"
+        },
+        {
+          "url": "https://publicsuffix.org/",
+          "title": "Public Suffix List"
+        },
+        {
+          "url": "https://www.comparitech.com/net-admin/dynamic-dns-providers/",
+          "title": "6 Best Dynamic DNS Providers in 2026 (Paid/Free) - Pros & Cons"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50219666",
+      "slug": "2026-10-25-13-quantum-mechanics-can-be-learned-through-linear-algebra-first-c88190e5",
+      "path": "/article/2026-10-25-13-quantum-mechanics-can-be-learned-through-linear-algebra-first-c88190e5",
+      "rank": 13,
+      "score": 7.0,
+      "source": "hackernews",
+      "author": "rramadass",
+      "url": "https://www.southampton.ac.uk/~doug/quantum_physics/index.html",
+      "published_at": "2026-10-24T09:53:26+00:00",
+      "fetched_at": "2026-10-25T06:02:51.045239+00:00",
+      "tags": [
+        "quantum-mechanics",
+        "science-education",
+        "linear-algebra",
+        "physics-pedagogy",
+        "quantum-computing"
+      ],
+      "image_path": "media/hackernews-story-50219666.svg",
+      "title": {
+        "zh": "量子力学可先学线性代数再入门",
+        "en": "Quantum mechanics can be learned through linear algebra first"
+      },
+      "summary": {
+        "zh": "2018年一篇教育网页及其在Hacker News上的237条评论重新激发了业界对‘量子比特+线性代数’入门路径的兴趣，主张用图示法（如科克图）和苏格拉底式对话教材替代传统的波粒二象性叙事。 该路径显著降低了软件开发者、数据科学家和教育工作者掌握量子知识的门槛，使其无需深厚物理或高等数学基础，即可更早、更扎实地参与量子计算实践。 核心内容包括复二维空间中的单位向量、量子门的矩阵表示（如泡利-X门）、内积计算测量概率、张量积描述多量子比特系统——全部基于有限维线性代数，无需泛函分析。",
+        "en": "A 2018 educational webpage and its associated Hacker News discussion revived interest in teaching quantum mechanics via qubit-based linear algebra, visual formalisms (e.g., Coecke’s diagrams), and Socratic textbooks—bypassing traditional wave-particle narratives. This approach lowers the barrier to quantum literacy for software developers, data scientists, and educators—enabling earlier, more rigorous engagement with quantum computing without requiring advanced physics or calculus backgrounds. Core concepts include unit vectors in ℂ², matrix representations of quantum gates (e.g., Pauli-X), inner products for measurement probabilities, and tensor products for multi-qubit systems—all grounded in finite-dimensional linear algebra, not functional analysis."
+      },
+      "body": {
+        "zh": "2018年南安普顿大学发布的一篇题为《我不懂量子物理》的教育文章，近年来在技术社区持续引发热议——它挑战了传统量子力学教学路径。该文主张：初学者不必从双缝实验、波粒二象性或薛定谔方程出发，而应直接从“量子比特”（qubit）入手。一个量子比特仅用二维复向量表示，其演化由矩阵描述，测量结果由内积计算——这些全是高中以上、微积分前即可掌握的线性代数工具。这种“数学先行”方法绕开了经典物理直觉带来的概念负担，让学习者先建立可计算、可验证的直觉。\n\nHacker News 上237条评论显示，大量自学程序员、工程师和教育者认同这一思路。有用户坦言：“直到学完单量子比特和两量子比特系统的线性代数，量子力学才真正‘通了’。”其他人则推荐配套资源：塔拉索夫的《量子力学基本概念》采用苏格拉底式对话体，让“经典物理学家”“学生”“教师”轮番发问；科克的《图解量子过程》则用图形化演算替代公式推导，把量子门操作画成直观的电路图。\n\n这一转向也契合量子计算教育的现实需求。微软Azure Quantum明确指出：“每个量子门、每种量子态、每次测量，都有精确的向量与矩阵描述。”张量积、厄米共轭、单位模约束等概念，不是抽象装饰，而是模拟真实量子电路或编写Q#程序时必须操作的对象。\n\n关键不在于简化理论，而在于优化学习顺序：先通过动手计算（如乘以泡利矩阵、求期望值）建立手感，再讨论多世界诠释或坍缩机制。正如一位评论者所言，许多人卡住，并非因为数学太难，而是因为数学被推迟到层层类比之后才出现，反而掩盖了理论最清晰的骨架。结论很实在：你不需要先会解薛定谔方程，就能理解叠加与纠缠——你只需要会加减和乘复向量。",
+        "en": "A widely discussed 2018 educational resource from the University of Southampton—titled *I don’t understand quantum physics*—has reignited debate about how best to teach quantum mechanics to non-physicists. Rather than beginning with historical experiments like the double-slit or philosophical puzzles like wave-particle duality, the approach champions starting with qubits: simple two-level quantum systems whose behavior is fully described using vectors, matrices, and inner products—concepts accessible with pre-calculus math. This ‘math-first’ path sidesteps decades of conceptual baggage tied to classical intuition, offering learners a concrete, calculable foundation before confronting interpretive questions.\n\nThe discussion on Hacker News reveals strong consensus among self-taught learners, software engineers, and educators that traditional pedagogy often fails by front-loading abstraction. One commenter notes that quantum mechanics only “clicked” after studying one- and two-qubit systems—not infinite-dimensional Hilbert spaces. Others highlight complementary tools: Tarasov’s *Basic Concepts of Quantum Mechanics*, written as a Socratic dialogue between characters including a Classical Physicist and a Student; and Coecke’s *Picturing Quantum Processes*, which replaces equations with intuitive diagrammatic calculus—akin to circuit diagrams for quantum operations.\n\nThis shift reflects broader trends in quantum computing education, where linear algebra is now recognized as the essential language. As Microsoft’s Azure Quantum documentation states, “Every gate, every quantum state, and every measurement has a precise mathematical description in terms of vectors and matrices.” The tensor product, adjoint, and unit-norm constraints aren’t just formalities—they’re operational necessities for simulating or programming real quantum circuits.\n\nCritically, this isn’t about dumbing down quantum theory. It’s about sequencing: building intuition through manipulation (e.g., multiplying Pauli matrices, computing expectation values) before interpretation. As one participant observes, many struggle not because the math is hard—but because it’s introduced too late, after layers of ungrounded analogy have already obscured the core structure. The takeaway? You don’t need to master Schrödinger’s equation to grasp superposition or entanglement—you just need to know how to add and multiply complex vectors."
+      },
+      "background": {
+        "zh": "传统量子力学教学常从经典直觉延伸：先讲波动，再讲粒子，最后引入无限维希尔伯特空间中的波函数。而线性代数提供另一条路径：量子态是向量，操作是矩阵，测量概率由内积给出。这与量子计算机的实际编程和模拟方式高度一致。",
+        "en": "Quantum mechanics is traditionally taught by extending classical intuition—first waves, then particles, then wavefunctions in infinite-dimensional Hilbert space. Linear algebra provides an alternative foundation: quantum states are vectors, operations are matrices, and measurements yield probabilities via inner products. This aligns closely with how quantum computers are actually programmed and simulated."
+      },
+      "discussion": {
+        "zh": "评论者普遍认同：从线性代数和图示法入手比从历史实验或哲学讨论切入更有效；部分人对多世界诠释等解释持怀疑态度，强调应先掌握计算能力，再探讨形而上学问题。",
+        "en": "Commenters broadly agree that starting with linear algebra and visual formalisms is more effective than historical or philosophical intros; some express skepticism toward interpretations like Many Worlds, emphasizing that calculational fluency should precede metaphysical debate."
+      },
+      "sources": [
+        {
+          "url": "https://quantumcomputingcourses.com/tutorials/linear-algebra-for-quantum-computing",
+          "title": "Linear Algebra for Quantum Computing"
+        },
+        {
+          "url": "https://learn.microsoft.com/en-us/azure/quantum/concepts-vectors-and-matrices",
+          "title": "Vectors & Matrices in Quantum Computing - Azure Quantum Qubit-Efficient Randomized Quantum Algorithms for Linear Algebra Qubit-Efficient Randomized Quantum Algorithms for Linear Algebra A Practical Guide to Quantum Linear Algebra - hal.science Qubit-Efficient Randomized Quantum Algorithms for Linear Algebra Appendix A Linear Algebra for Quantum Computation"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Socratic_method",
+          "title": "Socratic method - Wikipedia"
+        }
+      ]
+    },
+    {
+      "id": "hackernews:story:50227639",
+      "slug": "2026-10-25-14-meta-employees-reportedly-restricted-lula-s-accounts-during-brazil-s-election-1ba95018",
+      "path": "/article/2026-10-25-14-meta-employees-reportedly-restricted-lula-s-accounts-during-brazil-s-election-1ba95018",
+      "rank": 14,
+      "score": 6.0,
+      "source": "hackernews",
+      "author": "nidnogg",
+      "url": "https://www.aljazeera.com/economy/2026/10/16/meta-employees-say-lulas-accounts-restricted-in-brazil-election-report",
+      "published_at": "2026-10-25T02:18:35+00:00",
+      "fetched_at": "2026-10-25T06:02:51.045182+00:00",
+      "tags": [
+        "social-media-moderation",
+        "election-integrity",
+        "platform-governance",
+        "Brazil-politics",
+        "Meta"
+      ],
+      "image_path": "media/hackernews-story-50227639.jpg",
+      "title": {
+        "zh": "巴西大选期间卢拉社媒账号被限制？据称出自Meta员工",
+        "en": "Meta employees reportedly restricted Lula’s accounts during Brazil’s election"
+      },
+      "summary": {
+        "zh": "一份未经证实的报道声称，若干匿名Meta员工在2022年巴西总统大选期间限制了卢拉总统的Facebook和Instagram账号，但Meta公司既未证实也未否认此事。 该指控凸显了私营平台在民主国家选举话语中缺乏制衡的影响力问题，尤其当算法内容管理既不透明又缺乏外部监督时，风险尤为突出。 该说法缺乏官方确认、书面证据或具名信源支撑，完全依赖匿名转述，亦未被事实核查机构或Meta公开发布的选举诚信报告所证实。",
+        "en": "An unverified report claims that unnamed Meta employees restricted President Lula’s Facebook and Instagram accounts during Brazil’s 2022 presidential election, though Meta has not confirmed or denied the allegation. The allegation raises urgent questions about private platforms’ unchecked influence over electoral discourse in democracies, especially where algorithmic moderation lacks transparency and external oversight. No official confirmation, documentation, or named sources support the claim; it relies solely on anonymous attributions and has not been substantiated by fact-checkers or Meta’s public election integrity reports."
+      },
+      "body": {
+        "zh": "一则近期流传的报道声称，Meta员工在2022年巴西总统大选期间对巴西总统路易斯·伊纳西奥·卢拉·达席尔瓦（Lula）的官方社交媒体账号实施了限制措施——当时卢拉以微弱优势击败极右翼现任总统雅伊尔·博索纳罗。据未经证实的说法，这些措施可能包括降低内容曝光度、延迟帖子推送，或实施“影子封禁”（shadow-banning），影响范围涵盖Facebook和Instagram平台。该报道未援引Meta官方声明、内部文件或具名举报人，仅模糊提及“巴西境内现任或前任Meta员工”的匿名说法。\n\n这一指控在公众对平台选举干预日益担忧的背景下引发关注。2022年巴西大选是该国历史上最两极分化的一次投票，政策分歧尤为突出——尤其在亚马孙雨林保护问题上：博索纳罗执政期间（2019–2022年），年均毁林率较2019年前上升约60%；而卢拉政府随后公布的数据显示，2023年毁林面积降至自1988年有系统记录以来的最低水平。社交媒体深度介入公共讨论，独立监测组织还发现异常流量模式：部分反对派候选人视频的观看量竟堪比全球流行歌手——这引发了人们对算法推荐机制是否公平的质疑。\n\n批评者指出，即便此类指控尚未证实，也恰恰暴露了一个系统性难题：私营科技公司正以缺乏公众问责的方式，深度介入民主选举的基础设施。与传统媒体不同，Facebook等平台的内容分发逻辑不透明，公众难以判断内容限流是中立执行社区准则，还是无意甚至有意的政治偏向。Meta长期强调，其选举诚信措施（如标注国家关联内容、打击协调虚假行为）一视同仁，并接受第三方审计。\n\n然而，卢拉账号限制说缺乏可验证证据，反而凸显更深层困境：当平台内部运作高度保密时，民主社会如何评估其行为？若缺乏公开的内容审核日志、或拥有实际约束力的独立监督机构等透明机制，类似指控就容易加剧对立，而非推动改革。目前，此事仍是一个未解的警示信号，而非确凿证据——但它的传播力，正源于背后关切本身已被广泛记录且真实存在。",
+        "en": "A recent report circulating online claims that Meta employees imposed restrictions on Brazilian President Luiz Inácio Lula da Silva’s official social media accounts during the 2022 presidential election — a period when Lula narrowly defeated far-right incumbent Jair Bolsonaro. According to the unverified account, these actions allegedly included reduced visibility, delayed post delivery, or shadow-banning across Facebook and Instagram. The report does not cite official Meta statements, internal documents, or named whistleblowers; instead, it references anonymous claims attributed to current or former Meta staff in Brazil.\n\nThe allegation has gained traction amid broader concerns about platform transparency in democratic elections. Brazil’s 2022 vote was one of the most polarized in its history, with stark policy divides — especially over Amazon deforestation, where Bolsonaro’s administration oversaw a roughly 60% surge compared to pre-2019 levels, while Lula’s government later reported the lowest annual deforestation since record-keeping began in 1988. Social media played a central role in shaping public discourse, and independent monitoring groups noted unusual engagement patterns: some opposition candidates’ posts achieved view counts rivaling global pop stars — raising questions about algorithmic amplification.\n\nCritics argue that even unconfirmed reports like this underscore a systemic problem: private tech companies wield outsized influence over electoral infrastructure without public accountability. Unlike traditional media outlets, platforms like Facebook operate opaque content-distribution systems, making it difficult to verify whether moderation decisions reflect neutral policy enforcement or unintended (or deliberate) political bias. Meta has long maintained that its election integrity efforts — including labeling state-affiliated content and restricting coordinated inauthentic behavior — are applied uniformly and audited by third parties.\n\nStill, the lack of verifiable evidence behind the Lula claim highlights a deeper challenge: how democracies assess platform conduct when internal operations remain largely confidential. Without transparency mechanisms — such as public-facing moderation logs or independent oversight boards with real enforcement power — allegations like this risk fueling polarization rather than prompting reform. For now, the story remains an unresolved signal, not proof — but one that resonates precisely because the underlying concern is well-documented and widely shared."
+      },
+      "background": {
+        "zh": "2022年巴西总统大选在卢拉与博索纳罗之间激烈展开，双方在环保政策、民主制度及社交媒体在政治动员中的作用等问题上立场尖锐对立。Meta公司运营全球范围内的Facebook和Instagram平台，此前已在印度、美国和巴西等国的选举中，屡因内容审核实践受到公众与监管机构的持续审视。",
+        "en": "Brazil’s 2022 presidential election was highly contested between Lula and Bolsonaro, with sharp divisions over environmental policy, democracy, and social media’s role in political mobilization. Meta operates Facebook and Instagram globally and has faced repeated scrutiny for its content moderation practices during elections in India, the US, and Brazil."
+      },
+      "discussion": {
+        "zh": "评论者普遍担忧Meta的政治影响力，将此事与不同政府任内亚马孙毁林趋势挂钩，指出部分候选人获得异常高曝光，并质疑西方科技平台是否应被视为地缘政治行为体；但无人提供技术证据或经核实的具体操作机制。",
+        "en": "Commenters expressed alarm over Meta’s political influence, linked the issue to Amazon deforestation trends under competing administrations, noted disproportionate visibility for certain candidates, and questioned whether Western tech platforms should be treated as geopolitical actors — though no technical evidence or verified mechanisms were cited."
+      },
+      "sources": []
+    },
+    {
+      "id": "reddit:subreddit-rss:t3_1xe9uoh",
+      "slug": "2026-10-25-15-more-undergrads-publishing-solo-at-top-ai-conferences-84cdb3b5",
+      "path": "/article/2026-10-25-15-more-undergrads-publishing-solo-at-top-ai-conferences-84cdb3b5",
+      "rank": 15,
+      "score": 6.0,
+      "source": "reddit",
+      "author": "/u/Invariant_n_Cauchy",
+      "url": "https://www.reddit.com/r/MachineLearning/comments/1xe9uoh/increasing_number_of_ug_authors_in_a_conferences/",
+      "published_at": "2026-10-24T14:18:07+00:00",
+      "fetched_at": "2026-10-25T06:02:50.691883+00:00",
+      "tags": [
+        "academic-research",
+        "machine-learning",
+        "research-mentorship",
+        "early-career-researchers",
+        "conference-publications"
+      ],
+      "image_path": "media/reddit-subreddit-rss-t3-1xe9uoh.svg",
+      "title": {
+        "zh": "越来越多本科生独立发表顶会论文",
+        "en": "More undergrads publishing solo at top AI conferences"
+      },
+      "summary": {
+        "zh": "一名研究生公开指出，越来越多本科生正以无导师指导的方式在人工智能顶级会议上发表论文，这一现象在研究者群体中引发赞叹与不安并存的反应。 这一趋势标志着进入AI研究的新路径正在形成，冲击着传统的导师制模式，并引发关于缺乏机构支持者能否公平获得高影响力发表机会的深层公平性质疑。 该观察属于个人经验性描述，未提供统计数据或文献依据；它聚焦于机器学习领域的A*级会议，不涉及期刊或其他层级的学术会议。",
+        "en": "A graduate student observed and publicly noted an increasing frequency of undergraduate students publishing at top-tier AI conferences without faculty supervision—a trend perceived as both impressive and unsettling within the research community. This trend signals shifting pathways into AI research, challenges traditional mentorship models, and raises equity concerns about who gains access to high-impact publication venues without institutional backing. The observation is anecdotal and lacks empirical data or citation; it reflects lived experience rather than statistical analysis, and focuses specifically on A* conferences in machine learning—not journals or lower-tier venues."
+      },
+      "body": {
+        "zh": "Reddit机器学习板块上一则匿名发帖引发早期研究者群体的静默反思：越来越多本科生正以独立作者或第一作者身份，在NeurIPS、ICML、ICLR等A*级人工智能顶会上发表论文，且无教授或博士生导师署名。发帖人是一名研究生，坦言自己既钦佩又焦虑——这些成果正在悄然改写人们对科研成熟度的常规预期。如今，二年级或三年级本科生作为唯一作者出现在顶会录用论文中，已不再罕见，其工作常未经过任何实验室或导师指导。\n\n这一现象折射出AI研究实践与获取方式的深层变化。开源工具、面向学生的免费大模型API、云平台提供的GPU学分，以及详尽的教程资源，显著降低了科研入门门槛。本科生如今能熟练复现论文、在新数据集上微调模型、设计轻量架构，全程无需依托正式实验室。部分学生甚至在毕业前就发布了获得广泛采用的开源库或评测基准。但缺乏导师指导也带来隐忧：他们在实验严谨性、结果可复现性或伦理审查方面是否得到足够支持？抑或他们正通过同行协作、线上社区和自主学习，绕过传统指导路径而取得成功？\n\n影响远超个体成就。若本科生真能独立产出顶会水准工作，可能意味着学术准入机制正在重构——机构归属的重要性正让位于技术实操能力与执行效率。与此同时，这也加剧了研究生群体的压力：他们的成长往往依赖结构化指导、跨年度项目和渐进式贡献。该帖虽未提供数据佐证，却精准点出了许多人从arXiv投稿、会议日程乃至招聘简章中感受到的文化转向。\n\n归根结底，这不仅是天赋分布的问题，更是公平性问题：能接触编程训练营、GPU学分和线上导师支持的学生可能脱颖而出，而来自资源匮乏院校的学生却可能被系统性排除在外。这一趋势究竟强化还是削弱科研生态，关键不在于本科生能否独立发表，而在于整个领域是否愿意为他们构建真正有效的支持框架。",
+        "en": "A recent post on Reddit’s r/MachineLearning forum has sparked quiet reflection among early-career researchers: undergraduate students are increasingly appearing as sole or lead authors at A* conferences—prestigious venues like NeurIPS, ICML, and ICLR—without faculty supervision. The anonymous graduate student who shared the observation describes feeling both admiration and unease, noting how these publications challenge conventional timelines for research maturity. It’s no longer rare to see a sophomore or junior listed first (and sometimes only) on a paper accepted to a top-tier venue—often with no professor or PhD student co-author in sight.\n\nThis trend reflects broader shifts in how AI research is conducted and accessed. Open-source tools, freely available large language models, cloud-based compute credits for students, and well-documented tutorials have lowered barriers to entry. Undergraduates now routinely replicate papers, fine-tune models on novel datasets, and design lightweight architectures—all without formal lab affiliation. Some even launch open-source libraries or benchmarks that gain traction before graduation. Yet the absence of mentorship raises questions: Are these students receiving adequate guidance on experimental rigor, reproducibility, or ethical review? Or are they succeeding *despite* the lack of supervision—by leaning heavily on peer networks, online communities, and self-directed learning?\n\nThe implications extend beyond individual achievement. If undergraduates can produce conference-worthy work independently, it may signal a reconfiguration of academic gatekeeping—where institutional affiliation matters less than technical fluency and execution speed. At the same time, it intensifies pressure on graduate students, whose own progress often depends on structured mentorship, multi-year projects, and incremental contributions. The post doesn’t claim causation or cite data, but it names a palpable cultural shift—one many researchers recognize from arXiv submissions, conference programs, and hiring pipelines.\n\nUltimately, this isn’t just about talent dispersion. It’s about equity: students with access to coding bootcamps, GPU credits, and supportive online mentors may thrive, while others—especially those from under-resourced institutions—remain excluded from these opportunities. Whether this trend strengthens or strains the research ecosystem depends less on whether undergrads *can* publish alone, and more on whether the field builds scaffolding to support them meaningfully."
+      },
+      "background": {
+        "zh": "在计算机科学尤其是人工智能领域，会议论文比期刊论文更受重视，直接影响求职、晋升与终身教职评审。A*会议指NeurIPS、ICML、ICLR、CVPR等最具选择性与影响力的顶级会议，录用率通常低于25%。本科生参与科研早已存在，但过去高度依赖教授指导与实验室融入。",
+        "en": "In computer science—and especially AI—conference publications carry more weight than journal articles for career advancement, hiring, and tenure decisions. A* conferences refer to the most selective and influential venues, such as NeurIPS, ICML, ICLR, and CVPR, where acceptance rates often fall below 25%. Undergraduate research participation has long existed, but historically relied heavily on faculty mentorship and lab integration."
+      },
+      "discussion": {
+        "zh": "",
+        "en": ""
+      },
+      "sources": []
+    }
+  ]
+}
